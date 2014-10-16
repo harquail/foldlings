@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 //the direction of the fold.  For now, cuts are considered a type of fold -- will have to reconsider later
 enum FoldOrientation{
@@ -20,6 +21,7 @@ enum FoldOrientation{
 struct Fold {
     var start: CGPoint
     var end: CGPoint
+    var path = UIBezierPath()
     var orientation = FoldOrientation.Hill
     
     init(start:CGPoint,end:CGPoint) {
