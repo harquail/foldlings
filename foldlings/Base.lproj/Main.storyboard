@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3LN-Qg-JOH">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="Wv9-yy-re7">
+            <objects>
+                <viewController id="3LN-Qg-JOH" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dxb-1A-aOI"/>
+                        <viewControllerLayoutGuide type="bottom" id="iCO-wm-2q8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="DrawView" customModule="foldlings" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139" y="-511"/>
+        </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>

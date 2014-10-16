@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		227708D719EE016A0095CD9D /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227708D619EE016A0095CD9D /* DrawView.swift */; };
+		22F861A019EDFE790024C8B5 /* DrawTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8619F19EDFE790024C8B5 /* DrawTestView.m */; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
@@ -31,6 +33,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		227708D619EE016A0095CD9D /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		22F8619E19EDFE790024C8B5 /* DrawTestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawTestView.h; sourceTree = "<group>"; };
+		22F8619F19EDFE790024C8B5 /* DrawTestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawTestView.m; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +71,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22AF485019EDE98000BCC1A4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22F8619E19EDFE790024C8B5 /* DrawTestView.h */,
+				22F8619F19EDFE790024C8B5 /* DrawTestView.m */,
+				227708D619EE016A0095CD9D /* DrawView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +102,7 @@
 		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
 			isa = PBXGroup;
 			children = (
+				22AF485019EDE98000BCC1A4 /* Views */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
@@ -176,6 +192,7 @@
 				TargetAttributes = {
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = ZYN62B4489;
 					};
 					F17C93DE19E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -230,7 +247,9 @@
 			files = (
 				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
 				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
+				227708D719EE016A0095CD9D /* DrawView.swift in Sources */,
 				F1E16E8F19E44B6900BC27C4 /* Fold.swift in Sources */,
+				22F861A019EDFE790024C8B5 /* DrawTestView.m in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
@@ -358,9 +377,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -368,9 +392,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
