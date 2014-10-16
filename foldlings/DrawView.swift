@@ -66,7 +66,6 @@ class DrawView: UIView {
             pts[1] = pts[4]
             ctr = 1
         }
-        
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
@@ -88,6 +87,7 @@ class DrawView: UIView {
             var rectpath = UIBezierPath(rect: self.bounds)
             UIColor.whiteColor().setFill()
             rectpath.fill()
+            incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
         UIColor.blackColor().setStroke()

@@ -12,7 +12,7 @@
                         <viewControllerLayoutGuide type="top" id="dxb-1A-aOI"/>
                         <viewControllerLayoutGuide type="bottom" id="iCO-wm-2q8"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="DrawView" customModule="foldlings" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="DrawTestView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
