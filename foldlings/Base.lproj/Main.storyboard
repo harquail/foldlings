@@ -70,12 +70,6 @@
                                     <action selector="CardsButton:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Gh6-JP-MB9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
-                                <rect key="frame" x="142" y="891" width="113" height="105"/>
-                                <state key="normal" backgroundImage="erase.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgE-ai-VvN">
                                 <rect key="frame" x="263" y="891" width="113" height="105"/>
                                 <state key="normal" backgroundImage="cut.png">
@@ -98,6 +92,12 @@
                                 <connections>
                                     <segue destination="BV1-FR-VrT" kind="presentation" id="nen-Mt-An5"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
+                                <rect key="frame" x="131" y="863" width="143" height="141"/>
+                                <state key="normal" backgroundImage="erase.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -206,7 +206,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
     </scenes>
     <resources>
         <image name="cut.png" width="206" height="208"/>
-        <image name="erase.png" width="206" height="208"/>
+        <image name="erase.png" width="208" height="208"/>
         <image name="fold.png" width="206" height="208"/>
         <image name="menu.png" width="206" height="208"/>
         <image name="print.jpeg" width="291" height="265"/>
