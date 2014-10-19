@@ -18,6 +18,7 @@
 		22C3F4C019F33FF200857C82 /* print.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BE19F33FF200857C82 /* print.jpeg */; };
 		22C3F4C119F33FF200857C82 /* send.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BF19F33FF200857C82 /* send.jpeg */; };
 		22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C3F4C419F35E9600857C82 /* AboutViewController.swift */; };
+		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
 		22F861A019EDFE790024C8B5 /* DrawTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8619F19EDFE790024C8B5 /* DrawTestView.m */; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
@@ -54,6 +55,7 @@
 		22C3F4BE19F33FF200857C82 /* print.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = print.jpeg; sourceTree = "<group>"; };
 		22C3F4BF19F33FF200857C82 /* send.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send.jpeg; sourceTree = "<group>"; };
 		22C3F4C419F35E9600857C82 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
 		22F8619E19EDFE790024C8B5 /* DrawTestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawTestView.h; sourceTree = "<group>"; };
 		22F8619F19EDFE790024C8B5 /* DrawTestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawTestView.m; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +107,7 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				22ED9F0719F367AB001F8AAA /* erase.png */,
 				22C3F4BE19F33FF200857C82 /* print.jpeg */,
 				22C3F4BF19F33FF200857C82 /* send.jpeg */,
 				22C3F4BC19F33EBA00857C82 /* small_2d.jpeg */,
@@ -270,6 +273,7 @@
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
+				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
