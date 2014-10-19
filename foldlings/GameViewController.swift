@@ -12,6 +12,10 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
+    @IBAction func SketchViewButton(sender: UIButton) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

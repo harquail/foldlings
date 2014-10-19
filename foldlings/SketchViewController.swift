@@ -12,4 +12,7 @@ import SceneKit
 class SketchViewController: UIViewController{
         
     
+    @IBAction func CardsButton(sender: UIButton) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }

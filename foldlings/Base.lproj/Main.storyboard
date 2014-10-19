@@ -1,26 +1,101 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3LN-Qg-JOH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xNl-vj-y2i">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
+        <scene sceneID="POB-fl-LU2">
+            <objects>
+                <viewController storyboardIdentifier="SplashPage" id="xNl-vj-y2i" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tgl-Ne-fpY"/>
+                        <viewControllerLayoutGuide type="bottom" id="yNq-6X-lC4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5x7-kP-XQG">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ysD-KA-Tz2">
+                                <rect key="frame" x="0.0" y="15" width="768" height="1009"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLJ-dO-D4t">
+                                <rect key="frame" x="5" y="20" width="1977" height="2738"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="3LN-Qg-JOH" kind="show" id="kqo-u8-Mcg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iHJ-C0-HtL"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1693" y="-250"/>
+        </scene>
+        <!--Sketch View Controller-->
         <scene sceneID="Wv9-yy-re7">
             <objects>
-                <viewController id="3LN-Qg-JOH" sceneMemberID="viewController">
+                <viewController id="3LN-Qg-JOH" customClass="SketchViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dxb-1A-aOI"/>
                         <viewControllerLayoutGuide type="bottom" id="iCO-wm-2q8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="DrawTestView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khL-CF-cVu">
+                                <rect key="frame" x="21" y="891" width="113" height="105"/>
+                                <state key="normal" backgroundImage="menu.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CardsButton:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Gh6-JP-MB9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
+                                <rect key="frame" x="142" y="891" width="113" height="105"/>
+                                <state key="normal" backgroundImage="erase.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgE-ai-VvN">
+                                <rect key="frame" x="263" y="891" width="113" height="105"/>
+                                <state key="normal" backgroundImage="cut.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtr-Cq-XFj">
+                                <rect key="frame" x="384" y="891" width="113" height="105"/>
+                                <state key="normal" backgroundImage="fold.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAq-0O-Knm">
+                                <rect key="frame" x="508" y="768" width="244" height="228"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
+                                <state key="normal" title="preview &amp; print" backgroundImage="small_preview.jpeg">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="presentation" id="nen-Mt-An5"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="-511"/>
+            <point key="canvasLocation" x="-725" y="-792"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -31,13 +106,48 @@
                         <viewControllerLayoutGuide type="bottom" id="O1X-57-Ctf"/>
                     </layoutGuides>
                     <view key="view" multipleTouchEnabled="YES" contentMode="redraw" id="3se-qz-xqx" customClass="SCNView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pt6-Wh-EdJ">
+                                <rect key="frame" x="557" y="817" width="195" height="187"/>
+                                <state key="normal" backgroundImage="small_2d.jpeg">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="SketchViewButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4eW-Gn-T5V"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-61-y3z">
+                                <rect key="frame" x="16" y="856" width="167" height="148"/>
+                                <state key="normal" title="Button" backgroundImage="send.jpeg">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nw-xJ-XVA">
+                                <rect key="frame" x="191" y="857" width="163" height="147"/>
+                                <state key="normal" title="Button" backgroundImage="print.jpeg">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-733" y="556"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="cut.png" width="206" height="208"/>
+        <image name="erase.png" width="206" height="208"/>
+        <image name="fold.png" width="206" height="208"/>
+        <image name="menu.png" width="206" height="208"/>
+        <image name="print.jpeg" width="291" height="265"/>
+        <image name="send.jpeg" width="400" height="345"/>
+        <image name="small_2d.jpeg" width="426" height="461"/>
+        <image name="small_preview.jpeg" width="498" height="473"/>
+        <image name="splash.jpg" width="1977" height="2693"/>
+    </resources>
 </document>
