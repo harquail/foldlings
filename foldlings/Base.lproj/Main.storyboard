@@ -128,10 +128,10 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d98-wt-Wkc">
                                 <rect key="frame" x="60" y="148" width="480" height="378"/>
-                                <mutableString key="text">Crafting a 3D paper pop-up can be a lot of fun for the whole family, but designing the cuts and folds is often a trial and error process.   There has been work done on automated methods to convert a 3D model into a pop-up schematic, however this requires the end user to know how to model an object in 3D and thus is not accessible to the novice or young population. 
+                                <string key="text">Crafting a 3D paper pop-up can be a lot of fun for the whole family, but designing the cuts and folds is often a trial and error process.   There has been work done on automated methods to convert a 3D model into a pop-up schematic, however this requires the end user to know how to model an object in 3D and thus is not accessible to the novice or young population. 
 
 We propose a tool to assist in the exploratory process of creating a pop-up by allowing a user to simply draw lines and be guided in creating a well-defined pop-up.   The idea is to help the user create a useable pattern to then laser-cut or print out.  The tool would calculate whether a design is foldable and show a simulated folding card. 
-</mutableString>
+</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
