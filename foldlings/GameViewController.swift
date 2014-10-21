@@ -25,7 +25,7 @@ class GameViewController: UIViewController {
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
+        scene?.rootNode.addChildNode(cameraNode)
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
@@ -35,20 +35,20 @@ class GameViewController: UIViewController {
         lightNode.light = SCNLight()
         lightNode.light!.type = SCNLightTypeOmni
         lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-        scene.rootNode.addChildNode(lightNode)
+        scene?.rootNode.addChildNode(lightNode)
         
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light!.type = SCNLightTypeAmbient
         ambientLightNode.light!.color = UIColor.darkGrayColor()
-        scene.rootNode.addChildNode(ambientLightNode)
+        scene?.rootNode.addChildNode(ambientLightNode)
         
         // retrieve the ship node
-        let ship = scene.rootNode.childNodeWithName("ship", recursively: true)!
+        let ship = scene?.rootNode.childNodeWithName("ship", recursively: true)!
         
         // animate the 3d object
-        ship.runAction(SCNAction.repeatActionForever(SCNAction.rotateByX(0, y: 2, z: 0, duration: 1)))
+        ship?.runAction(SCNAction.repeatActionForever(SCNAction.rotateByX(0, y: 2, z: 0, duration: 1)))
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -117,9 +117,9 @@ class GameViewController: UIViewController {
     
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.toRaw())
+            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
         } else {
-            return Int(UIInterfaceOrientationMask.All.toRaw())
+            return Int(UIInterfaceOrientationMask.All.rawValue)
         }
     }
     
