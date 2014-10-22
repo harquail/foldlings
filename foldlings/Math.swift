@@ -8,10 +8,13 @@
 
 //copypasta from apple tutorial
 import Foundation
+import CoreGraphics
 
-struct Vector2D{
+
+struct Vector2D  {
     var x: Double = 0.0
     var y: Double = 0.0
+    
     
     mutating func add (v: Vector2D) {
         x += v.x
@@ -84,6 +87,26 @@ func += (inout left: Vector2D, right: Vector2D){
 func -= (inout left: Vector2D, right: Vector2D){
     left = left + right
 }
+
+func == (lhs: Vector2D, rhs: Vector2D) -> Bool {
+    return lhs.x == rhs.x && lhs.y == rhs.y
+}
+
+extension Vector2D: Hashable {
+    var hashValue: Int { get {
+        return 100000 + Int(x) + 10000 + Int(y)
+        }
+    }
+}
+extension CGPoint: Hashable {
+    public var hashValue: Int { get {
+        return 100000 + Int(self.x) + 10000 + Int(self.y)
+        }
+    }
+}
+
+
+
 
 
 

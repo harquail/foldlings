@@ -14,6 +14,18 @@ class DrawView: UIView {
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
     
+    //TODO: while drawing:
+    //      identify intersecting bounding boxes
+    //      check for nearest points in matching 
+    //      show user some indication (say a circle) that they are within range for a valid intersection
+    //          (ie if they end line would snap to said point)
+    //      if intersection found then on completion
+    //          modify one edge with new intersection endpoint and add a new line
+    //TODO:  delete button
+    //  identify any intersecting bounding boxes
+    //  then refine to specific line if there are more than 1
+    //  then remove from data structures
+    
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -21,7 +33,7 @@ class DrawView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = 2.0
-        pts = [CGPoint](count: 4, repeatedValue: CGPointZero)
+        pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
     }
     
     override init(frame: CGRect)
@@ -52,7 +64,7 @@ class DrawView: UIView {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
-//        ctr=ctr+1
+        ctr=ctr+1
         pts[ctr] = touch.locationInView(self)
         if (ctr == 4)
         {
@@ -65,6 +77,7 @@ class DrawView: UIView {
             pts[1] = pts[4]
             ctr = 1
         }
+        println("\(ctr)")
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {

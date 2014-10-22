@@ -14,34 +14,44 @@ class Sketch {
     
     let MINIMUM_LINE_DISTANCE = 0.5
     
+    //TODO:store lines
+    //  edges(Fold?) in ordered array
+    //  vertices in ordered array
+    //  dict of vertices->edges(Fold)
+    //  create bounding box per line.  ordered array of rects indexed same as line array
+
+    
     //the folds that define a sketch
     //for now, cuts are in this array too
-    var folds : [Fold] = []
+    var edges : [Edge] = []
+    var vertices : [CGPoint] = []
+    var adjacency : [CGPoint : Edge]!
     
     
-    func addFold(start:CGPoint,end:CGPoint){
-        folds += [Fold(start: start, end: end)]
+    func addEdge(start:CGPoint,end:CGPoint){
+        edges += [Edge(start: start, end: end)]
     }
     
     //fold neares to point
-    func foldNearPoint(point:CGPoint)->Fold{
+    func edgeNearPoint(point:CGPoint)->Edge{
         
         var smallestDist = Float.infinity
-        var nearestFold = Fold(start: CGPointZero, end: CGPointZero)
+        var nearestEdge = Edge(start: CGPointZero, end: CGPointZero)
         
         
         
         //find the fold with the smallest distance to the given point
-        for fold in folds{
-            let currentDist = distanceBetween(point, startLine: fold.start, endLine: fold.end)
+        //TODO: make work for curvy cuts
+        for edge in edges{
+            let currentDist = distanceBetween(point, startLine: edge.start, endLine: edge.end)
             if(currentDist<smallestDist){
-                nearestFold=fold
+                nearestEdge = edge
                 smallestDist = currentDist
             }
             
         }
         
-        return nearestFold
+        return nearestEdge
     }
     
     //distance between a point and line

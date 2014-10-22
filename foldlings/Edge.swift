@@ -1,5 +1,5 @@
 //
-//  Fold.swift
+//  Edge.swift
 //  foldlings
 //
 //  Created by nook on 10/7/14.
@@ -11,18 +11,18 @@ import CoreGraphics
 import UIKit
 
 //the direction of the fold.  For now, cuts are considered a type of fold -- will have to reconsider later
-enum FoldOrientation{
+enum EdgeType{
     case Hill
     case Valley
     case Cut
 }
 
 //for now, only straight folds/cuts
-struct Fold {
+struct Edge {
     var start: CGPoint
     var end: CGPoint
     var path = UIBezierPath()
-    var orientation = FoldOrientation.Hill
+    var orientation = EdgeType.Hill
     
     init(start:CGPoint,end:CGPoint) {
         self.start = start
