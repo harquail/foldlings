@@ -14,6 +14,8 @@ class DrawView: UIView {
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
     
+    var sketch: Sketch!
+    
     //TODO: while drawing:
     //      identify intersecting bounding boxes
     //      check for nearest points in matching 
@@ -21,6 +23,7 @@ class DrawView: UIView {
     //          (ie if they end line would snap to said point)
     //      if intersection found then on completion
     //          modify one edge with new intersection endpoint and add a new line
+    //      add line to Sketch
     //TODO:  delete button
     //  identify any intersecting bounding boxes
     //  then refine to specific line if there are more than 1
@@ -34,6 +37,7 @@ class DrawView: UIView {
         path = UIBezierPath()
         path.lineWidth = 2.0
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
+        sketch = Sketch()
     }
     
     override init(frame: CGRect)
@@ -77,7 +81,6 @@ class DrawView: UIView {
             pts[1] = pts[4]
             ctr = 1
         }
-        println("\(ctr)")
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {

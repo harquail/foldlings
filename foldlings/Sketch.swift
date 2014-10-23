@@ -25,7 +25,12 @@ class Sketch {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var vertices : [CGPoint] = []
-    var adjacency : [CGPoint : Edge]!
+    var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
+    
+//    init()
+//    {
+//
+//    }
     
     
     func addEdge(start:CGPoint,end:CGPoint){
