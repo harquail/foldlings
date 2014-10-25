@@ -25,7 +25,7 @@ class SketchView: UIView {
 //    var tempStart:CGPoint = nil
     
     var sketch: Sketch!
-    
+    //
     //TODO: while drawing:
     //      identify intersecting bounding boxes
     //      check for nearest points in matching 
