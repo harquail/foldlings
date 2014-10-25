@@ -1,21 +1,28 @@
 //
 //  DrawView.swift
 //  foldlings
-//
+//  
 //  Created by Tim Tregubov on 10/14/14.
 //
 
 import UIKit
 
-class DrawView: UIView {
+class SketchView: UIView {
+    
+    enum Mode {
+        case Erase
+        case Cut
+        case Fold
+    }
+
     
     var path: UIBezierPath!
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
+    var sketchMode:  Mode!
     
 //    var tempStart:CGPoint = nil
-    
     
     var sketch: Sketch!
     
@@ -113,6 +120,12 @@ class DrawView: UIView {
         path.stroke()
         incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+    }
+    
+    
+    func setSketchMode(sm: Mode)
+    {
+        sketchMode = sm;
     }
     
 

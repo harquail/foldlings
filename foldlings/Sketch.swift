@@ -13,12 +13,6 @@ import UIKit
 
 class Sketch {
     
-    enum buttonState {
-        case erase
-        case cut
-        case fold
-
-    }
     
     let MINIMUM_LINE_DISTANCE = 0.5
     

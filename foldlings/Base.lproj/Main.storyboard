@@ -57,7 +57,7 @@
                         <viewControllerLayoutGuide type="top" id="dxb-1A-aOI"/>
                         <viewControllerLayoutGuide type="bottom" id="iCO-wm-2q8"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="DrawView" customModule="foldlings" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="SketchView" customModule="foldlings" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -67,7 +67,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="CardsButton:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Gh6-JP-MB9"/>
+                                    <action selector="CardsButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="2s8-7j-shA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgE-ai-VvN">
@@ -75,12 +75,18 @@
                                 <state key="normal" backgroundImage="cut.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="CutButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="1yp-4i-dme"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtr-Cq-XFj">
                                 <rect key="frame" x="384" y="891" width="113" height="105"/>
                                 <state key="normal" backgroundImage="fold.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="a0O-IN-HpN"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAq-0O-Knm">
                                 <rect key="frame" x="508" y="768" width="244" height="228"/>
@@ -90,7 +96,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="BV1-FR-VrT" kind="presentation" id="nen-Mt-An5"/>
+                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="PreviewSegue" id="nen-Mt-An5"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
@@ -98,11 +104,18 @@
                                 <state key="normal" backgroundImage="erase.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="EraseButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="FdW-lm-o7l"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="SketchView" destination="n4X-WK-eFO" id="pXc-IO-3nu"/>
+                        <outlet property="sketchView" destination="n4X-WK-eFO" id="ymI-xk-Njd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
