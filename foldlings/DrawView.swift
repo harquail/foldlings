@@ -14,6 +14,9 @@ class DrawView: UIView {
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
     
+//    var tempStart:CGPoint = nil
+    
+    
     var sketch: Sketch!
     
     //TODO: while drawing:
@@ -85,6 +88,7 @@ class DrawView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         self.drawBitmap()
+//        self.sketch.addEdge(path.CGPath.)
         self.setNeedsDisplay()
         path.removeAllPoints()
         ctr = 0

@@ -9,10 +9,20 @@
 //a sketch is a collection of cuts & folds
 import Foundation
 import CoreGraphics
+import UIKit
 
 class Sketch {
     
+    enum buttonState {
+        case erase
+        case cut
+        case fold
+
+    }
+    
     let MINIMUM_LINE_DISTANCE = 0.5
+    
+    
     
     //TODO:store lines
     //  edges(Fold?) in ordered array
@@ -37,35 +47,6 @@ class Sketch {
         edges += [Edge(start: start, end: end)]
     }
     
-    //fold neares to point
-    func edgeNearPoint(point:CGPoint)->Edge{
-        
-        var smallestDist = Float.infinity
-        var nearestEdge = Edge(start: CGPointZero, end: CGPointZero)
-        
-        
-        
-        //find the fold with the smallest distance to the given point
-        //TODO: make work for curvy cuts
-        for edge in edges{
-            let currentDist = distanceBetween(point, startLine: edge.start, endLine: edge.end)
-            if(currentDist<smallestDist){
-                nearestEdge = edge
-                smallestDist = currentDist
-            }
-            
-        }
-        
-        return nearestEdge
-    }
     
-    //distance between a point and line
-    private func distanceBetween(point:CGPoint,startLine:CGPoint, endLine:CGPoint) -> Float{
-        //#TODO
-        return 0.5
-    }
-//    func changeFoldOrientationTo(var fold:Fold,orientation:FoldOrientation){
-//        fold.orientation=orientation
-//    }
 }
 
