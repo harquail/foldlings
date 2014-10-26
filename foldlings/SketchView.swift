@@ -127,11 +127,18 @@ class SketchView: UIView {
     func drawBitmap() {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         
-        if incrementalImage == nil ///first time; paint background white
+        if(incrementalImage == nil) ///first time; paint background white
         {
             var rectpath = UIBezierPath(rect: self.bounds)
             UIColor.whiteColor().setFill()
             rectpath.fill()
+            
+            // this will draw all possibly set paths
+            UIColor.blackColor().setStroke()
+            for e in sketch.edges
+            {
+                e.path.stroke()
+            }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
@@ -151,14 +158,16 @@ class SketchView: UIView {
     {
         for e in sketch.edges
         {
-            //TODO: fix hittest
             if  (e.hitTest(touchPoint))
             {
                 println( "got touchpoint: \(touchPoint)"  )
+                //remove points and force a redraw by setting incrementalImage to nil
+                // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
                 e.path.removeAllPoints()
-                self.setNeedsDisplay()
-                //TODO: somehow don't draw it anymore
-                // supposedly setting the path to nil and then to an empty UIBezierPath and then drawing that will be ok
+                incrementalImage = nil
+                self.setNeedsDisplay() //draw to clear the deleted path
+                drawBitmap() //redraw full bitmap
+                //TODO: better way of handling this?
             }
         }
 
