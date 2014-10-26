@@ -14,6 +14,7 @@ import UIKit
 enum EdgeType{
     case Hill
     case Valley
+    case Fold
     case Cut
 }
 
@@ -24,7 +25,7 @@ struct Edge {
     var path = UIBezierPath()
     var orientation = EdgeType.Hill
     
-    init(start:CGPoint,end:CGPoint, path:UIBezierPath) {
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath){ //, type: EdgeType) {
         self.start = start
         self.end = end
         self.path = path
