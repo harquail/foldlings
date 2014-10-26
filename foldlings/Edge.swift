@@ -24,14 +24,15 @@ struct Edge {
     var path = UIBezierPath()
     var orientation = EdgeType.Hill
     
-    init(start:CGPoint,end:CGPoint) {
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath) {
         self.start = start
         self.end = end
+        self.path = path
     }
     
     func tapTargetForPath(path:UIBezierPath)->UIBezierPath{
         
-        let STROKE_HIT_RADIUS = CGFloat(25.0)
+        let STROKE_HIT_RADIUS = CGFloat(200.0)
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, STROKE_HIT_RADIUS, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
         

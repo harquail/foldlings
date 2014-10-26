@@ -68,7 +68,6 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
-        ctr = 0
         var touch = touches.anyObject() as UITouch
         tempStart = touch.locationInView(self)
         pts[0] = touch.locationInView(self)
@@ -77,28 +76,48 @@ class SketchView: UIView {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
-        ctr=ctr+1
-        pts[ctr] = touch.locationInView(self)
-        if (ctr == 4)
+        switch sketchMode
         {
-            pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-            path.moveToPoint(pts[0])
-            path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
-            self.setNeedsDisplay()
-            // replace points and get ready to handle the next segment
-            pts[0] = pts[3]
-            pts[1] = pts[4]
-            ctr = 1
+        case .Erase:
+            var touchPoint: CGPoint = touch.locationInView(self)
+            erase(touchPoint);
+
+            break
+        case .Cut, .Fold:
+            ctr=ctr+1
+            pts[ctr] = touch.locationInView(self)
+            if (ctr == 4)
+            {
+                pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+                path.moveToPoint(pts[0])
+                path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+                self.setNeedsDisplay()
+                // replace points and get ready to handle the next segment
+                pts[0] = pts[3]
+                pts[1] = pts[4]
+                ctr = 1
+            }
+        default:
+            break
         }
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        var touch = touches.anyObject() as UITouch
-        self.drawBitmap()
-        self.sketch.addEdge(pts[0], end: touch.locationInView(self))
-        self.setNeedsDisplay()
-        path.removeAllPoints()
-        ctr = 0
+        switch sketchMode
+        {
+        case .Erase:
+            break
+        case .Cut, .Fold:
+            var touch = touches.anyObject() as UITouch
+            self.drawBitmap()
+            let newPath = UIBezierPath(CGPath: path.CGPath);
+            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: newPath)
+            self.setNeedsDisplay()
+            path.removeAllPoints()
+            ctr = 0
+        default:
+            break
+        }
     }
 
     override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
@@ -126,6 +145,23 @@ class SketchView: UIView {
     func setSketchMode(sm: Mode)
     {
         sketchMode = sm;
+    }
+    
+    func erase(touchPoint: CGPoint)
+    {
+        for e in sketch.edges
+        {
+            //TODO: fix hittest
+            if  (e.hitTest(touchPoint))
+            {
+                println( "got touchpoint: \(touchPoint)"  )
+                e.path.removeAllPoints()
+                self.setNeedsDisplay()
+                //TODO: somehow don't draw it anymore
+                // supposedly setting the path to nil and then to an empty UIBezierPath and then drawing that will be ok
+            }
+        }
+
     }
     
 
