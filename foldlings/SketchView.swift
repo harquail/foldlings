@@ -22,9 +22,13 @@ class SketchView: UIView {
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
+//    var tempStart:CGPoint = CGPointZero
     var sketchMode:  Mode!
+    
+    
+//    var tempStart:CGPoint = nil
+    
     var sketch: Sketch!
-    var tempstart = CGPointZero
     //
     //TODO: while drawing:
     //      identify intersecting bounding boxes
@@ -71,7 +75,7 @@ class SketchView: UIView {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
-        tempStart = touch.locationInView(self)
+//        tempStart = touch.locationInView(self)
         pts[0] = touch.locationInView(self)
     }
     
@@ -122,7 +126,7 @@ class SketchView: UIView {
             break
         }
     }
-
+    
     override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
