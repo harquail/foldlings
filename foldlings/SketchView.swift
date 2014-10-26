@@ -35,10 +35,6 @@ class SketchView: UIView {
     //      if intersection found then on completion
     //          modify one edge with new intersection endpoint and add a new line
     //      add line to Sketch
-    //TODO:  delete button
-    //  identify any intersecting bounding boxes
-    //  then refine to specific line if there are more than 1
-    //  then remove from data structures
     
     required init(coder aDecoder: NSCoder)
     {
@@ -50,15 +46,6 @@ class SketchView: UIView {
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
     }
-    
-//    override init(frame: CGRect)
-//    {
-//        super.init(frame: frame)
-//        self.multipleTouchEnabled = false
-//        path = UIBezierPath()
-//        path.lineWidth = kLineWidth
-//        pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-//    }
     
     override func drawRect(rect: CGRect)
     {
@@ -78,7 +65,6 @@ class SketchView: UIView {
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
 
-            break
         case .Cut, .Fold:
             ctr = 0
             pts[0] = touch.locationInView(self)
@@ -93,18 +79,19 @@ class SketchView: UIView {
         var touch = touches.anyObject() as UITouch
         switch sketchMode
         {
-        case .Erase:
+        case .Erase: // if in erase mode
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
 
-            break
+            
         case .Cut, .Fold:
             ctr=ctr+1
             pts[ctr] = touch.locationInView(self)
             if (ctr == 4)
             {
-                makeBezier()
+                makeBezier() //create bezier curves
             }
+            
         default:
             break
         }
@@ -120,7 +107,8 @@ class SketchView: UIView {
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath);
             newPath.lineWidth=kLineWidth
-            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath)//, type: EdgeType.Cut)
+            let edgetype = (sketchMode == Mode.Cut) ? EdgeType.Cut : EdgeType.Fold
+            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, type: edgetype)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
@@ -143,15 +131,18 @@ class SketchView: UIView {
             rectpath.fill()
             
             // this will draw all possibly set paths
-            UIColor.blackColor().setStroke()
+            
             for e in sketch.edges
             {
+                e.getColor().setStroke()
                 e.path.stroke()
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
-        UIColor.blackColor().setStroke()
+        //set the stroke color
+        //TODO: make work for while drawing
+        ((sketchMode == Mode.Cut) ? EdgeColor.Cut : EdgeColor.Fold).setStroke()
         path.stroke()
         incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -172,21 +163,37 @@ class SketchView: UIView {
                 self.setNeedsDisplay() //draw to clear the deleted path
                 drawBitmap() //redraw full bitmap
                 //TODO: better way of handling this?
+                //  need to also: refine to specific line if there are more than 1
+                //  and actually remove from list?
+
             }
         }
 
     }
     
-    func makeBezier(){
-                pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-                path.moveToPoint(pts[0])
-                path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
-                self.setNeedsDisplay()
-                // replace points and get ready to handle the next segment
-                pts[0] = pts[3]
-                pts[1] = pts[4]
-                ctr = 1
+    //makes bezier by stringing segments together
+    //creatse segments from ctrl pts
+    func makeBezier()
+    {
+        if ( sketchMode == .Fold){    //makes only straight horizontal fold lines
+            pts[3] = CGPointMake(pts[4].x,  pts[0].y) // only use first y-value
+            path.moveToPoint(pts[0])
+            path.addLineToPoint(pts[3])// add the line to last point
+        }
+            
+        else{
+        pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+        path.moveToPoint(pts[0])
 
-}
+        path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+        }
+        
+        self.setNeedsDisplay()
+        // replace points and get ready to handle the next segment
+        pts[0] = pts[3]
+        pts[1] = pts[4]
+        ctr = 1
+    }
+    
 
 }
