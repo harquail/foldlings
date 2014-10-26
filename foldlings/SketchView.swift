@@ -22,13 +22,9 @@ class SketchView: UIView {
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
-//    var tempStart:CGPoint = CGPointZero
+    var tempStart:CGPoint = CGPointZero
     var sketchMode:  Mode = Mode.Cut
     var redraw: Bool = false
-    
-    
-//    var tempStart:CGPoint = nil
-    
     var sketch: Sketch!
     //
     //TODO: while drawing:
@@ -86,6 +82,7 @@ class SketchView: UIView {
         case .Cut, .Fold:
             ctr = 0
             pts[0] = touch.locationInView(self)
+            tempStart = touch.locationInView(self)
         default:
             break
         }
@@ -130,7 +127,7 @@ class SketchView: UIView {
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath);
             newPath.lineWidth=kLineWidth
-            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: newPath)//, type: EdgeType.Cut)
+            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath)//, type: EdgeType.Cut)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
