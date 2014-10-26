@@ -18,18 +18,31 @@ enum EdgeType{
     case Cut
 }
 
+struct EdgeColor {
+    static var Hill:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+    static var Valley:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+    static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+    static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
+}
+
 //for now, only straight folds/cuts
 struct Edge {
     var start: CGPoint
     var end: CGPoint
     var path = UIBezierPath()
-    var orientation = EdgeType.Hill
+    var orientation = EdgeType.Cut
     
-    init(start:CGPoint,end:CGPoint, path:UIBezierPath){ //, type: EdgeType) {
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath){
         self.start = start
         self.end = end
         self.path = path
     }
+    
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath, type: EdgeType) {
+        self.init(start: start, end: end, path:path)
+        self.orientation = type
+    }
+
     
     func tapTargetForPath(path:UIBezierPath)->UIBezierPath{
         
@@ -48,4 +61,23 @@ struct Edge {
         return tapTargetForPath(path).containsPoint(point)
         
     }
+    
+    func getColor() -> UIColor
+    {
+        var color: UIColor!
+        switch orientation
+        {
+        case .Fold:
+            color = EdgeColor.Fold
+        case .Hill:
+            color = EdgeColor.Hill
+        case .Valley:
+            color = EdgeColor.Valley
+        default:
+            color = EdgeColor.Cut
+        }
+        return color
+    }
+    
+    
 }

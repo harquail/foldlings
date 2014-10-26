@@ -35,10 +35,6 @@ class SketchView: UIView {
     //      if intersection found then on completion
     //          modify one edge with new intersection endpoint and add a new line
     //      add line to Sketch
-    //TODO:  delete button
-    //  identify any intersecting bounding boxes
-    //  then refine to specific line if there are more than 1
-    //  then remove from data structures
     
     required init(coder aDecoder: NSCoder)
     {
@@ -50,15 +46,6 @@ class SketchView: UIView {
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
     }
-    
-//    override init(frame: CGRect)
-//    {
-//        super.init(frame: frame)
-//        self.multipleTouchEnabled = false
-//        path = UIBezierPath()
-//        path.lineWidth = kLineWidth
-//        pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-//    }
     
     override func drawRect(rect: CGRect)
     {
@@ -120,7 +107,8 @@ class SketchView: UIView {
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath);
             newPath.lineWidth=kLineWidth
-            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath)//, type: EdgeType.Cut)
+            let edgetype = (sketchMode == Mode.Cut) ? EdgeType.Cut : EdgeType.Fold
+            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, type: edgetype)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
@@ -143,15 +131,18 @@ class SketchView: UIView {
             rectpath.fill()
             
             // this will draw all possibly set paths
-            UIColor.blackColor().setStroke()
+            
             for e in sketch.edges
             {
+                e.getColor().setStroke()
                 e.path.stroke()
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
-        UIColor.blackColor().setStroke()
+        //set the stroke color
+        //TODO: make work for while drawing
+        ((sketchMode == Mode.Cut) ? EdgeColor.Cut : EdgeColor.Fold).setStroke()
         path.stroke()
         incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -177,6 +168,9 @@ class SketchView: UIView {
                 self.setNeedsDisplay() //draw to clear the deleted path
                 drawBitmap() //redraw full bitmap
                 //TODO: better way of handling this?
+                //  need to also: refine to specific line if there are more than 1
+                //  and actually remove from list?
+
             }
         }
 
