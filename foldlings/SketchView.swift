@@ -78,7 +78,6 @@ class SketchView: UIView {
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
 
-            break
         case .Cut, .Fold:
             ctr = 0
             pts[0] = touch.locationInView(self)
@@ -93,18 +92,27 @@ class SketchView: UIView {
         var touch = touches.anyObject() as UITouch
         switch sketchMode
         {
-        case .Erase:
+        case .Erase: // if in erase mode
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
 
-            break
-        case .Cut, .Fold:
+            
+        case .Cut:
             ctr=ctr+1
             pts[ctr] = touch.locationInView(self)
             if (ctr == 4)
             {
-                makeBezier()
+                makeBezier() //create bezier curves
             }
+            
+        case .Fold:
+            ctr=ctr+1
+            pts[ctr] = touch.locationInView(self)
+            if (ctr == 4)
+            {
+                makeBezier() //create bezier curves
+            }
+            makeFold()
         default:
             break
         }
@@ -182,16 +190,24 @@ class SketchView: UIView {
 
     }
     
-    func makeBezier(){
-                pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-                path.moveToPoint(pts[0])
-                path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
-                self.setNeedsDisplay()
-                // replace points and get ready to handle the next segment
-                pts[0] = pts[3]
-                pts[1] = pts[4]
-                ctr = 1
-
-}
+    //makes bezier by stringing segments together
+    //creatse segments from ctrl pts
+    func makeBezier()
+    {
+        pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+        path.moveToPoint(pts[0])
+        path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+        self.setNeedsDisplay()
+        // replace points and get ready to handle the next segment
+        pts[0] = pts[3]
+        pts[1] = pts[4]
+        ctr = 1
+    }
+    
+    //makes only straight horizontal fold lines
+    func makeFold()
+    {
+        
+    }
 
 }
