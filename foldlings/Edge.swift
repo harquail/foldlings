@@ -32,7 +32,7 @@ struct Edge {
     
     func tapTargetForPath(path:UIBezierPath)->UIBezierPath{
         
-        let STROKE_HIT_RADIUS = CGFloat(25.0)
+        let STROKE_HIT_RADIUS = CGFloat(200.0)
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, STROKE_HIT_RADIUS, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
         

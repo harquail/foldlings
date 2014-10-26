@@ -76,19 +76,8 @@ class SketchView: UIView {
         switch sketchMode
         {
         case .Erase:
-            //var touchPoint = [touch locationInView:self.view];
             var touchPoint: CGPoint = touch.locationInView(self)
-            for e in sketch.edges
-            {
-                if  (e.path).containsPoint(touchPoint)
-                {
-                    println("fooo")
-                    //e.path=nil
-                    //e.path=UIBezierPath()
-                    path=nil
-                    path=UIBezierPath()
-                }
-            }
+            erase(touchPoint);
 
             break
         case .Cut, .Fold:
@@ -105,18 +94,8 @@ class SketchView: UIView {
         switch sketchMode
         {
         case .Erase:
-            //var touchPoint = [touch locationInView:self.view];
             var touchPoint: CGPoint = touch.locationInView(self)
-            for e in sketch.edges
-            {
-                //TODO: fix hittest
-                if  (e.hitTest(touchPoint))
-                {
-                    println( "touchpoint: \(touchPoint)"  )
-                    //TODO: somehow don't draw it anymore
-                    // supposedly setting the path to nil and then to an empty UIBezierPath and then drawing that will be ok
-                }
-            }
+            erase(touchPoint);
 
             break
         case .Cut, .Fold:
@@ -146,7 +125,8 @@ class SketchView: UIView {
         case .Cut, .Fold:
             var touch = touches.anyObject() as UITouch
             self.drawBitmap()
-            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: path)
+            let newPath = UIBezierPath(CGPath: path.CGPath);
+            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: newPath)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
@@ -180,6 +160,23 @@ class SketchView: UIView {
     func setSketchMode(sm: Mode)
     {
         sketchMode = sm;
+    }
+    
+    func erase(touchPoint: CGPoint)
+    {
+        for e in sketch.edges
+        {
+            //TODO: fix hittest
+            if  (e.hitTest(touchPoint))
+            {
+                println( "got touchpoint: \(touchPoint)"  )
+                e.path.removeAllPoints()
+                self.setNeedsDisplay()
+                //TODO: somehow don't draw it anymore
+                // supposedly setting the path to nil and then to an empty UIBezierPath and then drawing that will be ok
+            }
+        }
+
     }
     
 
