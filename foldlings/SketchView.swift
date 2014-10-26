@@ -14,7 +14,9 @@ class SketchView: UIView {
         case Cut
         case Fold
     }
-
+    
+    
+    let kLineWidth:CGFloat = 2.0
     
     var path: UIBezierPath!
     var incrementalImage: UIImage!
@@ -48,19 +50,19 @@ class SketchView: UIView {
         self.multipleTouchEnabled = false;
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
-        path.lineWidth = 2.0
+        path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
     }
     
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-        self.multipleTouchEnabled = false
-        path = UIBezierPath()
-        path.lineWidth = 2.0
-        pts = [CGPoint](count: 4, repeatedValue: CGPointZero)
-    }
+//    override init(frame: CGRect)
+//    {
+//        super.init(frame: frame)
+//        self.multipleTouchEnabled = false
+//        path = UIBezierPath()
+//        path.lineWidth = kLineWidth
+//        pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
+//    }
     
     override func drawRect(rect: CGRect)
     {
@@ -127,7 +129,8 @@ class SketchView: UIView {
             var touch = touches.anyObject() as UITouch
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath);
-            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: newPath)
+            newPath.lineWidth=kLineWidth
+            self.sketch.addEdge(pts[0], end: touch.locationInView(self), path: newPath)//, type: EdgeType.Cut)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
