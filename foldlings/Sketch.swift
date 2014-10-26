@@ -37,8 +37,8 @@ class Sketch {
 //    }
     
     
-    func addEdge(start:CGPoint,end:CGPoint){
-        edges += [Edge(start: start, end: end)]
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath){
+        edges += [Edge(start: start, end: end, path: path)]
     }
     
     

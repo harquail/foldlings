@@ -24,9 +24,10 @@ struct Edge {
     var path = UIBezierPath()
     var orientation = EdgeType.Hill
     
-    init(start:CGPoint,end:CGPoint) {
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath) {
         self.start = start
         self.end = end
+        self.path = path
     }
     
     func tapTargetForPath(path:UIBezierPath)->UIBezierPath{
