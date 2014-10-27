@@ -30,7 +30,9 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdT-a8-qea">
                                 <rect key="frame" x="304" y="804" width="170" height="58"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="ABOUT">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -59,6 +61,17 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
+                                <rect key="frame" x="265" y="752" width="247" height="58"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="MAKE NEW">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="3LN-Qg-JOH" kind="show" id="8Ua-Nr-rXS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -70,7 +83,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1693" y="-250"/>
+            <point key="canvasLocation" x="-1693" y="-236"/>
         </scene>
         <!--Sketch View Controller-->
         <scene sceneID="Wv9-yy-re7">
@@ -251,4 +264,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="small_preview.jpeg" width="498" height="473"/>
         <image name="splash.jpg" width="1977" height="2693"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="kqo-u8-Mcg"/>
+    </inferredMetricsTieBreakers>
 </document>
