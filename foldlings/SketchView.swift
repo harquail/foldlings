@@ -52,6 +52,7 @@ class SketchView: UIView {
         if (incrementalImage != nil)
         {
             incrementalImage.drawInRect(rect)
+
             getEdgeColor().setStroke()
             path.stroke()
         }
@@ -65,17 +66,11 @@ class SketchView: UIView {
         case .Erase:
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
-
-        case .Cut:
+        case .Cut, .Fold:
             ctr = 0
             pts[0] = touch.locationInView(self)
             tempStart = touch.locationInView(self)
-            path.setLineDash(nil, count: 0, phase:0)
-        case .Fold:
-            ctr = 0
-            pts[0] = touch.locationInView(self)
-            tempStart = touch.locationInView(self)
-            path.setLineDash([10,5], count: 2, phase:0)
+            setPathStyle(path)
         default:
             break
         }
@@ -89,8 +84,6 @@ class SketchView: UIView {
         case .Erase: // if in erase mode
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
-
-            
         case .Cut, .Fold:
             ctr=ctr+1
             pts[ctr] = touch.locationInView(self)
@@ -115,6 +108,7 @@ class SketchView: UIView {
             let newPath = UIBezierPath(CGPath: path.CGPath);
             newPath.lineWidth=kLineWidth
             let edgekind = (sketchMode == Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            setPathStyle(edgekind, p:newPath)
             self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, kind: edgekind)
             self.setNeedsDisplay()
             path.removeAllPoints()
@@ -203,6 +197,22 @@ class SketchView: UIView {
     func getEdgeColor() -> UIColor {
         let edgekind:Edge.Kind = (sketchMode==Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
         return Edge.getColor(edgekind)
+    }
+
+    func setPathStyle(p:UIBezierPath) {
+        let edgekind = (sketchMode == Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+        setPathStyle(edgekind, p:p)
+    }
+    func setPathStyle(mode:Edge.Kind, p:UIBezierPath) {
+        switch mode
+        {
+        case .Cut:
+            p.setLineDash(nil, count: 0, phase:0)
+        case .Fold:
+            p.setLineDash([10,5], count: 2, phase:0)
+        default:
+            break
+        }
     }
     
 
