@@ -16,11 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ysD-KA-Tz2">
-                                <rect key="frame" x="0.0" y="15" width="768" height="1009"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="foldlings_background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="9OF-2c-A6h">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLJ-dO-D4t">
-                                <rect key="frame" x="5" y="20" width="1977" height="2738"/>
+                                <rect key="frame" x="16" y="20" width="1977" height="2738"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -29,7 +29,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdT-a8-qea">
-                                <rect key="frame" x="304" y="804" width="170" height="58"/>
+                                <rect key="frame" x="304" y="902" width="170" height="58"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="ABOUT">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -41,8 +41,22 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
+                                <rect key="frame" x="266" y="836" width="247" height="58"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="MAKE NEW">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="3LN-Qg-JOH" kind="show" id="8Ua-Nr-rXS"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-Re-LAF">
+                                <rect key="frame" x="34" y="76" width="700" height="120"/>
+                            </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NNB-rW-xeF">
-                                <rect key="frame" x="172" y="257" width="432" height="494"/>
+                                <rect key="frame" x="144" y="257" width="491" height="540"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="b9E-mP-EG4">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -61,17 +75,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
-                                <rect key="frame" x="265" y="752" width="247" height="58"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
-                                <state key="normal" title="MAKE NEW">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="3LN-Qg-JOH" kind="show" id="8Ua-Nr-rXS"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -194,8 +197,11 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQd-eJ-YhV">
-                                <rect key="frame" x="247" y="576" width="107" height="35"/>
-                                <state key="normal" title="Close"/>
+                                <rect key="frame" x="238" y="573" width="124" height="35"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="CLOSE">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="CloseButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="PDS-Nu-hpF"/>
                                 </connections>
@@ -252,17 +258,35 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
             </objects>
             <point key="canvasLocation" x="-733" y="556"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="RMS-Rd-YXg">
+            <objects>
+                <viewController id="92A-e8-G20" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="U0a-92-t7b"/>
+                        <viewControllerLayoutGuide type="bottom" id="azv-jH-00j"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pIR-uK-Vys">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oNA-LZ-3BN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
     </scenes>
     <resources>
         <image name="cut.png" width="206" height="208"/>
         <image name="erase.png" width="208" height="208"/>
         <image name="fold.png" width="206" height="208"/>
+        <image name="fold_logo.png" width="1423" height="325"/>
+        <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="menu.png" width="206" height="208"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="send.jpeg" width="400" height="345"/>
         <image name="small_2d.jpeg" width="426" height="461"/>
         <image name="small_preview.jpeg" width="498" height="473"/>
-        <image name="splash.jpg" width="1977" height="2693"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="kqo-u8-Mcg"/>
