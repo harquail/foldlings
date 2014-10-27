@@ -66,10 +66,16 @@ class SketchView: UIView {
             var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
 
-        case .Cut, .Fold:
+        case .Cut:
             ctr = 0
             pts[0] = touch.locationInView(self)
             tempStart = touch.locationInView(self)
+            path.setLineDash(nil, count: 0, phase:0)
+        case .Fold:
+            ctr = 0
+            pts[0] = touch.locationInView(self)
+            tempStart = touch.locationInView(self)
+            path.setLineDash([10,5], count: 2, phase:0)
         default:
             break
         }
