@@ -1,9 +1,4 @@
 //
-//  ViewController.swift
-//  UICollectionView
-//
-//  Created by Brian Coleman on 2014-09-04.
-//  Copyright (c) 2014 Brian Coleman. All rights reserved.
 //
 
 import UIKit
@@ -18,7 +13,6 @@ class CollectionOfFoldlings: UIViewController, UICollectionViewDelegateFlowLayou
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: 90, height: 90)
-//        collectionView = UICollectionView(frame: collectionView.frame, collectionViewLayout: layout)
         collectionView!.dataSource = self
         collectionView!.delegate = self
         collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")

@@ -19,16 +19,16 @@ class SketchViewController: UIViewController{
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
-        sketchView.setSketchMode(SketchView.Mode.Erase)
+        sketchView.sketchMode = SketchView.Mode.Erase
     }
     
     @IBAction func CutButtonClicked(sender: UIButton)
     {
-        sketchView.setSketchMode(SketchView.Mode.Cut)
+        sketchView.sketchMode = SketchView.Mode.Cut
     }
     
     @IBAction func FoldButtonClicked(sender: UIButton)
     {
-        sketchView.setSketchMode(SketchView.Mode.Fold)
+        sketchView.sketchMode = SketchView.Mode.Fold
     }
 }

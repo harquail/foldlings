@@ -149,11 +149,6 @@ class SketchView: UIView {
     }
     
     
-    func setSketchMode(sm: Mode)
-    {
-        sketchMode = sm;
-    }
-    
     func erase(touchPoint: CGPoint)
     {
         for e in sketch.edges
