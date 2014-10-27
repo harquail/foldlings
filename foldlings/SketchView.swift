@@ -52,6 +52,7 @@ class SketchView: UIView {
         if (incrementalImage != nil)
         {
             incrementalImage.drawInRect(rect)
+            getEdgeColor().setStroke()
             path.stroke()
         }
     }
@@ -107,8 +108,8 @@ class SketchView: UIView {
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath);
             newPath.lineWidth=kLineWidth
-            let edgetype = (sketchMode == Mode.Cut) ? EdgeType.Cut : EdgeType.Fold
-            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, type: edgetype)
+            let edgekind = (sketchMode == Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, kind: edgekind)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
@@ -141,8 +142,7 @@ class SketchView: UIView {
         }
         incrementalImage.drawAtPoint(CGPointZero)
         //set the stroke color
-        //TODO: make work for while drawing
-        ((sketchMode == Mode.Cut) ? EdgeColor.Cut : EdgeColor.Fold).setStroke()
+        getEdgeColor().setStroke()
         path.stroke()
         incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -160,7 +160,6 @@ class SketchView: UIView {
         {
             if  (e.hitTest(touchPoint))
             {
-                println( "got touchpoint: \(touchPoint)"  )
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
                 e.path.removeAllPoints()
@@ -198,6 +197,11 @@ class SketchView: UIView {
         pts[0] = pts[3]
         pts[1] = pts[4]
         ctr = 1
+    }
+    
+    func getEdgeColor() -> UIColor {
+        let edgekind:Edge.Kind = (sketchMode==Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+        return Edge.getColor(edgekind)
     }
     
 

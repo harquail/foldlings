@@ -10,27 +10,32 @@ import Foundation
 import CoreGraphics
 import UIKit
 
-//the direction of the fold.  For now, cuts are considered a type of fold -- will have to reconsider later
-enum EdgeType{
-    case Hill
-    case Valley
-    case Fold
-    case Cut
-}
 
-struct EdgeColor {
-    static var Hill:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
-    static var Valley:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
-    static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
-    static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
-}
-
-//for now, only straight folds/cuts
 struct Edge {
+    
+    enum Kind {
+        case Fold
+        case Cut
+    }
+    
+    enum Fold {
+        case Hill
+        case Valley
+        case Unknown
+    }
+    
+    struct Color {
+        static var Hill:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Valley:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
+    }
+
     var start: CGPoint
     var end: CGPoint
     var path = UIBezierPath()
-    var orientation = EdgeType.Cut
+    var fold = Fold.Unknown
+    var kind = Kind.Cut
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
         self.start = start
@@ -38,9 +43,10 @@ struct Edge {
         self.path = path
     }
     
-    init(start:CGPoint,end:CGPoint, path:UIBezierPath, type: EdgeType) {
+    init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown) {
         self.init(start: start, end: end, path:path)
-        self.orientation = type
+        self.kind = kind
+        self.fold = fold
     }
 
     
@@ -62,21 +68,32 @@ struct Edge {
         
     }
     
-    func getColor() -> UIColor
+    
+    static func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
     {
         var color: UIColor!
-        switch orientation
+        switch kind
         {
         case .Fold:
-            color = EdgeColor.Fold
-        case .Hill:
-            color = EdgeColor.Hill
-        case .Valley:
-            color = EdgeColor.Valley
+            switch fold {
+                case .Hill:
+                    color = Color.Hill
+                case .Valley:
+                    color = Color.Valley
+                default:
+                    color = Color.Fold
+            }
+        case .Cut:
+            color = Color.Cut
         default:
-            color = EdgeColor.Cut
+            color = Color.Cut
         }
         return color
+    }
+    
+    func getColor() -> UIColor
+    {
+        return Edge.getColor(self.kind, fold:self.fold)
     }
     
     
