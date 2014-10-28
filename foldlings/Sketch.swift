@@ -31,10 +31,28 @@ class Sketch {
     var vertices : [CGPoint] = []
     var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
     
-//    init()
-//    {
-//
-//    }
+    init()
+    {
+        //insert master fold
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width;
+        let screenHeight = screenSize.height;
+        let halfH = screenHeight/2.0
+        
+        let p1 = CGPointMake(0, halfH)
+        let p2 = CGPointMake(screenWidth, halfH)
+        
+        var path = UIBezierPath()
+        path.moveToPoint(p1)
+        path.addLineToPoint(p2)
+        //TODO: refactor this to be part of edge or pull style stuff into here rather than sketchview
+        path.setLineDash([10,5], count: 2, phase:0)
+        path.lineWidth = 2.0
+        
+        self.addEdge(p1 ,end: p2,path: path , kind:Edge.Kind.Fold)
+        edges[0].fold = .Valley
+
+    }
     
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind){

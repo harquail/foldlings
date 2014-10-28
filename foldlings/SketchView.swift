@@ -45,6 +45,7 @@ class SketchView: UIView {
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
+        drawBitmap()
     }
     
     override func drawRect(rect: CGRect)
