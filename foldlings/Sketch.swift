@@ -19,7 +19,7 @@ class Sketch {
     
     
     //TODO:store lines
-    //  edges(Fold?) in ordered array
+    //  edges(Fold?) in ordered array by height
     //  vertices in ordered array
     //  dict of vertices->edges(Fold)
     //  create bounding box per line.  ordered array of rects indexed same as line array
@@ -28,7 +28,8 @@ class Sketch {
     //the folds that define a sketch
     //for now, cuts are in this array too
     var edges : [Edge] = []
-    var vertices : [CGPoint] = []
+    var folds : [Edge] = [] // may not need to keep this but for now
+//    var vertices : [CGPoint] = []
     var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
     
     init()
@@ -56,7 +57,21 @@ class Sketch {
     
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind){
-        edges += [Edge(start: start, end: end, path: path, kind: kind)]
+        var e = Edge(start: start, end: end, path: path, kind: kind)
+        edges.append(e)
+//        vertices.append(start)
+//        vertices.append(end)
+        adjacency[start] = e
+        adjacency[end] = e
+        
+        // keep folds in ascending order by start position y height from bottom up
+        // note y starts at 0 on top of screen
+        // inefficient? who cares
+        if kind == .Fold
+        {
+            folds.append(e)
+            folds.sort({ $0.start.y > $1.start.y })
+        }
     }
     
     

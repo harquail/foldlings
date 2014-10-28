@@ -11,17 +11,22 @@ import CoreGraphics
 import UIKit
 
 
-struct Edge {
+struct Edge: Printable {
+    var name = "Edge"
+    var description: String {
+        return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue)"
+    }
+
     
-    enum Kind {
-        case Fold
-        case Cut
+    enum Kind: String {
+        case Fold = "Fold"
+        case Cut = "Cut"
     }
     
-    enum Fold {
-        case Hill
-        case Valley
-        case Unknown
+    enum Fold: String {
+        case Hill = "Hill"
+        case Valley = "Valley"
+        case Unknown = "Unknown"
     }
     
     struct Color {
@@ -95,6 +100,8 @@ struct Edge {
     {
         return Edge.getColor(self.kind, fold:self.fold)
     }
+    
+    
     
     
     

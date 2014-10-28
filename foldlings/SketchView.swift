@@ -99,18 +99,20 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        let touch = touches.anyObject() as UITouch
+        let endPoint = touch.locationInView(self)
+        let startPoint = tempStart
         switch sketchMode
         {
         case .Erase:
             break
         case .Cut, .Fold:
-            var touch = touches.anyObject() as UITouch
             self.drawBitmap()
-            let newPath = UIBezierPath(CGPath: path.CGPath);
+            let newPath = UIBezierPath(CGPath: path.CGPath)
             newPath.lineWidth=kLineWidth
-            let edgekind = (sketchMode == Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
             setPathStyle(edgekind, p:newPath)
-            self.sketch.addEdge(tempStart, end: touch.locationInView(self), path: newPath, kind: edgekind)
+            self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
@@ -175,17 +177,21 @@ class SketchView: UIView {
     //creatse segments from ctrl pts
     func makeBezier()
     {
-        if ( sketchMode == .Fold){    //makes only straight horizontal fold lines
-            pts[3] = CGPointMake(pts[4].x,  pts[0].y) // only use first y-value
+        if ( sketchMode == .Fold) {
+            // makes only straight horizontal fold lines
+            // basically make a completely new line every movement so its only 2 points ever
+            let newEnd = CGPointMake(pts[4].x,  tempStart.y) // only use first y-value
+            path = UIBezierPath()
+            path.moveToPoint(tempStart)
+            path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
+            //refactor the below into a setStyle method
+            path.lineWidth=kLineWidth
+            let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            setPathStyle(edgekind, p:path)
+        } else {
+            pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
             path.moveToPoint(pts[0])
-            path.addLineToPoint(pts[3])// add the line to last point
-        }
-            
-        else{
-        pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        path.moveToPoint(pts[0])
-
-        path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+            path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
         }
         
         self.setNeedsDisplay()
