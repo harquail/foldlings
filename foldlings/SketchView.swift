@@ -26,7 +26,8 @@ class SketchView: UIView {
     var sketchMode:  Mode = Mode.Cut
     var redraw: Bool = false
     var sketch: Sketch!
-    //
+    
+    
     //TODO: while drawing:
     //      identify intersecting bounding boxes
     //      check for nearest points in matching 
@@ -54,7 +55,7 @@ class SketchView: UIView {
         {
             incrementalImage.drawInRect(rect)
 
-            getEdgeColor().setStroke()
+            setPathStyle(path, edge:nil).setStroke()
             path.stroke()
         }
     }
@@ -71,7 +72,7 @@ class SketchView: UIView {
             ctr = 0
             pts[0] = touch.locationInView(self)
             tempStart = touch.locationInView(self)
-            setPathStyle(path)
+            setPathStyle(path, edge:nil)
         default:
             break
         }
@@ -109,9 +110,8 @@ class SketchView: UIView {
         case .Cut, .Fold:
             self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath)
-            newPath.lineWidth=kLineWidth
             let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-            setPathStyle(edgekind, p:newPath)
+            setPathStyle(newPath, edge:nil)
             self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
             self.setNeedsDisplay()
             path.removeAllPoints()
@@ -127,6 +127,7 @@ class SketchView: UIView {
     
     func drawBitmap() {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
+        var color:UIColor = UIColor.blackColor()
         
         if(incrementalImage == nil) ///first time; paint background white
         {
@@ -138,14 +139,14 @@ class SketchView: UIView {
             
             for e in sketch.edges
             {
-                e.getColor().setStroke()
+                setPathStyle(e.path, edge:e).setStroke()
                 e.path.stroke()
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
         //set the stroke color
-        getEdgeColor().setStroke()
+        setPathStyle(path, edge:nil).setStroke()
         path.stroke()
         incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -184,10 +185,7 @@ class SketchView: UIView {
             path = UIBezierPath()
             path.moveToPoint(tempStart)
             path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
-            //refactor the below into a setStyle method
-            path.lineWidth=kLineWidth
-            let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-            setPathStyle(edgekind, p:path)
+            setPathStyle(path, edge:nil)
         } else {
             pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
             path.moveToPoint(pts[0])
@@ -201,25 +199,36 @@ class SketchView: UIView {
         ctr = 1
     }
     
-    func getEdgeColor() -> UIColor {
-        let edgekind:Edge.Kind = (sketchMode==Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-        return Edge.getColor(edgekind)
-    }
-
-    func setPathStyle(p:UIBezierPath) {
-        let edgekind = (sketchMode == Mode.Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-        setPathStyle(edgekind, p:p)
-    }
-    func setPathStyle(mode:Edge.Kind, p:UIBezierPath) {
-        switch mode
+    
+    // this will set the path style as well as return the color of the path to be stroked
+    func setPathStyle(path:UIBezierPath, edge:Edge?) -> UIColor
+    {
+        
+        var edgekind:Edge.Kind!
+        var fold:Edge.Fold!
+        var color:UIColor!
+        
+        if let e = edge
         {
-        case .Cut:
-            p.setLineDash(nil, count: 0, phase:0)
-        case .Fold:
-            p.setLineDash([10,5], count: 2, phase:0)
-        default:
-            break
+            edgekind = e.kind
+            fold = e.fold
+            color = e.getColor()
+        } else {
+            edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            fold = Edge.Fold.Unknown
+            color = Edge.getColor(edgekind, fold:fold)
         }
+        
+        if edgekind == Edge.Kind.Fold {
+            path.setLineDash([10,5], count: 2, phase:0)
+        } else {
+            path.setLineDash(nil, count: 0, phase:0)
+        }
+        
+        
+        path.lineWidth=kLineWidth
+        
+        return color
     }
     
 
