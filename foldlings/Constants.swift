@@ -13,6 +13,6 @@ import UIKit
 
 let kLineWidth:CGFloat = 2.0
 let kMinLineDistance = 0.5
-let MINIMUM_ERASE_DISTANCE = CGFloat(25.0)
+let kHitTestRadius = CGFloat(25.0)
 
 
