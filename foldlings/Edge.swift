@@ -52,7 +52,7 @@ class Edge: Printable {
     }
 
     
-    func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
+    class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, radius, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
         let tapTarget = UIBezierPath(CGPath: tapTargetPath)
@@ -61,10 +61,12 @@ class Edge: Printable {
         
     }
     
-    func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool{
-        
-        return tapTargetForPath(path, radius: radius).containsPoint(point)
-        
+    class func hitTest(path: UIBezierPath, point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool {
+        return Edge.tapTargetForPath(path, radius: radius).containsPoint(point)
+    }
+    
+    func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool {
+        return Edge.hitTest(path, point:point, radius:radius)
     }
     
     
