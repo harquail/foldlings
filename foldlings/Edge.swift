@@ -2,16 +2,13 @@
 //  Edge.swift
 //  foldlings
 //
-//  Created by nook on 10/7/14.
-//  Copyright (c) 2014 nook. All rights reserved.
-//
 
 import Foundation
 import CoreGraphics
 import UIKit
 
 
-struct Edge: Printable {
+class Edge: Printable {
     var name = "Edge"
     var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue)"
@@ -30,8 +27,8 @@ struct Edge: Printable {
     }
     
     struct Color {
-        static var Hill:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
-        static var Valley:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 255.0)
+        static var Valley:UIColor = UIColor(red: 0.0, green: 255.0, blue: 0.0, alpha: 255.0)
         static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
         static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
     }
@@ -48,7 +45,7 @@ struct Edge: Printable {
         self.path = path
     }
     
-    init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
         self.fold = fold
@@ -61,7 +58,6 @@ struct Edge: Printable {
 
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, STROKE_HIT_RADIUS, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
-        
         let tapTarget = UIBezierPath(CGPath: tapTargetPath)
         
         return tapTarget
@@ -75,7 +71,7 @@ struct Edge: Printable {
     }
     
     
-    static func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
+    class func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
     {
         var color: UIColor!
         switch kind
