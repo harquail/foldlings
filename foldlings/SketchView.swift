@@ -15,9 +15,6 @@ class SketchView: UIView {
         case Fold
     }
     
-    
-    let kLineWidth:CGFloat = 2.0
-    
     var path: UIBezierPath!
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -108,7 +105,7 @@ class SketchView: UIView {
         case .Erase:
             break
         case .Cut, .Fold:
-            self.drawBitmap()
+            //self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath)
             let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
             setPathStyle(newPath, edge:nil)
@@ -116,6 +113,7 @@ class SketchView: UIView {
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
+            forceRedraw()
         default:
             break
         }
@@ -162,9 +160,7 @@ class SketchView: UIView {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
                 e.path.removeAllPoints()
-                incrementalImage = nil
-                self.setNeedsDisplay() //draw to clear the deleted path
-                drawBitmap() //redraw full bitmap
+                forceRedraw()
                 //TODO: better way of handling this?
                 //  need to also: refine to specific line if there are more than 1
                 //  and actually remove from list?
@@ -229,6 +225,14 @@ class SketchView: UIView {
         path.lineWidth=kLineWidth
         
         return color
+    }
+    
+    
+    func forceRedraw()
+    {
+        incrementalImage = nil
+        self.setNeedsDisplay() //draw to clear the deleted path
+        drawBitmap() //redraw full bitmap
     }
     
 
