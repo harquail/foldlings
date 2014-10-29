@@ -54,10 +54,7 @@ class Edge: Printable {
     
     func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
         
-        let STROKE_HIT_RADIUS = radius
-
-        
-        let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, STROKE_HIT_RADIUS, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
+        let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, radius, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
         let tapTarget = UIBezierPath(CGPath: tapTargetPath)
         
         return tapTarget
