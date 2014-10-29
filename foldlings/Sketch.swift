@@ -14,10 +14,6 @@ import UIKit
 class Sketch {
     
     
-    let MINIMUM_LINE_DISTANCE = 0.5
-    
-    
-    
     //TODO:store lines
     //  edges(Fold?) in ordered array by height
     //  vertices in ordered array
