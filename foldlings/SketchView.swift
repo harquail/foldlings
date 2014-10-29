@@ -179,16 +179,28 @@ class SketchView: UIView {
     //creatse segments from ctrl pts
     func makeBezier()
     {
-        if ( sketchMode == .Fold) {
+        // only use first y-value
+        // or
+        // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+        let newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
+        
+        // test for intersections
+        for edge in sketch.edges
+        {
+            if edge.hitTest(newEnd) {
+                println("intersection: \(newEnd)")
+            }
+        }
+        if ( sketchMode == .Fold)
+        {
             // makes only straight horizontal fold lines
             // basically make a completely new line every movement so its only 2 points ever
-            let newEnd = CGPointMake(pts[4].x,  tempStart.y) // only use first y-value
             path = UIBezierPath()
             path.moveToPoint(tempStart)
             path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
             setPathStyle(path, edge:nil)
         } else {
-            pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+            pts[3] = newEnd
             path.moveToPoint(pts[0])
             path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
         }
