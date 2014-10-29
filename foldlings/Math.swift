@@ -10,6 +10,18 @@
 import Foundation
 import CoreGraphics
 
+func dist(a: CGPoint, b: CGPoint) -> CGFloat{
+    
+    let xDist = (b.x - a.x)
+    let yDist = (b.y - a.y)
+    
+    return sqrt(square(xDist) + square(yDist))
+}
+
+func square(a: CGFloat) -> CGFloat{
+    return a * a
+}
+
 
 struct Vector2D  {
     var x: Double = 0.0
