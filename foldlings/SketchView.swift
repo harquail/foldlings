@@ -116,11 +116,11 @@ class SketchView: UIView {
             //self.drawBitmap()
             if ( dist(startPoint, endPoint) > kHitTestRadius)
             {
-            let newPath = UIBezierPath(CGPath: path.CGPath)
-            let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-            setPathStyle(newPath, edge:nil)
-            self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
-            self.setNeedsDisplay()
+                let newPath = UIBezierPath(CGPath: path.CGPath)
+                let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+                setPathStyle(newPath, edge:nil)
+                self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
+                self.setNeedsDisplay()
             }
             path.removeAllPoints()
             ctr = 0
