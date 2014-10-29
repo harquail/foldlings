@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
 		227708D719EE016A0095CD9D /* SketchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227708D619EE016A0095CD9D /* SketchView.swift */; };
 		22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */; };
 		22C3F4B319F33B3F00857C82 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4B219F33B3F00857C82 /* menu.png */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		227708D619EE016A0095CD9D /* SketchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchView.swift; sourceTree = "<group>"; };
 		22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlingslogo1.jpg; sourceTree = "<group>"; };
 		22C3F4B219F33B3F00857C82 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
+				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
 				F18C864519FD9F4500211229 /* CollectionOfFoldlings.swift */,
 				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
@@ -320,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
+				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
 				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
 				F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */,
 				227708D719EE016A0095CD9D /* SketchView.swift in Sources */,

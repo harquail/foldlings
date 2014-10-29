@@ -16,8 +16,6 @@ class SketchView: UIView {
     }
     
     
-    let kLineWidth:CGFloat = 2.0
-    
     var path: UIBezierPath!
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -108,7 +106,7 @@ class SketchView: UIView {
         case .Erase:
             break
         case .Cut, .Fold:
-            self.drawBitmap()
+            //self.drawBitmap()
             let newPath = UIBezierPath(CGPath: path.CGPath)
             let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
             setPathStyle(newPath, edge:nil)
@@ -116,6 +114,7 @@ class SketchView: UIView {
             self.setNeedsDisplay()
             path.removeAllPoints()
             ctr = 0
+            forceRedraw()
         default:
             break
         }
@@ -155,16 +154,14 @@ class SketchView: UIView {
     
     func erase(touchPoint: CGPoint)
     {
-        for e in sketch.edges
+        for (i,e) in enumerate(sketch.edges)
         {
-            if  (e.hitTest(touchPoint))
+            if  e.hitTest(touchPoint, radius: MINIMUM_ERASE_DISTANCE) && i != 0
             {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
                 e.path.removeAllPoints()
-                incrementalImage = nil
-                self.setNeedsDisplay() //draw to clear the deleted path
-                drawBitmap() //redraw full bitmap
+                forceRedraw()
                 //TODO: better way of handling this?
                 //  need to also: refine to specific line if there are more than 1
                 //  and actually remove from list?
@@ -178,16 +175,28 @@ class SketchView: UIView {
     //creatse segments from ctrl pts
     func makeBezier()
     {
-        if ( sketchMode == .Fold) {
+        // only use first y-value
+        // or
+        // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+        let newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
+        
+        // test for intersections
+        for edge in sketch.edges
+        {
+            if edge.hitTest(newEnd) {
+                println("intersection: \(newEnd)")
+            }
+        }
+        if ( sketchMode == .Fold)
+        {
             // makes only straight horizontal fold lines
             // basically make a completely new line every movement so its only 2 points ever
-            let newEnd = CGPointMake(pts[4].x,  tempStart.y) // only use first y-value
             path = UIBezierPath()
             path.moveToPoint(tempStart)
             path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
             setPathStyle(path, edge:nil)
         } else {
-            pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+            pts[3] = newEnd
             path.moveToPoint(pts[0])
             path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
         }
@@ -229,6 +238,14 @@ class SketchView: UIView {
         path.lineWidth=kLineWidth
         
         return color
+    }
+    
+    
+    func forceRedraw()
+    {
+        incrementalImage = nil
+        self.setNeedsDisplay() //draw to clear the deleted path
+        drawBitmap() //redraw full bitmap
     }
     
 

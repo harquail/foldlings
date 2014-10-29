@@ -14,10 +14,6 @@ import UIKit
 class Sketch {
     
     
-    let MINIMUM_LINE_DISTANCE = 0.5
-    
-    
-    
     //TODO:store lines
     //  edges(Fold?) in ordered array by height
     //  vertices in ordered array
@@ -29,8 +25,8 @@ class Sketch {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
-//    var vertices : [CGPoint] = []
     var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
+    var drivingEdge: Edge!
     
     init()
     {
@@ -48,19 +44,19 @@ class Sketch {
         path.addLineToPoint(p2)
         //TODO: refactor this to be part of edge or pull style stuff into here rather than sketchview
         path.setLineDash([10,5], count: 2, phase:0)
-        path.lineWidth = 2.0
+        path.lineWidth = kLineWidth
         
-        self.addEdge(p1 ,end: p2,path: path , kind:Edge.Kind.Fold)
-        edges[0].fold = .Valley
+        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge.fold = .Valley
+        edges.append(drivingEdge)
 
     }
     
     
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind){
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind)
+    {
         var e = Edge(start: start, end: end, path: path, kind: kind)
         edges.append(e)
-//        vertices.append(start)
-//        vertices.append(end)
         adjacency[start] = e
         adjacency[end] = e
         
@@ -69,9 +65,28 @@ class Sketch {
         // inefficient? who cares
         if kind == .Fold
         {
-            folds.append(e)
-            folds.sort({ $0.start.y > $1.start.y })
+            if e !== drivingEdge //NOTE: driving fold not in folds
+            {
+                folds.append(e)
+                folds.sort({ $0.start.y > $1.start.y })
+            }
         }
+        
+        //skip 0th fold
+        //TODO: this is a placeholder, not how you actually do it
+        for var i = 0; i < folds.count; i++ {
+            if (i % 2) == 0 {
+                folds[i].fold = .Valley
+            } else {
+                folds[i].fold = .Hill
+            }
+        }
+    }
+    
+    //TODO: needs to work
+    func removeEdge()
+    {
+        
     }
     
     
