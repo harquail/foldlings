@@ -16,10 +16,6 @@ class SketchView: UIView {
     }
     
     
-    let kLineWidth:CGFloat = 2.0
-    let MINIMUM_ERASE_DISTANCE = CGFloat(25.0)
-    //let MINIMUM_DETECT_DISTANCE =
-    
     var path: UIBezierPath!
     var incrementalImage: UIImage!
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
