@@ -22,7 +22,7 @@ class SketchView: UIView {
     var ctr: Int = 0
     var tempStart:CGPoint = CGPointZero
     var sketchMode:  Mode = Mode.Cut
-    var redraw: Bool = false
+    var cancelledTouch: UITouch?
     var sketch: Sketch!
     
     
@@ -79,21 +79,28 @@ class SketchView: UIView {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
-        switch sketchMode
-        {
-        case .Erase: // if in erase mode
-            var touchPoint: CGPoint = touch.locationInView(self)
-            erase(touchPoint);
-        case .Cut, .Fold:
-            ctr=ctr+1
-            pts[ctr] = touch.locationInView(self)
-            if (ctr == 4)
+        
+        // ignore cancelledTouch
+        if cancelledTouch == nil || cancelledTouch! != touch {
+            switch sketchMode
             {
-                makeBezier() //create bezier curves
+            case .Erase: // if in erase mode
+                var touchPoint: CGPoint = touch.locationInView(self)
+                erase(touchPoint);
+            case .Cut, .Fold:
+                ctr=ctr+1
+                pts[ctr] = touch.locationInView(self)
+                if (ctr == 4)
+                {
+                    if makeBezier() {//create bezier curves
+    //                    self.touchesCancelled(touches, withEvent:event)
+                        cancelledTouch = touch
+                    }
+                }
+                
+            default:
+                break
             }
-            
-        default:
-            break
         }
     }
     
@@ -173,20 +180,31 @@ class SketchView: UIView {
     
     //makes bezier by stringing segments together
     //creatse segments from ctrl pts
-    func makeBezier()
+    // returns true if its force closed the path
+    func makeBezier() -> Bool
     {
+        var closed:Bool = false
         // only use first y-value
         // or
         // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        let newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
+        var newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
         
-        // test for intersections
-        for edge in sketch.edges
-        {
-            if edge.hitTest(newEnd) {
-                println("intersection: \(newEnd)")
+        // test for self intersections
+        if Edge.hitTest(path, point:newEnd) {
+            println("self intersection: \(newEnd)")
+            path.closePath() //TODO: change close path to closest point
+            newEnd = tempStart
+            closed = true
+        } else {
+            // test for intersections
+            for edge in sketch.edges
+            {
+                if edge.hitTest(newEnd) {
+                    println("intersection: \(newEnd)")
+                }
             }
         }
+        
         if ( sketchMode == .Fold)
         {
             // makes only straight horizontal fold lines
@@ -201,11 +219,14 @@ class SketchView: UIView {
             path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
         }
         
+        
         self.setNeedsDisplay()
         // replace points and get ready to handle the next segment
         pts[0] = pts[3]
         pts[1] = pts[4]
         ctr = 1
+        
+        return closed
     }
     
     
