@@ -238,10 +238,11 @@
 				TargetAttributes = {
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = ZYN62B4489;
+						DevelopmentTeam = 66J7R72XF5;
 					};
 					F17C93DE19E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 66J7R72XF5;
 						TestTargetID = F17C93C719E24BEC00BB77F1;
 					};
 				};
