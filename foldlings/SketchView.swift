@@ -156,7 +156,7 @@ class SketchView: UIView {
     {
         for (i,e) in enumerate(sketch.edges)
         {
-            if  e.hitTest(touchPoint, radius: MINIMUM_ERASE_DISTANCE) && i != 0
+            if  e.hitTest(touchPoint) && i != 0
             {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call

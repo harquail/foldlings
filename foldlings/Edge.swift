@@ -64,7 +64,7 @@ class Edge: Printable {
         
     }
     
-    func hitTest(point:CGPoint, radius:CGFloat) -> Bool{
+    func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool{
         
         return tapTargetForPath(path, radius: radius).containsPoint(point)
         
