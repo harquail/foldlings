@@ -30,7 +30,7 @@ class Sketch {
     
     init()
     {
-        //insert master fold
+        //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width;
         let screenHeight = screenSize.height;
@@ -49,6 +49,25 @@ class Sketch {
         drivingEdge = Edge(start: p1, end: p2, path: path, kind: Edge.Kind.Fold)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
+        
+        // border points
+        let b1 = CGPointMake(0, 0)
+        let b2 = CGPointMake(screenWidth, 0)
+        let b3 = CGPointMake(0, screenHeight)
+        let b4 = CGPointMake(screenWidth, screenHeight)
+        
+        //border edges
+        bEdge1 = Edge(start: b1, end: b2, path: path, kind: Edge.Kind.Cut)
+        edges.append(bEdge1)
+        
+        bEdge2 = Edge(start: b2, end: b3, path: path, kind: Edge.Kind.Cut)
+        edges.append(bEdge2)
+        
+        bEdge3 = Edge(start: b3, end: b4, path: path, kind: Edge.Kind.Cut)
+        edges.append(bEdge3)
+        
+        bEdge4 = Edge(start: b4, end: b1, path: path, kind: Edge.Kind.Cut)
+        edges.append(bEdge4)
 
     }
     
