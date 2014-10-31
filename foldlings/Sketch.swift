@@ -46,7 +46,7 @@ class Sketch {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge = Edge(start: p1, end: p2, path: path, kind: Edge.Kind.Fold)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
 
