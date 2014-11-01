@@ -15,6 +15,12 @@ class GameViewController: UIViewController {
     @IBAction func SketchViewButton(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    // Make fake graph that follows the rules:
+    // take edges and adjacency lists
+    // search through and make planes
+    // put planes in a list
+    // send list to another thing
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
