@@ -27,6 +27,10 @@ class Sketch {
     var folds : [Edge] = [] // may not need to keep this but for now
     var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
     var drivingEdge: Edge!
+    var bEdge1: Edge!
+    var bEdge2: Edge!
+    var bEdge3: Edge!
+    var bEdge4: Edge!
     
     init()
     {
@@ -46,28 +50,12 @@ class Sketch {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p2, path: path, kind: Edge.Kind.Fold)
+        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
         
-        // border points
-        let b1 = CGPointMake(0, 0)
-        let b2 = CGPointMake(screenWidth, 0)
-        let b3 = CGPointMake(0, screenHeight)
-        let b4 = CGPointMake(screenWidth, screenHeight)
-        
-        //border edges
-        bEdge1 = Edge(start: b1, end: b2, path: path, kind: Edge.Kind.Cut)
-        edges.append(bEdge1)
-        
-        bEdge2 = Edge(start: b2, end: b3, path: path, kind: Edge.Kind.Cut)
-        edges.append(bEdge2)
-        
-        bEdge3 = Edge(start: b3, end: b4, path: path, kind: Edge.Kind.Cut)
-        edges.append(bEdge3)
-        
-        bEdge4 = Edge(start: b4, end: b1, path: path, kind: Edge.Kind.Cut)
-        edges.append(bEdge4)
+        // make border into cuts
+        makeBorderEdges( screenWidth, height: screenHeight)
 
     }
     
@@ -108,6 +96,42 @@ class Sketch {
         
     }
     
+    func makeBorderEdges(width: CGFloat, height: CGFloat){
+        
+        //border paths
+        var path1 = UIBezierPath()
+        var path2 = UIBezierPath()
+        var path3 = UIBezierPath()
+        var path4 = UIBezierPath()
+
+        
+        // border points
+        let b1 = CGPointMake(0, 0)
+        let b2 = CGPointMake(width, 0)
+        let b3 = CGPointMake(width, height)
+        let b4 = CGPointMake(0, height)
+        
+        //border edges
+        path1.moveToPoint(b1)
+        path1.addLineToPoint(b2)
+        bEdge1 = Edge(start: b1, end: b2, path: path1, kind: Edge.Kind.Cut)
+        edges.append(bEdge1)
+        
+        path2.moveToPoint(b2)
+        path2.addLineToPoint(b3)
+        bEdge2 = Edge(start: b2, end: b3, path: path2, kind: Edge.Kind.Cut)
+        edges.append(bEdge2)
+        
+        path3.moveToPoint(b3)
+        path3.addLineToPoint(b4)
+        bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut)
+        edges.append(bEdge3)
+        
+        path4.moveToPoint(b4)
+        path4.addLineToPoint(b1)
+        bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut)
+        edges.append(bEdge4)
+    }
     
 }
 
