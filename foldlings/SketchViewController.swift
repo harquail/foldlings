@@ -16,6 +16,8 @@ class SketchViewController: UIViewController{
     @IBOutlet var sketchView: SketchView!
     
     @IBAction func CardsButtonClicked(sender: UIButton) {
+        
+        Archivist.appendSketchToFile(sketchView.sketch)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
@@ -42,5 +44,7 @@ class SketchViewController: UIViewController{
             // pass data to next view
         }
     }
+    
+    
     
 }

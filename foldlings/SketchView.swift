@@ -43,7 +43,9 @@ class SketchView: UIView {
         path = UIBezierPath()
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-        sketch = Sketch()
+        
+        // TODO: name should be set when creating sketch
+        sketch = Sketch(named: "name")
         //simpleSketch()
         drawBitmap()
     }

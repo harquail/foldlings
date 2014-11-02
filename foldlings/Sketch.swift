@@ -11,7 +11,7 @@ import Foundation
 import CoreGraphics
 import UIKit
 
-class Sketch {
+class Sketch : NSObject,NSCoding  {
     
     
     //TODO:store lines
@@ -32,8 +32,9 @@ class Sketch {
     var bEdge3: Edge!
     var bEdge4: Edge!
 
+    var name:String
     
-    init()
+    init(named:String)
     {
         //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -54,10 +55,54 @@ class Sketch {
         drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
-
+        name = named
+        
+        super.init()
         // make border into cuts
         makeBorderEdges( screenWidth, height: screenHeight)
 
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        
+        aCoder.encodeObject(edges, forKey: "edges")
+        aCoder.encodeObject(folds, forKey: "folds")
+        
+        //convert CGPoints to NSValues
+        var adjsWithValues :[NSValue:Edge] = Dictionary<NSValue,Edge>()
+
+        for (point,edge) in adjacency{
+            adjsWithValues[NSValue(CGPoint:point)]=edge
+        }
+        
+        aCoder.encodeObject(adjsWithValues, forKey: "adj")
+        aCoder.encodeObject(drivingEdge,forKey:"driving")
+        aCoder.encodeObject(bEdge1,forKey:"bEdge1")
+        aCoder.encodeObject(bEdge2,forKey:"bEdge2")
+        aCoder.encodeObject(bEdge3,forKey:"bEdge3")
+        aCoder.encodeObject(bEdge4,forKey:"bEdge4")
+        aCoder.encodeObject(name, forKey:"name")
+        
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        self.edges = aDecoder.decodeObjectForKey("edges") as Array
+        self.folds = aDecoder.decodeObjectForKey("folds") as Array
+        
+        //convert NSValues to CGPoints
+        var adjsWithValues :[NSValue:Edge] = aDecoder.decodeObjectForKey("adj") as Dictionary<NSValue,Edge>
+        for (p,e) in adjsWithValues{
+            adjacency[p.CGPointValue()]=e
+        }
+        
+        drivingEdge = aDecoder.decodeObjectForKey("driving") as Edge
+        bEdge1 = aDecoder.decodeObjectForKey("bEdge1") as Edge
+        bEdge2 = aDecoder.decodeObjectForKey("bEdge2") as Edge
+        bEdge3 = aDecoder.decodeObjectForKey("bEdge3") as Edge
+        bEdge4 = aDecoder.decodeObjectForKey("bEdge4") as Edge
+        name = aDecoder.decodeObjectForKey("name") as String
+        
     }
     
     
