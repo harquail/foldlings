@@ -18,6 +18,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     
     let elements = path.getPathElements()
     let points = getSubdivisions(elements)
+    //TODO: use nearestPointOnLine for fold line segments rather than subdividing those
     var mindist=CGFloat.max
     var minI = 0
     for (var i = 0; i < points.count; i++)
@@ -60,11 +61,15 @@ func getSubdivisions(elements:NSArray) -> [CGPoint]{
             priorPoint = p
             index++
         case kCGPathElementAddLineToPoint.value:
+            println("subdiv:addLine")
             let p = currPath.points[0].CGPointValue()
             bezierPoints.append(p)
+            let pointsToSub:[CGPoint] = [priorPoint, p]
+            subdivPoints  += subdivide(pointsToSub)
             priorPoint = p
             index++
         case kCGPathElementAddQuadCurveToPoint.value:
+            println("subdiv: addQuadCurve")
             let p1 = currPath.points[0].CGPointValue()
             let p2 = currPath.points[1].CGPointValue()
             bezierPoints.append(p1)
@@ -92,7 +97,7 @@ func getSubdivisions(elements:NSArray) -> [CGPoint]{
 }
 
 
-//only currently supports cubic curves
+//only currently supports cubic curves and lines
 func subdivide(points:[CGPoint]) -> [CGPoint]
 {
     var npoints:[CGPoint] = [CGPoint]()
@@ -101,6 +106,14 @@ func subdivide(points:[CGPoint]) -> [CGPoint]
     case 4:
         for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements {
             let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+            npoints.append(point);
+        }
+    case 2:
+        let start = points[0]
+        let end = points[1]
+        let ste = (end.x - start.x, end.y - start.y)
+        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements {
+            let point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
             npoints.append(point);
         }
     default:
@@ -119,6 +132,21 @@ func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) 
         + (3 * b + t * (-6 * b + b * 3 * t)) * t
         + (c * 3 - c * 3 * t) * t2
         + d * t3;
+}
+
+func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
+{
+    let stp = (point.x - start.x, point.y - start.y)   //start->point
+    let ste = (end.x - start.x, end.y - start.y)       //start->end
+    
+    let ste2 = square(ste.0) + square(ste.1)           //line length
+    
+    let stp_dot_ste = stp.0*ste.0 + stp.1*ste.1        //dot prod
+    
+    let t = stp_dot_ste / ste2                         //normalized distance from a to closest point
+    
+    return CGPointMake(start.x + ste.0*t, start.y + ste.1*t )  //the the point distance t
+
 }
 
 
