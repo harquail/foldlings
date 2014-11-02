@@ -9,9 +9,15 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import Foundation
 
 class GameViewController: UIViewController {
 
+    var bgImage:UIImage!
+
+    
+    @IBOutlet var backToSketchButton: UIButton!
+    
     @IBAction func SketchViewButton(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -74,12 +80,22 @@ class GameViewController: UIViewController {
             gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
         }
         scnView.gestureRecognizers = gestureRecognizers
+        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
+
     }
 
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+    }
+    
+    func setButtonBG(image:UIImage) {
+        bgImage = image;
+            
+        
+//        self.backToSketch.
+        
     }
 
 }

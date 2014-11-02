@@ -202,8 +202,9 @@ class SketchView: UIView {
         // test for self intersections
         if Edge.hitTest(path, point:newEnd) {
             println("self intersection: \(newEnd)")
-            path.closePath() //TODO: change close path to closest point
-            newEnd = tempStart
+            let np = getNearestPointOnPath(newEnd, path)
+            //path.closePath() //TODO: use close if close to end and fix this to work always
+            newEnd = np
             closed = true
         } else {
             // test for intersections

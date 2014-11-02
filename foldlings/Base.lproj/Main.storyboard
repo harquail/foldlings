@@ -229,15 +229,6 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pt6-Wh-EdJ">
-                                <rect key="frame" x="557" y="817" width="195" height="187"/>
-                                <state key="normal" backgroundImage="small_2d.jpeg">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="SketchViewButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4eW-Gn-T5V"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-61-y3z">
                                 <rect key="frame" x="16" y="856" width="167" height="148"/>
                                 <state key="normal" title="Button" backgroundImage="send.jpeg">
@@ -250,9 +241,21 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pt6-Wh-EdJ">
+                                <rect key="frame" x="557" y="817" width="195" height="187"/>
+                                <state key="normal" backgroundImage="small_2d.jpeg">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="SketchViewButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4eW-Gn-T5V"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="backToSketchButton" destination="pt6-Wh-EdJ" id="FOB-0M-6PX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>

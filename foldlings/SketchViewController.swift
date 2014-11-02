@@ -31,4 +31,16 @@ class SketchViewController: UIViewController{
     {
         sketchView.sketchMode = SketchView.Mode.Fold
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "PreviewSegue") {
+
+            let viewController:GameViewController = segue.destinationViewController as GameViewController
+            
+            viewController.setButtonBG(sketchView.previewImage())
+//            viewController.
+            // pass data to next view
+        }
+    }
+    
 }
