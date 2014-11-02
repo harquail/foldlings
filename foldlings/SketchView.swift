@@ -338,4 +338,21 @@ class SketchView: UIView {
         
         return asketch
     }
+
+    
+    func previewImage() -> UIImage{
+        
+        
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0);
+        
+        self.drawViewHierarchyInRect(self.bounds, afterScreenUpdates:true)
+        let copied = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+      
+//        return RBResizeImage(copied,CGSizeMake(900, 100000))
+        
+        return copied;
+
+    }
 }
