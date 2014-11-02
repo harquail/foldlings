@@ -279,6 +279,13 @@ class SketchView: UIView {
         self.setNeedsDisplay() //draw to clear the deleted path
         drawBitmap() //redraw full bitmap
     }
+    
+    func getPlanes()
+    {
+        //traverse edges and adjacency
+        //use algortihm to make planes
+        //save plane in planes
+    }
 
     
     func simpleSketch()
