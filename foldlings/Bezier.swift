@@ -17,6 +17,10 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     var bezierPoints:NSMutableArray = []
     
     let elements = path.getPathElements()
+    if elements.count == 2 {
+        //this must be a line
+        println("elementc ounts: \(elements.count)")
+    }
     let points = getSubdivisions(elements)
     //TODO: use nearestPointOnLine for fold line segments rather than subdividing those
     var mindist=CGFloat.max
