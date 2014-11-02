@@ -280,27 +280,16 @@ class SketchView: UIView {
     
     func previewImage() -> UIImage{
         
-
-        let size = CGSizeMake(self.bounds.width,self.bounds.width)
         
-        UIGraphicsBeginImageContextWithOptions(size, false, 0);
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0);
         
-        self.drawViewHierarchyInRect(CGRectMake(0,0,self.bounds.width,self.bounds.width), afterScreenUpdates:true)
+        self.drawViewHierarchyInRect(self.bounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
 
+      
+//        return RBResizeImage(copied,CGSizeMake(900, 100000))
         
-//        var croppedImage = CGImageCreateWithImageInRect(copied.CGImage, CGRectMake(0,0,self.bounds.width,self.bounds.width));
-  //      var crop = UIImage.imageWithCGImage(croppedImage, resizedImagesize, interpolationQuality: kCGInterpolationHigh);
-        
-
-        
-//        
-//        UIGraphicsBeginImageContext(self.bounds.size)
-//        self.layer.renderInContext(UIGraphicsGetCurrentContext())
-//        var img = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext();
-//        
         return copied;
 
     }

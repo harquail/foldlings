@@ -81,6 +81,9 @@ class GameViewController: UIViewController {
         }
         scnView.gestureRecognizers = gestureRecognizers
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
+        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
+        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
+
 
     }
 
@@ -90,7 +93,14 @@ class GameViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
     }
     
-    func setButtonBG(image:UIImage) {
+    func setButtonBG(image:UIImage){
+        
+//        UIImage *originalImage = [UIImage imageNamed:@"myImage.png"];
+        // scaling set to 2.0 makes the image 1/2 the size.
+//        let scaledImage = UIImage(CGImage: image.CGImage,
+//    scale:(image.scale * 3),
+//        orientation:(image.imageOrientation));
+
         bgImage = image;
             
         
