@@ -279,6 +279,33 @@ class SketchView: UIView {
         drawBitmap() //redraw full bitmap
     }
     
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func simpleSketch()
     {
         var fold1 = UIBezierPath()
@@ -308,12 +335,12 @@ class SketchView: UIView {
         cut1.moveToPoint(b2)
         cut1.addLineToPoint(b3)
         self.sketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-
+        
         
         fold2.moveToPoint(b3)
         fold2.addLineToPoint(b4)
         self.sketch.addEdge(b3, end: b4, path: fold2, kind: Edge.Kind.Fold )
-
+        
         
         cut2.moveToPoint(b4)
         cut2.addLineToPoint(b1)
@@ -330,7 +357,5 @@ class SketchView: UIView {
         cfold3.moveToPoint(c3)
         cfold3.addLineToPoint(c4)
         self.sketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
-        
-
     }
 }
