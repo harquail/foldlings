@@ -19,6 +19,7 @@
 		22C3F4C119F33FF200857C82 /* send.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BF19F33FF200857C82 /* send.jpeg */; };
 		22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C3F4C419F35E9600857C82 /* AboutViewController.swift */; };
 		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
+		8874A7121A05B61F00F78283 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874A7111A05B61F00F78283 /* Plane.swift */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
@@ -59,6 +60,7 @@
 		22C3F4BF19F33FF200857C82 /* send.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send.jpeg; sourceTree = "<group>"; };
 		22C3F4C419F35E9600857C82 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
+		8874A7111A05B61F00F78283 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +153,7 @@
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
+				8874A7111A05B61F00F78283 /* Plane.swift */,
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
 				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
@@ -332,6 +335,7 @@
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F18C864719FD9F4500211229 /* CollectionOfFoldlings.swift in Sources */,
+				8874A7121A05B61F00F78283 /* Plane.swift in Sources */,
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
