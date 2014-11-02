@@ -11,4 +11,7 @@ import Foundation
 
 class Plane: Printable {
     var name = "Plane"
+    var description: String {
+        return "this is a plane"
+    }
 }
