@@ -8,36 +8,42 @@ import Foundation
 import CoreGraphics
 import UIKit
 
+//how fine to make the subdivisions, this makes 50 subdivs per line, change to scale with line length?
 let kBezierIncrements:CGFloat = 0.02
 
 // returns the nearest *interpolated* point on a UIBezierPath,
 func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 {
-    let cgpath:CGPath = path.CGPath;
+    let cgpath:CGPath = path.CGPath
     var bezierPoints:NSMutableArray = []
-    
+
     let elements = path.getPathElements()
+    
+    // if only two elements then it must be a line so treat it that way
     if elements.count == 2 {
-        //this must be a line
-        println("elementc ounts: \(elements.count)")
-    }
-    let points = getSubdivisions(elements)
-    //TODO: use nearestPointOnLine for fold line segments rather than subdividing those
-    var mindist=CGFloat.max
-    var minI = 0
-    for (var i = 0; i < points.count; i++)
-    {
-        let d = dist(points[i], point)
-        if (d < mindist) {
-            mindist = d
-            minI = i
+        let p1:CGPoint = (elements[0] as CGPathElementObj).points[0].CGPointValue()
+        let p2:CGPoint = (elements[1] as CGPathElementObj).points[0].CGPointValue()
+        let np = nearestPointOnLine(point, p1, p2)
+        println("found closest point to line: \(np) to \(point)")
+        return np
+    } else {
+        // otherwise must be a curve so get subdivisions and find nearest point
+        let points = getSubdivisions(elements)
+        var mindist=CGFloat.max
+        var minI = 0
+        for (var i = 0; i < points.count; i++)
+        {
+            let d = dist(points[i], point)
+            if (d < mindist) {
+                mindist = d
+                minI = i
+            }
         }
+        println("found closest point to curve: \(points[minI]) to \(point)")
+
+        return points[minI]
     }
-    
-    println("found closest point: \(points[minI]) to \(point)")
-    
-    return points[minI]
-    
+
 }
 
 
@@ -138,6 +144,7 @@ func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) 
         + d * t3;
 }
 
+// return the nearest point on a line to the point provided
 func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
 {
     let stp = (point.x - start.x, point.y - start.y)   //start->point
