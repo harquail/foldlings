@@ -278,57 +278,5 @@ class SketchView: UIView {
         self.setNeedsDisplay() //draw to clear the deleted path
         drawBitmap() //redraw full bitmap
     }
-    
-    func simpleSketch()
-    {
-        var fold1 = UIBezierPath()
-        var cut1 = UIBezierPath()
-        var fold2 = UIBezierPath()
-        var cut2 = UIBezierPath()
-        var cfold1 = UIBezierPath()
-        var cfold2 = UIBezierPath()
-        var cfold3 = UIBezierPath()
-        
-        //points
-        let b1 = CGPointMake(260, 290)
-        let b2 = CGPointMake(520, 290)
-        let b3 = CGPointMake(520, 680)
-        let b4 = CGPointMake(260, 680)
-        
-        let c1 = CGPointMake(0, 512)
-        let c2 = CGPointMake(260, 512)
-        let c3 = CGPointMake(520, 512)
-        let c4 = CGPointMake(768, 512)
-        
-        //edges
-        fold1.moveToPoint(b1)
-        fold1.addLineToPoint(b2)
-        self.sketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
-        
-        cut1.moveToPoint(b2)
-        cut1.addLineToPoint(b3)
-        self.sketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-        
-        
-        fold2.moveToPoint(b3)
-        fold2.addLineToPoint(b4)
-        self.sketch.addEdge(b3, end: b4, path: fold2, kind: Edge.Kind.Fold )
-        
-        
-        cut2.moveToPoint(b4)
-        cut2.addLineToPoint(b1)
-        self.sketch.addEdge(b4, end: b1, path: cut2, kind: Edge.Kind.Cut )
-        
-        cfold1.moveToPoint(c1)
-        cfold1.addLineToPoint(c2)
-        self.sketch.addEdge(c1, end: c2, path: cfold1, kind: Edge.Kind.Fold )
-        
-        cfold2.moveToPoint(c2)
-        cfold2.addLineToPoint(c3)
-        self.sketch.addEdge(c2, end: c3, path: cfold2, kind: Edge.Kind.Fold )
-        
-        cfold3.moveToPoint(c3)
-        cfold3.addLineToPoint(c4)
-        self.sketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
-    }
+
 }
