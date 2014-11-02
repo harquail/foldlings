@@ -134,5 +134,46 @@ class Sketch {
         edges.append(bEdge4)
     }
     
+    func getPlanes() -> [Plane]
+    {
+        var visited : [Edge] = []
+        var planes : [Plane] = []
+        //traverse edges and adjacency
+        for (i,e) in enumerate(visited)
+        {
+            if !inVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+            {
+                var plane = makePlane(e)
+                //save plane in planes
+                planes.append(plane)
+                visited.append(e)
+            }
+        }
+        return planes
+    }
+    
+    //checks if edge has already been visited
+    func inVisited(visited: [Edge], edge: Edge)-> Bool
+    {
+        for e in visited
+        {
+            if e === edge
+            {
+            return true
+            }
+        }
+        return false
+    }
+    
+    // uses adjacency to make a plane given an edge
+    func makePlane(edge: Edge) -> Plane
+    {
+        var p: Plane!
+        //from edge, iterate through adjacency
+        //taking only right turns
+        //append edges to plane
+        
+        return p
+    }
 }
 

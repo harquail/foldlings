@@ -44,7 +44,8 @@ class SketchView: UIView {
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
-        //simpleSketch()
+        //sketch = simpleSketch()
+
         drawBitmap()
     }
     
@@ -279,17 +280,12 @@ class SketchView: UIView {
         self.setNeedsDisplay() //draw to clear the deleted path
         drawBitmap() //redraw full bitmap
     }
-    
-    func getPlanes()
-    {
-        //traverse edges and adjacency
-        //use algortihm to make planes
-        //save plane in planes
-    }
 
     
-    func simpleSketch()
+    func simpleSketch()->Sketch
     {
+        var asketch = Sketch()
+        
         var fold1 = UIBezierPath()
         var cut1 = UIBezierPath()
         var fold2 = UIBezierPath()
@@ -312,32 +308,34 @@ class SketchView: UIView {
         //edges
         fold1.moveToPoint(b1)
         fold1.addLineToPoint(b2)
-        self.sketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
         
         cut1.moveToPoint(b2)
         cut1.addLineToPoint(b3)
-        self.sketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
         
         
         fold2.moveToPoint(b3)
         fold2.addLineToPoint(b4)
-        self.sketch.addEdge(b3, end: b4, path: fold2, kind: Edge.Kind.Fold )
+        asketch.addEdge(b3, end: b4, path: fold2, kind: Edge.Kind.Fold )
         
         
         cut2.moveToPoint(b4)
         cut2.addLineToPoint(b1)
-        self.sketch.addEdge(b4, end: b1, path: cut2, kind: Edge.Kind.Cut )
+        asketch.addEdge(b4, end: b1, path: cut2, kind: Edge.Kind.Cut )
         
         cfold1.moveToPoint(c1)
         cfold1.addLineToPoint(c2)
-        self.sketch.addEdge(c1, end: c2, path: cfold1, kind: Edge.Kind.Fold )
+        asketch.addEdge(c1, end: c2, path: cfold1, kind: Edge.Kind.Fold )
         
         cfold2.moveToPoint(c2)
         cfold2.addLineToPoint(c3)
-        self.sketch.addEdge(c2, end: c3, path: cfold2, kind: Edge.Kind.Fold )
+        asketch.addEdge(c2, end: c3, path: cfold2, kind: Edge.Kind.Fold )
         
         cfold3.moveToPoint(c3)
         cfold3.addLineToPoint(c4)
-        self.sketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
+        asketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
+        
+        return asketch
     }
 }

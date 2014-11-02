@@ -37,7 +37,7 @@ class SketchViewController: UIViewController{
 
             let viewController:GameViewController = segue.destinationViewController as GameViewController
             
-            viewController.setButtonBG(sketchView.previewImage())
+            //viewController.setButtonBG(sketchView.previewImage())
 //            viewController.
             // pass data to next view
         }
