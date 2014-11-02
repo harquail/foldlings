@@ -8,9 +8,9 @@ import CoreGraphics
 import UIKit
 
 
-class Edge: Printable, NSCoding {
+class Edge: NSObject, Printable, NSCoding {
     var name = "Edge"
-    var description: String {
+    override var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue)"
     }
 

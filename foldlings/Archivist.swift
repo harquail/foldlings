@@ -13,10 +13,6 @@ class Archivist{
  class func appendSketchToFile(sketch:Sketch)
 {
     var data = NSMutableDictionary()
-//    var sketches = data.objectForKey("sketches") as [Sketch]
-//    sketches.append(sketch)
-    
-//    var kitten = ["kitten","dog"]
     data.setObject(sketch, forKey: "sketches")
     
     let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
@@ -36,7 +32,8 @@ class Archivist{
 //    pathToDesktop = NSString stringWithFormat:@"/Users/%@/Desktop/text.txt", NSUserName();
 
 //    var err = NSError()
-    println(data.writeToFile(path, atomically: false))
+    NSKeyedArchiver.archiveRootObject(data, toFile: pathToDesktop)
+//    println(data.writeToFile(path, atomically: false))
  
     
 }
