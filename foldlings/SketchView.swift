@@ -279,33 +279,6 @@ class SketchView: UIView {
         drawBitmap() //redraw full bitmap
     }
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     func simpleSketch()
     {
         var fold1 = UIBezierPath()
