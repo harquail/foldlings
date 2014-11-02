@@ -53,7 +53,7 @@ class Sketch {
         drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
-        
+
         // make border into cuts
         makeBorderEdges( screenWidth, height: screenHeight)
 
@@ -104,7 +104,6 @@ class Sketch {
         var path3 = UIBezierPath()
         var path4 = UIBezierPath()
 
-        
         // border points
         let b1 = CGPointMake(0, 0)
         let b2 = CGPointMake(width, 0)
