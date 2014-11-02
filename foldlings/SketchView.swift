@@ -300,10 +300,14 @@ class SketchView: UIView {
         let b3 = CGPointMake(520, 680)
         let b4 = CGPointMake(260, 680)
         
+        // for centerfold
         let c1 = CGPointMake(0, 512)
         let c2 = CGPointMake(260, 512)
         let c3 = CGPointMake(520, 512)
         let c4 = CGPointMake(768, 512)
+        
+        //for border edges
+        
         
         //edges
         fold1.moveToPoint(b1)

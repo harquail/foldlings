@@ -22,6 +22,10 @@ class Plane: Printable {
     init(edges : [Edge]){
         self.edges = edges
     }
+    
+    func addToPlane(edge: Edge){
+        edges.append(edge)
+    }
 }
 
 
