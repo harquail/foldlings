@@ -44,6 +44,7 @@ class SketchView: UIView {
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         sketch = Sketch()
+        //simpleSketch()
         drawBitmap()
     }
     
@@ -294,5 +295,4 @@ class SketchView: UIView {
         return copied;
 
     }
-
 }
