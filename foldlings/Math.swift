@@ -204,27 +204,4 @@ func -= (inout left: Vector3D, right: Vector3D){
 }
 
 
-//// computes blending weights
-//// for bezier cubic splines, dim = 3
-func bernstein(t:CGFloat, i:Int, degree:Int) -> CGFloat
-{
-    if i < 0 || i > degree {return 0}
-    if degree == 0 { return 1}
-    if degree == 1 {
-        if i == 0 { return 1-t }
-        if i == 1 { return t }
-    }
-    if degree == 2 {
-        if i == 0 { return (1-t)*(1-t) }
-        if i == 1 { return  2*t*(1-t) }
-        if i == 2 { return t*t }
-    }
-    if degree == 3 {
-        if(i == 0) { return (1-t)*(1-t)*(1-t) }
-        if(i == 1) { return 3*t*(1-t)*(1-t) }
-        if(i == 2) { return 3*t*t*(1-t) }
-        if(i == 3) { return t*t*t }
-    }
-    return (1-t)*bernstein(t, i, degree-1) + t*bernstein(t, i-1, degree-1)
-}
 
