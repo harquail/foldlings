@@ -31,6 +31,7 @@ class Sketch {
     var bEdge2: Edge!
     var bEdge3: Edge!
     var bEdge4: Edge!
+
     
     init()
     {
@@ -58,6 +59,7 @@ class Sketch {
         makeBorderEdges( screenWidth, height: screenHeight)
 
     }
+    
     
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind)

@@ -278,5 +278,31 @@ class SketchView: UIView {
         drawBitmap() //redraw full bitmap
     }
     
+    func previewImage() -> UIImage{
+        
+
+        let size = CGSizeMake(self.bounds.width,self.bounds.width)
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0);
+        
+        self.drawViewHierarchyInRect(CGRectMake(0,0,self.bounds.width,self.bounds.width), afterScreenUpdates:true)
+        let copied = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        
+//        var croppedImage = CGImageCreateWithImageInRect(copied.CGImage, CGRectMake(0,0,self.bounds.width,self.bounds.width));
+  //      var crop = UIImage.imageWithCGImage(croppedImage, resizedImagesize, interpolationQuality: kCGInterpolationHigh);
+        
+
+        
+//        
+//        UIGraphicsBeginImageContext(self.bounds.size)
+//        self.layer.renderInContext(UIGraphicsGetCurrentContext())
+//        var img = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext();
+//        
+        return copied;
+
+    }
 
 }
