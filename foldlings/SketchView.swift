@@ -106,7 +106,7 @@ class SketchView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         let touch = touches.anyObject() as UITouch
-        let endPoint = touch.locationInView(self)
+        var endPoint = touch.locationInView(self)
         let startPoint = tempStart
         switch sketchMode
         {
@@ -119,13 +119,18 @@ class SketchView: UIView {
                 let newPath = UIBezierPath(CGPath: path.CGPath)
                 let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
                 setPathStyle(newPath, edge:nil)
+                if (sketchMode == .Fold)
+                {
+                   endPoint = CGPoint(x: endPoint.x, y: startPoint.y)
+                }
                 self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
                 self.setNeedsDisplay()
+
             }
             path.removeAllPoints()
             ctr = 0
             forceRedraw()
-            
+
         default:
             break
         }
