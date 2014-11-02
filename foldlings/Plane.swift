@@ -7,12 +7,20 @@
 //
 
 import Foundation
+import CoreGraphics
+import UIKit
 
 
 class Plane: Printable {
     var name = "Plane"
     var description: String {
-        return "this is a plane"
+        return "this is an array of edges"
+    }
+    
+    var edges : [Edge] = []
+    
+    init(edges : [Edge]){
+        self.edges = edges
     }
 }
 
