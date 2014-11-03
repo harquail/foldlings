@@ -43,9 +43,10 @@ class SketchView: UIView {
         path = UIBezierPath()
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-        sketch = Sketch()
-        //sketch = simpleSketch()
-
+        
+        // TODO: name should be set when creating sketch
+        sketch = Sketch(named: "name")
+        //simpleSketch()
         drawBitmap()
     }
     
@@ -284,7 +285,7 @@ class SketchView: UIView {
     
     func simpleSketch()->Sketch
     {
-        var asketch = Sketch()
+        var asketch = Sketch(named: "simple sketch")
         
         var fold1 = UIBezierPath()
         var cut1 = UIBezierPath()
