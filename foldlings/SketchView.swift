@@ -294,6 +294,13 @@ class SketchView: UIView {
         var cfold2 = UIBezierPath()
         var cfold3 = UIBezierPath()
         
+        var top = UIBezierPath()
+        var rside1 = UIBezierPath()
+        var rside2 = UIBezierPath()
+        var bottom = UIBezierPath()
+        var lside1 = UIBezierPath()
+        var lside2 = UIBezierPath()
+        
         //points
         let b1 = CGPointMake(260, 290)
         let b2 = CGPointMake(520, 290)
@@ -301,12 +308,16 @@ class SketchView: UIView {
         let b4 = CGPointMake(260, 680)
         
         // for centerfold
-        let c1 = CGPointMake(0, 512)
+        let c1 = CGPointMake(0, 512)//s6
         let c2 = CGPointMake(260, 512)
         let c3 = CGPointMake(520, 512)
-        let c4 = CGPointMake(768, 512)
+        let c4 = CGPointMake(768, 512)//s3
         
-        //for border edges
+        //for side edges
+        let s1 = CGPointMake(0, 0)
+        let s2 = CGPointMake(768, 0)
+        let s4 = CGPointMake(768, 1024)
+        let s5 = CGPointMake(0, 1024)
         
         
         //edges
@@ -339,6 +350,31 @@ class SketchView: UIView {
         cfold3.moveToPoint(c3)
         cfold3.addLineToPoint(c4)
         asketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
+        
+        //border edges
+        top.moveToPoint(s1)
+        top.addLineToPoint(s2)
+        asketch.addEdge(s1, end: s2, path: top, kind: Edge.Kind.Cut )
+        
+        rside1.moveToPoint(s2)
+        rside1.addLineToPoint(c4)
+        asketch.addEdge(s2, end: c4, path: rside1, kind: Edge.Kind.Cut )
+        
+        rside2.moveToPoint(c4)
+        rside2.addLineToPoint(s4)
+        asketch.addEdge(c4, end: s4, path: rside2, kind: Edge.Kind.Cut )
+        
+        bottom.moveToPoint(s4)
+        bottom.addLineToPoint(s5)
+        asketch.addEdge(s4, end: s5, path: bottom, kind: Edge.Kind.Cut )
+        
+        lside1.moveToPoint(s5)
+        lside1.addLineToPoint(c1)
+        asketch.addEdge(s5, end: c1, path: lside1, kind: Edge.Kind.Cut )
+        
+        lside2.moveToPoint(c1)
+        lside2.addLineToPoint(s1)
+        asketch.addEdge(c1, end: s1, path: lside2, kind: Edge.Kind.Cut )
         
         return asketch
     }

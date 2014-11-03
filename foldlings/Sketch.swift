@@ -25,7 +25,7 @@ class Sketch {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
-    var adjacency : [CGPoint : Edge] = [CGPoint : Edge]()
+    var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()
     var drivingEdge: Edge!
     var bEdge1: Edge!
     var bEdge2: Edge!
@@ -40,6 +40,7 @@ class Sketch {
         let screenWidth = screenSize.width;
         let screenHeight = screenSize.height;
         let halfH = screenHeight/2.0
+
         
         let p1 = CGPointMake(0, halfH)
         let p2 = CGPointMake(screenWidth, halfH)
@@ -56,7 +57,7 @@ class Sketch {
         edges.append(drivingEdge)
 
         // make border into cuts
-        makeBorderEdges( screenWidth, height: screenHeight)
+        makeBorderEdges(screenWidth, height: screenHeight)
 
     }
     
@@ -66,8 +67,17 @@ class Sketch {
     {
         var e = Edge(start: start, end: end, path: path, kind: kind)
         edges.append(e)
-        adjacency[start] = e
-        adjacency[end] = e
+        //TODO: more here to work correctly
+        if var a = adjacency[start] {
+            a.append(e)
+        } else {
+            adjacency[start] = [e]
+        }
+        if var a = adjacency[end] {
+            a.append(e)
+        } else {
+            adjacency[end] = [e]
+        }
         
         // keep folds in ascending order by start position y height from bottom up
         // note y starts at 0 on top of screen
@@ -169,7 +179,12 @@ class Sketch {
     func makePlane(edge: Edge) -> Plane
     {
         var p: Plane!
+        var start: CGPoint
+        var end: CGPoint
         //from edge, iterate through adjacency
+        start = edge.start
+            //get list of adjacent edges
+            // find correct adjacent?
         //taking only right turns
         //append edges to plane
         
