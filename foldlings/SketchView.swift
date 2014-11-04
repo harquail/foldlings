@@ -16,25 +16,17 @@ class SketchView: UIView {
     }
     
     
-    var path: UIBezierPath!
-    var incrementalImage: UIImage!
+    var path: UIBezierPath! //currently drawing path
+    var incrementalImage: UIImage!  //this is a bitmap version of everything
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
     var ctr: Int = 0
-    var tempStart:CGPoint = CGPointZero
+    var tempStart:CGPoint = CGPointZero // these keep track of point while drawing
     var tempEnd:CGPoint = CGPointZero
     var sketchMode:  Mode = Mode.Cut
-    var cancelledTouch: UITouch?
+    var cancelledTouch: UITouch?  //if interrrupted say on intersection
     var sketch: Sketch!
+    var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
     
-    
-    //TODO: while drawing:
-    //      identify intersecting bounding boxes
-    //      check for nearest points in matching 
-    //      show user some indication (say a circle) that they are within range for a valid intersection
-    //          (ie if they end line would snap to said point)
-    //      if intersection found then on completion
-    //          modify one edge with new intersection endpoint and add a new line
-    //      add line to Sketch
     
     required init(coder aDecoder: NSCoder)
     {
@@ -65,15 +57,23 @@ class SketchView: UIView {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
+        var touchPoint: CGPoint = touch.locationInView(self)
         switch sketchMode
         {
         case .Erase:
-            var touchPoint: CGPoint = touch.locationInView(self)
             erase(touchPoint);
         case .Cut, .Fold:
+            for edge in sketch.edges
+            {
+                if edge.hitTest(touchPoint) {
+                    println("intersection: \(touchPoint)")
+                    let np = getNearestPointOnPath(touchPoint, edge.path)
+                    touchPoint = np
+                }
+            }
             ctr = 0
-            pts[0] = touch.locationInView(self)
-            tempStart = touch.locationInView(self)
+            pts[0] = touchPoint
+            tempStart = touchPoint
             setPathStyle(path, edge:nil)
         default:
             break
@@ -92,14 +92,17 @@ class SketchView: UIView {
                 var touchPoint: CGPoint = touch.locationInView(self)
                 erase(touchPoint);
             case .Cut, .Fold:
+                var abort:Bool = checkCurrentEnd(touch.locationInView(self))
                 ctr=ctr+1
-                pts[ctr] = touch.locationInView(self)
+                pts[ctr] = tempEnd
+                
                 if (ctr == 4)
                 {
-                    if makeBezier() {//create bezier curves
-    //                    self.touchesCancelled(touches, withEvent:event)
-                        cancelledTouch = touch
-                    }
+                    makeBezier() //create bezier curves
+                }
+                
+                if abort {
+                    cancelledTouch = touch
                 }
                 
             default:
@@ -109,24 +112,19 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        let touch = touches.anyObject() as UITouch
-        var endPoint = touch.locationInView(self)
+        var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
         {
         case .Erase:
             break
         case .Cut, .Fold:
-            //self.drawBitmap()
-            if ( dist(startPoint, endPoint) > kHitTestRadius)
+            if ( dist(startPoint, endPoint) > kMinLineLength)
             {
+                makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 let newPath = UIBezierPath(CGPath: path.CGPath)
                 let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
                 setPathStyle(newPath, edge:nil)
-                if (sketchMode == .Fold)
-                {
-                   endPoint = CGPoint(x: endPoint.x, y: startPoint.y)
-                }
                 self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
                 self.setNeedsDisplay()
             }
@@ -159,12 +157,13 @@ class SketchView: UIView {
                 setPathStyle(e.path, edge:e).setStroke()
                 e.path.stroke()
                 // just draw that point to indicate it...
-                drawEdgePoints(e.start, end:e.end)
+                if !e.path.empty {
+                    drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
+                }
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         incrementalImage.drawAtPoint(CGPointZero)
-        drawEdgePoints(tempStart, end:nil)
         //set the stroke color
         setPathStyle(path, edge:nil).setStroke()
         path.stroke()
@@ -177,15 +176,15 @@ class SketchView: UIView {
     {
         for (i,e) in enumerate(sketch.edges)
         {
-            if  e.hitTest(touchPoint) && i > 4
+            if  e.hitTest(touchPoint) && i > 4 //first 5 edges are special fold plus paper edges
             {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
                 e.path.removeAllPoints()
+                sketch.removeEdge(e) //remove
                 forceRedraw()
                 //TODO: better way of handling this?
                 //  need to also: refine to specific line if there are more than 1
-                //  and actually remove from list?
 
             }
         }
@@ -194,81 +193,77 @@ class SketchView: UIView {
     
     //makes bezier by stringing segments together
     //creatse segments from ctrl pts
-    // returns true if its force closed the path
-    func makeBezier() -> Bool
+    func makeBezier(aborted:Bool=false)
     {
-        var closed:Bool = false
-        // only use first y-value
-        // or
-        // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        var newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
-        
-        // test for self intersections
-        if Edge.hitTest(path, point:newEnd) {
-            println("self intersection: \(newEnd)")
-            let np = getNearestPointOnPath(newEnd, path)
-            //path.closePath() //TODO: use close if close to end and fix this to work always
-            newEnd = np
-            closed = true
-        } else {
-            // test for intersections
-            for edge in sketch.edges
-            {
-                if edge.hitTest(newEnd) {
-                    println("intersection: \(newEnd)")
-                }
-            }
-        }
-        
-        if ( sketchMode == .Fold)
+        if !aborted
         {
-            // makes only straight horizontal fold lines
-            // basically make a completely new line every movement so its only 2 points ever
-            path = UIBezierPath()
-            path.moveToPoint(tempStart)
-            path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
-            setPathStyle(path, edge:nil)
+            // only use first y-value
+            // or
+            // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
+            var newEnd = (sketchMode == .Cut) ? CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) : tempEnd
+            
+            if ( sketchMode == .Fold)
+            {
+                // makes only straight horizontal fold lines
+                // basically make a completely new line every movement so its only 2 points ever
+                path = UIBezierPath()
+                path.moveToPoint(tempStart)
+                path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
+                setPathStyle(path, edge:nil)
+            } else {
+                pts[3] = newEnd
+                path.moveToPoint(pts[0])
+                path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+            }
+            
+            // replace points and get ready to handle the next segment
+            pts[0] = pts[3]
+            pts[1] = pts[4]
         } else {
-            pts[3] = newEnd
             path.moveToPoint(pts[0])
-            path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+            path.addLineToPoint(tempEnd)
         }
-        
-        
-        self.setNeedsDisplay()
-        // replace points and get ready to handle the next segment
-        pts[0] = pts[3]
-        pts[1] = pts[4]
         ctr = 1
-        
-        return closed
+        self.setNeedsDisplay()
+
     }
     
     // checks and constrains current endpoint
-    func checkCurrentEnd(endpoint: CGPoint) {
+    func checkCurrentEnd(endpoint: CGPoint) -> Bool {
         var closed:Bool = false
+        
         // only use first y-value
         // or
         // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        var newEnd = (sketchMode == .Fold) ? CGPointMake(pts[4].x,  tempStart.y) : CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 )
-        
-        // test for self intersections
-        if Edge.hitTest(path, point:newEnd) {
-            println("self intersection: \(newEnd)")
-            let np = getNearestPointOnPath(newEnd, path)
-            //path.closePath() //TODO: use close if close to end and fix this to work always
-            newEnd = np
-            closed = true
+        if sketchMode == .Fold {
+            tempEnd = CGPointMake(endpoint.x,  tempStart.y)
         } else {
-            // test for intersections
-            for edge in sketch.edges
-            {
-                if edge.hitTest(newEnd) {
-                    println("intersection: \(newEnd)")
+            tempEnd = endpoint
+        }
+        
+        //ignore intersections if we're just starting a line...
+        if ( dist(tempStart, tempEnd) > kMinLineLength)
+        {
+            // test for self intersections
+            if Edge.hitTest(path, point:tempEnd) {
+                println("self intersection: \(tempEnd)")
+                let np = getNearestPointOnPath(tempEnd, path)
+                tempEnd = np
+                closed = true
+            } else {
+                // test for intersections
+                for edge in sketch.edges
+                {
+                    if edge.hitTest(tempEnd) {
+                        println("intersection: \(tempEnd)")
+                        let np = getNearestPointOnPath(tempEnd, edge.path)
+                        tempEnd = np
+                        closed = true
+                    }
                 }
             }
         }
-
+        return closed
     }
     
     
@@ -410,7 +405,7 @@ class SketchView: UIView {
     }
 
     
-    func previewImage() -> UIImage{
+    func previewImage() -> UIImage {
         
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0);
@@ -428,14 +423,18 @@ class SketchView: UIView {
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
-        UIColor.redColor().setStroke()
-        let startPoint = UIBezierPath()
-        let endPoint = UIBezierPath()
-        startPoint.addArcWithCenter(start, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true);
-        startPoint.stroke()
+        endPaths[start]=drawCircle(start)
         if let tempEnd = end? {
-            endPoint.addArcWithCenter(tempEnd, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true);
-            endPoint.stroke()
+            endPaths[tempEnd]=drawCircle(tempEnd)
         }
+    }
+    
+    func drawCircle(point: CGPoint) ->UIBezierPath
+    {
+        UIColor.redColor().setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
     }
 }

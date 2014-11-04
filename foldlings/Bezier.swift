@@ -20,7 +20,12 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     let elements = path.getPathElements()
     
     // if only two elements then it must be a line so treat it that way
-    if elements.count == 2 {
+    if elements.count == 0 {
+        println("no elements in path returning same! \(elements)")
+        return point
+    }
+    else if elements.count == 2
+    {
         let p1:CGPoint = (elements[0] as CGPathElementObj).points[0].CGPointValue()
         let p2:CGPoint = (elements[1] as CGPathElementObj).points[0].CGPointValue()
         let np = nearestPointOnLine(point, p1, p2)

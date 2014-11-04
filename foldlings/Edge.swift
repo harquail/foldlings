@@ -7,13 +7,29 @@ import Foundation
 import CoreGraphics
 import UIKit
 
+func == (lhs: Edge, rhs: Edge) -> Bool {
+    let lhsP = lhs.path.getPathElements() as [CGPathElementObj]
+    let rhsP = rhs.path.getPathElements() as [CGPathElementObj]
+    return lhsP == rhsP
+}
 
-class Edge: NSObject, Printable, NSCoding {
+class Edge: NSObject, Printable, Hashable, NSCoding {
     var name = "Edge"
     override var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue)"
     }
-
+    
+    override var hashValue: Int { get {
+        var h:Int = 0
+        let elements = path.getPathElements() as [CGPathElementObj]
+        for el in elements {
+            h += el.hashValue
+        }
+            h /= elements.count
+            return h
+        }
+    }
+    
     
     enum Kind: String {
         case Fold = "Fold"
@@ -117,7 +133,7 @@ class Edge: NSObject, Printable, NSCoding {
         return Edge.getColor(self.kind, fold:self.fold)
     }
     
-    
+
     
     
     

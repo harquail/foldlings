@@ -33,7 +33,7 @@ class Sketch : NSObject,NSCoding  {
     var bEdge4: Edge!
 
     var name:String
-    
+//    
     init(named:String)
     {
         //insert master fold and make borders into cuts
@@ -74,7 +74,8 @@ class Sketch : NSObject,NSCoding  {
         var adjsWithValues :[NSValue:Edge] = Dictionary<NSValue,Edge>()
 
         for (point,edge) in adjacency{
-            adjsWithValues[NSValue(CGPoint:point)]=edge
+            //TODO: wooppsssyyy
+//            adjsWithValues[NSValue(CGPoint:point)]=edge
         }
         
         aCoder.encodeObject(adjsWithValues, forKey: "adj")
@@ -94,7 +95,8 @@ class Sketch : NSObject,NSCoding  {
         //convert NSValues to CGPoints
         var adjsWithValues :[NSValue:Edge] = aDecoder.decodeObjectForKey("adj") as Dictionary<NSValue,Edge>
         for (p,e) in adjsWithValues{
-            adjacency[p.CGPointValue()]=e
+            //TODO: woopssyy
+//            adjacency[p.CGPointValue()]=e
         }
         
         drivingEdge = aDecoder.decodeObjectForKey("driving") as Edge
@@ -137,6 +139,18 @@ class Sketch : NSObject,NSCoding  {
         }
         
         //skip 0th fold
+        initPlanes()
+    }
+    
+    //TODO: needs to work
+    func removeEdge(edge:Edge)
+    {
+        edges = edges.filter({ $0 != edge })
+        initPlanes()
+    }
+    
+    func initPlanes()
+    {
         //TODO: this is a placeholder, not how you actually do it
         for var i = 0; i < folds.count; i++ {
             if (i % 2) == 0 {
@@ -145,12 +159,7 @@ class Sketch : NSObject,NSCoding  {
                 folds[i].fold = .Hill
             }
         }
-    }
-    
-    //TODO: needs to work
-    func removeEdge()
-    {
-        
+
     }
     
     func makeBorderEdges(width: CGFloat, height: CGFloat){
