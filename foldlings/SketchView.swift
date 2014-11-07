@@ -245,7 +245,7 @@ class SketchView: UIView {
         if ( dist(tempStart, tempEnd) > kMinLineLength)
         {
             // test for self intersections
-            if Edge.hitTest(path, point:tempEnd) {
+            if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
                 println("self intersection: \(tempEnd)")
                 let np = getNearestPointOnPath(tempEnd, path)
                 tempEnd = np
