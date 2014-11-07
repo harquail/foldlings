@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
 		223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */; };
+		225094E91A0C5BBC00E754CA /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 225094E81A0C5BBC00E754CA /* CGPointExtension.m */; };
 		227708D719EE016A0095CD9D /* SketchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227708D619EE016A0095CD9D /* SketchView.swift */; };
 		22C0D68A1A04965C00D521CA /* Bezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C0D6891A04965C00D521CA /* Bezier.swift */; };
 		22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */; };
@@ -57,6 +58,8 @@
 		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
 		223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGPathElementObj.m; path = ../CGPathElementObj.m; sourceTree = "<group>"; };
+		225094E71A0C5BBC00E754CA /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
+		225094E81A0C5BBC00E754CA /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		227708D619EE016A0095CD9D /* SketchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchView.swift; sourceTree = "<group>"; };
 		22C0D6891A04965C00D521CA /* Bezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bezier.swift; sourceTree = "<group>"; };
 		22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+OBAdditions.h"; sourceTree = "<group>"; };
@@ -115,6 +118,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		225094E31A0C5B8500E754CA /* External */ = {
+			isa = PBXGroup;
+			children = (
+				225094E71A0C5BBC00E754CA /* CGPointExtension.h */,
+				225094E81A0C5BBC00E754CA /* CGPointExtension.m */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
 		22AF485019EDE98000BCC1A4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,8 +199,9 @@
 				F180D52A1A05D8D400AC05BC /* RBResizer.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
-				F17C93CB19E24BEC00BB77F1 /* Supporting Files */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
+				225094E31A0C5B8500E754CA /* External */,
+				F17C93CB19E24BEC00BB77F1 /* Supporting Files */,
 			);
 			path = foldlings;
 			sourceTree = "<group>";
@@ -360,6 +373,7 @@
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
+				225094E91A0C5BBC00E754CA /* CGPointExtension.m in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */,
 				F18C864719FD9F4500211229 /* CollectionOfFoldlings.swift in Sources */,

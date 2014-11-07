@@ -51,7 +51,6 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 
 }
 
-
 //finds path elements and subdivides them
 // currently supports movepoints and addcurves
 // needs line and quad curve to be complete
