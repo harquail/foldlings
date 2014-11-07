@@ -57,6 +57,34 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
+   
+
+        
+        
+        //new stuff
+        //TODO: fix
+        
+        let awkwardTestNode = SCNNode()
+        
+        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, 100, 100))
+        let awkwardShape = SCNShape(path: awkwardRectangle, extrusionDepth: 0)
+        
+        let white = SCNMaterial()
+        white.diffuse.contents = UIColor.whiteColor()
+
+        awkwardTestNode.geometry = awkwardShape
+        awkwardTestNode.geometry?.firstMaterial = white
+        scene.rootNode.addChildNode(awkwardTestNode)
+
+        let spin = CABasicAnimation(keyPath: "rotation")
+        // Use from-to to explicitly make a full rotation around z
+        spin.fromValue = NSValue(SCNVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
+        spin.toValue = NSValue(SCNVector4: SCNVector4(x: 0, y: 0, z: 1, w: Float(2 * M_PI)))
+        spin.duration = 3
+        spin.repeatCount = .infinity
+        awkwardTestNode.addAnimation(spin, forKey: "spin around")
+        
+        
         // retrieve the SCNView
         let scnView = self.view as SCNView
         
