@@ -202,14 +202,16 @@ class Sketch : NSObject,NSCoding  {
     {
         var visited : [Edge] = []
         var planes : [Plane] = []
+        var p: Plane!
         //traverse edges and adjacency
         for (i,e) in enumerate(visited)
         {
             if !inVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
-                var plane = makePlane(e)
+                let closest = getClosest(e, start: e)// get closest adjacent edge
+                var p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
-                planes.append(plane)
+                planes.append(p)
                 visited.append(e)
             }
         }
@@ -227,32 +229,38 @@ class Sketch : NSObject,NSCoding  {
             }
         }
         return false
-        
     }
     
     // uses adjacency to make a plane given an edge
-    func makePlane(edge: Edge) -> Plane
+    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane
     {
-        var p: Plane!
-        var start: CGPoint
-        var end: CGPoint
-        //var adj : [Edge] = []
-        //from edge, iterate through adjacency
-        start = edge.start
-            //get list of adjacent edges
-        let adj = Array(adjacency.values)
-        for (i,e) in enumerate(adj)
-       {
-        if i == 0 || e == edge
+        if edge != first
         {
-            
+            let closest = getClosest(edge, start: first)// get closest adjacent ege
+            plane.addToPlane(closest)
+            return makePlane(closest, first: first, plane: plane)
         }
-       }
-            // find correct adjacent?
-        //taking only right turns
-        //append edges to plane
+        return plane
+    }
+    
+    //get closest adjancent edge
+    func getClosest(edge: Edge, start: Edge) -> Edge
+    {
+        var closest: Edge!
+        var adj = adjacency[edge.end]!// find adjacent edges
         
-        return p
+        for (i,e) in enumerate(adj)
+        {
+            if i == 0 // make the first edge the closest
+            {
+                closest = e
+            }
+            else if dist(start.start, closest.end) > dist(start.start, e.end)
+            {
+                closest = e
+            }
+        }
+        return closest
     }
 }
 
