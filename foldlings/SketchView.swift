@@ -26,6 +26,8 @@ class SketchView: UIView {
     var cancelledTouch: UITouch?  //if interrrupted say on intersection
     var sketch: Sketch!
     var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
+    var startEdgeCollision:Edge?
+    var endEdgeCollision:Edge?
     
     
     required init(coder aDecoder: NSCoder)
@@ -58,6 +60,8 @@ class SketchView: UIView {
     {
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
+        startEdgeCollision = nil //reset edge collisions to nil
+        endEdgeCollision = nil
         switch sketchMode
         {
         case .Erase:
@@ -69,6 +73,7 @@ class SketchView: UIView {
                     println("intersection: \(touchPoint)")
                     let np = getNearestPointOnPath(touchPoint, edge.path)
                     touchPoint = np
+                    startEdgeCollision = edge
                 }
             }
             ctr = 0
@@ -122,6 +127,9 @@ class SketchView: UIView {
         case .Cut, .Fold:
             if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
+                if let endColEdge = endEdgeCollision {
+                    //TODO: make edges separate
+                }
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 let newPath = UIBezierPath(CGPath: path.CGPath)
                 let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
@@ -157,13 +165,13 @@ class SketchView: UIView {
             {
                 if e.start == e.end //is a loop draw filled
                 {
-                    UIColor.grayColor().setFill()
+                    UIColor.blackColor().setFill()
                     e.path.fill()
                 }
                 setPathStyle(e.path, edge:e).setStroke()
                 e.path.stroke()
                 // just draw that point to indicate it...
-                if !e.path.empty {
+                if !e.path.empty && e.start != e.end {
                     drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
                 }
 
@@ -269,6 +277,7 @@ class SketchView: UIView {
                         let np = getNearestPointOnPath(tempEnd, edge.path)
                         tempEnd = np
                         closed = true
+                        endEdgeCollision = edge
                     }
                 }
             }
@@ -311,7 +320,6 @@ class SketchView: UIView {
         } else {
             path.setLineDash(nil, count: 0, phase:0)
         }
-        
         
         
         path.lineWidth=kLineWidth
