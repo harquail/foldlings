@@ -74,6 +74,7 @@ class SketchView: UIView {
             ctr = 0
             pts[0] = touchPoint
             tempStart = touchPoint
+            tempEnd = touchPoint //set end to same point at start
             setPathStyle(path, edge:nil)
         default:
             break
@@ -83,16 +84,16 @@ class SketchView: UIView {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
+        var touchPoint: CGPoint = touch.locationInView(self)
         
         // ignore cancelledTouch
         if cancelledTouch == nil || cancelledTouch! != touch {
             switch sketchMode
             {
             case .Erase: // if in erase mode
-                var touchPoint: CGPoint = touch.locationInView(self)
                 erase(touchPoint);
             case .Cut, .Fold:
-                var abort:Bool = checkCurrentEnd(touch.locationInView(self))
+                var abort:Bool = checkCurrentEnd(touchPoint)
                 ctr=ctr+1
                 pts[ctr] = tempEnd
                 
@@ -119,7 +120,7 @@ class SketchView: UIView {
         case .Erase:
             break
         case .Cut, .Fold:
-            if ( dist(startPoint, endPoint) > kMinLineLength)
+            if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 let newPath = UIBezierPath(CGPath: path.CGPath)
@@ -154,12 +155,18 @@ class SketchView: UIView {
             
             for e in sketch.edges
             {
+                if e.start == e.end //is a loop draw filled
+                {
+                    UIColor.grayColor().setFill()
+                    e.path.fill()
+                }
                 setPathStyle(e.path, edge:e).setStroke()
                 e.path.stroke()
                 // just draw that point to indicate it...
                 if !e.path.empty {
                     drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
                 }
+
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
@@ -212,7 +219,7 @@ class SketchView: UIView {
                 setPathStyle(path, edge:nil)
             } else {
                 pts[3] = newEnd
-                path.moveToPoint(pts[0])
+                if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
                 path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
             }
             
@@ -220,8 +227,11 @@ class SketchView: UIView {
             pts[0] = pts[3]
             pts[1] = pts[4]
         } else {
-            path.moveToPoint(pts[0])
+            if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
             path.addLineToPoint(tempEnd)
+            if tempEnd == tempStart {
+                path.closePath()
+            }
         }
         ctr = 1
         self.setNeedsDisplay()
@@ -245,7 +255,7 @@ class SketchView: UIView {
         if ( dist(tempStart, tempEnd) > kMinLineLength)
         {
             // test for self intersections
-            if Edge.hitTest(path, point:tempEnd) {
+            if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
                 println("self intersection: \(tempEnd)")
                 let np = getNearestPointOnPath(tempEnd, path)
                 tempEnd = np
@@ -261,6 +271,16 @@ class SketchView: UIView {
                         closed = true
                     }
                 }
+            }
+        } else {
+            // check that we're not closing a path
+            //  needs to make sure that the path bounds are greater than minlinelength
+            if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
+                //lets close the cut path and make a hole
+                // well the closing actually takes place in
+                println("found closing a path")
+                tempEnd = tempStart
+                closed = true
             }
         }
         return closed
@@ -291,6 +311,7 @@ class SketchView: UIView {
         } else {
             path.setLineDash(nil, count: 0, phase:0)
         }
+        
         
         
         path.lineWidth=kLineWidth
