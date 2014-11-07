@@ -155,12 +155,18 @@ class SketchView: UIView {
             
             for e in sketch.edges
             {
+                if e.start == e.end //is a loop draw filled
+                {
+                    UIColor.grayColor().setFill()
+                    e.path.fill()
+                }
                 setPathStyle(e.path, edge:e).setStroke()
                 e.path.stroke()
                 // just draw that point to indicate it...
                 if !e.path.empty {
                     drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
                 }
+
             }
             incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
         }
@@ -213,7 +219,7 @@ class SketchView: UIView {
                 setPathStyle(path, edge:nil)
             } else {
                 pts[3] = newEnd
-                path.moveToPoint(pts[0])
+                if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
                 path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
             }
             
@@ -221,10 +227,9 @@ class SketchView: UIView {
             pts[0] = pts[3]
             pts[1] = pts[4]
         } else {
-            path.moveToPoint(pts[0])
+            if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
             path.addLineToPoint(tempEnd)
-            //check for closed loop
-            if tempStart == tempEnd {
+            if tempEnd == tempStart {
                 path.closePath()
             }
         }
@@ -306,6 +311,7 @@ class SketchView: UIView {
         } else {
             path.setLineDash(nil, count: 0, phase:0)
         }
+        
         
         
         path.lineWidth=kLineWidth
