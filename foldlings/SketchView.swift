@@ -120,7 +120,7 @@ class SketchView: UIView {
         case .Erase:
             break
         case .Cut, .Fold:
-            if ( dist(startPoint, endPoint) > kMinLineLength)
+            if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 let newPath = UIBezierPath(CGPath: path.CGPath)
@@ -223,6 +223,10 @@ class SketchView: UIView {
         } else {
             path.moveToPoint(pts[0])
             path.addLineToPoint(tempEnd)
+            //check for closed loop
+            if tempStart == tempEnd {
+                path.closePath()
+            }
         }
         ctr = 1
         self.setNeedsDisplay()
@@ -262,6 +266,16 @@ class SketchView: UIView {
                         closed = true
                     }
                 }
+            }
+        } else {
+            // check that we're not closing a path
+            //  needs to make sure that the path bounds are greater than minlinelength
+            if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
+                //lets close the cut path and make a hole
+                // well the closing actually takes place in
+                println("found closing a path")
+                tempEnd = tempStart
+                closed = true
             }
         }
         return closed
