@@ -66,21 +66,28 @@ class GameViewController: UIViewController {
         
         let awkwardTestNode = SCNNode()
         
-        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, 100, 100))
+        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height*0.01
+))
         let awkwardShape = SCNShape(path: awkwardRectangle, extrusionDepth: 0)
+        
         
         let white = SCNMaterial()
         white.diffuse.contents = UIColor.whiteColor()
+        white.doubleSided = true
 
         awkwardTestNode.geometry = awkwardShape
         awkwardTestNode.geometry?.firstMaterial = white
+        
+        // TODO: fix arbitrary magic numbers
+        awkwardTestNode.position.x -= 4
+        awkwardTestNode.position.y -= 4
         scene.rootNode.addChildNode(awkwardTestNode)
 
         let spin = CABasicAnimation(keyPath: "rotation")
         // Use from-to to explicitly make a full rotation around z
-        spin.fromValue = NSValue(SCNVector4: SCNVector4(x: 0, y: 0, z: 1, w: 0))
-        spin.toValue = NSValue(SCNVector4: SCNVector4(x: 0, y: 0, z: 1, w: Float(2 * M_PI)))
-        spin.duration = 3
+        spin.fromValue = NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: 0))
+        spin.toValue = NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(2 * M_PI)))
+        spin.duration = 30
         spin.repeatCount = .infinity
         awkwardTestNode.addAnimation(spin, forKey: "spin around")
         
@@ -92,7 +99,7 @@ class GameViewController: UIViewController {
         scnView.scene = scene
         
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
+        scnView.allowsCameraControl = false
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
@@ -101,13 +108,16 @@ class GameViewController: UIViewController {
         scnView.backgroundColor = UIColor.blackColor()
         
         // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let gestureRecognizers = NSMutableArray()
-        gestureRecognizers.addObject(tapGesture)
-        if let existingGestureRecognizers = scnView.gestureRecognizers {
-            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
-        }
-        scnView.gestureRecognizers = gestureRecognizers
+        
+//        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+//        let gestureRecognizers = NSMutableArray()
+//        gestureRecognizers.addObject(tapGesture)
+//        if let existingGestureRecognizers = scnView.gestureRecognizers {
+//            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
+//        }
+//        scnView.gestureRecognizers = gestureRecognizers
+
+        
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
