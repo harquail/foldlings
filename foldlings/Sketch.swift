@@ -227,6 +227,7 @@ class Sketch : NSObject,NSCoding  {
             }
         }
         return false
+        
     }
     
     // uses adjacency to make a plane given an edge
@@ -235,9 +236,15 @@ class Sketch : NSObject,NSCoding  {
         var p: Plane!
         var start: CGPoint
         var end: CGPoint
+        //var adj : [Edge] = []
         //from edge, iterate through adjacency
         start = edge.start
             //get list of adjacent edges
+        let adj = Array(adjacency.values)
+        for (i,e) in enumerate(adj)
+       {
+            
+       }
             // find correct adjacent?
         //taking only right turns
         //append edges to plane
