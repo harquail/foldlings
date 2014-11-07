@@ -243,7 +243,10 @@ class Sketch : NSObject,NSCoding  {
         let adj = Array(adjacency.values)
         for (i,e) in enumerate(adj)
        {
+        if i == 0 || e == edge
+        {
             
+        }
        }
             // find correct adjacent?
         //taking only right turns
