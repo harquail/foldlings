@@ -74,6 +74,7 @@ class SketchView: UIView {
             ctr = 0
             pts[0] = touchPoint
             tempStart = touchPoint
+            tempEnd = touchPoint //set end to same point at start
             setPathStyle(path, edge:nil)
         default:
             break
@@ -83,16 +84,16 @@ class SketchView: UIView {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         var touch = touches.anyObject() as UITouch
+        var touchPoint: CGPoint = touch.locationInView(self)
         
         // ignore cancelledTouch
         if cancelledTouch == nil || cancelledTouch! != touch {
             switch sketchMode
             {
             case .Erase: // if in erase mode
-                var touchPoint: CGPoint = touch.locationInView(self)
                 erase(touchPoint);
             case .Cut, .Fold:
-                var abort:Bool = checkCurrentEnd(touch.locationInView(self))
+                var abort:Bool = checkCurrentEnd(touchPoint)
                 ctr=ctr+1
                 pts[ctr] = tempEnd
                 
