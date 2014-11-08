@@ -11,6 +11,71 @@ import UIKit
 //how fine to make the subdivisions, this makes 50 subdivs per line, change to scale with line length?
 let kBezierIncrements:CGFloat = 0.02
 
+func pathFromPoints(path:[CGPoint]) -> UIBezierPath
+{
+    var npath = UIBezierPath()
+    
+    npath.moveToPoint(path[0])
+    var i = 0
+    for i = 0; i < path.count-4; i=i+3
+    {
+        var newEnd = CGPointMake((path[i+2].x + path[i+4].x)/2.0, (path[i+2].y + path[i+4].y)/2.0 )
+        npath.addCurveToPoint(newEnd, controlPoint1: path[i+1], controlPoint2: path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+    }
+    switch path.count-i {
+    case 4:
+        npath.addCurveToPoint(path[i+3], controlPoint1: path[i+1], controlPoint2: path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+        break
+    case 3:
+        npath.addCurveToPoint(path[path.count-1], controlPoint1: path[path.count-2], controlPoint2: path[path.count-3])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+        break
+    default:
+        npath.addLineToPoint(path[path.count-1])
+        break
+    }
+    println("on el: \(i) or \(path.count)")
+    //TODO: how to deal with not enough points?
+
+    return npath
+}
+
+//splits the path at the point given
+func splitPath(path:UIBezierPath, point:CGPoint) -> UIBezierPath
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements)
+    var pathOnePoints = [CGPoint]()
+    var pathTwoPoints = [CGPoint]()
+    
+    var one = true
+    for p in points
+    {
+//        one = ()
+        if one {
+            pathOnePoints.append(p)
+        } else {
+            pathTwoPoints.append(p)
+        }
+    }
+    
+    let pArray = convertToNSArray(points)
+    let nArray = BezierSimple.douglasPeucker(pArray, epsilon:1)
+    let npaths = convertToCGPoints(nArray)
+    return pathFromPoints(npaths)
+}
+
+
+func smoothPath(path:UIBezierPath) -> UIBezierPath
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements)
+    let pArray = convertToNSArray(points)
+    let nArray = BezierSimple.douglasPeucker(pArray, epsilon:1)
+    let npaths = convertToCGPoints(nArray)
+    return pathFromPoints(npaths)
+}
+
+
 // returns the nearest *interpolated* point on a UIBezierPath,
 func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 {
@@ -163,6 +228,27 @@ func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
     return CGPointMake(start.x + ste.0*t, start.y + ste.1*t )  //the the point distance t
 
 }
+
+func convertToNSArray(path:[CGPoint]) ->NSArray
+{
+    var arr = NSMutableArray()
+    for p in path {
+        arr.addObject(NSValue(CGPoint:p))
+    }
+    return NSArray(array:arr)
+}
+
+func convertToCGPoints(path:NSArray) -> [CGPoint]
+{
+    var npath = [CGPoint]()
+    for p in path
+    {
+        npath.append(p.CGPointValue())
+    }
+    
+    return npath
+}
+
 
 
 
