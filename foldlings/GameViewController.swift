@@ -12,9 +12,9 @@ import SceneKit
 import Foundation
 
 class GameViewController: UIViewController {
-
+    
     var bgImage:UIImage!
-
+    
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -57,40 +57,30 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
-   
-
+        
+        
         
         
         //new stuff
         //TODO: fix
         
-        let awkwardTestNode = SCNNode()
-        
-        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height*0.01
-))
-        let awkwardShape = SCNShape(path: awkwardRectangle, extrusionDepth: 0)
         
         
-        let white = SCNMaterial()
-        white.diffuse.contents = UIColor.whiteColor()
-        white.doubleSided = true
-
-        awkwardTestNode.geometry = awkwardShape
-        awkwardTestNode.geometry?.firstMaterial = white
+        let awkwardTestNode = nodeFromPath(UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)))
+    
+        // TODO: fix magic numbers
+        awkwardTestNode.position.x -= 3.9
+        awkwardTestNode.position.y -= 3.0
+        awkwardTestNode.position.z -= 4.5
         
-        // TODO: fix arbitrary magic numbers
-        awkwardTestNode.position.x -= 4
-        awkwardTestNode.position.y -= 4
+        
+        let zeroDegrees =  Float(0.0*M_PI)
+        let ninetyDegrees = Float(0.5*M_PI)
+        
+        //set rotation to start angle
+        awkwardTestNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
         scene.rootNode.addChildNode(awkwardTestNode)
-
-        let spin = CABasicAnimation(keyPath: "rotation")
-        // Use from-to to explicitly make a full rotation around z
-        spin.fromValue = NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: 0))
-        spin.toValue = NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(2 * M_PI)))
-        spin.duration = 30
-        spin.repeatCount = .infinity
-        awkwardTestNode.addAnimation(spin, forKey: "spin around")
-        
+        awkwardTestNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -109,22 +99,59 @@ class GameViewController: UIViewController {
         
         // add a tap gesture recognizer
         
-//        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-//        let gestureRecognizers = NSMutableArray()
-//        gestureRecognizers.addObject(tapGesture)
-//        if let existingGestureRecognizers = scnView.gestureRecognizers {
-//            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
-//        }
-//        scnView.gestureRecognizers = gestureRecognizers
-
+        //        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+        //        let gestureRecognizers = NSMutableArray()
+        //        gestureRecognizers.addObject(tapGesture)
+        //        if let existingGestureRecognizers = scnView.gestureRecognizers {
+        //            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
+        //        }
+        //        scnView.gestureRecognizers = gestureRecognizers
+        
         
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
-
-
+        
+        
     }
-
+    
+    
+    
+    //back and forth rotation animation
+    //TODO: fix magic numbers
+    func rotationAnimation(startAngle:Float, endAngle:Float) -> CAKeyframeAnimation{
+        let anim = CAKeyframeAnimation(keyPath: "rotation")
+        anim.duration = 14;
+        anim.cumulative = false;
+        anim.repeatCount = .infinity;
+        anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
+        anim.keyTimes = [NSNumber(float: Float(0.0)),NSNumber(float: Float(1)),NSNumber(float: Float(1.4)),NSNumber(float: Float(2.4))]
+        anim.removedOnCompletion = false;
+        anim.fillMode = kCAFillModeForwards;
+        anim.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
+        
+        return anim
+        
+    }
+    
+    func nodeFromPath(path:UIBezierPath) -> SCNNode{
+        
+        let node = SCNNode()
+//        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01
+//            ))
+        let shape = SCNShape(path: path, extrusionDepth: 0)
+        let white = SCNMaterial()
+        white.diffuse.contents = UIColor.whiteColor()
+        white.doubleSided = true
+        
+        node.geometry = shape
+        node.geometry?.firstMaterial = white
+        
+        return node
+    }
+    
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -133,17 +160,17 @@ class GameViewController: UIViewController {
     
     func setButtonBG(image:UIImage){
         
-//        UIImage *originalImage = [UIImage imageNamed:@"myImage.png"];
+        //        UIImage *originalImage = [UIImage imageNamed:@"myImage.png"];
         // scaling set to 2.0 makes the image 1/2 the size.
-//        let scaledImage = UIImage(CGImage: image.CGImage,
-//    scale:(image.scale * 3),
-//        orientation:(image.imageOrientation));
-
-        bgImage = image;
-            
+        //        let scaledImage = UIImage(CGImage: image.CGImage,
+        //    scale:(image.scale * 3),
+        //        orientation:(image.imageOrientation));
         
-//        self.backToSketch.
+        bgImage = image;
+        
+        
+        //        self.backToSketch.
         
     }
-
+    
 }
