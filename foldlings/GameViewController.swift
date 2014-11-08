@@ -21,6 +21,21 @@ class GameViewController: UIViewController {
     @IBAction func SketchViewButton(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    
+    @IBAction func printButton (sender: UIButton){
+        
+        
+        let activityViewController = UIActivityViewController(activityItems: [bgImage], applicationActivities: nil)
+        activityViewController.popoverPresentationController!.sourceView = self.view
+        //should be this:
+        //        [UIActivityTypeMail, UIActivityTypeSaveToCameraRoll, UIActivityTypePrint]
+        activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+        
+    }
+    
+    
     // Make fake graph that follows the rules:
     // take edges and adjacency lists
     // search through and make planes
@@ -67,7 +82,7 @@ class GameViewController: UIViewController {
         
         
         let awkwardTestNode = nodeFromPath(UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)))
-    
+        
         // TODO: fix magic numbers
         awkwardTestNode.position.x -= 3.9
         awkwardTestNode.position.y -= 3.0
@@ -137,8 +152,8 @@ class GameViewController: UIViewController {
     func nodeFromPath(path:UIBezierPath) -> SCNNode{
         
         let node = SCNNode()
-//        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01
-//            ))
+        //        let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01
+        //            ))
         let shape = SCNShape(path: path, extrusionDepth: 0)
         let white = SCNMaterial()
         white.diffuse.contents = UIColor.whiteColor()
