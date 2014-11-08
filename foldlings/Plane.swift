@@ -19,12 +19,26 @@ class Plane: Printable {
     
     var edges : [Edge] = []
     
-    init(edges : [Edge]){
+    init(edges : [Edge])
+    {
         self.edges = edges
     }
     
-    func addToPlane(edge: Edge){
+    func addToPlane(edge: Edge)
+    {
         edges.append(edge)
+    }
+    
+    func inPlane(edge: Edge)-> Bool
+    {
+        for e in edges
+        {
+            if e === edge
+            {
+                return true
+            }
+        }
+        return false
     }
 }
 

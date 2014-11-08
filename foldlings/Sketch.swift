@@ -203,61 +203,77 @@ class Sketch : NSObject,NSCoding  {
         var visited : [Edge] = []
         var planes : [Plane] = []
         var p: Plane!
-        //traverse edges and adjacency
-        for (i,e) in enumerate(visited)
+ 
+        for (i, e) in enumerate(edges)//traverse edges
         {
-            if !inVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+            if !haveVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
                 let closest = getClosest(e, start: e)// get closest adjacent edge
-                var p = makePlane(closest, first: e, plane: p)
+                p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
                 visited.append(e)
             }
         }
+        println(planes.count)
         return planes
     }
     
     //checks if edge has already been visited
-    func inVisited(visited: [Edge], edge: Edge)-> Bool
+    func haveVisited(edgeList: [Edge], edge: Edge)-> Bool
     {
-        for e in visited
+        for e in edgeList
         {
             if e === edge
             {
-            return true
+                return true
             }
         }
         return false
     }
     
     // uses adjacency to make a plane given an edge
-    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane
+//    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
+//    {
+//        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
+//        {
+//            let closest = getClosest(edge, start: first)// get closest adjacent edge
+//            plane.addToPlane(closest)
+//            // TODO: add edge to visited
+//            return makePlane(closest, first: first, plane: plane)
+//        }
+//        return plane
+//    }
+    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane //iteratively
     {
-        if edge != first
+        
+        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
         {
-            let closest = getClosest(edge, start: first)// get closest adjacent ege
+            let closest = getClosest(edge, start: first)// get closest adjacent edge
             plane.addToPlane(closest)
-            return makePlane(closest, first: first, plane: plane)
+            // TODO: add edge to visited
         }
         return plane
     }
     
     //get closest adjancent edge
+    // get angle between lines
     func getClosest(edge: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
         var adj = adjacency[edge.end]!// find adjacent edges
-        
-        for (i,e) in enumerate(adj)
+        for e in adj
         {
-            if i == 0 // make the first edge the closest
+            if e != edge && e.start != start.start
             {
-                closest = e
-            }
-            else if dist(start.start, closest.end) > dist(start.start, e.end)
-            {
-                closest = e
+                if closest == nil // make the first edge the closest
+                {
+                    closest = e
+                }
+                else if dist(start.start, closest.end) > dist(start.start, e.end)
+                {
+                    closest = e
+                }
             }
         }
         return closest
