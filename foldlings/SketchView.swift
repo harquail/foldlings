@@ -118,6 +118,7 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
@@ -131,7 +132,8 @@ class SketchView: UIView {
                     //TODO: make edges separate
                 }
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
-                let newPath = UIBezierPath(CGPath: path.CGPath)
+                var newPath = UIBezierPath(CGPath: path.CGPath)
+                newPath = smoothPath(newPath)
                 let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
                 setPathStyle(newPath, edge:nil)
                 self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
