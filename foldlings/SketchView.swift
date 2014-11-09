@@ -128,8 +128,18 @@ class SketchView: UIView {
         case .Cut, .Fold:
             if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
+                //splits edges on collision
                 if let endColEdge = endEdgeCollision {
-                    //TODO: make edges separate
+                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
+                    self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                    self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                    self.sketch.removeEdge(endColEdge)
+                }
+                if let startColEdge = startEdgeCollision {
+                    var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
+                    self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
+                    self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
+                    self.sketch.removeEdge(startColEdge)
                 }
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 var newPath = UIBezierPath(CGPath: path.CGPath)
@@ -165,7 +175,7 @@ class SketchView: UIView {
             
             for e in sketch.edges
             {
-                if e.start == e.end //is a loop draw filled
+                if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
                 {
                     UIColor.blackColor().setFill()
                     e.path.fill()
@@ -239,7 +249,8 @@ class SketchView: UIView {
         } else {
             if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
             path.addLineToPoint(tempEnd)
-            if tempEnd == tempStart {
+            if CGPointEqualToPoint(tempEnd, tempStart) {
+                println("closing path")
                 path.closePath()
             }
         }

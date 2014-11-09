@@ -7,11 +7,14 @@
 //
 
 #import "BezierSimple.h"
+#import "CGPoint+Vector.h"
 
 @implementation BezierSimple
 
 + (float)findDistance:(CGPoint)point lineA:(CGPoint)lineA lineB:(CGPoint)lineB
 {
+    if ( CGPointEqualToPoint(lineA, lineB) ) { return CGPointGetDistance(point, lineA); }
+    
     CGPoint v1 = CGPointMake(lineB.x - lineA.x, lineB.y - lineA.y);
     CGPoint v2 = CGPointMake(point.x - lineA.x, point.y - lineA.y);
     float lenV1 = sqrt(v1.x * v1.x + v1.y * v1.y);
@@ -20,9 +23,11 @@
     return sin(angle) * lenV2;
 }
 
+//runs the douglas peucker algorithm to simplify the curves
+// if closed shape it does *not* smooth the startpoint
 + (NSArray *)douglasPeucker:(NSArray *)points epsilon:(float)epsilon
 {
-    int count = [points count];
+    int count = (int)[points count];
     if(count < 3) {
         return points;
     }
@@ -43,6 +48,7 @@
     
     //If max distance is greater than epsilon, recursively simplify
     NSArray *resultList;
+    int recurseCount = 0;
     if(dmax > epsilon) {
         NSArray *recResults1 = [self douglasPeucker:[points subarrayWithRange:NSMakeRange(0, index + 1)] epsilon:epsilon];
         
@@ -52,16 +58,18 @@
         [tmpList removeLastObject];
         [tmpList addObjectsFromArray:recResults2];
         resultList = tmpList;
+        recurseCount++;
     } else {
         resultList = [NSArray arrayWithObjects:[points objectAtIndex:0], [points objectAtIndex:count - 1],nil];
     }
     
+    NSLog(@"recurse: %d, dmax: %f", recurseCount, dmax);
     return resultList;
 }
 
 + (NSArray *)catmullRomSplineAlgorithmOnPoints:(NSArray *)points segments:(int)segments
 {
-    int count = [points count];
+    int count = (int)[points count];
     if(count < 4) {
         return points;
     }
