@@ -70,7 +70,7 @@ class SketchView: UIView {
             for edge in sketch.edges
             {
                 if edge.hitTest(touchPoint) {
-                    println("intersection: \(touchPoint)")
+//                    println("intersection: \(touchPoint)")
                     let np = getNearestPointOnPath(touchPoint, edge.path)
                     touchPoint = np
                     startEdgeCollision = edge
@@ -128,18 +128,36 @@ class SketchView: UIView {
         case .Cut, .Fold:
             if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
+                var se1:Edge?
+                var se2:Edge?
                 //splits edges on collision
-                if let endColEdge = endEdgeCollision {
-                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
-                    self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
-                    self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
-                    self.sketch.removeEdge(endColEdge)
-                }
                 if let startColEdge = startEdgeCollision {
                     var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                    self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
-                    self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
+                    se1 = self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
+                    se2 = self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
                     self.sketch.removeEdge(startColEdge)
+                }
+                if var endColEdge = endEdgeCollision {
+                    // check if we've already split this particular object this is problem so we need to make sure
+                    // look at the new edges
+                    var cut = false
+                    if (se1 != nil) && (se1!.hitTest(endPoint)) {
+                        endColEdge = se1!
+                        cut = true
+                    } else if (se2 != nil) && (se2!.hitTest(endPoint)) {
+                        endColEdge = se2!
+                        cut = true
+                    }
+                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
+                    if cut {
+                        //this might be wrong, why is endColEdge.start the same as the endpoint
+                        self.sketch.addEdge(endColEdge.end, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                    } else {
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                    }
+                    self.sketch.removeEdge(endColEdge)
                 }
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 var newPath = UIBezierPath(CGPath: path.CGPath)
@@ -276,7 +294,7 @@ class SketchView: UIView {
         {
             // test for self intersections
             if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
-                println("self intersection: \(tempEnd)")
+//                println("self intersection: \(tempEnd)")
                 let np = getNearestPointOnPath(tempEnd, path)
                 tempEnd = np
                 closed = true
@@ -285,7 +303,7 @@ class SketchView: UIView {
                 for edge in sketch.edges
                 {
                     if edge.hitTest(tempEnd) {
-                        println("intersection: \(tempEnd)")
+//                        println("intersection: \(tempEnd)")
                         let np = getNearestPointOnPath(tempEnd, edge.path)
                         tempEnd = np
                         closed = true

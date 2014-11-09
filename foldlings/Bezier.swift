@@ -122,7 +122,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
         let p1:CGPoint = (elements[0] as CGPathElementObj).points[0].CGPointValue()
         let p2:CGPoint = (elements[1] as CGPathElementObj).points[0].CGPointValue()
         let np = nearestPointOnLine(point, p1, p2)
-        println("found closest point to line: \(np) to \(point)")
+//        println("found closest point to line: \(np) to \(point)")
         return np
     } else {
         // otherwise must be a curve so get subdivisions and find nearest point
@@ -137,7 +137,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
                 minI = i
             }
         }
-        println("found closest point to curve: \(points[minI]) to \(point)")
+//        println("found closest point to curve: \(points[minI]) to \(point)")
 
         return points[minI]
     }

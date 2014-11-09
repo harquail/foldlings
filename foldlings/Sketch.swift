@@ -49,7 +49,7 @@ class Sketch : NSObject,NSCoding  {
         var path = UIBezierPath()
         path.moveToPoint(p1)
         path.addLineToPoint(p2)
-        //TODO: refactor this to be part of edge or pull style stuff into here rather than sketchview
+        // this style stuff below is ugly but whatever
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
@@ -110,7 +110,7 @@ class Sketch : NSObject,NSCoding  {
     
     
     
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind)
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind) -> Edge
     {
         var e = Edge(start: start, end: end, path: path, kind: kind)
         edges.append(e)
@@ -140,6 +140,8 @@ class Sketch : NSObject,NSCoding  {
         
         //skip 0th fold
         initPlanes()
+        
+        return e
     }
     
     //TODO: needs to work
