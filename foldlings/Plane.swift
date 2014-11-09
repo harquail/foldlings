@@ -8,12 +8,14 @@
 
 import Foundation
 import CoreGraphics
+import SceneKit
 import UIKit
 
 
 class Plane: Printable {
     var edges : [Edge]!
     var name = "Plane"
+    var path = UIBezierPath()
     var description: String {
         for e in edges{
             println(e)
@@ -29,11 +31,18 @@ class Plane: Printable {
     init(edges : [Edge])
     {
         self.edges = edges
+        
+        for (i,e) in enumerate(edges){
+            path.appendPath(e.path)
+        }
+        
+        self.sanitizePath()
     }
     
     func addToPlane(edge: Edge)
     {
         edges.append(edge)
+        path.appendPath(edge.path)
     }
     
     func inPlane(edge: Edge)-> Bool

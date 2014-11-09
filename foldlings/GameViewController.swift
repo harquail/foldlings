@@ -82,15 +82,18 @@ class GameViewController: UIViewController {
         
         
         let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-//        let offTopLeft = CGPointMake(0.1, self.view.bounds.height/2*0.01 + 0.1)
         
         
         let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
+        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
+
         let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
+        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
+
         let bottomRight = CGPointMake(0, 0)
         
         var path = UIBezierPath();
-        path.moveToPoint(topLeft)
+        path.moveToPoint(offTopLeft)
         path.addLineToPoint(topRight)
         
         let path2 = UIBezierPath();
@@ -98,25 +101,28 @@ class GameViewController: UIViewController {
         path2.addLineToPoint(bottomRight)
         
         let path3 = UIBezierPath();
-        path3.moveToPoint(bottomLeft)
-        path3.addLineToPoint(bottomLeft)
+        path3.moveToPoint(offBottomLeft)
+        path3.addLineToPoint(offBottomLeft)
         
         let path4 = UIBezierPath();
         path4.moveToPoint(topLeft)
         path4.addLineToPoint(topLeft)
         
 //        println(path)
-
-        path.appendPath(path2)
-        path.appendPath(path3)
-        path.appendPath(path4)
+//
+//        path.appendPath(path2)
+//        path.appendPath(path3)
+//        path.appendPath(path4)
 //        path.closePath()
         
-       path =  sanitizePath(path)
+        var edges = [Edge(start: offTopLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: offBottomLeft, path: path3),Edge(start: offBottomLeft, end: topLeft, path: path4)]
 
+    
         
+        let plane = Plane(edges: edges)
+        plane.sanitizePath()
         
-        let awkwardTestNode = nodeFromPath(path)
+        let awkwardTestNode = plane.node()
         
         // TODO: fix magic numbers
         awkwardTestNode.position.x -= 3.9
@@ -184,28 +190,7 @@ class GameViewController: UIViewController {
         
     }
     
-    func nodeFromPath(path:UIBezierPath) -> SCNNode{
-        
-        let node = SCNNode()
-//                let awkwardRectangle : UIBezierPath = UIBezierPath(rect: CGRectMake(0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01))
-        
-        
-//        0, 0, self.view.bounds.width*0.01, self.view.bounds.height/2*0.01
 
-        
-        
-        //            ))
-        let shape = SCNShape(path: path, extrusionDepth: 0)
-        let white = SCNMaterial()
-        white.diffuse.contents = UIColor.whiteColor()
-        white.doubleSided = true
-        
-        node.geometry = shape
-        node.geometry?.firstMaterial = white
-        
-        return node
-    }
-    
     
     
     
@@ -229,75 +214,9 @@ class GameViewController: UIViewController {
         
     }
     
-    // remove kCGPathElementMoveToPoint
-    func sanitizePath(path:UIBezierPath) -> UIBezierPath{
-        
-        let elements = path.getPathElements()
-//
-//        var bezierPoints = [CGPoint]();
-//        var subdivPoints = [CGPoint]();
-//        
-//        var index:Int = 0
-        let els = elements as [CGPathElementObj]
-        var outPath = UIBezierPath()
+    
+    
 
-        var priorPoint:CGPoint = els[0].points[0].CGPointValue()
-        var nextPoint:CGPoint = els[0].points[0].CGPointValue()
-        var priorPath:CGPathElementObj = els[0]
-        var currPath:CGPathElementObj = els[0]
-        
-        outPath.moveToPoint(els[0].points[0].CGPointValue())
-
-        for (var i = 1; i < els.count; i++) {
-            currPath = els[i]
-            switch (currPath.type.value) {
-            case kCGPathElementMoveToPoint.value:
-                println("moveToPoint")
-
-                let p = currPath.points[0].CGPointValue()
-//                outPath.addLineToPoint(p)
-
-            case kCGPathElementAddLineToPoint.value:
-                println("subdiv:addLine")
-                let p = currPath.points[0].CGPointValue()
-                outPath.addLineToPoint(p)
-//                bezierPoints.append(p)
-//                let pointsToSub:[CGPoint] = [priorPoint, p]
-//                subdivPoints  += subdivide(pointsToSub)
-//                priorPoint = p
-//                index++
-            case kCGPathElementAddQuadCurveToPoint.value:
-                println("subdiv: addQuadCurve")
-                let p1 = currPath.points[0].CGPointValue()
-                let p2 = currPath.points[1].CGPointValue()
-                outPath.addQuadCurveToPoint(p1, controlPoint: p2)
-//                bezierPoints.append(p1)
-//                bezierPoints.append(p2)
-//                priorPoint = p2
-//                index += 2
-            case kCGPathElementAddCurveToPoint.value:
-                println("subdiv: addCurveToPoint")
-                let p1 = currPath.points[0].CGPointValue()
-                let p2 = currPath.points[1].CGPointValue()
-                let p3 = currPath.points[2].CGPointValue()
-                outPath.addCurveToPoint(p1, controlPoint1: p2, controlPoint2: p2)
-//                bezierPoints.append(p1);
-//                bezierPoints.append(p2);
-//                bezierPoints.append(p3);
-//                let pointsToSub:[CGPoint] = [priorPoint, p1, p2, p3]
-//                subdivPoints  += subdivide(pointsToSub)
-//                priorPoint = p3
-//                index += 3
-            default:
-                println("other: \(currPath.type.value)")
-            }
-        }
-        println(outPath)
-//        outPath.closePath()
-
-        return outPath
-        
-    }
     
 //    func pathFromElements(elements:[CGPathElementObj]) -> UIBezierPath{
 //        
