@@ -56,7 +56,8 @@ class SketchView: UIView {
         sketch = Sketch(named: "name")
         //sketch = simpleSketch()
         //sketch.getPlanes()
-        drawBitmap()
+        incrementalImage = bitmap()
+//        drawBitmap()
     }
     
     override func drawRect(rect: CGRect)
@@ -200,11 +201,15 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
-    func drawBitmap() {
+    func bitmap() -> UIImage {
+
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
+
         
-        if(incrementalImage == nil) ///first time; paint background white
+        var tempIncremental = incrementalImage
+        
+        if(tempIncremental == nil) ///first time; paint background white
         {
             var rectpath = UIBezierPath(rect: self.bounds)
             UIColor.whiteColor().setFill()
@@ -227,14 +232,16 @@ class SketchView: UIView {
                 }
 
             }
-            incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
+            tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         }
-        incrementalImage.drawAtPoint(CGPointZero)
+        tempIncremental.drawAtPoint(CGPointZero)
         //set the stroke color
         setPathStyle(path, edge:nil).setStroke()
         path.stroke()
-        incrementalImage = UIGraphicsGetImageFromCurrentImageContext()
+        tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
+        return tempIncremental
     }
     
     
@@ -382,7 +389,8 @@ class SketchView: UIView {
     {
         incrementalImage = nil
         self.setNeedsDisplay() //draw to clear the deleted path
-        drawBitmap() //redraw full bitmap
+        incrementalImage = bitmap()
+//        drawBitmap() //redraw full bitmap
     }
 
     
