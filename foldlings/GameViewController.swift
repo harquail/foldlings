@@ -82,15 +82,18 @@ class GameViewController: UIViewController {
         
         
         let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-//        let offTopLeft = CGPointMake(0.1, self.view.bounds.height/2*0.01 + 0.1)
         
         
         let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
+        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 0.01, self.view.bounds.height/2*0.01 + 0.01)
+
         let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
+        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 0.01, 0)
+
         let bottomRight = CGPointMake(0, 0)
         
         var path = UIBezierPath();
-        path.moveToPoint(topLeft)
+        path.moveToPoint(offTopLeft)
         path.addLineToPoint(topRight)
         
         let path2 = UIBezierPath();
@@ -98,12 +101,12 @@ class GameViewController: UIViewController {
         path2.addLineToPoint(bottomRight)
         
         let path3 = UIBezierPath();
-        path3.moveToPoint(bottomLeft)
-        path3.addLineToPoint(bottomLeft)
+        path3.moveToPoint(offBottomLeft)
+        path3.addLineToPoint(offBottomLeft)
         
         let path4 = UIBezierPath();
-        path4.moveToPoint(topLeft)
-        path4.addLineToPoint(topLeft)
+        path4.moveToPoint(offTopLeft)
+        path4.addLineToPoint(offTopLeft)
         
 //        println(path)
 
@@ -293,7 +296,7 @@ class GameViewController: UIViewController {
             }
         }
         println(outPath)
-//        outPath.closePath()
+        outPath.closePath()
 
         return outPath
         
