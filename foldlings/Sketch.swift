@@ -25,6 +25,7 @@ class Sketch : NSObject,NSCoding  {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
+    var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()
     var drivingEdge: Edge!
     var bEdge1: Edge!
@@ -202,67 +203,118 @@ class Sketch : NSObject,NSCoding  {
     
     func getPlanes() -> [Plane]
     {
-        var visited : [Edge] = []
         var planes : [Plane] = []
-        var p: Plane!
-        //traverse edges and adjacency
-        for (i,e) in enumerate(visited)
+        var p = Plane()
+        visited = []
+ 
+        for (i, e) in enumerate(edges)//traverse edges
         {
-            if !inVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+            if !haveVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
+                //println("edges: \(visited)")
+                visited.append(e)
                 let closest = getClosest(e, start: e)// get closest adjacent edge
-                var p = makePlane(closest, first: e, plane: p)
+                //visited.append(closest)
+//                if i == 6{
+//                    println("edges: \(visited)")
+//                    println("edge: \(e)")
+//                    println(haveVisited(e))
+//                }
+                p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
-                visited.append(e)
+                
             }
         }
+        //println(planes.count)
         return planes
     }
     
     //checks if edge has already been visited
-    func inVisited(visited: [Edge], edge: Edge)-> Bool
+    func haveVisited(edge: Edge)-> Bool
     {
         for e in visited
         {
-            if e === edge
+            if (e.start == edge.start && e.end == edge.end)||(e.start == edge.end && e.end == edge.start)
             {
-            return true
+                return true
             }
         }
         return false
     }
     
     // uses adjacency to make a plane given an edge
-    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane
+    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
     {
-        if edge != first
+        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
         {
-            let closest = getClosest(edge, start: first)// get closest adjacent ege
+            let closest = getClosest(edge, start: first)// get closest adjacent edge
             plane.addToPlane(closest)
+            visited.append(closest)
             return makePlane(closest, first: first, plane: plane)
         }
+        //sanitize plane
         return plane
     }
+
     
     //get closest adjancent edge
-    func getClosest(edge: Edge, start: Edge) -> Edge
+    // get angle between lines
+    func getClosest(current: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
-        var adj = adjacency[edge.end]!// find adjacent edges
-        
-        for (i,e) in enumerate(adj)
+        var adj = adjacency[current.end]!// find adjacent edges
+        println("\(adj.count)")
+        for (i, e) in enumerate(adj)
         {
-            if i == 0 // make the first edge the closest
+            if e != current && e != start
             {
-                closest = e
-            }
-            else if dist(start.start, closest.end) > dist(start.start, e.end)
-            {
-                closest = e
+                if i == 0 // make the first edge the closest
+                {
+                    closest = e
+                }
+                // compare for greater angle
+                else if getAngle(start.end, start.start, closest.end) < getAngle(start.end, start.start, e.end)
+                {
+                    let ang1 = getAngle(start.end, start.start, closest.end)
+                    let ang2 = getAngle(start.end, start.start, e.end)
+                    closest = e
+                }
             }
         }
         return closest
+    }
+    
+    /// look through edges and return vertex in the hit distance if found
+    func vertexHitTest(point:CGPoint) -> CGPoint?
+    {
+        var np:CGPoint?
+        var minDist = CGFloat.max
+        for (k,v) in adjacency
+        {
+            var d = CGPointGetDistance(k, point)
+            if d < minDist
+            {
+                np = k
+                minDist = d
+            }
+        }
+        
+        return (minDist < kHitTestRadius*1.5) ? np : nil
+    }
+    
+    /// returns the edge and nearest hitpoint to point given
+    func edgeHitTest(point:CGPoint) -> (Edge, CGPoint)?
+    {
+        var r:(Edge,CGPoint)? = nil
+        for edge in self.edges
+        {
+            if let np = edge.hitTest(point) {
+                r = (edge, np)
+            }
+        }
+
+        return r
     }
 }
 

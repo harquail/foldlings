@@ -22,6 +22,17 @@ func square(a: CGFloat) -> CGFloat{
     return a * a
 }
 
+// two end points and then shared point
+func getAngle(x0: CGPoint, x1: CGPoint, x2: CGPoint) ->Double{
+    
+    let d1 = CGPointNormalize(CGPointSubtract(x1, x0) )
+    let d2 = CGPointNormalize(CGPointSubtract(x2,x0) )
+    
+    return Double(CGPointGetAngleBetween(d1, d2)) * (180/M_PI)
+    
+}
+
+
 
 struct Vector2D  {
     var x: Double = 0.0
@@ -112,7 +123,8 @@ extension Vector2D: Hashable {
 }
 extension CGPoint: Hashable {
     public var hashValue: Int { get {
-        return 100000 + Int(self.x) + 10000 + Int(self.y)
+//        return 100000 + Int(self.x*1000) + 10000 + Int(self.y*1000)
+        return "\(self.x),\(self.y)".hashValue
         }
     }
 }

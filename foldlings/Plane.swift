@@ -13,15 +13,23 @@ import UIKit
 
 
 class Plane: Printable {
+    var edges : [Edge]!
     var name = "Plane"
     var path = UIBezierPath()
     var description: String {
-        return "this is an array of edges"
+        for e in edges{
+            println(e)
+        }
+        return ""
     }
     
-    var edges : [Edge] = []
+    init()
+    {
+        self.edges = []
+    }
     
-    init(edges : [Edge]){
+    init(edges : [Edge])
+    {
         self.edges = edges
         
         for (i,e) in enumerate(edges){
@@ -31,11 +39,24 @@ class Plane: Printable {
         self.sanitizePath()
     }
     
-    func addToPlane(edge: Edge){
+    func addToPlane(edge: Edge)
+    {
         edges.append(edge)
         path.appendPath(edge.path)
     }
-    
+        
+    func inPlane(edge: Edge)-> Bool
+    {
+        for e in edges
+        {
+            if e === edge
+            {
+                return true
+            }
+        }
+        return false
+    }
+
     func node() -> SCNNode{
         
         let node = SCNNode()

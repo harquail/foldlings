@@ -41,7 +41,8 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        //simpleSketch()
+        //sketch = simpleSketch()
+        //sketch.getPlanes()
         drawBitmap()
     }
     
@@ -67,14 +68,11 @@ class SketchView: UIView {
         case .Erase:
             erase(touchPoint);
         case .Cut, .Fold:
-            for edge in sketch.edges
-            {
-                if edge.hitTest(touchPoint) {
-//                    println("intersection: \(touchPoint)")
-                    let np = getNearestPointOnPath(touchPoint, edge.path)
-                    touchPoint = np
-                    startEdgeCollision = edge
-                }
+            if let np = sketch.vertexHitTest(touchPoint) {
+                touchPoint = np
+            } else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+                touchPoint = np
+                startEdgeCollision = edge
             }
             ctr = 0
             pts[0] = touchPoint
@@ -141,10 +139,10 @@ class SketchView: UIView {
                     // check if we've already split this particular object this is problem so we need to make sure
                     // look at the new edges
                     var cut = false
-                    if (se1 != nil) && (se1!.hitTest(endPoint)) {
+                    if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
                         endColEdge = se1!
                         cut = true
-                    } else if (se2 != nil) && (se2!.hitTest(endPoint)) {
+                    } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
                         endColEdge = se2!
                         cut = true
                     }
@@ -221,7 +219,7 @@ class SketchView: UIView {
     {
         for (i,e) in enumerate(sketch.edges)
         {
-            if  e.hitTest(touchPoint) && i > 4 //first 5 edges are special fold plus paper edges
+            if  e.hitTest(touchPoint) != nil && i > 4 //first 5 edges are special fold plus paper edges
             {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
@@ -293,22 +291,21 @@ class SketchView: UIView {
         if ( dist(tempStart, tempEnd) > kMinLineLength)
         {
             // test for self intersections
-            if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
-//                println("self intersection: \(tempEnd)")
-                let np = getNearestPointOnPath(tempEnd, path)
-                tempEnd = np
-                closed = true
+            if let np = Edge.hitTest(path, point:tempEnd) {
+                if sketchMode != .Fold {
+                    tempEnd = np
+                    closed = true
+                }
             } else {
                 // test for intersections
-                for edge in sketch.edges
+                if let np = sketch.vertexHitTest(tempEnd) {
+                    tempEnd = np
+                    closed = true
+                } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
                 {
-                    if edge.hitTest(tempEnd) {
-//                        println("intersection: \(tempEnd)")
-                        let np = getNearestPointOnPath(tempEnd, edge.path)
-                        tempEnd = np
-                        closed = true
-                        endEdgeCollision = edge
-                    }
+                    tempEnd = np
+                    closed = true
+                    endEdgeCollision = edge
                 }
             }
         } else {
@@ -410,32 +407,32 @@ class SketchView: UIView {
         
         
         //edges
-        fold1.moveToPoint(b1)
-        fold1.addLineToPoint(b2)
-        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
-        
-        cut1.moveToPoint(b2)
-        cut1.addLineToPoint(b3)
-        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-        
-        cut2.moveToPoint(b3)
-        cut2.addLineToPoint(b4)
-        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
-        
-        
-        fold2.moveToPoint(b4)
-        fold2.addLineToPoint(b5)
-        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
-        
-        
-        cut3.moveToPoint(b5)
-        cut3.addLineToPoint(b6)
-        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
-        
-        cut4.moveToPoint(b6)
-        cut4.addLineToPoint(b1)
-        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
-        
+//        fold1.moveToPoint(b1)
+//        fold1.addLineToPoint(b2)
+//        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+//        
+//        cut1.moveToPoint(b2)
+//        cut1.addLineToPoint(b3)
+//        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+//        
+//        cut2.moveToPoint(b3)
+//        cut2.addLineToPoint(b4)
+//        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
+//        
+//        
+//        fold2.moveToPoint(b4)
+//        fold2.addLineToPoint(b5)
+//        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
+//        
+//        
+//        cut3.moveToPoint(b5)
+//        cut3.addLineToPoint(b6)
+//        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+//        
+//        cut4.moveToPoint(b6)
+//        cut4.addLineToPoint(b1)
+//        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
+//        
         //centerfold
         cfold1.moveToPoint(c1)
         cfold1.addLineToPoint(c2)
