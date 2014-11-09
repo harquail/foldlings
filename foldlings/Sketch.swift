@@ -139,6 +139,17 @@ class Sketch : NSObject,NSCoding  {
             }
         }
         
+        // check if our new edge is a hole that encloses other edges
+        if CGPointEqualToPoint(e.start, e.end)
+        {
+            if let collisions = shapeHitTest(path)
+            {
+                for collidingEdge in collisions {
+                    self.removeEdge(collidingEdge)
+                }
+            }
+        }
+        
         //skip 0th fold
         initPlanes()
         
@@ -316,5 +327,24 @@ class Sketch : NSObject,NSCoding  {
 
         return r
     }
+    
+    /// returns a list of edges if any of then intersect the given shape
+    /// DO not call with an unclosed path
+    func shapeHitTest(path: UIBezierPath) -> [Edge]?
+    {
+        var list = [Edge]()
+        for (k,v) in adjacency
+        {
+            if CGPathContainsPoint(path.CGPath, nil, k, true)
+            {
+                for e in v
+                {
+                    if e.path != path { list.append(e) }
+                }
+            }
+        }
+        return (list.count > 0) ? list : nil
+    }
+    
 }
 
