@@ -14,9 +14,6 @@ import UIKit
 class Plane: Printable {
     var edges : [Edge]!
     var name = "Plane"
-//    var description: String {
-//        return "this is an array of edges"
-//    }
     var description: String {
         for e in edges{
             println(e)

@@ -215,11 +215,11 @@ class Sketch : NSObject,NSCoding  {
                 visited.append(e)
                 let closest = getClosest(e, start: e)// get closest adjacent edge
                 //visited.append(closest)
-                if i == 6{
-                    println("edges: \(visited)")
-                    println("edge: \(e)")
-                    println(haveVisited(e))
-                }
+//                if i == 6{
+//                    println("edges: \(visited)")
+//                    println("edge: \(e)")
+//                    println(haveVisited(e))
+//                }
                 p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
@@ -246,13 +246,14 @@ class Sketch : NSObject,NSCoding  {
     // uses adjacency to make a plane given an edge
     func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
     {
-        if !ifEqual(edge, b: first) && !plane.inPlane(edge)// and if the edge is not already in the plane
+        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
         {
             let closest = getClosest(edge, start: first)// get closest adjacent edge
             plane.addToPlane(closest)
             visited.append(closest)
             return makePlane(closest, first: first, plane: plane)
         }
+        //sanitize plane
         return plane
     }
 
@@ -263,16 +264,15 @@ class Sketch : NSObject,NSCoding  {
     {
         var closest: Edge!
         var adj = adjacency[current.end]!// find adjacent edges
-         println("\(adj.count)")
+        println("\(adj.count)")
         for (i, e) in enumerate(adj)
         {
-            if !ifEqual(e, b: current) && !ifEqual(e, b: start)
+            if e != current && e != start
             {
                 if i == 0 // make the first edge the closest
                 {
                     closest = e
                 }
-                // TODO: make sure getting and comparing the right points
                 // compare for greater angle
                 else if getAngle(start.end, start.start, closest.end) < getAngle(start.end, start.start, e.end)
                 {
@@ -283,15 +283,6 @@ class Sketch : NSObject,NSCoding  {
             }
         }
         return closest
-    }
-    
-    // returns true if edges are equal
-    func ifEqual(a: Edge, b: Edge)-> Bool{
-        if a.start == b.start && a.end == b.end{
-            return true
-        }
-        return false
-        
     }
 }
 
