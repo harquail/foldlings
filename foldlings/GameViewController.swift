@@ -79,17 +79,14 @@ class GameViewController: UIViewController {
         //new stuff
         //TODO: fix
         
-        
-        
         let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-        
         
         let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
         let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
-
+        
         let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
         let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
-
+        
         let bottomRight = CGPointMake(0, 0)
         
         var path = UIBezierPath();
@@ -108,16 +105,9 @@ class GameViewController: UIViewController {
         path4.moveToPoint(topLeft)
         path4.addLineToPoint(topLeft)
         
-//        println(path)
-//
-//        path.appendPath(path2)
-//        path.appendPath(path3)
-//        path.appendPath(path4)
-//        path.closePath()
-        
         var edges = [Edge(start: offTopLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: offBottomLeft, path: path3),Edge(start: offBottomLeft, end: topLeft, path: path4)]
-
-    
+        
+        
         
         let plane = Plane(edges: edges)
         plane.sanitizePath()
@@ -136,6 +126,7 @@ class GameViewController: UIViewController {
         //set rotation to start angle
         awkwardTestNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
         scene.rootNode.addChildNode(awkwardTestNode)
+        awkwardTestNode.addAnimation(fadeIn(), forKey: "fade in")
         awkwardTestNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
         
         // retrieve the SCNView
@@ -172,6 +163,15 @@ class GameViewController: UIViewController {
     }
     
     
+    func fadeIn() -> CABasicAnimation{
+        
+        var fadeIn = CABasicAnimation(keyPath:"opacity");
+        fadeIn.duration = 2.0;
+        fadeIn.fromValue = 0.0;
+        fadeIn.toValue = 1.0;
+        return fadeIn
+    }
+    
     
     //back and forth rotation animation
     //TODO: fix magic numbers
@@ -190,7 +190,7 @@ class GameViewController: UIViewController {
         
     }
     
-
+    
     
     
     
@@ -201,28 +201,10 @@ class GameViewController: UIViewController {
     
     func setButtonBG(image:UIImage){
         
-        //        UIImage *originalImage = [UIImage imageNamed:@"myImage.png"];
-        // scaling set to 2.0 makes the image 1/2 the size.
-        //        let scaledImage = UIImage(CGImage: image.CGImage,
-        //    scale:(image.scale * 3),
-        //        orientation:(image.imageOrientation));
-        
         bgImage = image;
-        
-        
-        //        self.backToSketch.
         
     }
     
     
-    
-
-    
-//    func pathFromElements(elements:[CGPathElementObj]) -> UIBezierPath{
-//        
-//        cgpathadd
-//        
-//    
-//    }
     
 }
