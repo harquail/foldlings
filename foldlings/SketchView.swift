@@ -495,16 +495,12 @@ class SketchView: UIView {
     
     func previewImage() -> UIImage {
         
-        
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0);
-        
-        self.drawViewHierarchyInRect(self.bounds, afterScreenUpdates:true)
+        UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
+
+          incrementalImage.drawInRect(sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
+//        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-
-      
-//        return RBResizeImage(copied,CGSizeMake(900, 100000))
-        
         return copied;
 
     }

@@ -39,6 +39,14 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
         static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
     }
+    
+    //color for printing with laser cutter
+    struct LaserColor {
+        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
+        static var Valley:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
+        static var Fold:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
+        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
+    }
 
     var start: CGPoint
     var end: CGPoint
