@@ -352,6 +352,17 @@ class Sketch : NSObject,NSCoding  {
     {
         return self.drawingBounds.contains(point)
     }
+    
+    
+    /// alter
+    func alterEdgePoints(fromPoint:CGPoint, toPoint:CGPoint, constrainHeight:Bool = false)
+    {
+        //TODO: this should allow modifying all edges
+        for (k,v) in adjacency
+        {
+            
+        }
+    }
 
     
 }

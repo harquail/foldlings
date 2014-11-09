@@ -2,7 +2,7 @@
 //  DrawView.swift
 //  foldlings
 //
-//  Created by Tim Tregubov on 10/14/14.
+//
 //
 
 import UIKit

@@ -2,8 +2,6 @@
 //  Archivist.swift
 //  foldlings
 //
-//  Created by nook on 11/2/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 import Foundation

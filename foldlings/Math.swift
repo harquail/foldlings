@@ -2,8 +2,6 @@
 //  Math.swift
 //  foldlings
 //
-//  Created by nook on 10/7/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 //copypasta from apple tutorial

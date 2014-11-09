@@ -2,8 +2,6 @@
 //  Bezier+Additions.m
 //  foldlings
 //
-//  Created by Tim Tregubov on 11/7/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 #import "BezierSimple.h"
