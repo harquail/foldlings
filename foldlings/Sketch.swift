@@ -14,13 +14,6 @@ import UIKit
 class Sketch : NSObject,NSCoding  {
     
     
-    //TODO:store lines
-    //  edges(Fold?) in ordered array by height
-    //  vertices in ordered array
-    //  dict of vertices->edges(Fold)
-    //  create bounding box per line.  ordered array of rects indexed same as line array
-
-    
     //the folds that define a sketch
     //for now, cuts are in this array too
     var edges : [Edge] = []
@@ -34,7 +27,7 @@ class Sketch : NSObject,NSCoding  {
     var bEdge4: Edge!
 
     var name:String
-//    
+
     init(named:String)
     {
         //insert master fold and make borders into cuts

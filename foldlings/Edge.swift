@@ -12,7 +12,6 @@ func == (lhs: Edge, rhs: Edge) -> Bool {
 }
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
-    var name = "Edge"
     override var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue), \(path)"
     }

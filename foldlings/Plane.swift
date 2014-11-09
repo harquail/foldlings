@@ -11,17 +11,24 @@ import CoreGraphics
 import SceneKit
 import UIKit
 
+func == (lhs: Plane, rhs: Plane) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
 
-class Plane: Printable {
+
+class Plane: Printable, Hashable {
     var edges : [Edge]!
-    var name = "Plane"
     var path = UIBezierPath()
     var description: String {
-        for e in edges{
-            println(e)
-        }
-        return ""
+        return "\n".join(edges.map({ "\($0)" }))
     }
+    
+    var hashValue: Int { get {
+        return description.hashValue
+        }
+    }
+    
+
     
     init()
     {
