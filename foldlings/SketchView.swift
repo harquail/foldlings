@@ -218,8 +218,8 @@ class SketchView: UIView {
 
     }
     
-    //makes bezier by stringing segments together
-    //creatse segments from ctrl pts
+    ///makes bezier by stringing segments together
+    ///creatse segments from ctrl pts
     func makeBezier(aborted:Bool=false)
     {
         if !aborted
@@ -250,7 +250,6 @@ class SketchView: UIView {
             if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
             path.addLineToPoint(tempEnd)
             if CGPointEqualToPoint(tempEnd, tempStart) {
-                println("closing path")
                 path.closePath()
             }
         }
@@ -259,7 +258,7 @@ class SketchView: UIView {
 
     }
     
-    // checks and constrains current endpoint
+    /// checks and constrains current endpoint
     func checkCurrentEnd(endpoint: CGPoint) -> Bool {
         var closed:Bool = false
         
@@ -300,7 +299,6 @@ class SketchView: UIView {
             if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
                 //lets close the cut path and make a hole
                 // well the closing actually takes place in
-                println("found closing a path")
                 tempEnd = tempStart
                 closed = true
             }
@@ -309,7 +307,7 @@ class SketchView: UIView {
     }
     
     
-    // this will set the path style as well as return the color of the path to be stroked
+    /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?) -> UIColor
     {
         

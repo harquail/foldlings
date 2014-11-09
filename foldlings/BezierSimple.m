@@ -63,7 +63,6 @@
         resultList = [NSArray arrayWithObjects:[points objectAtIndex:0], [points objectAtIndex:count - 1],nil];
     }
     
-    NSLog(@"recurse: %d, dmax: %f", recurseCount, dmax);
     return resultList;
 }
 

@@ -39,7 +39,7 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
     return npath
 }
 
-//splits the path at the point given
+///splits the path at the point given
 func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIBezierPath)
 {
     let elements = path.getPathElements()
@@ -72,14 +72,12 @@ func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIB
     
     let uipathOne = pathFromPoints(smoothPoints(pathOnePoints))
     let uipathTwo = pathFromPoints(smoothPoints(pathTwoPoints))
-//    let uipathOne = pathFromPoints(pathOnePoints)
-//    let uipathTwo = pathFromPoints(pathTwoPoints)
     
     return (uipathOne, uipathTwo)
    
 }
 
-
+/// smooths a uibezierpath using douglas peucker method
 func smoothPath(path:UIBezierPath) -> UIBezierPath
 {
     let elements = path.getPathElements()
@@ -88,16 +86,25 @@ func smoothPath(path:UIBezierPath) -> UIBezierPath
     return pathFromPoints(npaths)
 }
 
+/// smooths a set of point using douglas peucker method
 func smoothPoints(points:[CGPoint]) -> [CGPoint]
 {
     let pArray = convertToNSArray(points)
-    let nArray = BezierSimple.douglasPeucker(pArray, epsilon:0.5)
+    var nArray = BezierSimple.douglasPeucker(pArray, epsilon:0.5)
+    // if it is a closed shape we want to smooth the first point also so run it twice choosing a different ordering of points
+    // clever if confusing
+    if CGPointEqualToPoint(points[0], points[points.count-1]) {
+        let midp:Int = nArray.count/2
+        var closearray = Array(nArray[midp...(nArray.count-1)])
+        closearray += Array(nArray[0...midp])
+        nArray = BezierSimple.douglasPeucker(closearray, epsilon:0.5)
+    }
     let npaths = convertToCGPoints(nArray)
     return npaths
 }
 
 
-// returns the nearest *interpolated* point on a UIBezierPath,
+/// returns the nearest *interpolated* point on a UIBezierPath,
 func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 {
     let cgpath:CGPath = path.CGPath
@@ -137,9 +144,9 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 
 }
 
-//finds path elements and subdivides them
-// currently supports movepoints and addcurves
-// needs line and quad curve to be complete
+/// finds path elements and subdivides them
+/// currently supports movepoints and addcurves
+/// needs line and quad curve to be complete
 func getSubdivisions(elements:NSArray) -> [CGPoint]{
     
     var bezierPoints = [CGPoint]();
@@ -201,7 +208,7 @@ func getSubdivisions(elements:NSArray) -> [CGPoint]{
 }
 
 
-//only currently supports cubic curves and lines
+/// only currently supports cubic curves and lines
 func subdivide(points:[CGPoint]) -> [CGPoint]
 {
     var npoints:[CGPoint] = [CGPoint]()
@@ -228,7 +235,7 @@ func subdivide(points:[CGPoint]) -> [CGPoint]
 }
 
 
-// simple 4 point bezier interpolation give a t value along the curve
+/// simple 4 point bezier interpolation give a t value along the curve
 func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat {
     let t2 = t * t;
     let t3 = t2 * t;
@@ -238,7 +245,7 @@ func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) 
         + d * t3;
 }
 
-// return the nearest point on a line to the point provided
+/// return the nearest point on a line to the point provided
 func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
 {
     let stp = (point.x - start.x, point.y - start.y)   //start->point
@@ -254,6 +261,7 @@ func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
 
 }
 
+///helper function to convert [CGPoint] -> NSArray of NSValue CGPoints
 func convertToNSArray(path:[CGPoint]) ->NSArray
 {
     var arr = NSMutableArray()
@@ -263,6 +271,7 @@ func convertToNSArray(path:[CGPoint]) ->NSArray
     return NSArray(array:arr)
 }
 
+///helper function to convert NSArray of NSValue CGPoints -> [CGPoint]
 func convertToCGPoints(path:NSArray) -> [CGPoint]
 {
     var npath = [CGPoint]()
