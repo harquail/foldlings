@@ -41,7 +41,8 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        //simpleSketch()
+        //sketch = simpleSketch()
+        //sketch.getPlanes()
         drawBitmap()
     }
     
