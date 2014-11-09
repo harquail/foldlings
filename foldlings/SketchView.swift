@@ -383,32 +383,32 @@ class SketchView: UIView {
         
         
         //edges
-        fold1.moveToPoint(b1)
-        fold1.addLineToPoint(b2)
-        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
-        
-        cut1.moveToPoint(b2)
-        cut1.addLineToPoint(b3)
-        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-        
-        cut2.moveToPoint(b3)
-        cut2.addLineToPoint(b4)
-        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
-        
-        
-        fold2.moveToPoint(b4)
-        fold2.addLineToPoint(b5)
-        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
-        
-        
-        cut3.moveToPoint(b5)
-        cut3.addLineToPoint(b6)
-        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
-        
-        cut4.moveToPoint(b6)
-        cut4.addLineToPoint(b1)
-        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
-        
+//        fold1.moveToPoint(b1)
+//        fold1.addLineToPoint(b2)
+//        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+//        
+//        cut1.moveToPoint(b2)
+//        cut1.addLineToPoint(b3)
+//        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+//        
+//        cut2.moveToPoint(b3)
+//        cut2.addLineToPoint(b4)
+//        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
+//        
+//        
+//        fold2.moveToPoint(b4)
+//        fold2.addLineToPoint(b5)
+//        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
+//        
+//        
+//        cut3.moveToPoint(b5)
+//        cut3.addLineToPoint(b6)
+//        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+//        
+//        cut4.moveToPoint(b6)
+//        cut4.addLineToPoint(b1)
+//        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
+//        
         //centerfold
         cfold1.moveToPoint(c1)
         cfold1.addLineToPoint(c2)

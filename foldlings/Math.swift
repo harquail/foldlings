@@ -23,18 +23,14 @@ func square(a: CGFloat) -> CGFloat{
 }
 
 // two end points and then shared point
-//func getAngle(x0: CGPoint, x1: CGPoint, x2: CGPoint) ->CGFloat{
-//    
-//    
-//
-//    
-//    let d1 = CGPointNormalize(CGPointSubtract(x1, x0) )
-//    let d2 = CGPointNormalize(CGPointSubtract(x2,x0) )
-//    
-//    let ang = Double(CGPointGetAngleBetween(d1, d2)) * (180/M_PI)
-//    
-//    return 1.0
-//}
+func getAngle(x0: CGPoint, x1: CGPoint, x2: CGPoint) ->Double{
+    
+    let d1 = CGPointNormalize(CGPointSubtract(x1, x0) )
+    let d2 = CGPointNormalize(CGPointSubtract(x2,x0) )
+    
+    return Double(CGPointGetAngleBetween(d1, d2)) * (180/M_PI)
+    
+}
 
 
 

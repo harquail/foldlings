@@ -133,8 +133,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return Edge.getColor(self.kind, fold:self.fold)
     }
     
-
-    
     
     
 }

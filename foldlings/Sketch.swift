@@ -25,6 +25,7 @@ class Sketch : NSObject,NSCoding  {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
+    var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()
     var drivingEdge: Edge!
     var bEdge1: Edge!
@@ -200,31 +201,39 @@ class Sketch : NSObject,NSCoding  {
     
     func getPlanes() -> [Plane]
     {
-        var visited : [Edge] = []
         var planes : [Plane] = []
-        var p: Plane!
+        var p = Plane()
+        visited = []
  
         for (i, e) in enumerate(edges)//traverse edges
         {
-            if !haveVisited(visited, edge: e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+            if !haveVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
+                //println("edges: \(visited)")
+                visited.append(e)
                 let closest = getClosest(e, start: e)// get closest adjacent edge
+                //visited.append(closest)
+                if i == 6{
+                    println("edges: \(visited)")
+                    println("edge: \(e)")
+                    println(haveVisited(e))
+                }
                 p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
-                visited.append(e)
+                
             }
         }
-        println(planes.count)
+        //println(planes.count)
         return planes
     }
     
     //checks if edge has already been visited
-    func haveVisited(edgeList: [Edge], edge: Edge)-> Bool
+    func haveVisited(edge: Edge)-> Bool
     {
-        for e in edgeList
+        for e in visited
         {
-            if e === edge
+            if (e.start == edge.start && e.end == edge.end)||(e.start == edge.end && e.end == edge.start)
             {
                 return true
             }
@@ -233,50 +242,54 @@ class Sketch : NSObject,NSCoding  {
     }
     
     // uses adjacency to make a plane given an edge
-//    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
-//    {
-//        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
-//        {
-//            let closest = getClosest(edge, start: first)// get closest adjacent edge
-//            plane.addToPlane(closest)
-//            // TODO: add edge to visited
-//            return makePlane(closest, first: first, plane: plane)
-//        }
-//        return plane
-//    }
-    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane //iteratively
+    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
     {
-        
-        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
+        if !ifEqual(edge, b: first) && !plane.inPlane(edge)// and if the edge is not already in the plane
         {
             let closest = getClosest(edge, start: first)// get closest adjacent edge
             plane.addToPlane(closest)
-            // TODO: add edge to visited
+            visited.append(closest)
+            return makePlane(closest, first: first, plane: plane)
         }
         return plane
     }
+
     
     //get closest adjancent edge
     // get angle between lines
-    func getClosest(edge: Edge, start: Edge) -> Edge
+    func getClosest(current: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
-        var adj = adjacency[edge.end]!// find adjacent edges
-        for e in adj
+        var adj = adjacency[current.end]!// find adjacent edges
+         println("\(adj.count)")
+        for (i, e) in enumerate(adj)
         {
-            if e != edge && e.start != start.start
+            if !ifEqual(e, b: current) && !ifEqual(e, b: start)
             {
-                if closest == nil // make the first edge the closest
+                if i == 0 // make the first edge the closest
                 {
                     closest = e
                 }
-                else if dist(start.start, closest.end) > dist(start.start, e.end)
+                // TODO: make sure getting and comparing the right points
+                // compare for greater angle
+                else if getAngle(start.end, start.start, closest.end) < getAngle(start.end, start.start, e.end)
                 {
+                    let ang1 = getAngle(start.end, start.start, closest.end)
+                    let ang2 = getAngle(start.end, start.start, e.end)
                     closest = e
                 }
             }
         }
         return closest
+    }
+    
+    // returns true if edges are equal
+    func ifEqual(a: Edge, b: Edge)-> Bool{
+        if a.start == b.start && a.end == b.end{
+            return true
+        }
+        return false
+        
     }
 }
 

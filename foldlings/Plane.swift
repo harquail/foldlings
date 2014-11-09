@@ -12,12 +12,22 @@ import UIKit
 
 
 class Plane: Printable {
+    var edges : [Edge]!
     var name = "Plane"
+//    var description: String {
+//        return "this is an array of edges"
+//    }
     var description: String {
-        return "this is an array of edges"
+        for e in edges{
+            println(e)
+        }
+        return ""
     }
     
-    var edges : [Edge] = []
+    init()
+    {
+        self.edges = []
+    }
     
     init(edges : [Edge])
     {
