@@ -72,13 +72,18 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
-        
         previewButton.alpha = 0.3
 
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
         startEdgeCollision = nil //reset edge collisions to nil
         endEdgeCollision = nil
+        
+        if !sketch.checkInBounds(touchPoint) {
+            cancelledTouch = touch
+            return
+        }
+        
         switch sketchMode
         {
         case .Erase:
@@ -291,6 +296,7 @@ class SketchView: UIView {
         self.setNeedsDisplay()
 
     }
+
     
     /// checks and constrains current endpoint
     func checkCurrentEnd(endpoint: CGPoint) -> Bool {

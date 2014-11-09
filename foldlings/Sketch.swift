@@ -30,7 +30,7 @@ class Sketch : NSObject,NSCoding  {
 
     var name:String
     
-    var drawingBounds: CGRect
+    var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
 
 //
     init(named:String)
@@ -59,11 +59,8 @@ class Sketch : NSObject,NSCoding  {
         
         
         let scaleFactor = CGFloat(0.9)
-        // make border into cuts
-        drawingBounds = CGRectMake(0, 0, 0, 0)
         super.init()
-       makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-
+        makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
 
     }
     
@@ -179,6 +176,8 @@ class Sketch : NSObject,NSCoding  {
 
     }
     
+    /// makes border edges 
+    /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
     func makeBorderEdges(width: CGFloat, height: CGFloat){
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width;
@@ -192,10 +191,10 @@ class Sketch : NSObject,NSCoding  {
 
         // border points
         let downabit:CGFloat = -50.0
-        let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit)
-        let b2 = CGPointMake(width, screenHeight-height + downabit)
-        let b3 = CGPointMake(width, height + downabit)
-        let b4 = CGPointMake(screenWidth-width, height + downabit)
+        let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
+        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
+        let b3 = CGPointMake(width, height + downabit)   //bottomright
+        let b4 = CGPointMake(screenWidth-width, height + downabit)  //bottomleft
         
         //border edges
         path1.moveToPoint(b1)
@@ -218,7 +217,8 @@ class Sketch : NSObject,NSCoding  {
         bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut)
         edges.append(bEdge4)
         
-         drawingBounds =  CGRectMake(b1.x, b1.y, width, height)
+        // note width here has to subtract the border
+        drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)/2.0), height)
     }
     
     func getPlanes() -> [Plane]
@@ -346,6 +346,13 @@ class Sketch : NSObject,NSCoding  {
         }
         return (list.count > 0) ? list : nil
     }
+    
+    /// check bounds for drawing
+    func checkInBounds(point: CGPoint) -> Bool
+    {
+        return self.drawingBounds.contains(point)
+    }
+
     
 }
 
