@@ -9,13 +9,16 @@ import UIKit
 
 class SketchView: UIView {
     
+    @IBOutlet var previewButton: UIButton!
+    
     enum Mode {
         case Erase
         case Cut
         case Fold
     }
     
-    
+//    @IBOutlet var uiView:UIView?
+
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -29,6 +32,16 @@ class SketchView: UIView {
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     
+    
+
+    
+//    func viewDidLoad(){
+//    
+//        self.minimumZoomScale=0.5
+//        self.maximumZoomScale=6.0
+//        self.contentSize=CGSizeMake(self.bounds.width, self.bounds.height)
+//        self.delegate=self
+//    }
     
     required init(coder aDecoder: NSCoder)
     {
@@ -59,6 +72,9 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
+        
+        previewButton.alpha = 0.3
+
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
         startEdgeCollision = nil //reset edge collisions to nil
@@ -116,6 +132,8 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        
+        previewButton.alpha = 1
         
         var endPoint = tempEnd
         let startPoint = tempStart

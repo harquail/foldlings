@@ -13,6 +13,8 @@ import UIKit
 
 class Sketch : NSObject,NSCoding  {
     
+    @IBOutlet var previewButton:UIButton?
+    
     
     //TODO:store lines
     //  edges(Fold?) in ordered array by height
@@ -34,7 +36,10 @@ class Sketch : NSObject,NSCoding  {
     var bEdge4: Edge!
 
     var name:String
-//    
+    
+    var drawingBounds: CGRect
+
+//
     init(named:String)
     {
         //insert master fold and make borders into cuts
@@ -59,9 +64,13 @@ class Sketch : NSObject,NSCoding  {
         edges.append(drivingEdge)
         name = named
         
-        super.init()
+        
+        let scaleFactor = CGFloat(0.9)
         // make border into cuts
-        makeBorderEdges(screenWidth, height: screenHeight)
+        drawingBounds = CGRectMake(0, 0, 0, 0)
+        super.init()
+       makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+
 
     }
     
@@ -90,6 +99,7 @@ class Sketch : NSObject,NSCoding  {
     }
     
     required init(coder aDecoder: NSCoder) {
+        drawingBounds = CGRectMake(0, 0, 0, 0)
         self.edges = aDecoder.decodeObjectForKey("edges") as Array
         self.folds = aDecoder.decodeObjectForKey("folds") as Array
         
@@ -166,6 +176,9 @@ class Sketch : NSObject,NSCoding  {
     }
     
     func makeBorderEdges(width: CGFloat, height: CGFloat){
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width;
+        let screenHeight = screenSize.height;
         
         //border paths
         var path1 = UIBezierPath()
@@ -174,10 +187,11 @@ class Sketch : NSObject,NSCoding  {
         var path4 = UIBezierPath()
 
         // border points
-        let b1 = CGPointMake(0, 0)
-        let b2 = CGPointMake(width, 0)
-        let b3 = CGPointMake(width, height)
-        let b4 = CGPointMake(0, height)
+        let downabit:CGFloat = -50.0
+        let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit)
+        let b2 = CGPointMake(width, screenHeight-height + downabit)
+        let b3 = CGPointMake(width, height + downabit)
+        let b4 = CGPointMake(screenWidth-width, height + downabit)
         
         //border edges
         path1.moveToPoint(b1)
@@ -199,6 +213,8 @@ class Sketch : NSObject,NSCoding  {
         path4.addLineToPoint(b1)
         bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut)
         edges.append(bEdge4)
+        
+         drawingBounds =  CGRectMake(b1.x, b1.y, width, height)
     }
     
     func getPlanes() -> [Plane]
