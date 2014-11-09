@@ -77,15 +77,11 @@ class Plane: Printable {
 
     }
     
-    // remove kCGPathElementMoveToPoint
+    // remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
         
         let elements = path.getPathElements()
-        //
-        //        var bezierPoints = [CGPoint]();
-        //        var subdivPoints = [CGPoint]();
-        //
-        //        var index:Int = 0
+
         let els = elements as [CGPathElementObj]
         var outPath = UIBezierPath()
         
@@ -100,27 +96,18 @@ class Plane: Printable {
             currPath = els[i]
             switch (currPath.type.value) {
             case kCGPathElementMoveToPoint.value:
-                println("moveToPoint")
                 let p = currPath.points[0].CGPointValue()
-                //                outPath.addLineToPoint(p)
                 
             case kCGPathElementAddLineToPoint.value:
-                println("subdiv:addLine")
                 let p = currPath.points[0].CGPointValue()
                 outPath.addLineToPoint(p)
-                //                bezierPoints.append(p)
-                //                let pointsToSub:[CGPoint] = [priorPoint, p]
-                //                subdivPoints  += subdivide(pointsToSub)
-                //                priorPoint = p
-                //                index++
+                
             case kCGPathElementAddQuadCurveToPoint.value:
-                println("subdiv: addQuadCurve")
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
                 outPath.addQuadCurveToPoint(p1, controlPoint: p2)
                 
             case kCGPathElementAddCurveToPoint.value:
-                println("subdiv: addCurveToPoint")
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
                 let p3 = currPath.points[2].CGPointValue()
@@ -131,6 +118,7 @@ class Plane: Printable {
         }
         println(outPath)
         outPath.closePath()
+        
         
         return outPath
         

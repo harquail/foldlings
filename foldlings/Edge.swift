@@ -14,17 +14,11 @@ func == (lhs: Edge, rhs: Edge) -> Bool {
 class Edge: NSObject, Printable, Hashable, NSCoding {
     var name = "Edge"
     override var description: String {
-        return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue)"
+        return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue), \(path)"
     }
     
     override var hashValue: Int { get {
-        var h:Int = 0
-        let elements = path.getPathElements() as [CGPathElementObj]
-        for el in elements {
-            h += el.hashValue
-        }
-            h /= elements.count
-            return h
+            return description.hashValue
         }
     }
     
@@ -95,11 +89,15 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
     
-    class func hitTest(path: UIBezierPath, point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool {
-        return Edge.tapTargetForPath(path, radius: radius).containsPoint(point)
+    class func hitTest(path: UIBezierPath, point:CGPoint, radius:CGFloat = kHitTestRadius) -> CGPoint? {
+        var np:CGPoint? = nil
+        if Edge.tapTargetForPath(path, radius: radius).containsPoint(point) {
+            np = getNearestPointOnPath(point, path)
+        }
+        return np
     }
     
-    func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> Bool {
+    func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> CGPoint? {
         return Edge.hitTest(path, point:point, radius:radius)
     }
     
