@@ -70,7 +70,7 @@ class SketchView: UIView {
             for edge in sketch.edges
             {
                 if edge.hitTest(touchPoint) {
-                    println("intersection: \(touchPoint)")
+//                    println("intersection: \(touchPoint)")
                     let np = getNearestPointOnPath(touchPoint, edge.path)
                     touchPoint = np
                     startEdgeCollision = edge
@@ -128,8 +128,36 @@ class SketchView: UIView {
         case .Cut, .Fold:
             if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
-                if let endColEdge = endEdgeCollision {
-                    //TODO: make edges separate
+                var se1:Edge?
+                var se2:Edge?
+                //splits edges on collision
+                if let startColEdge = startEdgeCollision {
+                    var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
+                    se1 = self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
+                    se2 = self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
+                    self.sketch.removeEdge(startColEdge)
+                }
+                if var endColEdge = endEdgeCollision {
+                    // check if we've already split this particular object this is problem so we need to make sure
+                    // look at the new edges
+                    var cut = false
+                    if (se1 != nil) && (se1!.hitTest(endPoint)) {
+                        endColEdge = se1!
+                        cut = true
+                    } else if (se2 != nil) && (se2!.hitTest(endPoint)) {
+                        endColEdge = se2!
+                        cut = true
+                    }
+                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
+                    if cut {
+                        //this might be wrong, why is endColEdge.start the same as the endpoint
+                        self.sketch.addEdge(endColEdge.end, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                    } else {
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                    }
+                    self.sketch.removeEdge(endColEdge)
                 }
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 var newPath = UIBezierPath(CGPath: path.CGPath)
@@ -165,7 +193,7 @@ class SketchView: UIView {
             
             for e in sketch.edges
             {
-                if e.start == e.end //is a loop draw filled
+                if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
                 {
                     UIColor.blackColor().setFill()
                     e.path.fill()
@@ -208,8 +236,8 @@ class SketchView: UIView {
 
     }
     
-    //makes bezier by stringing segments together
-    //creatse segments from ctrl pts
+    ///makes bezier by stringing segments together
+    ///creatse segments from ctrl pts
     func makeBezier(aborted:Bool=false)
     {
         if !aborted
@@ -239,7 +267,7 @@ class SketchView: UIView {
         } else {
             if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
             path.addLineToPoint(tempEnd)
-            if tempEnd == tempStart {
+            if CGPointEqualToPoint(tempEnd, tempStart) {
                 path.closePath()
             }
         }
@@ -248,7 +276,7 @@ class SketchView: UIView {
 
     }
     
-    // checks and constrains current endpoint
+    /// checks and constrains current endpoint
     func checkCurrentEnd(endpoint: CGPoint) -> Bool {
         var closed:Bool = false
         
@@ -266,7 +294,7 @@ class SketchView: UIView {
         {
             // test for self intersections
             if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
-                println("self intersection: \(tempEnd)")
+//                println("self intersection: \(tempEnd)")
                 let np = getNearestPointOnPath(tempEnd, path)
                 tempEnd = np
                 closed = true
@@ -275,7 +303,7 @@ class SketchView: UIView {
                 for edge in sketch.edges
                 {
                     if edge.hitTest(tempEnd) {
-                        println("intersection: \(tempEnd)")
+//                        println("intersection: \(tempEnd)")
                         let np = getNearestPointOnPath(tempEnd, edge.path)
                         tempEnd = np
                         closed = true
@@ -289,7 +317,6 @@ class SketchView: UIView {
             if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
                 //lets close the cut path and make a hole
                 // well the closing actually takes place in
-                println("found closing a path")
                 tempEnd = tempStart
                 closed = true
             }
@@ -298,7 +325,7 @@ class SketchView: UIView {
     }
     
     
-    // this will set the path style as well as return the color of the path to be stroked
+    /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?) -> UIColor
     {
         
