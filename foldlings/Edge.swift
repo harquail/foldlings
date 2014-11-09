@@ -8,9 +8,7 @@ import CoreGraphics
 import UIKit
 
 func == (lhs: Edge, rhs: Edge) -> Bool {
-    let lhsP = lhs.path.getPathElements() as [CGPathElementObj]
-    let rhsP = rhs.path.getPathElements() as [CGPathElementObj]
-    return lhsP == rhsP
+    return lhs === rhs
 }
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
