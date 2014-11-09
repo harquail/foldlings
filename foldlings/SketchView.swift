@@ -1,7 +1,7 @@
 //
 //  DrawView.swift
 //  foldlings
-//  
+//
 //  Created by Tim Tregubov on 10/14/14.
 //
 
@@ -17,8 +17,8 @@ class SketchView: UIView {
         case Fold
     }
     
-//    @IBOutlet var uiView:UIView?
-
+    //    @IBOutlet var uiView:UIView?
+    
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -33,15 +33,15 @@ class SketchView: UIView {
     var endEdgeCollision:Edge?
     
     
-
     
-//    func viewDidLoad(){
-//    
-//        self.minimumZoomScale=0.5
-//        self.maximumZoomScale=6.0
-//        self.contentSize=CGSizeMake(self.bounds.width, self.bounds.height)
-//        self.delegate=self
-//    }
+    
+    //    func viewDidLoad(){
+    //
+    //        self.minimumZoomScale=0.5
+    //        self.maximumZoomScale=6.0
+    //        self.contentSize=CGSizeMake(self.bounds.width, self.bounds.height)
+    //        self.delegate=self
+    //    }
     
     required init(coder aDecoder: NSCoder)
     {
@@ -56,8 +56,8 @@ class SketchView: UIView {
         sketch = Sketch(named: "name")
         //sketch = simpleSketch()
         //sketch.getPlanes()
-        incrementalImage = bitmap()
-//        drawBitmap()
+        incrementalImage = bitmap(false)
+        //        drawBitmap()
     }
     
     override func drawRect(rect: CGRect)
@@ -65,8 +65,8 @@ class SketchView: UIView {
         if (incrementalImage != nil)
         {
             incrementalImage.drawInRect(rect)
-
-            setPathStyle(path, edge:nil).setStroke()
+            
+            setPathStyle(path, edge:nil, grayscale:false).setStroke()
             path.stroke()
         }
     }
@@ -74,7 +74,7 @@ class SketchView: UIView {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         previewButton.alpha = 0.3
-
+        
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
         startEdgeCollision = nil //reset edge collisions to nil
@@ -100,7 +100,7 @@ class SketchView: UIView {
             pts[0] = touchPoint
             tempStart = touchPoint
             tempEnd = touchPoint //set end to same point at start
-            setPathStyle(path, edge:nil)
+            setPathStyle(path, edge:nil, grayscale:false)
         default:
             break
         }
@@ -138,6 +138,14 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        
+        //        var touch = touches.anyObject() as UITouch
+        //        var touchPoint: CGPoint = touch.locationInView(self)
+        //
+        //        if !sketch.checkInBounds(touchPoint) {
+        //            cancelledTouch = touch
+        //            return
+        //        }
         
         previewButton.alpha = 1
         
@@ -185,7 +193,7 @@ class SketchView: UIView {
                 var newPath = UIBezierPath(CGPath: path.CGPath)
                 newPath = smoothPath(newPath)
                 let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
-                setPathStyle(newPath, edge:nil)
+                setPathStyle(newPath, edge:nil, grayscale:false)
                 self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
                 self.setNeedsDisplay()
             }
@@ -201,14 +209,16 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
-    func bitmap() -> UIImage {
-
+    func bitmap(grayscale:Bool) -> UIImage {
+        
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
-
         
         var tempIncremental = incrementalImage
         
+        if(grayscale){
+            tempIncremental = nil
+        }
         if(tempIncremental == nil) ///first time; paint background white
         {
             var rectpath = UIBezierPath(rect: self.bounds)
@@ -217,26 +227,46 @@ class SketchView: UIView {
             
             // this will draw all possibly set paths
             
-            for e in sketch.edges
-            {
-                if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
+            
+            if(!grayscale){
+                for e in sketch.edges
                 {
-                    UIColor.blackColor().setFill()
-                    e.path.fill()
+                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
+                    {
+                        UIColor.blackColor().setFill()
+                        e.path.fill()
+                    }
+                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                    e.path.stroke()
+                    // just draw that point to indicate it...
+                    if !e.path.empty && e.start != e.end {
+                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
+                    }
+                    
                 }
-                setPathStyle(e.path, edge:e).setStroke()
-                e.path.stroke()
-                // just draw that point to indicate it...
-                if !e.path.empty && e.start != e.end {
-                    drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
+            }
+            else{
+                for e in sketch.edges
+                {
+//                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
+//                    {
+//                        UIColor.blackColor().setFill()
+//                        e.path.fill()
+//                    }
+                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                    e.path.stroke()
+                    // just draw that point to indicate it...
+//                    if !e.path.empty && e.start != e.end {
+//                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
+//                    }
+                    
                 }
-
             }
             tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         }
         tempIncremental.drawAtPoint(CGPointZero)
         //set the stroke color
-        setPathStyle(path, edge:nil).setStroke()
+        setPathStyle(path, edge:nil, grayscale:grayscale).setStroke()
         path.stroke()
         tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -258,10 +288,10 @@ class SketchView: UIView {
                 forceRedraw()
                 //TODO: better way of handling this?
                 //  need to also: refine to specific line if there are more than 1
-
+                
             }
         }
-
+        
     }
     
     ///makes bezier by stringing segments together
@@ -282,7 +312,7 @@ class SketchView: UIView {
                 path = UIBezierPath()
                 path.moveToPoint(tempStart)
                 path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
-                setPathStyle(path, edge:nil)
+                setPathStyle(path, edge:nil, grayscale:false)
             } else {
                 pts[3] = newEnd
                 if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
@@ -301,9 +331,9 @@ class SketchView: UIView {
         }
         ctr = 1
         self.setNeedsDisplay()
-
+        
     }
-
+    
     
     /// checks and constrains current endpoint
     func checkCurrentEnd(endpoint: CGPoint) -> Bool {
@@ -354,7 +384,7 @@ class SketchView: UIView {
     
     
     /// this will set the path style as well as return the color of the path to be stroked
-    func setPathStyle(path:UIBezierPath, edge:Edge?) -> UIColor
+    func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
         
         var edgekind:Edge.Kind!
@@ -365,16 +395,31 @@ class SketchView: UIView {
         {
             edgekind = e.kind
             fold = e.fold
-            color = e.getColor()
+            if(grayscale){
+                color = e.getLaserColor()
+            }
+            else{
+                color = e.getColor()
+            }
         } else {
             edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
             fold = Edge.Fold.Unknown
+            if(grayscale){
+                color = Edge.getLaserColor(edgekind, fold:fold)
+            }
+            else{
             color = Edge.getColor(edgekind, fold:fold)
+            }
         }
         
-        if edgekind == Edge.Kind.Fold {
+        if edgekind == Edge.Kind.Fold && !grayscale {
             path.setLineDash([10,5], count: 2, phase:0)
-        } else {
+        }
+        else if edgekind == Edge.Kind.Fold && grayscale{
+            path.setLineDash([1,10], count: 2, phase:0)
+
+        }
+        else {
             path.setLineDash(nil, count: 0, phase:0)
         }
         
@@ -389,10 +434,9 @@ class SketchView: UIView {
     {
         incrementalImage = nil
         self.setNeedsDisplay() //draw to clear the deleted path
-        incrementalImage = bitmap()
-//        drawBitmap() //redraw full bitmap
+        incrementalImage = bitmap(false) // the bitmap isn't grayscale
     }
-
+    
     
     func simpleSketch()->Sketch
     {
@@ -407,7 +451,7 @@ class SketchView: UIView {
         var cfold1 = UIBezierPath()
         var cfold2 = UIBezierPath()
         var cfold3 = UIBezierPath()
-
+        
         
         var top = UIBezierPath()
         var rside1 = UIBezierPath()
@@ -423,7 +467,7 @@ class SketchView: UIView {
         let b4 = CGPointMake(520, 680)
         let b5 = CGPointMake(260, 680)
         let b6 = CGPointMake(260, 512)
-
+        
         
         // for centerfold
         let c1 = CGPointMake(0, 512)//s6
@@ -439,32 +483,32 @@ class SketchView: UIView {
         
         
         //edges
-//        fold1.moveToPoint(b1)
-//        fold1.addLineToPoint(b2)
-//        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
-//        
-//        cut1.moveToPoint(b2)
-//        cut1.addLineToPoint(b3)
-//        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-//        
-//        cut2.moveToPoint(b3)
-//        cut2.addLineToPoint(b4)
-//        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
-//        
-//        
-//        fold2.moveToPoint(b4)
-//        fold2.addLineToPoint(b5)
-//        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
-//        
-//        
-//        cut3.moveToPoint(b5)
-//        cut3.addLineToPoint(b6)
-//        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
-//        
-//        cut4.moveToPoint(b6)
-//        cut4.addLineToPoint(b1)
-//        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
-//        
+        //        fold1.moveToPoint(b1)
+        //        fold1.addLineToPoint(b2)
+        //        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+        //
+        //        cut1.moveToPoint(b2)
+        //        cut1.addLineToPoint(b3)
+        //        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+        //
+        //        cut2.moveToPoint(b3)
+        //        cut2.addLineToPoint(b4)
+        //        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
+        //
+        //
+        //        fold2.moveToPoint(b4)
+        //        fold2.addLineToPoint(b5)
+        //        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
+        //
+        //
+        //        cut3.moveToPoint(b5)
+        //        cut3.addLineToPoint(b6)
+        //        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+        //
+        //        cut4.moveToPoint(b6)
+        //        cut4.addLineToPoint(b1)
+        //        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
+        //
         //centerfold
         cfold1.moveToPoint(c1)
         cfold1.addLineToPoint(c2)
@@ -505,18 +549,18 @@ class SketchView: UIView {
         
         return asketch
     }
-
+    
     
     func previewImage() -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
-
-          incrementalImage.drawInRect(sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
-//        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
+        
+        incrementalImage.drawInRect(sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
+        //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return copied;
-
+        
     }
     
     

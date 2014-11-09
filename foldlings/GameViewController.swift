@@ -14,7 +14,8 @@ import Foundation
 class GameViewController: UIViewController {
     
     var bgImage:UIImage!
-    
+    var laserImage:UIImage!
+
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -28,12 +29,21 @@ class GameViewController: UIViewController {
         
         let activityViewController = UIActivityViewController(activityItems: [bgImage], applicationActivities: nil)
         activityViewController.popoverPresentationController!.sourceView = self.view
-        //should be this:
-        //        [UIActivityTypeMail, UIActivityTypeSaveToCameraRoll, UIActivityTypePrint]
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
         self.presentViewController(activityViewController, animated: true, completion: nil)
         
     }
+    
+    @IBAction func laserButton (sender: UIButton){
+        
+        
+        let activityViewController = UIActivityViewController(activityItems: [laserImage], applicationActivities: nil)
+        activityViewController.popoverPresentationController!.sourceView = self.view
+        activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+        
+    }
+    
     
     
     // Make fake graph that follows the rules:

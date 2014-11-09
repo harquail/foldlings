@@ -40,6 +40,7 @@ class SketchViewController: UIViewController{
             let viewController:GameViewController = segue.destinationViewController as GameViewController
             
             viewController.setButtonBG(sketchView.previewImage())
+            viewController.laserImage = sketchView.bitmap(true)
 //            viewController.
             // pass data to next view
         }

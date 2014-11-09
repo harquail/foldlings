@@ -218,7 +218,7 @@ class Sketch : NSObject,NSCoding  {
         edges.append(bEdge4)
         
         // note width here has to subtract the border
-        drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)/2.0), height)
+        drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
     func getPlanes() -> [Plane]

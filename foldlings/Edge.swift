@@ -42,10 +42,10 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     //color for printing with laser cutter
     struct LaserColor {
-        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
-        static var Valley:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
-        static var Fold:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 50.0)
-        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Hill:UIColor = UIColor.blackColor()
+        static var Valley:UIColor = UIColor.blackColor()
+        static var Fold:UIColor = UIColor.blackColor()
+        static var Cut:UIColor = UIColor.blackColor()
     }
 
     var start: CGPoint
@@ -129,6 +129,34 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             color = Color.Cut
         }
         return color
+    }
+    
+    
+    class func getLaserColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
+    {
+        var color: UIColor!
+        switch kind
+        {
+        case .Fold:
+            switch fold {
+            case .Hill:
+                color = LaserColor.Hill
+            case .Valley:
+                color = LaserColor.Valley
+            default:
+                color = LaserColor.Fold
+            }
+        case .Cut:
+            color = LaserColor.Cut
+        default:
+            color = LaserColor.Cut
+        }
+        return color
+    }
+    
+    func getLaserColor() -> UIColor
+    {
+        return Edge.getLaserColor(self.kind, fold:self.fold)
     }
     
     func getColor() -> UIColor
