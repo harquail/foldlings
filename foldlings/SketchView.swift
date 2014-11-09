@@ -68,14 +68,11 @@ class SketchView: UIView {
         case .Erase:
             erase(touchPoint);
         case .Cut, .Fold:
-            for edge in sketch.edges
-            {
-                if edge.hitTest(touchPoint) {
-//                    println("intersection: \(touchPoint)")
-                    let np = getNearestPointOnPath(touchPoint, edge.path)
-                    touchPoint = np
-                    startEdgeCollision = edge
-                }
+            if let np = sketch.vertexHitTest(touchPoint) {
+                touchPoint = np
+            } else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+                touchPoint = np
+                startEdgeCollision = edge
             }
             ctr = 0
             pts[0] = touchPoint
@@ -142,10 +139,10 @@ class SketchView: UIView {
                     // check if we've already split this particular object this is problem so we need to make sure
                     // look at the new edges
                     var cut = false
-                    if (se1 != nil) && (se1!.hitTest(endPoint)) {
+                    if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
                         endColEdge = se1!
                         cut = true
-                    } else if (se2 != nil) && (se2!.hitTest(endPoint)) {
+                    } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
                         endColEdge = se2!
                         cut = true
                     }
@@ -222,7 +219,7 @@ class SketchView: UIView {
     {
         for (i,e) in enumerate(sketch.edges)
         {
-            if  e.hitTest(touchPoint) && i > 4 //first 5 edges are special fold plus paper edges
+            if  e.hitTest(touchPoint) != nil && i > 4 //first 5 edges are special fold plus paper edges
             {
                 //remove points and force a redraw by setting incrementalImage to nil
                 // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
@@ -294,22 +291,21 @@ class SketchView: UIView {
         if ( dist(tempStart, tempEnd) > kMinLineLength)
         {
             // test for self intersections
-            if sketchMode != .Fold && Edge.hitTest(path, point:tempEnd) {
-//                println("self intersection: \(tempEnd)")
-                let np = getNearestPointOnPath(tempEnd, path)
-                tempEnd = np
-                closed = true
+            if let np = Edge.hitTest(path, point:tempEnd) {
+                if sketchMode != .Fold {
+                    tempEnd = np
+                    closed = true
+                }
             } else {
                 // test for intersections
-                for edge in sketch.edges
+                if let np = sketch.vertexHitTest(tempEnd) {
+                    tempEnd = np
+                    closed = true
+                } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
                 {
-                    if edge.hitTest(tempEnd) {
-//                        println("intersection: \(tempEnd)")
-                        let np = getNearestPointOnPath(tempEnd, edge.path)
-                        tempEnd = np
-                        closed = true
-                        endEdgeCollision = edge
-                    }
+                    tempEnd = np
+                    closed = true
+                    endEdgeCollision = edge
                 }
             }
         } else {
