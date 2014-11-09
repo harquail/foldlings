@@ -16,13 +16,6 @@ class Sketch : NSObject,NSCoding  {
     @IBOutlet var previewButton:UIButton?
     
     
-    //TODO:store lines
-    //  edges(Fold?) in ordered array by height
-    //  vertices in ordered array
-    //  dict of vertices->edges(Fold)
-    //  create bounding box per line.  ordered array of rects indexed same as line array
-
-    
     //the folds that define a sketch
     //for now, cuts are in this array too
     var edges : [Edge] = []
@@ -126,13 +119,13 @@ class Sketch : NSObject,NSCoding  {
         var e = Edge(start: start, end: end, path: path, kind: kind)
         edges.append(e)
         //TODO: more here to work correctly
-        if var a = adjacency[start] {
-            a.append(e)
+        if adjacency[start] != nil{
+            adjacency[start]!.append(e)
         } else {
             adjacency[start] = [e]
         }
-        if var a = adjacency[end] {
-            a.append(e)
+        if adjacency[end] != nil {
+            adjacency[end]!.append(e)
         } else {
             adjacency[end] = [e]
         }
@@ -146,6 +139,17 @@ class Sketch : NSObject,NSCoding  {
             {
                 folds.append(e)
                 folds.sort({ $0.start.y > $1.start.y })
+            }
+        }
+        
+        // check if our new edge is a hole that encloses other edges
+        if CGPointEqualToPoint(e.start, e.end)
+        {
+            if let collisions = shapeHitTest(path)
+            {
+                for collidingEdge in collisions {
+                    self.removeEdge(collidingEdge)
+                }
             }
         }
         
@@ -225,17 +229,11 @@ class Sketch : NSObject,NSCoding  {
  
         for (i, e) in enumerate(edges)//traverse edges
         {
-            if !haveVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+
+            if !inVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
-                //println("edges: \(visited)")
                 visited.append(e)
                 let closest = getClosest(e, start: e)// get closest adjacent edge
-                //visited.append(closest)
-//                if i == 6{
-//                    println("edges: \(visited)")
-//                    println("edge: \(e)")
-//                    println(haveVisited(e))
-//                }
                 p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
@@ -247,7 +245,7 @@ class Sketch : NSObject,NSCoding  {
     }
     
     //checks if edge has already been visited
-    func haveVisited(edge: Edge)-> Bool
+    func inVisited(edge: Edge)-> Bool
     {
         for e in visited
         {
@@ -279,13 +277,11 @@ class Sketch : NSObject,NSCoding  {
     func getClosest(current: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
-        var adj = adjacency[current.end]!// find adjacent edges
-        println("\(adj.count)")
-        for (i, e) in enumerate(adj)
+        for e in adjacency[current.end]!
         {
             if e != current && e != start
             {
-                if i == 0 // make the first edge the closest
+                if closest == nil  // make the first edge the closest
                 {
                     closest = e
                 }
@@ -332,5 +328,24 @@ class Sketch : NSObject,NSCoding  {
 
         return r
     }
+    
+    /// returns a list of edges if any of then intersect the given shape
+    /// DO not call with an unclosed path
+    func shapeHitTest(path: UIBezierPath) -> [Edge]?
+    {
+        var list = [Edge]()
+        for (k,v) in adjacency
+        {
+            if CGPathContainsPoint(path.CGPath, nil, k, true)
+            {
+                for e in v
+                {
+                    if e.path != path { list.append(e) }
+                }
+            }
+        }
+        return (list.count > 0) ? list : nil
+    }
+    
 }
 

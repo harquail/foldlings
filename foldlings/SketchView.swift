@@ -331,7 +331,7 @@ class SketchView: UIView {
             //  needs to make sure that the path bounds are greater than minlinelength
             if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
                 //lets close the cut path and make a hole
-                // well the closing actually takes place in
+                //TODO: this needs revisiting once planes is working
                 tempEnd = tempStart
                 closed = true
             }
