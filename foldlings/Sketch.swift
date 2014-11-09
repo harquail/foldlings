@@ -116,13 +116,13 @@ class Sketch : NSObject,NSCoding  {
         var e = Edge(start: start, end: end, path: path, kind: kind)
         edges.append(e)
         //TODO: more here to work correctly
-        if var a = adjacency[start] {
-            a.append(e)
+        if adjacency[start] != nil{
+            adjacency[start]!.append(e)
         } else {
             adjacency[start] = [e]
         }
-        if var a = adjacency[end] {
-            a.append(e)
+        if adjacency[end] != nil {
+            adjacency[end]!.append(e)
         } else {
             adjacency[end] = [e]
         }
@@ -209,17 +209,11 @@ class Sketch : NSObject,NSCoding  {
  
         for (i, e) in enumerate(edges)//traverse edges
         {
-            if !haveVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+
+            if !inVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
             {
-                //println("edges: \(visited)")
                 visited.append(e)
                 let closest = getClosest(e, start: e)// get closest adjacent edge
-                //visited.append(closest)
-//                if i == 6{
-//                    println("edges: \(visited)")
-//                    println("edge: \(e)")
-//                    println(haveVisited(e))
-//                }
                 p = makePlane(closest, first: e, plane: p)
                 //save plane in planes
                 planes.append(p)
@@ -231,7 +225,7 @@ class Sketch : NSObject,NSCoding  {
     }
     
     //checks if edge has already been visited
-    func haveVisited(edge: Edge)-> Bool
+    func inVisited(edge: Edge)-> Bool
     {
         for e in visited
         {
@@ -263,13 +257,11 @@ class Sketch : NSObject,NSCoding  {
     func getClosest(current: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
-        var adj = adjacency[current.end]!// find adjacent edges
-        println("\(adj.count)")
-        for (i, e) in enumerate(adj)
+        for e in adjacency[current.end]!
         {
             if e != current && e != start
             {
-                if i == 0 // make the first edge the closest
+                if closest == nil  // make the first edge the closest
                 {
                     closest = e
                 }
