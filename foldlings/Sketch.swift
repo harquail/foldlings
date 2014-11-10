@@ -52,7 +52,7 @@ class Sketch : NSObject,NSCoding  {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold, isMaster: true)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
         name = named
@@ -159,8 +159,18 @@ class Sketch : NSObject,NSCoding  {
     //TODO: needs to work
     func removeEdge(edge:Edge)
     {
-        edges = edges.filter({ $0 != edge })
-        initPlanes()
+        if !edge.isMaster {
+            edge.path.removeAllPoints()
+            edges = edges.filter({ $0 != edge })
+            if adjacency[edge.start] != nil {
+                adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
+            }
+            if adjacency[edge.end] != nil {
+                adjacency[edge.end] = adjacency[edge.end]!.filter({ $0 != edge })
+            }
+
+            initPlanes()
+        }
     }
     
     func initPlanes()
@@ -199,22 +209,22 @@ class Sketch : NSObject,NSCoding  {
         //border edges
         path1.moveToPoint(b1)
         path1.addLineToPoint(b2)
-        bEdge1 = Edge(start: b1, end: b2, path: path1, kind: Edge.Kind.Cut)
+        bEdge1 = Edge(start: b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge1)
         
         path2.moveToPoint(b2)
         path2.addLineToPoint(b3)
-        bEdge2 = Edge(start: b2, end: b3, path: path2, kind: Edge.Kind.Cut)
+        bEdge2 = Edge(start: b2, end: b3, path: path2, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge2)
         
         path3.moveToPoint(b3)
         path3.addLineToPoint(b4)
-        bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut)
+        bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge3)
         
         path4.moveToPoint(b4)
         path4.addLineToPoint(b1)
-        bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut)
+        bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge4)
         
         // note width here has to subtract the border
