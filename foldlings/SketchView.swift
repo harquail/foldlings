@@ -57,7 +57,6 @@ class SketchView: UIView {
         //sketch = simpleSketch()
         //sketch.getPlanes()
         incrementalImage = bitmap(false)
-        //        drawBitmap()
     }
     
     override func drawRect(rect: CGRect)
@@ -80,6 +79,7 @@ class SketchView: UIView {
         startEdgeCollision = nil //reset edge collisions to nil
         endEdgeCollision = nil
         
+        // ignore touch if outside of bounds
         if !sketch.checkInBounds(touchPoint) {
             cancelledTouch = touch
             return
@@ -138,14 +138,6 @@ class SketchView: UIView {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        
-        //        var touch = touches.anyObject() as UITouch
-        //        var touchPoint: CGPoint = touch.locationInView(self)
-        //
-        //        if !sketch.checkInBounds(touchPoint) {
-        //            cancelledTouch = touch
-        //            return
-        //        }
         
         previewButton.alpha = 1
         
@@ -245,21 +237,12 @@ class SketchView: UIView {
                     
                 }
             }
-            else{
+            else // this is a grayscale for print image
+            {
                 for e in sketch.edges
                 {
-//                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
-//                    {
-//                        UIColor.blackColor().setFill()
-//                        e.path.fill()
-//                    }
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
-                    // just draw that point to indicate it...
-//                    if !e.path.empty && e.start != e.end {
-//                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
-//                    }
-                    
                 }
             }
             tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
@@ -275,20 +258,15 @@ class SketchView: UIView {
     }
     
     
+    /// erase hitpoint edgee
     func erase(touchPoint: CGPoint)
-    {
+    {//TODO: refactor this to sketch
         for (i,e) in enumerate(sketch.edges)
         {
-            if  e.hitTest(touchPoint) != nil && i > 4 //first 5 edges are special fold plus paper edges
+            if  e.hitTest(touchPoint) != nil
             {
-                //remove points and force a redraw by setting incrementalImage to nil
-                // incremental image is a bitmap so that we don't ahve to stroke the paths every single draw call
-                e.path.removeAllPoints()
                 sketch.removeEdge(e) //remove
                 forceRedraw()
-                //TODO: better way of handling this?
-                //  need to also: refine to specific line if there are more than 1
-                
             }
         }
         
@@ -434,6 +412,7 @@ class SketchView: UIView {
     {
         incrementalImage = nil
         self.setNeedsDisplay() //draw to clear the deleted path
+        endPaths.removeAll(keepCapacity: false)
         incrementalImage = bitmap(false) // the bitmap isn't grayscale
     }
     

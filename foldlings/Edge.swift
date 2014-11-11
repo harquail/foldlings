@@ -53,6 +53,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var path = UIBezierPath()
     var fold = Fold.Unknown
     var kind = Kind.Cut
+    var isMaster = false
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
         self.start = start
@@ -60,10 +61,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = path
     }
     
-    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown, isMaster:Bool = false) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
         self.fold = fold
+        self.isMaster = isMaster
     }
 
     

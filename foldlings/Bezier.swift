@@ -8,8 +8,8 @@ import Foundation
 import CoreGraphics
 import UIKit
 
-//how fine to make the subdivisions, this makes 50 subdivs per line, change to scale with line length?
-let kBezierIncrements:CGFloat = 0.02
+//how fine to make the subdivisions -- is divided by the length of the line
+let kBezierIncrements:CGFloat = 0.5
 
 func pathFromPoints(path:[CGPoint]) -> UIBezierPath
 {
@@ -215,15 +215,18 @@ func subdivide(points:[CGPoint]) -> [CGPoint]
     
     switch points.count {
     case 4:
-        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements {
+        let bounds = pathFromPoints(points).bounds
+        let length = max(bounds.width, bounds.height)
+        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements / length {
             let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
             npoints.append(point);
         }
     case 2:
         let start = points[0]
         let end = points[1]
+        let length = CGPointGetDistance(start, end)
         let ste = (end.x - start.x, end.y - start.y)
-        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements {
+        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements / length{
             let point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
             npoints.append(point);
         }
