@@ -234,7 +234,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-61-y3z">
                                 <rect key="frame" x="16" y="856" width="167" height="148"/>
-                                <state key="normal" title="Button" backgroundImage="send.jpeg">
+                                <state key="normal" backgroundImage="send.jpeg">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -243,7 +243,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nw-xJ-XVA">
                                 <rect key="frame" x="191" y="857" width="163" height="147"/>
-                                <state key="normal" title="Button" backgroundImage="print.jpeg">
+                                <state key="normal" backgroundImage="print.jpeg">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>

@@ -15,7 +15,8 @@ class GameViewController: UIViewController {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
-
+//    var shareRectangle: CGRect
+    
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -27,23 +28,29 @@ class GameViewController: UIViewController {
     @IBAction func printButton (sender: UIButton){
         
         
-        let activityViewController = UIActivityViewController(activityItems: [bgImage], applicationActivities: nil)
-        activityViewController.popoverPresentationController!.sourceView = self.view
-        activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        popupShare(bgImage, xposition:273)
+
         
     }
     
     @IBAction func laserButton (sender: UIButton){
         
-        
-        let activityViewController = UIActivityViewController(activityItems: [laserImage], applicationActivities: nil)
-        activityViewController.popoverPresentationController!.sourceView = self.view
-        activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        popupShare(laserImage, xposition:100)
+       
         
     }
     
+    
+    func popupShare(image:UIImage, xposition:CGFloat){
+    
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController!.sourceView = self.view
+        activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
+        let popover = activityViewController.popoverPresentationController!
+        popover.sourceView = self.view
+        popover.sourceRect = CGRectMake(xposition,(self.view.bounds.height - 110),0,0)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
     
     
     // Make fake graph that follows the rules:
@@ -55,6 +62,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        rect = CGRectMake(0, 0, 1000, 300)
         
         // create a new scene
         let scene = SCNScene()
