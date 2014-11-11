@@ -40,7 +40,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
     }
     
-    //color for printing with laser cutter
+    /// color for printing with laser cutter
     struct LaserColor {
         static var Hill:UIColor = UIColor.blackColor()
         static var Valley:UIColor = UIColor.blackColor()
@@ -85,8 +85,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
     }
 
-    
-    
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, radius, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
@@ -107,7 +105,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func hitTest(point:CGPoint, radius:CGFloat = kHitTestRadius) -> CGPoint? {
         return Edge.hitTest(path, point:point, radius:radius)
     }
-    
     
     class func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
     {

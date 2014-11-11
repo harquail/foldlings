@@ -35,27 +35,13 @@ class Sketch : NSObject,NSCoding  {
 //
     init(named:String)
     {
+        
+        name = named
         //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width;
         let screenHeight = screenSize.height;
-        let halfH = screenHeight/2.0
 
-        
-        let p1 = CGPointMake(0, halfH)
-        let p2 = CGPointMake(screenWidth, halfH)
-        
-        var path = UIBezierPath()
-        path.moveToPoint(p1)
-        path.addLineToPoint(p2)
-        // this style stuff below is ugly but whatever
-        path.setLineDash([10,5], count: 2, phase:0)
-        path.lineWidth = kLineWidth
-        
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
-        drivingEdge.fold = .Valley
-        edges.append(drivingEdge)
-        name = named
         
         
         let scaleFactor = CGFloat(0.9)
@@ -183,6 +169,25 @@ class Sketch : NSObject,NSCoding  {
         let screenWidth = screenSize.width;
         let screenHeight = screenSize.height;
         
+        
+        let halfH = height/2.0
+        
+        let downabit:CGFloat = -50.0
+        let p1 = CGPointMake(screenWidth-width, halfH)
+        let p2 = CGPointMake(width, halfH)
+        
+        var path = UIBezierPath()
+        path.moveToPoint(p1)
+        path.addLineToPoint(p2)
+        // this style stuff below is ugly but whatever
+        path.setLineDash([10,5], count: 2, phase:0)
+        path.lineWidth = kLineWidth
+        
+        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge.fold = .Valley
+        edges.append(drivingEdge)
+        
+        
         //border paths
         var path1 = UIBezierPath()
         var path2 = UIBezierPath()
@@ -190,7 +195,6 @@ class Sketch : NSObject,NSCoding  {
         var path4 = UIBezierPath()
 
         // border points
-        let downabit:CGFloat = -50.0
         let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
         let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
         let b3 = CGPointMake(width, height + downabit)   //bottomright
