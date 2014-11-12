@@ -96,9 +96,9 @@ class Sketch : NSObject,NSCoding  {
     
     
     
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind) -> Edge
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
-        var e = Edge(start: start, end: end, path: path, kind: kind)
+        var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
         edges.append(e)
         //TODO: more here to work correctly
         if adjacency[start] != nil{
@@ -192,7 +192,7 @@ class Sketch : NSObject,NSCoding  {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold, isMaster:true)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
         
