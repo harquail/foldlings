@@ -32,16 +32,8 @@ class SketchView: UIView {
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     
+    var gridify:Bool = true
     
-    
-    
-    //    func viewDidLoad(){
-    //
-    //        self.minimumZoomScale=0.5
-    //        self.maximumZoomScale=6.0
-    //        self.contentSize=CGSizeMake(self.bounds.width, self.bounds.height)
-    //        self.delegate=self
-    //    }
     
     required init(coder aDecoder: NSCoder)
     {
@@ -154,9 +146,10 @@ class SketchView: UIView {
                 var se2:Edge?
                 //splits edges on collision
                 if let startColEdge = startEdgeCollision {
+                    // if there are problems with circles might be ehre
                     var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                    se1 = self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
-                    se2 = self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
+                    se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind)
+                    se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
                     self.sketch.removeEdge(startColEdge)
                 }
                 if var endColEdge = endEdgeCollision {
@@ -172,8 +165,8 @@ class SketchView: UIView {
                     }
                     var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
                     if cut {
-                        //this might be wrong, why is endColEdge.start the same as the endpoint
-                        self.sketch.addEdge(endColEdge.end, end: endPoint, path: epathOne, kind: endColEdge.kind)
+                        // if there are problems with circles might be ehre
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
                         self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
                     } else {
                         self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
@@ -558,4 +551,5 @@ class SketchView: UIView {
         c.stroke()
         return c
     }
+    
 }
