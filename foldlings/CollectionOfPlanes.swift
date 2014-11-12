@@ -26,22 +26,47 @@ class CollectionOfPlanes: Printable, Hashable {
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
     
     
-    
+    /// adds a plane into the graph
+    /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
-        if adjacency[plane] != nil {
-            adjacency[plane]!.append(plane)
-        } else {
-            adjacency[plane] = [plane]
+        if !contains(planes, plane) {
+            planes.append(plane)
+        }
+        
+        if adjacency[plane] == nil {
+            adjacency[plane] = []
+        }
+        
+        for edge in plane.edges {
+            if edge.kind == .Fold {
+                for p in planes {
+                    for e in p.edges! {
+                        if edge == e {
+                            adjacency[plane]!.append(p)
+                        }
+                    }
+                }
+            }
         }
     }
     
-    //TODO: needs to work
     func removePlane(plane:Plane)
     {
         planes = planes.filter({ $0 != plane })
+        
+        if adjacency[plane] != nil {
+            adjacency[plane] = nil
+        }
+        for (k,v) in adjacency {
+            adjacency[k]!.filter({ $0 != plane })
+        }
     }
-
+    
+    func validateGraph() -> Bool
+    {
+        return true
+    }
     
 
 }

@@ -32,7 +32,7 @@ class SketchView: UIView {
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     
-    var gridify:Bool = true
+    var gridify:Bool = false
     
     
     required init(coder aDecoder: NSCoder)
@@ -66,6 +66,7 @@ class SketchView: UIView {
         previewButton.alpha = 0.3
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
+        if gridify { touchPoint = sketch.nearestGridPoint(touchPoint) }
         startEdgeCollision = nil //reset edge collisions to nil
         endEdgeCollision = nil
         
@@ -131,6 +132,7 @@ class SketchView: UIView {
         
         previewButton.alpha = 1
         
+        if gridify { tempEnd = sketch.nearestGridPoint(tempEnd) }
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
