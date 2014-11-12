@@ -32,16 +32,8 @@ class SketchView: UIView {
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     
+    var gridify:Bool = true
     
-    
-    
-    //    func viewDidLoad(){
-    //
-    //        self.minimumZoomScale=0.5
-    //        self.maximumZoomScale=6.0
-    //        self.contentSize=CGSizeMake(self.bounds.width, self.bounds.height)
-    //        self.delegate=self
-    //    }
     
     required init(coder aDecoder: NSCoder)
     {
@@ -152,9 +144,10 @@ class SketchView: UIView {
                 var se2:Edge?
                 //splits edges on collision
                 if let startColEdge = startEdgeCollision {
+                    // if there are problems with circles might be ehre
                     var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                    se1 = self.sketch.addEdge(startColEdge.start, end: endPoint, path: spathOne, kind: startColEdge.kind)
-                    se2 = self.sketch.addEdge(endPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind)
+                    se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
+                    se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
                     self.sketch.removeEdge(startColEdge)
                 }
                 if var endColEdge = endEdgeCollision {
@@ -170,12 +163,12 @@ class SketchView: UIView {
                     }
                     var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
                     if cut {
-                        //this might be wrong, why is endColEdge.start the same as the endpoint
-                        self.sketch.addEdge(endColEdge.end, end: endPoint, path: epathOne, kind: endColEdge.kind)
-                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                        // if there are problems with circles might be ehre
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
                     } else {
-                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind)
-                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind)
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
                     }
                     self.sketch.removeEdge(endColEdge)
                 }
@@ -533,13 +526,30 @@ class SketchView: UIView {
         
         UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
         
-        incrementalImage.drawInRect(sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
+//        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
+        incrementalImage.drawInRect( sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
         //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return copied;
         
     }
+    
+    
+//    
+//    func cropImage(image:UIImage, rect:CGRect) -> UIImage{
+//        if (image.scale > 1.0) {
+//            let rect = CGRectMake(rect.origin.x * image.scale,
+//                rect.origin.y * image.scale,
+//                rect.size.width * image.scale,
+//                rect.size.height * image.scale);
+//        }
+//        
+//        let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+//        let result = UIImage(CGImage: imageRef,)!
+//        result.scale = image.scale
+//        return result
+//    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
@@ -557,4 +567,5 @@ class SketchView: UIView {
         c.stroke()
         return c
     }
+    
 }

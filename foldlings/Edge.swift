@@ -25,11 +25,14 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     enum Kind: String {
         case Fold = "Fold"
         case Cut = "Cut"
+        case MasterCut = "MasterCut"
     }
     
     enum Fold: String {
         case Hill = "Hill"
         case Valley = "Valley"
+        case MasterHill = "MasterHill"
+        case MasterValley = "MasterValley"
         case Unknown = "Unknown"
     }
     

@@ -2,14 +2,13 @@
 //  Sketch.swift
 //  foldlings
 //
-//  Created by nook on 10/7/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 //a sketch is a collection of cuts & folds
 import Foundation
 import CoreGraphics
 import UIKit
+
 
 class Sketch : NSObject,NSCoding  {
     
@@ -23,16 +22,18 @@ class Sketch : NSObject,NSCoding  {
     var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()
     var drivingEdge: Edge!
-    var bEdge1: Edge!
-    var bEdge2: Edge!
-    var bEdge3: Edge!
-    var bEdge4: Edge!
+    var bEdge1: Edge!  //top
+    var bEdge2: Edge!  //right
+    var bEdge2point5: Edge!  //right2
+    var bEdge3: Edge!  //bottom
+    var bEdge4: Edge!  //left
+    var bEdge4point5: Edge!  //left2
 
     var name:String
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
 
-//
+
     init(named:String)
     {
         
@@ -97,9 +98,9 @@ class Sketch : NSObject,NSCoding  {
     
     
     
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind) -> Edge
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
-        var e = Edge(start: start, end: end, path: path, kind: kind)
+        var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
         edges.append(e)
         //TODO: more here to work correctly
         if adjacency[start] != nil{
@@ -183,17 +184,17 @@ class Sketch : NSObject,NSCoding  {
         let halfH = height/2.0
         
         let downabit:CGFloat = -50.0
-        let p1 = CGPointMake(screenWidth-width, halfH)
-        let p2 = CGPointMake(width, halfH)
+        let midLeft = CGPointMake(screenWidth-width, halfH)
+        let midRight = CGPointMake(width, halfH)
         
         var path = UIBezierPath()
-        path.moveToPoint(p1)
-        path.addLineToPoint(p2)
+        path.moveToPoint(midLeft)
+        path.addLineToPoint(midRight)
         // this style stuff below is ugly but whatever
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold)
+        drivingEdge = Edge(start: midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
         
@@ -201,12 +202,17 @@ class Sketch : NSObject,NSCoding  {
         //border paths
         var path1 = UIBezierPath()
         var path2 = UIBezierPath()
+        var path2point5 = UIBezierPath()
         var path3 = UIBezierPath()
         var path4 = UIBezierPath()
+        var path4point5 = UIBezierPath()
+
+        
 
         // border points
         let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
         let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
+        //between b2 and b3 should be a midRight
         let b3 = CGPointMake(width, height + downabit)   //bottomright
         let b4 = CGPointMake(screenWidth-width, height + downabit)  //bottomleft
         
@@ -214,22 +220,32 @@ class Sketch : NSObject,NSCoding  {
         path1.moveToPoint(b1)
         path1.addLineToPoint(b2)
         bEdge1 = Edge(start: b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge1)
+        edges.append(bEdge1) //top
         
         path2.moveToPoint(b2)
-        path2.addLineToPoint(b3)
-        bEdge2 = Edge(start: b2, end: b3, path: path2, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge2)
+        path2.addLineToPoint(midRight)
+        bEdge2 = Edge(start: b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge2) //right
+        
+        path2point5.moveToPoint(midRight)
+        path2point5.addLineToPoint(b3)
+        bEdge2point5 = Edge(start: midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge2point5) //right2
         
         path3.moveToPoint(b3)
         path3.addLineToPoint(b4)
         bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge3)
+        edges.append(bEdge3) //bottom
         
-        path4.moveToPoint(b4)
-        path4.addLineToPoint(b1)
-        bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge4)
+        path4.moveToPoint(b1)
+        path4.addLineToPoint(midLeft)
+        bEdge4 = Edge(start: b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge4) //left
+        
+        path4point5.moveToPoint(midLeft)
+        path4point5.addLineToPoint(b4)
+        bEdge4point5 = Edge(start: midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge4point5) //left2
         
         // note width here has to subtract the border
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
@@ -355,16 +371,42 @@ class Sketch : NSObject,NSCoding  {
         return self.drawingBounds.contains(point)
     }
     
+        
     
-    /// alter
-    func alterEdgePoints(fromPoint:CGPoint, toPoint:CGPoint, constrainHeight:Bool = false)
+    ///  sets up a grid and returns nearest point in grid
+    func nearestGridPoint(point: CGPoint) -> CGPoint
     {
-        //TODO: this should allow modifying all edges
-        for (k,v) in adjacency
-        {
-            
+
+        let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 20
+        var x = 0
+        var y = 0
+
+        for var i = 0; i < 50; i++ {
+            let xi = 50*gs
         }
+
+        
+        
+        //round
+        //673.222111
+        //x 849.0234234
+        
+        //        gridsize = width / 50
+        //        
+        //        i =0 i < 50 ; i++
+        //        gridsize*i
+        //        same for j
+        
+        //    var bEdge1: Edge!  //top
+        //    var bEdge2: Edge!  //right
+        //    var bEdge3: Edge!  //bottom
+        //    var bEdge4: Edge!  //left
+        
+        return CGPointZero
+        
     }
+    
+
 
     
 }
