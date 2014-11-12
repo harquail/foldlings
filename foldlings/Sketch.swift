@@ -301,7 +301,6 @@ class Sketch : NSObject,NSCoding  {
         return plane
     }
 
-    
     //get closest adjancent edge
     // get angle between lines
     func getClosest(current: Edge, start: Edge) -> Edge
