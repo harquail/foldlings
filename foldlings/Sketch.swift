@@ -247,12 +247,13 @@ class Sketch : NSObject,NSCoding  {
     func getPlanes() -> [Plane]
     {
         var planes : [Plane] = []
-        var p : [Edge] = []
         visited = []
         var j = 0
 
         for (i, start) in enumerate(edges)//traverse edges
         {
+            var p : [Edge] = []
+            
             if contains(visited, start){// skipped over already visited edges
                 continue
             }
