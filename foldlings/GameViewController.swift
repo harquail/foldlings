@@ -99,17 +99,17 @@ class GameViewController: UIViewController {
         //TODO: fix
         
         let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-        
+
         let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
-        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
+//        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
         
         let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
-        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
+//        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
         
         let bottomRight = CGPointMake(0, 0)
         
         var path = UIBezierPath();
-        path.moveToPoint(offTopLeft)
+        path.moveToPoint(topLeft)
         path.addLineToPoint(topRight)
         
         let path2 = UIBezierPath();
@@ -117,16 +117,14 @@ class GameViewController: UIViewController {
         path2.addLineToPoint(bottomRight)
         
         let path3 = UIBezierPath();
-        path3.moveToPoint(offBottomLeft)
-        path3.addLineToPoint(offBottomLeft)
+        path3.moveToPoint(bottomLeft)
+        path3.addLineToPoint(bottomLeft)
         
         let path4 = UIBezierPath();
         path4.moveToPoint(topLeft)
         path4.addLineToPoint(topLeft)
         
-        var edges = [Edge(start: offTopLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: offBottomLeft, path: path3),Edge(start: offBottomLeft, end: topLeft, path: path4)]
-        
-        
+        var edges = [Edge(start: topLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: bottomLeft, path: path3),Edge(start: bottomLeft, end: topLeft, path: path4)]
         
         let plane = Plane(edges: edges)
         plane.sanitizePath()
