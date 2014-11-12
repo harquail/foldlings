@@ -35,6 +35,14 @@ class SketchView: UIView {
     var gridify:Bool = true
     
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+//    override init() {
+//        super.init()
+//    }
+//    
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)

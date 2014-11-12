@@ -3,42 +3,58 @@
 
 import UIKit
 
-class CollectionOfFoldlings: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class CollectionOfFoldlings: UIViewController {
     
-    @IBOutlet var collectionView: UICollectionView?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-//        layout.itemSize = CGSize(width: 90, height: 90)
-//        collectionView!.dataSource = self
-//        collectionView!.delegate = self
-//        collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-//        collectionView!.backgroundColor = UIColor.whiteColor()
-//        self.view.addSubview(collectionView!)
+    @IBAction func oneButton(sender: UIButton) {
+       makeSketch(0)
+        
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+    @IBAction func twoButton(sender: UIButton) {
+        makeSketch(1)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+    @IBAction func threeButton(sender: UIButton) {
+        makeSketch(2)
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as CollectionViewCell
-        cell.backgroundColor = UIColor.blackColor()
-        cell.textLabel?.text = "\(indexPath.section):\(indexPath.row)"
-        cell.imageView?.image = UIImage(named: "circle")
-        return cell
+    @IBAction func fourButton(sender: UIButton) {
+        makeSketch(3)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func fiveButton(sender: UIButton) {
+      makeSketch(4)    }
+    
+    func makeSketch(num:Int){
+        
+        
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        self.presentViewController(vc, animated: true, completion: nil)
+
+        
+//        let viewC = SketchViewController()
+//        viewC.sketchView = SketchView(frame: self.view.frame)
+        println("reached makeSketch switch")
+            
+//        return viewC
+
+        switch(num){
+        case 0:
+            break
+        case 1:
+            break
+        case 2:
+            break
+        case 3:
+            break
+        case 4:
+            break
+        default:
+            break
+        }
+        
+//        return viewC
     }
     
     
