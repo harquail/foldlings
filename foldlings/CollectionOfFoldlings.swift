@@ -10,14 +10,14 @@ class CollectionOfFoldlings: UIViewController, UICollectionViewDelegateFlowLayou
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: 90, height: 90)
-        collectionView!.dataSource = self
-        collectionView!.delegate = self
-        collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-        collectionView!.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(collectionView!)
+//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+//        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
+//        layout.itemSize = CGSize(width: 90, height: 90)
+//        collectionView!.dataSource = self
+//        collectionView!.delegate = self
+//        collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+//        collectionView!.backgroundColor = UIColor.whiteColor()
+//        self.view.addSubview(collectionView!)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

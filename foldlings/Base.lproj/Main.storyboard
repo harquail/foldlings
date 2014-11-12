@@ -98,7 +98,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1693" y="-236"/>
+            <point key="canvasLocation" x="-1693" y="-224"/>
         </scene>
         <!--Sketch View Controller-->
         <scene sceneID="Wv9-yy-re7">
