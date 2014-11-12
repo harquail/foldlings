@@ -240,21 +240,24 @@ class Sketch : NSObject,NSCoding  {
         var planes : [Plane] = []
         var p = Plane()
         visited = []
- 
-        for (i, e) in enumerate(edges)//traverse edges
+        
+        for (i, start) in enumerate(edges)//traverse edges
         {
-
-            if !inVisited(e) && i > 4 //skip over edges alreay visited and first 5 edges (temporary)
+            if !inVisited(start)//skip over edges alreay visited
             {
-                visited.append(e)
-                let closest = getClosest(e, start: e)// get closest adjacent edge
-                p = makePlane(closest, first: e, plane: p)
-                //save plane in planes
-                planes.append(p)
+                var current = getClosest(start, start: start)// get closest adjacent edge
+                p.addToPlane(start)
+                visited.append(start)
                 
+                while current != start {
+                    p.addToPlane(current)
+                    visited.append(current)
+                    current = getClosest(current, start: start)// get closest adjacent edge
+                }
+                // sanitized p
+                planes.append(p)
             }
         }
-        //println(planes.count)
         return planes
     }
     
@@ -270,41 +273,26 @@ class Sketch : NSObject,NSCoding  {
         }
         return false
     }
-    
-    // uses adjacency to make a plane given an edge
-    func makePlane(edge: Edge, first: Edge, plane: Plane) -> Plane// recursive
-    {
-        if edge != first && !plane.inPlane(edge)// and if the edge is not already in the plane
-        {
-            let closest = getClosest(edge, start: first)// get closest adjacent edge
-            plane.addToPlane(closest)
-            visited.append(closest)
-            return makePlane(closest, first: first, plane: plane)
-        }
-        //sanitize plane
-        return plane
-    }
 
-    
     //get closest adjancent edge
     // get angle between lines
     func getClosest(current: Edge, start: Edge) -> Edge
     {
         var closest: Edge!
+    
         for e in adjacency[current.end]!
         {
-            if e != current && e != start
+            if e != current // if in adjacency
             {
                 if closest == nil  // make the first edge the closest
                 {
                     closest = e
                 }
-                // compare for greater angle
+                // compare for greater angle between closest and next
                 else if getAngle(start.end, start.start, closest.end) < getAngle(start.end, start.start, e.end)
                 {
-                    let ang1 = getAngle(start.end, start.start, closest.end)
-                    let ang2 = getAngle(start.end, start.start, e.end)
                     closest = e
+                    
                 }
             }
         }

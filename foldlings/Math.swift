@@ -27,7 +27,6 @@ func getAngle(x0: CGPoint, x1: CGPoint, x2: CGPoint) ->Double{
     let d2 = CGPointNormalize(CGPointSubtract(x2,x0) )
     
     return Double(CGPointGetAngleBetween(d1, d2)) * (180/M_PI)
-    
 }
 
 

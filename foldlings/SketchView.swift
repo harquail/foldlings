@@ -54,7 +54,6 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        //sketch = simpleSketch()
         //sketch.getPlanes()
         incrementalImage = bitmap(false)
     }
@@ -73,7 +72,6 @@ class SketchView: UIView {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         previewButton.alpha = 0.3
-        
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
         startEdgeCollision = nil //reset edge collisions to nil
@@ -488,18 +486,6 @@ class SketchView: UIView {
         //        cut4.addLineToPoint(b1)
         //        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
         //
-        //centerfold
-        cfold1.moveToPoint(c1)
-        cfold1.addLineToPoint(c2)
-        asketch.addEdge(c1, end: c2, path: cfold1, kind: Edge.Kind.Fold )
-        
-        cfold2.moveToPoint(c2)
-        cfold2.addLineToPoint(c3)
-        asketch.addEdge(c2, end: c3, path: cfold2, kind: Edge.Kind.Fold )
-        
-        cfold3.moveToPoint(c3)
-        cfold3.addLineToPoint(c4)
-        asketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
         
         //border edges
         top.moveToPoint(s1)
@@ -525,6 +511,19 @@ class SketchView: UIView {
         lside2.moveToPoint(c1)
         lside2.addLineToPoint(s1)
         asketch.addEdge(c1, end: s1, path: lside2, kind: Edge.Kind.Cut )
+        
+        //centerfold
+        cfold1.moveToPoint(c1)
+        cfold1.addLineToPoint(c2)
+        asketch.addEdge(c1, end: c2, path: cfold1, kind: Edge.Kind.Fold )
+        
+        cfold2.moveToPoint(c2)
+        cfold2.addLineToPoint(c3)
+        asketch.addEdge(c2, end: c3, path: cfold2, kind: Edge.Kind.Fold )
+        
+        cfold3.moveToPoint(c3)
+        cfold3.addLineToPoint(c4)
+        asketch.addEdge(c3, end: c4, path: cfold3, kind: Edge.Kind.Fold )
         
         return asketch
     }
