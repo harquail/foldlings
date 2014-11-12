@@ -50,17 +50,6 @@ class Plane: Printable, Hashable {
         path.appendPath(edge.path)
     }
         
-    func inPlane(edge: Edge)-> Bool
-    {
-        for e in edges
-        {
-            if e === edge
-            {
-                return true
-            }
-        }
-        return false
-    }
 
     func node() -> SCNNode{
         
@@ -118,10 +107,11 @@ class Plane: Printable, Hashable {
                 let p3 = currPath.points[2].CGPointValue()
                 outPath.addCurveToPoint(p1, controlPoint1: p2, controlPoint2: p2)
             default:
-                println("other: \(currPath.type.value)")
+                //println("other: \(currPath.type.value)")
+                break
             }
         }
-        println(outPath)
+        //println(outPath)
         outPath.closePath()
         
         

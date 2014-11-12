@@ -46,7 +46,7 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        //sketch.getPlanes()
+        sketch.getPlanes()
         incrementalImage = bitmap(false)
     }
     

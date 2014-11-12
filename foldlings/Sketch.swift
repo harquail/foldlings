@@ -194,9 +194,8 @@ class Sketch : NSObject,NSCoding  {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
+        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
         drivingEdge.fold = .Valley
-        edges.append(drivingEdge)
         
         
         //border paths
@@ -219,33 +218,27 @@ class Sketch : NSObject,NSCoding  {
         //border edges
         path1.moveToPoint(b1)
         path1.addLineToPoint(b2)
-        bEdge1 = Edge(start: b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge1) //top
+        bEdge1 = addEdge(b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)//top
         
         path2.moveToPoint(b2)
         path2.addLineToPoint(midRight)
-        bEdge2 = Edge(start: b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge2) //right
+        bEdge2 = addEdge(b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)//right
         
         path2point5.moveToPoint(midRight)
         path2point5.addLineToPoint(b3)
-        bEdge2point5 = Edge(start: midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge2point5) //right2
+        bEdge2point5 = addEdge(midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)//right2
         
         path3.moveToPoint(b3)
         path3.addLineToPoint(b4)
-        bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge3) //bottom
+        bEdge3 = addEdge(b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)//bottom
         
         path4.moveToPoint(b1)
         path4.addLineToPoint(midLeft)
-        bEdge4 = Edge(start: b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge4) //left
+        bEdge4 = addEdge(b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)//left
         
         path4point5.moveToPoint(midLeft)
         path4point5.addLineToPoint(b4)
-        bEdge4point5 = Edge(start: midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)
-        edges.append(bEdge4point5) //left2
+        bEdge4point5 = addEdge(midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)//left2
         
         // note width here has to subtract the border
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
@@ -254,61 +247,57 @@ class Sketch : NSObject,NSCoding  {
     func getPlanes() -> [Plane]
     {
         var planes : [Plane] = []
-        var p = Plane()
+        var p : [Edge] = []
         visited = []
-        
+        var j = 0
+
         for (i, start) in enumerate(edges)//traverse edges
         {
-            if !inVisited(start)//skip over edges alreay visited
-            {
-                var current = getClosest(start, start: start)// get closest adjacent edge
-                p.addToPlane(start)
-                visited.append(start)
+            if contains(visited, start){// skipped over already visited edges
+                continue
+            }
                 
-                while current != start {
-                    p.addToPlane(current)
-                    visited.append(current)
-                    current = getClosest(current, start: start)// get closest adjacent edge
-                }
-                // sanitized p
-                planes.append(p)
-            }
-        }
-        return planes
-    }
-    
-    //checks if edge has already been visited
-    func inVisited(edge: Edge)-> Bool
-    {
-        for e in visited
-        {
-            if (e.start == edge.start && e.end == edge.end)||(e.start == edge.end && e.end == edge.start)
+            else
             {
-                return true
+                var closest = getClosest(start)// get closest adjacent edge
+                p.append(start)
+                visited.append(start)
+                println(start)
+                
+                while !contains(p, closest)
+                {
+                    //println("current: \(closest)")
+                    p.append(closest)
+                    visited.append(closest)
+                    closest = getClosest(closest)// get closest adjacent edge
+                    j += 1
+                }
+                //println("plane: \(p)")
+                planes.append(Plane(edges: p))
             }
         }
-        return false
+        println(planes.count)
+        return planes
     }
 
     //get closest adjancent edge
     // get angle between lines
-    func getClosest(current: Edge, start: Edge) -> Edge
+    func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
-    
-        for e in adjacency[current.end]!
+        //println(adjacency[current.end])
+        for next in adjacency[current.end]!
         {
-            if e != current // if in adjacency
+            if next != current // if in adjacency
             {
                 if closest == nil  // make the first edge the closest
                 {
-                    closest = e
+                    closest = next
                 }
                 // compare for greater angle between closest and next
-                else if getAngle(start.end, start.start, closest.end) < getAngle(start.end, start.start, e.end)
+                else if getAngle(current.end, current.start, closest.end) < getAngle(current.end, current.start, next.end)
                 {
-                    closest = e
-                    
+                    closest = next
                 }
             }
         }
