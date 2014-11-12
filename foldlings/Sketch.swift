@@ -24,8 +24,10 @@ class Sketch : NSObject,NSCoding  {
     var drivingEdge: Edge!
     var bEdge1: Edge!  //top
     var bEdge2: Edge!  //right
+    var bEdge2point5: Edge!  //right2
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
+    var bEdge4point5: Edge!  //left2
 
     var name:String
     
@@ -182,17 +184,17 @@ class Sketch : NSObject,NSCoding  {
         let halfH = height/2.0
         
         let downabit:CGFloat = -50.0
-        let p1 = CGPointMake(screenWidth-width, halfH)
-        let p2 = CGPointMake(width, halfH)
+        let midLeft = CGPointMake(screenWidth-width, halfH)
+        let midRight = CGPointMake(width, halfH)
         
         var path = UIBezierPath()
-        path.moveToPoint(p1)
-        path.addLineToPoint(p2)
+        path.moveToPoint(midLeft)
+        path.addLineToPoint(midRight)
         // this style stuff below is ugly but whatever
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = Edge(start: p1, end: p1, path: path, kind: Edge.Kind.Fold, isMaster:true)
+        drivingEdge = Edge(start: midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
         drivingEdge.fold = .Valley
         edges.append(drivingEdge)
         
@@ -200,12 +202,17 @@ class Sketch : NSObject,NSCoding  {
         //border paths
         var path1 = UIBezierPath()
         var path2 = UIBezierPath()
+        var path2point5 = UIBezierPath()
         var path3 = UIBezierPath()
         var path4 = UIBezierPath()
+        var path4point5 = UIBezierPath()
+
+        
 
         // border points
         let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
         let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
+        //between b2 and b3 should be a midRight
         let b3 = CGPointMake(width, height + downabit)   //bottomright
         let b4 = CGPointMake(screenWidth-width, height + downabit)  //bottomleft
         
@@ -216,19 +223,29 @@ class Sketch : NSObject,NSCoding  {
         edges.append(bEdge1) //top
         
         path2.moveToPoint(b2)
-        path2.addLineToPoint(b3)
-        bEdge2 = Edge(start: b2, end: b3, path: path2, kind: Edge.Kind.Cut, isMaster:true)
+        path2.addLineToPoint(midRight)
+        bEdge2 = Edge(start: b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge2) //right
+        
+        path2point5.moveToPoint(midRight)
+        path2point5.addLineToPoint(b3)
+        bEdge2point5 = Edge(start: midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge2point5) //right2
         
         path3.moveToPoint(b3)
         path3.addLineToPoint(b4)
         bEdge3 = Edge(start: b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge3) //bottom
         
-        path4.moveToPoint(b4)
-        path4.addLineToPoint(b1)
-        bEdge4 = Edge(start: b4, end: b1, path: path4, kind: Edge.Kind.Cut, isMaster:true)
+        path4.moveToPoint(b1)
+        path4.addLineToPoint(midLeft)
+        bEdge4 = Edge(start: b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)
         edges.append(bEdge4) //left
+        
+        path4point5.moveToPoint(midLeft)
+        path4point5.addLineToPoint(b4)
+        bEdge4point5 = Edge(start: midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)
+        edges.append(bEdge4point5) //left2
         
         // note width here has to subtract the border
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))

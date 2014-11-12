@@ -527,13 +527,30 @@ class SketchView: UIView {
         
         UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
         
-        incrementalImage.drawInRect(sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
+//        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
+        incrementalImage.drawInRect( sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
         //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return copied;
         
     }
+    
+    
+//    
+//    func cropImage(image:UIImage, rect:CGRect) -> UIImage{
+//        if (image.scale > 1.0) {
+//            let rect = CGRectMake(rect.origin.x * image.scale,
+//                rect.origin.y * image.scale,
+//                rect.size.width * image.scale,
+//                rect.size.height * image.scale);
+//        }
+//        
+//        let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+//        let result = UIImage(CGImage: imageRef,)!
+//        result.scale = image.scale
+//        return result
+//    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
