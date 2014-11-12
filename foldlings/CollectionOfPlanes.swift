@@ -25,6 +25,8 @@ class CollectionOfPlanes: Printable, Hashable {
     var planes:[Plane] = []
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
     
+    var count:Int { get { return planes.count } }
+    
     
     /// adds a plane into the graph
     /// uses the fold type edges to determine adjacency
