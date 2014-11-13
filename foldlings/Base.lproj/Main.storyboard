@@ -200,7 +200,6 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="yXa-Il-rqF"/>
                                     <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="AxJ-ux-OIz"/>
                                 </connections>
                             </button>
