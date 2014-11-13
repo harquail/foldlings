@@ -248,8 +248,9 @@ class Sketch : NSObject,NSCoding  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
-    func getPlanes() -> CollectionOfPlanes
+    func getPlanes()
     {
+        planes.removeAll()
         visited = []
         
         for (i, start) in enumerate(edges)//traverse edges
@@ -288,8 +289,7 @@ class Sketch : NSObject,NSCoding  {
                 planes.addPlane(Plane(edges: p))
             }
         }
-        println(planes.count)
-        return planes
+        println("planecount: \(planes.count)")
     }
     
     //get closest adjancent edge
