@@ -67,6 +67,7 @@ class CollectionOfPlanes: Printable, Hashable {
     
     func validateGraph() -> Bool
     {
+        
         return true
     }
     

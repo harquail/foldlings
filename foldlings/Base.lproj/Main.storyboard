@@ -60,6 +60,7 @@
                                 <state key="normal" title="one" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="HFB-wp-u1d"/>
+                                    <action selector="oneButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="5ij-O3-QMk"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgr-QL-Afw">
@@ -67,6 +68,7 @@
                                 <state key="normal" title="two" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Pn6-qL-IUv"/>
+                                    <action selector="twoButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="aQd-Oa-XJu"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L88-SC-Z9m">
@@ -74,12 +76,14 @@
                                 <state key="normal" title="three" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="X5q-Vc-v4b"/>
+                                    <action selector="threeButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="I2r-Yb-flb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA7-AK-mhe">
                                 <rect key="frame" x="129" y="549" width="167" height="148"/>
                                 <state key="normal" title="four" backgroundImage="cut.png"/>
                                 <connections>
+                                    <action selector="fourButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Xar-vv-rNs"/>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="WJH-Kc-V3I"/>
                                 </connections>
                             </button>
@@ -87,9 +91,40 @@
                                 <rect key="frame" x="298" y="549" width="167" height="148"/>
                                 <state key="normal" title="five" backgroundImage="cut.png"/>
                                 <connections>
+                                    <action selector="fiveButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="2SL-5m-8TW"/>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="d0b-pI-ufR"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk0-cv-IPY">
+                                <rect key="frame" x="496" y="439" width="120" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J78-It-9mN">
+                                <rect key="frame" x="324" y="662" width="120" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jOF-7R-VF7">
+                                <rect key="frame" x="152" y="662" width="120" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpW-Lf-hTX">
+                                <rect key="frame" x="152" y="439" width="120" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4R-Ak-eJE">
+                                <rect key="frame" x="324" y="439" width="120" height="21"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
+                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -103,7 +138,7 @@
         <!--Sketch View Controller-->
         <scene sceneID="Wv9-yy-re7">
             <objects>
-                <viewController id="3LN-Qg-JOH" customClass="SketchViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sketchView" id="3LN-Qg-JOH" customClass="SketchViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dxb-1A-aOI"/>
                         <viewControllerLayoutGuide type="bottom" id="iCO-wm-2q8"/>

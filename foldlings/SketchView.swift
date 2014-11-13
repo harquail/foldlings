@@ -35,6 +35,14 @@ class SketchView: UIView {
     var gridify:Bool = false
     
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    //    override init() {
+    //        super.init()
+    //    }
+    //
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -379,7 +387,7 @@ class SketchView: UIView {
                 color = Edge.getLaserColor(edgekind, fold:fold)
             }
             else{
-            color = Edge.getColor(edgekind, fold:fold)
+                color = Edge.getColor(edgekind, fold:fold)
             }
         }
         
@@ -388,7 +396,7 @@ class SketchView: UIView {
         }
         else if edgekind == Edge.Kind.Fold && grayscale{
             path.setLineDash([1,10], count: 2, phase:0)
-
+            
         }
         else {
             path.setLineDash(nil, count: 0, phase:0)
@@ -455,31 +463,31 @@ class SketchView: UIView {
         
         
         //edges
-        //        fold1.moveToPoint(b1)
-        //        fold1.addLineToPoint(b2)
-        //        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
-        //
-        //        cut1.moveToPoint(b2)
-        //        cut1.addLineToPoint(b3)
-        //        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
-        //
-        //        cut2.moveToPoint(b3)
-        //        cut2.addLineToPoint(b4)
-        //        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
-        //
-        //
-        //        fold2.moveToPoint(b4)
-        //        fold2.addLineToPoint(b5)
-        //        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
-        //
-        //
-        //        cut3.moveToPoint(b5)
-        //        cut3.addLineToPoint(b6)
-        //        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
-        //
-        //        cut4.moveToPoint(b6)
-        //        cut4.addLineToPoint(b1)
-        //        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
+        fold1.moveToPoint(b1)
+        fold1.addLineToPoint(b2)
+        asketch.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+        
+        cut1.moveToPoint(b2)
+        cut1.addLineToPoint(b3)
+        asketch.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+        
+        cut2.moveToPoint(b3)
+        cut2.addLineToPoint(b4)
+        asketch.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
+        
+        
+        fold2.moveToPoint(b4)
+        fold2.addLineToPoint(b5)
+        asketch.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
+        
+        
+        cut3.moveToPoint(b5)
+        cut3.addLineToPoint(b6)
+        asketch.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+        
+        cut4.moveToPoint(b6)
+        cut4.addLineToPoint(b1)
+        asketch.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
         //
         
         //border edges
@@ -528,7 +536,7 @@ class SketchView: UIView {
         
         UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
         
-//        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
+        //        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
         incrementalImage.drawInRect( sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
         //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
         let copied = UIGraphicsGetImageFromCurrentImageContext();
@@ -538,20 +546,20 @@ class SketchView: UIView {
     }
     
     
-//    
-//    func cropImage(image:UIImage, rect:CGRect) -> UIImage{
-//        if (image.scale > 1.0) {
-//            let rect = CGRectMake(rect.origin.x * image.scale,
-//                rect.origin.y * image.scale,
-//                rect.size.width * image.scale,
-//                rect.size.height * image.scale);
-//        }
-//        
-//        let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
-//        let result = UIImage(CGImage: imageRef,)!
-//        result.scale = image.scale
-//        return result
-//    }
+    //
+    //    func cropImage(image:UIImage, rect:CGRect) -> UIImage{
+    //        if (image.scale > 1.0) {
+    //            let rect = CGRectMake(rect.origin.x * image.scale,
+    //                rect.origin.y * image.scale,
+    //                rect.size.width * image.scale,
+    //                rect.size.height * image.scale);
+    //        }
+    //
+    //        let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+    //        let result = UIImage(CGImage: imageRef,)!
+    //        result.scale = image.scale
+    //        return result
+    //    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
