@@ -17,6 +17,8 @@ class SketchView: UIView {
         case Fold
     }
     
+    var simpleMode = true
+    
     //    @IBOutlet var uiView:UIView?
     
     var path: UIBezierPath! //currently drawing path
@@ -31,8 +33,6 @@ class SketchView: UIView {
     var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
-    
-    var gridify:Bool = false
     
     
     override init(frame: CGRect) {
@@ -73,7 +73,6 @@ class SketchView: UIView {
         previewButton.alpha = 0.3
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
-        if gridify { touchPoint = sketch.nearestGridPoint(touchPoint) }
         startEdgeCollision = nil //reset edge collisions to nil
         endEdgeCollision = nil
         
@@ -88,9 +87,18 @@ class SketchView: UIView {
         case .Erase:
             erase(touchPoint);
         case .Cut, .Fold:
+            
+            // simplemode check for fold drawing
+            if simpleMode && sketchMode == .Fold && !simpleModeFoldInBounds(touchPoint)  {
+                cancelledTouch = touch
+                return
+            }
+            
+            // snap to vertex
             if let np = sketch.vertexHitTest(touchPoint) {
                 touchPoint = np
-            } else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+            } // snap to edge
+            else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
                 touchPoint = np
                 startEdgeCollision = edge
             }
@@ -116,6 +124,7 @@ class SketchView: UIView {
             case .Erase: // if in erase mode
                 erase(touchPoint);
             case .Cut, .Fold:
+                // check if we've snapped or aborted
                 var abort:Bool = checkCurrentEnd(touchPoint)
                 ctr=ctr+1
                 pts[ctr] = tempEnd
@@ -139,7 +148,6 @@ class SketchView: UIView {
         
         previewButton.alpha = 1
         
-        if gridify { tempEnd = sketch.nearestGridPoint(tempEnd) }
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
@@ -201,6 +209,7 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
+    /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(grayscale:Bool) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
@@ -577,6 +586,16 @@ class SketchView: UIView {
         c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
         c.stroke()
         return c
+    }
+    
+    
+    ///MARK: simplemode functions
+    
+    ///checks if can draw above fold for simple mode
+    func simpleModeFoldInBounds(point: CGPoint) -> Bool
+    {
+        return point.y >= sketch.drivingEdge.start.y
+
     }
     
 }
