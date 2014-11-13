@@ -30,6 +30,7 @@ class Sketch : NSObject,NSCoding  {
     var bEdge4point5: Edge!  //left2
 
     var name:String
+    var planes:CollectionOfPlanes = CollectionOfPlanes()
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
 
@@ -40,11 +41,9 @@ class Sketch : NSObject,NSCoding  {
         name = named
         //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let screenWidth = screenSize.width;
-        let screenHeight = screenSize.height;
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
 
-        
-        
         let scaleFactor = CGFloat(0.9)
         super.init()
         makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
@@ -101,8 +100,11 @@ class Sketch : NSObject,NSCoding  {
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
         var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-        edges.append(e)
-        //TODO: more here to work correctly
+
+        if !contains(edges, e) {
+            edges.append(e)
+        }
+
         if adjacency[start] != nil{
             adjacency[start]!.append(e)
         } else {
@@ -143,7 +145,7 @@ class Sketch : NSObject,NSCoding  {
         return e
     }
     
-    //TODO: needs to work
+    ///removes and edge from edges and adjacency
     func removeEdge(edge:Edge)
     {
         if !edge.isMaster {
@@ -194,9 +196,8 @@ class Sketch : NSObject,NSCoding  {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
+        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:false)
         drivingEdge.fold = .Valley
-        
         
         //border paths
         var path1 = UIBezierPath()
@@ -366,32 +367,29 @@ class Sketch : NSObject,NSCoding  {
     func nearestGridPoint(point: CGPoint) -> CGPoint
     {
 
-        let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 20
-        var x = 0
-        var y = 0
+        let width = CGPointGetDistance(bEdge1.start, bEdge1.end)
+        let height = CGPointGetDistance(bEdge2.start, bEdge2.end)
+        let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 25
+        let gsh = gs / 2.0
+        var x:CGFloat = 0.0
+        var y:CGFloat = 0.0
 
-        for var i = 0; i < 50; i++ {
-            let xi = 50*gs
+        for var xi:CGFloat = 0.0; xi < width; xi=xi+gs
+        {
+            for var yi:CGFloat = 0.0; yi < height; yi=yi+gs
+            {
+                if point.x < xi + gsh && point.x > xi - gsh {
+                    x = xi
+                }
+                if point.y < yi + gsh && point.y > yi - gsh {
+                    y = yi
+                }
+            }
         }
 
         
-        
-        //round
-        //673.222111
-        //x 849.0234234
-        
-        //        gridsize = width / 50
-        //        
-        //        i =0 i < 50 ; i++
-        //        gridsize*i
-        //        same for j
-        
-        //    var bEdge1: Edge!  //top
-        //    var bEdge2: Edge!  //right
-        //    var bEdge3: Edge!  //bottom
-        //    var bEdge4: Edge!  //left
-        
-        return CGPointZero
+        let newpoint = CGPointMake(x, y)
+        return newpoint
         
     }
     
