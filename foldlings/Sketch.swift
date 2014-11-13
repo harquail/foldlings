@@ -28,13 +28,13 @@ class Sketch : NSObject,NSCoding  {
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
     var bEdge4point5: Edge!  //left2
-    
+
     var name:String
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
-    
-    
+
+
     init(named:String)
     {
         
