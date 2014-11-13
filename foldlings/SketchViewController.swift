@@ -34,6 +34,9 @@ class SketchViewController: UIViewController{
         sketchView.sketchMode = SketchView.Mode.Fold
     }
     
+    @IBAction func TabButtonClicked(sender: UIButton) {
+        sketchView.sketchMode = SketchView.Mode.Tab
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
 
