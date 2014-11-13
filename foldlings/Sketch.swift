@@ -28,13 +28,13 @@ class Sketch : NSObject,NSCoding  {
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
     var bEdge4point5: Edge!  //left2
-
+    
     var name:String
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
-
-
+    
+    
     init(named:String)
     {
         
@@ -43,11 +43,11 @@ class Sketch : NSObject,NSCoding  {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
-
+        
         let scaleFactor = CGFloat(0.9)
         super.init()
         makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-
+        
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -58,10 +58,10 @@ class Sketch : NSObject,NSCoding  {
         
         //convert CGPoints to NSValues
         var adjsWithValues :[NSValue:Edge] = Dictionary<NSValue,Edge>()
-
+        
         for (point,edge) in adjacency{
             //TODO: wooppsssyyy
-//            adjsWithValues[NSValue(CGPoint:point)]=edge
+            //            adjsWithValues[NSValue(CGPoint:point)]=edge
         }
         
         aCoder.encodeObject(adjsWithValues, forKey: "adj")
@@ -83,7 +83,7 @@ class Sketch : NSObject,NSCoding  {
         var adjsWithValues :[NSValue:Edge] = aDecoder.decodeObjectForKey("adj") as Dictionary<NSValue,Edge>
         for (p,e) in adjsWithValues{
             //TODO: woopssyy
-//            adjacency[p.CGPointValue()]=e
+            //            adjacency[p.CGPointValue()]=e
         }
         
         drivingEdge = aDecoder.decodeObjectForKey("driving") as Edge
@@ -100,11 +100,11 @@ class Sketch : NSObject,NSCoding  {
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
         var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-
+        
         if !contains(edges, e) {
             edges.append(e)
         }
-
+        
         if adjacency[start] != nil{
             adjacency[start]!.append(e)
         } else {
@@ -157,7 +157,7 @@ class Sketch : NSObject,NSCoding  {
             if adjacency[edge.end] != nil {
                 adjacency[edge.end] = adjacency[edge.end]!.filter({ $0 != edge })
             }
-
+            
             initPlanes()
         }
     }
@@ -172,10 +172,10 @@ class Sketch : NSObject,NSCoding  {
                 folds[i].fold = .Hill
             }
         }
-
+        
     }
     
-    /// makes border edges 
+    /// makes border edges
     /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
     func makeBorderEdges(width: CGFloat, height: CGFloat){
         let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -206,9 +206,9 @@ class Sketch : NSObject,NSCoding  {
         var path3 = UIBezierPath()
         var path4 = UIBezierPath()
         var path4point5 = UIBezierPath()
-
         
-
+        
+        
         // border points
         let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
         let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
@@ -245,63 +245,79 @@ class Sketch : NSObject,NSCoding  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
-    func getPlanes() -> [Plane]
+    func getPlanes() -> CollectionOfPlanes
     {
-        var planes : [Plane] = []
         visited = []
-        var j = 0
-
+        
         for (i, start) in enumerate(edges)//traverse edges
         {
             var p : [Edge] = []
-            
             if contains(visited, start){// skipped over already visited edges
                 continue
             }
                 
             else
             {
-                var closest = getClosest(start)// get closest adjacent edge
+                //println("visited: \(visited) \n")
+                var pt = start.end
+                var closest = getClosest(start, point: pt)// get closest adjacent edge
                 p.append(start)
                 visited.append(start)
-                println(start)
+                //println("start: \(pt)")
                 
                 while !contains(p, closest)
                 {
-                    //println("current: \(closest)")
                     p.append(closest)
                     visited.append(closest)
-                    closest = getClosest(closest)// get closest adjacent edge
-                    j += 1
+                    
+                    if(pt == closest.end)// if last point is same as endpoint
+                    {
+                        pt = closest.start// use startpoint
+                    }
+                    else {// if last point was startpoint
+                        pt = closest.end// use endpoint
+                    }
+                    //println("pt: \(pt)")
+                    closest = getClosest(closest, point: pt)// get closest adjacent edge
+                    
                 }
                 //println("plane: \(p)")
-                planes.append(Plane(edges: p))
+                planes.addPlane(Plane(edges: p))
             }
         }
-        println(planes.count)
+        //println(planes.count)
         return planes
     }
-
+    
     //get closest adjancent edge
     // get angle between lines
-    func getClosest(current: Edge) -> Edge
+    func getClosest(current: Edge, point: CGPoint) -> Edge
     {
         var closest: Edge!
-        //println(adjacency[current.end])
-        for next in adjacency[current.end]!
+        //println(adjacency[point])
+        for next in adjacency[point]!
         {
-            if next != current // if in adjacency
+            if next == current // if in adjacency//check in plane?
             {
-                if closest == nil  // make the first edge the closest
-                {
-                    closest = next
-                }
-                // compare for greater angle between closest and next
-                else if getAngle(current.end, current.start, closest.end) < getAngle(current.end, current.start, next.end)
-                {
-                    closest = next
-                }
+                continue
             }
+            
+            if closest == nil  // make the first edge the closest
+            {
+                closest = next
+                continue
+            }
+            
+            // compare for greater angle between closest and next
+            // look at these points
+            let ang1 = getAngle(point, current.start, closest.end)
+            let ang2 = getAngle(point, current.start, next.end)
+            
+            if  ang1 > ang2
+            {
+                closest = next
+            }
+            
         }
         return closest
     }
@@ -334,7 +350,7 @@ class Sketch : NSObject,NSCoding  {
                 r = (edge, np)
             }
         }
-
+        
         return r
     }
     
@@ -362,19 +378,19 @@ class Sketch : NSObject,NSCoding  {
         return self.drawingBounds.contains(point)
     }
     
-        
+    
     
     ///  sets up a grid and returns nearest point in grid
     func nearestGridPoint(point: CGPoint) -> CGPoint
     {
-
+        
         let width = CGPointGetDistance(bEdge1.start, bEdge1.end)
         let height = CGPointGetDistance(bEdge2.start, bEdge2.end)
         let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 25
         let gsh = gs / 2.0
         var x:CGFloat = 0.0
         var y:CGFloat = 0.0
-
+        
         for var xi:CGFloat = 0.0; xi < width; xi=xi+gs
         {
             for var yi:CGFloat = 0.0; yi < height; yi=yi+gs
@@ -387,15 +403,15 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
-
+        
         
         let newpoint = CGPointMake(x, y)
         return newpoint
         
     }
     
-
-
+    
+    
     
 }
 
