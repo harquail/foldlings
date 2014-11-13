@@ -151,12 +151,21 @@ class Sketch : NSObject,NSCoding  {
         if !edge.isMaster {
             edge.path.removeAllPoints()
             edges = edges.filter({ $0 != edge })
+            folds = folds.filter({ $0 != edge })
+            
+            println("adjcount1: \(adjacency.count)")
+
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
+                if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
             }
             if adjacency[edge.end] != nil {
                 adjacency[edge.end] = adjacency[edge.end]!.filter({ $0 != edge })
+                if adjacency[edge.end]!.count == 0 { adjacency[edge.end] = nil }
             }
+            println("adjcount2: \(adjacency.count)")
+
+            
 
             initPlanes()
         }
