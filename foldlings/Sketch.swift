@@ -291,7 +291,7 @@ class Sketch : NSObject,NSCoding  {
                 planes.addPlane(Plane(edges: p))
             }
         }
-        //println(planes.count)
+        println(planes.count)
         return planes
     }
     
@@ -305,6 +305,10 @@ class Sketch : NSObject,NSCoding  {
         {
             if next == current // if in adjacency//check in plane?
             {
+                if adjacency[point]!.count < 2 // if only one line
+                {
+                    return current
+                }
                 continue
             }
             

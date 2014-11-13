@@ -54,7 +54,6 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        //sketch.getPlanes()
         incrementalImage = bitmap(false)
     }
     
@@ -415,6 +414,8 @@ class SketchView: UIView {
         self.setNeedsDisplay() //draw to clear the deleted path
         endPaths.removeAll(keepCapacity: false)
         incrementalImage = bitmap(false) // the bitmap isn't grayscale
+        sketch.getPlanes()//evaluate into planes
+
     }
     
     
