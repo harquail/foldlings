@@ -152,9 +152,6 @@ class Sketch : NSObject,NSCoding  {
             edge.path.removeAllPoints()
             edges = edges.filter({ $0 != edge })
             folds = folds.filter({ $0 != edge })
-            
-            println("adjcount1: \(adjacency.count)")
-
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
@@ -251,8 +248,9 @@ class Sketch : NSObject,NSCoding  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
-    func getPlanes() -> CollectionOfPlanes
+    func getPlanes()
     {
+        planes.removeAll()
         visited = []
         
         for (i, start) in enumerate(folds)//traverse edges

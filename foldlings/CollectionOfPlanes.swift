@@ -65,6 +65,13 @@ class CollectionOfPlanes: Printable, Hashable {
         }
     }
     
+    //just re-init it all
+    func removeAll()
+    {
+        planes =  []
+        adjacency = [Plane : [Plane]]()
+    }
+    
     func validateGraph() -> Bool
     {
         

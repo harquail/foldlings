@@ -15,9 +15,12 @@ class SketchView: UIView {
         case Erase
         case Cut
         case Fold
+        case Tab
     }
     
-    //    @IBOutlet var uiView:UIView?
+    // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
+    var simpleMode = true
+    
     
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
@@ -32,17 +35,11 @@ class SketchView: UIView {
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     
-    var gridify:Bool = false
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    //    override init() {
-    //        super.init()
-    //    }
-    //
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -73,7 +70,6 @@ class SketchView: UIView {
         previewButton.alpha = 0.3
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
-        if gridify { touchPoint = sketch.nearestGridPoint(touchPoint) }
         startEdgeCollision = nil //reset edge collisions to nil
         endEdgeCollision = nil
         
@@ -87,10 +83,18 @@ class SketchView: UIView {
         {
         case .Erase:
             erase(touchPoint);
-        case .Cut, .Fold:
+        case .Cut, .Fold, .Tab:
+            // simplemode check for fold drawing
+            if simpleMode && !simpleModeFoldInBounds(touchPoint, sketchMode: sketchMode)  {
+                cancelledTouch = touch
+                return
+            }
+            
+            // snap to vertex
             if let np = sketch.vertexHitTest(touchPoint) {
                 touchPoint = np
-            } else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+            } // snap to edge
+            else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
                 touchPoint = np
                 startEdgeCollision = edge
             }
@@ -115,7 +119,8 @@ class SketchView: UIView {
             {
             case .Erase: // if in erase mode
                 erase(touchPoint);
-            case .Cut, .Fold:
+            case .Cut, .Fold, .Tab:
+                // check if we've snapped or aborted
                 var abort:Bool = checkCurrentEnd(touchPoint)
                 ctr=ctr+1
                 pts[ctr] = tempEnd
@@ -139,14 +144,13 @@ class SketchView: UIView {
         
         previewButton.alpha = 1
         
-        if gridify { tempEnd = sketch.nearestGridPoint(tempEnd) }
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
         {
         case .Erase:
             break
-        case .Cut, .Fold:
+        case .Cut, .Fold, .Tab:
             if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
             {
                 var se1:Edge?
@@ -184,9 +188,8 @@ class SketchView: UIView {
                 makeBezier(aborted: true)  //do another call to makeBezier to finish the line
                 var newPath = UIBezierPath(CGPath: path.CGPath)
                 newPath = smoothPath(newPath)
-                let edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
                 setPathStyle(newPath, edge:nil, grayscale:false)
-                self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: edgekind)
+                self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
                 self.setNeedsDisplay()
             }
             path.removeAllPoints()
@@ -201,6 +204,7 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
+    /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(grayscale:Bool) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
@@ -380,7 +384,7 @@ class SketchView: UIView {
                 color = e.getColor()
             }
         } else {
-            edgekind = (sketchMode == .Cut) ? Edge.Kind.Cut : Edge.Kind.Fold
+            edgekind = modeToEdgeKind(sketchMode)
             fold = Edge.Fold.Unknown
             if(grayscale){
                 color = Edge.getLaserColor(edgekind, fold:fold)
@@ -577,6 +581,38 @@ class SketchView: UIView {
         c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
         c.stroke()
         return c
+    }
+    
+    
+    ///MARK: simplemode functions
+    
+    ///checks if can draw above fold for simple mode
+    func simpleModeFoldInBounds(point: CGPoint, sketchMode: Mode) -> Bool
+    {
+        switch sketchMode {
+        case .Fold:
+            return point.y >= sketch.drivingEdge.start.y
+        case .Tab:
+            return point.y <= sketch.drivingEdge.start.y
+        default:
+            return true
+        }
+
+    }
+    
+    func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
+    {
+        switch sketchMode {
+        case .Cut:
+            return Edge.Kind.Cut
+        case .Fold:
+            return Edge.Kind.Fold
+        case .Tab:
+            return Edge.Kind.Tab
+        default:
+            return Edge.Kind.Cut
+        }
+
     }
     
 }
