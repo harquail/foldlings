@@ -19,6 +19,7 @@ class Sketch : NSObject,NSCoding  {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
+    var tabs  : [Edge] = [] // tabbytabbbss
     var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
     var drivingEdge: Edge!
@@ -124,11 +125,16 @@ class Sketch : NSObject,NSCoding  {
         // inefficient? who cares
         if kind == .Fold
         {
-            if e !== drivingEdge //NOTE: driving fold not in folds
+            if e !== drivingEdge && !contains(folds, e) //NOTE: driving fold not in folds
             {
                 folds.append(e)
                 folds.sort({ $0.start.y > $1.start.y })
             }
+        }
+        
+        if kind == .Tab
+        {
+            if !contains(tabs, e) { tabs.append(e) }
         }
         
         // check if our new edge is a hole that encloses other edges
@@ -155,6 +161,7 @@ class Sketch : NSObject,NSCoding  {
             edge.path.removeAllPoints()
             edges = edges.filter({ $0 != edge })
             folds = folds.filter({ $0 != edge })
+            tabs  = tabs.filter({ $0 != edge })
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
@@ -252,12 +259,14 @@ class Sketch : NSObject,NSCoding  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
+    
+    /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
         planes.removeAll()
         visited = []
         
-        for (i, start) in enumerate(folds)//traverse edges
+        for (i, start) in enumerate(edges)//traverse edges
         {
             var p : [Edge] = []
             if contains(visited, start){// skipped over already visited edges
@@ -266,85 +275,122 @@ class Sketch : NSObject,NSCoding  {
                 
             else
             {
-                var pt = start.end
-                var closest = getClosest(start, point: pt)// get closest adjacent edge
+                var closest = getClosest(start)// get closest adjacent edge
                 p.append(start)
                 visited.append(start)
-                
-                while !contains(p, closest)
+
+                // check if twin has not been crossed and not in plane
+                while !contains(p, closest) && !closest.crossed
                 {
                     p.append(closest)
+                    // TODO set plane to edge.plane
                     visited.append(closest)
-                    
-                    if(pt == closest.end)// if last point is same as endpoint
-                    {
-                        pt = closest.start// use startpoint
-                    }
-                    else {// if last point was startpoint
-                        pt = closest.end// use endpoint
-                    }
-                    closest = getClosest(closest, point: pt)// get closest adjacent edge
-                    
+                    closest = getClosest(closest)
                 }
-                //println("plane: \(p)")
-                planes.addPlane(Plane(edges: p))
+                
+                if !closest.crossed{// if you didn't cross twin, make it a plane
+                    var plane = Plane(edges: p)
+                    planes.addPlane(plane)
+                    println("planeCount \(planes.count)")
+                    for e in p
+                    {
+                        e.plane = plane
+                    }
+                } else {
+                    closest.crossed = false
+                }
             }
         }
         println("planecount: \(planes.count)")
     }
     
+    
     //get closest adjancent edge
     // get angle between lines
-    func getClosest(current: Edge, point: CGPoint) -> Edge
+    func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
-        var curr_pt: CGPoint = current.start
-        var close_pt: CGPoint!
-        var next_pt: CGPoint!
+//        println("adjacency \( adjacency[current.end]!.count )")
+
+        if adjacency[current.end]!.count < 2 {
+            closest = adjacency[current.end]![0]
+            closest.crossed = true
+            return closest
+        }
         
-        for next in adjacency[point]!
+        for next in adjacency[current.end]!
         {
-            next_pt = next.start// set the initial point
-            
-            if next == current // if in adjacency//check in plane?
-            {
-                if adjacency[point]!.count < 2 // for while drawing if only one line
-                {
-                    return current
-                }
-                continue
-            }
-            
             if closest == nil  // make the first edge the closest
             {
                 closest = next
-                close_pt = closest.start
+                continue
+            }
+            if current.twin == closest {
+                closest = next
                 continue
             }
             
-            // compare for greater angle between closest and next
-            // need to detect if current.start, closest.end, next.end are equal to the point 
-            // if so, get the other point to compare
-            if current.start == point{
-                curr_pt = current.end
-            }
-            if closest.start == point{
-                close_pt = closest.end
-            }
-            if next.start == point{
-                next_pt = next.end
-            }
+            // compare for greater angle for closest and next
+
+            let curr_ang = getAngle(current, closest)
+            let next_ang = getAngle(current, next)
             
-            let ang1 = getAngle(point, curr_pt, close_pt)
-            let ang2 = getAngle(point, curr_pt, next_pt)
-            
-            if  ang1 > ang2
+            if  next_ang < curr_ang  && next_ang > 0 // if the current angle is bigger than the next edge
+                // least angle greater than zero
             {
                 closest = next
             }
         }
         return closest
     }
+    
+    
+    /// build tabs as necessary from te planes
+    func buildTabs() {
+        
+        for tab in tabs {
+            var bottomFold:Edge? = nil
+            
+            let plane1 = tab.plane
+            let plane2 = tab.twin.plane
+            
+            var lowestY = CGFloat.max
+            for plane in [plane1, plane2] {
+                if let p = plane {
+                    for edge in p.edges
+                    {
+                        if edge.kind == .Fold && edge.start.y >= lowestY {
+                            bottomFold = edge
+                        }
+                    }
+                }
+            }
+            if bottomFold != nil {
+                let distance = abs(drivingEdge.start.y  - bottomFold!.start.y)
+                let newfoldstart = CGPointMake(tab.start.x, tab.start.y-distance)
+                let newfoldend = CGPointMake(tab.end.x, tab.end.y-distance)
+                //new fold
+                let newfold = UIBezierPath()
+                newfold.moveToPoint(newfoldstart)
+                newfold.addLineToPoint(newfoldend)
+                addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
+                //left edge
+                let newleft = UIBezierPath()
+                newleft.moveToPoint(tab.start)
+                newleft.addLineToPoint(newfoldstart)
+                addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
+                //right edge
+                let newright = UIBezierPath()
+                newright.moveToPoint(tab.end)
+                newright.addLineToPoint(newfoldend)
+                addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+            }
+            
+        }
+        
+        
+    }
+
     
     /// look through edges and return vertex in the hit distance if found
     func vertexHitTest(point:CGPoint) -> CGPoint?
