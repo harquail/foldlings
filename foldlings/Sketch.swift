@@ -257,7 +257,7 @@ class Sketch : NSObject,NSCoding  {
         planes.removeAll()
         visited = []
         
-        for (i, start) in enumerate(folds)//traverse edges
+        for (i, start) in enumerate(edges)//traverse edges
         {
             var p : [Edge] = []
             if contains(visited, start){// skipped over already visited edges
@@ -266,8 +266,7 @@ class Sketch : NSObject,NSCoding  {
                 
             else
             {
-                var pt = start.end
-                var closest = getClosest(start, point: pt)// get closest adjacent edge
+                var closest = getClosest(start)// get closest adjacent edge
                 p.append(start)
                 visited.append(start)
                 
@@ -275,15 +274,7 @@ class Sketch : NSObject,NSCoding  {
                 {
                     p.append(closest)
                     visited.append(closest)
-                    
-                    if(pt == closest.end)// if last point is same as endpoint
-                    {
-                        pt = closest.start// use startpoint
-                    }
-                    else {// if last point was startpoint
-                        pt = closest.end// use endpoint
-                    }
-                    closest = getClosest(closest, point: pt)// get closest adjacent edge
+                    closest = getClosest(closest)// get closest adjacent edge
                     
                 }
                 //println("plane: \(p)")
@@ -295,20 +286,17 @@ class Sketch : NSObject,NSCoding  {
     
     //get closest adjancent edge
     // get angle between lines
-    func getClosest(current: Edge, point: CGPoint) -> Edge
+    // if next edge is its own twin
+    func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
-        var curr_pt: CGPoint = current.start
-        var close_pt: CGPoint!
-        var next_pt: CGPoint!
         
-        for next in adjacency[point]!
+        for next in adjacency[current.end]!
         {
-            next_pt = next.start// set the initial point
             
             if next == current // if in adjacency//check in plane?
             {
-                if adjacency[point]!.count < 2 // for while drawing if only one line
+                if adjacency[current.end]!.count < 2 // for while drawing if only one line
                 {
                     return current
                 }
@@ -318,27 +306,14 @@ class Sketch : NSObject,NSCoding  {
             if closest == nil  // make the first edge the closest
             {
                 closest = next
-                close_pt = closest.start
                 continue
             }
             
-            // compare for greater angle between closest and next
-            // need to detect if current.start, closest.end, next.end are equal to the point 
-            // if so, get the other point to compare
-            if current.start == point{
-                curr_pt = current.end
-            }
-            if closest.start == point{
-                close_pt = closest.end
-            }
-            if next.start == point{
-                next_pt = next.end
-            }
+            // compare for greater angle for closest and next
+            let curr_ang = getAngle(current.end, current.start, closest.end)
+            let next_ang = getAngle(current.end, current.start, next.end)
             
-            let ang1 = getAngle(point, curr_pt, close_pt)
-            let ang2 = getAngle(point, curr_pt, next_pt)
-            
-            if  ang1 > ang2
+            if  curr_ang > next_ang// if the current angle is bigger than the next edge
             {
                 closest = next
             }
