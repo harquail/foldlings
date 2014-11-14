@@ -107,25 +107,26 @@ class Sketch : NSObject,NSCoding  {
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
-        var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-        let revpath = reversePath(path) // need to reverse the path for better drawing
-        var m = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
-        e.twin = m
-        m.twin = e
+        var revpath = reversePath(path) // need to reverse the path for better drawing
+        var edge = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
+        var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
+        //flipping the above seems to work better but keeping it right now
+        edge.twin = twin
+        twin.twin = edge
         
-        if !contains(edges, e) {
-            edges.append(e)
+        if !contains(edges, edge) {
+            edges.append(edge)
         }
         
         if adjacency[start] != nil{
-            adjacency[start]!.append(e)
+            adjacency[start]!.append(edge)
         } else {
-            adjacency[start] = [e]
+            adjacency[start] = [edge]
         }
         if adjacency[end] != nil {
-            adjacency[end]!.append(m)
+            adjacency[end]!.append(twin)
         } else {
-            adjacency[end] = [m]
+            adjacency[end] = [twin]
         }
         
         // keep folds in ascending order by start position y height from bottom up
@@ -133,20 +134,20 @@ class Sketch : NSObject,NSCoding  {
         // inefficient? who cares
         if kind == .Fold
         {
-            if e !== drivingEdge && !contains(folds, e) //NOTE: driving fold not in folds
+            if edge !== drivingEdge && !contains(folds, edge) //NOTE: driving fold not in folds
             {
-                folds.append(e)
+                folds.append(edge)
                 folds.sort({ $0.start.y > $1.start.y })
             }
         }
         
         if kind == .Tab
         {
-            if !contains(tabs, e) { tabs.append(e) }
+            if !contains(tabs, edge) { tabs.append(edge) }
         }
         
         // check if our new edge is a hole that encloses other edges
-        if CGPointEqualToPoint(e.start, e.end)
+        if CGPointEqualToPoint(edge.start, edge.end)
         {
             if let collisions = shapeHitTest(path)
             {
@@ -159,7 +160,7 @@ class Sketch : NSObject,NSCoding  {
         //skip 0th fold
         initPlanes()
         
-        return e
+        return edge
     }
     
     ///removes and edge from edges and adjacency

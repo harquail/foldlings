@@ -18,7 +18,23 @@ func reversePath(path:UIBezierPath) -> UIBezierPath
     let elements = path.getPathElements()
     let points = getSubdivisions(elements)
     let revpoints = points.reverse()
-    return pathFromPoints(smoothPoints(revpoints))
+    return linePathFromPoints(smoothPoints(revpoints))
+    
+    //TODO: check this and make pathFromPoints instead once working?
+}
+
+func linePathFromPoints(path:[CGPoint]) -> UIBezierPath
+{
+    var npath = UIBezierPath()
+    if path.count > 0 {
+        npath.moveToPoint(path[0])
+        for var i = 1; i < path.count; i++
+        {
+            npath.addLineToPoint(path[i])
+        }
+        
+    }
+    return npath
 }
 
 func pathFromPoints(path:[CGPoint]) -> UIBezierPath
