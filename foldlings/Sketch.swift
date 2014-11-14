@@ -287,28 +287,35 @@ class Sketch : NSObject,NSCoding  {
                 visited.append(start)
 
                 // check if twin has not been crossed and not in plane
-                while !contains(p, closest) && !closest.crossed
+                while  closest.end != start.start && !closest.crossed
                 {
                     p.append(closest)
-                    // TODO set plane to edge.plane
                     visited.append(closest)
                     closest = getClosest(closest)
+                }
+
+                if closest.end == start.start{
+                    p.append(closest)
+                    visited.append(closest)
                 }
                 
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
-                    planes.addPlane(plane)
-                    //println("plane \(plane)")
-                    for e in p
+                    if !checkBorderPlane(plane)
                     {
-                        e.plane = plane
+                        planes.addPlane(plane)
+//                      println("plane \(plane)")
+                        for e in p
+                        {
+                            e.plane = plane
+                        }
                     }
                 } else {
                     closest.crossed = false
                 }
             }
         }
-        //println("planeCount \(planes.count)")
+        println("planeCount \(planes.count)")
 
     }
     
@@ -333,7 +340,7 @@ class Sketch : NSObject,NSCoding  {
                 closest = next
                 continue
             }
-            if current.twin == closest || contains(visited, closest) {//if the current closest is twin or it's already visited, the next is now closest
+            if current.twin == closest || contains(visited, closest){//if the current closest is twin or it's already visited, the next is now closest
                 closest = next
                 continue
             }
@@ -343,7 +350,7 @@ class Sketch : NSObject,NSCoding  {
             let curr_ang = getAngle(current, closest)
             let next_ang = getAngle(current, next)
             
-            if  next_ang < curr_ang  && next_ang > 0 // if the current angle is bigger than the next edge
+            if  next_ang < curr_ang  && next_ang >= 0 // if the current angle is bigger than the next edge
                 // least angle greater than zero
             {
                 closest = next
@@ -489,6 +496,33 @@ class Sketch : NSObject,NSCoding  {
     }
     
     
+    // returns true if this plane is equal to the border edges plane
+    func checkBorderPlane(plane:Plane) -> Bool
+    {
+        var listOfPlanePoints:[CGPoint] = [CGPoint]()
+        for edge in plane.edges {
+            listOfPlanePoints.append(edge.start)
+            listOfPlanePoints.append(edge.end)
+        }
+        
+        var listOfBorderPoints:[CGPoint] = [CGPoint]()
+        listOfBorderPoints.append(self.bEdge1.start)
+        listOfBorderPoints.append(self.bEdge1.end)
+        
+        listOfBorderPoints.append(self.bEdge3.start)
+        listOfBorderPoints.append(self.bEdge3.end)
+        
+        listOfBorderPoints.append(self.drivingEdge.start)
+        listOfBorderPoints.append(self.drivingEdge.end)
+        
+        listOfPlanePoints = listOfPlanePoints.unique()
+        
+        let intersection = listOfBorderPoints.intersection(listOfPlanePoints)
+        let b = intersection.count == listOfPlanePoints.count && intersection.count == listOfBorderPoints.count
+        
+//        println("checking plane to borders: \(b), \(intersection.count)")
+        return b
+    }
     
     
 }

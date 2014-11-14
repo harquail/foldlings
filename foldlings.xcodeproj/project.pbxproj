@@ -24,6 +24,16 @@
 		22C3F4C019F33FF200857C82 /* print.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BE19F33FF200857C82 /* print.jpeg */; };
 		22C3F4C119F33FF200857C82 /* send.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BF19F33FF200857C82 /* send.jpeg */; };
 		22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C3F4C419F35E9600857C82 /* AboutViewController.swift */; };
+		22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7EF1A169F2400C9ECAA /* Array.swift */; };
+		22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F01A169F2400C9ECAA /* Dictionary.swift */; };
+		22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F11A169F2400C9ECAA /* Double.swift */; };
+		22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F31A169F2400C9ECAA /* ExSwift.swift */; };
+		22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F41A169F2400C9ECAA /* Float.swift */; };
+		22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F51A169F2400C9ECAA /* Int.swift */; };
+		22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F61A169F2400C9ECAA /* NSArray.swift */; };
+		22D0E8011A169F2400C9ECAA /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F71A169F2400C9ECAA /* Range.swift */; };
+		22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F81A169F2400C9ECAA /* Sequence.swift */; };
+		22D0E8031A169F2400C9ECAA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F91A169F2400C9ECAA /* String.swift */; };
 		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
 		8874A7121A05B61F00F78283 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874A7111A05B61F00F78283 /* Plane.swift */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
@@ -81,6 +91,17 @@
 		22C3F4BE19F33FF200857C82 /* print.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = print.jpeg; sourceTree = "<group>"; };
 		22C3F4BF19F33FF200857C82 /* send.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send.jpeg; sourceTree = "<group>"; };
 		22C3F4C419F35E9600857C82 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		22D0E7EF1A169F2400C9ECAA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		22D0E7F01A169F2400C9ECAA /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		22D0E7F11A169F2400C9ECAA /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		22D0E7F21A169F2400C9ECAA /* ExSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExSwift.h; sourceTree = "<group>"; };
+		22D0E7F31A169F2400C9ECAA /* ExSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExSwift.swift; sourceTree = "<group>"; };
+		22D0E7F41A169F2400C9ECAA /* Float.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
+		22D0E7F51A169F2400C9ECAA /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		22D0E7F61A169F2400C9ECAA /* NSArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArray.swift; sourceTree = "<group>"; };
+		22D0E7F71A169F2400C9ECAA /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
+		22D0E7F81A169F2400C9ECAA /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		22D0E7F91A169F2400C9ECAA /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
 		8874A7111A05B61F00F78283 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
@@ -130,6 +151,7 @@
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				22D0E8041A169F3200C9ECAA /* ExSwift */,
 				225094F01A0CA21000E754CA /* BezierSimple.h */,
 				225094F11A0CA21000E754CA /* BezierSimple.m */,
 				225094F51A0DBB5D00E754CA /* CGPoint+Vector.h */,
@@ -165,6 +187,24 @@
 				F1E309631A15854C00C09792 /* roundedrect.png */,
 			);
 			name = Assets;
+			sourceTree = "<group>";
+		};
+		22D0E8041A169F3200C9ECAA /* ExSwift */ = {
+			isa = PBXGroup;
+			children = (
+				22D0E7EF1A169F2400C9ECAA /* Array.swift */,
+				22D0E7F01A169F2400C9ECAA /* Dictionary.swift */,
+				22D0E7F11A169F2400C9ECAA /* Double.swift */,
+				22D0E7F21A169F2400C9ECAA /* ExSwift.h */,
+				22D0E7F31A169F2400C9ECAA /* ExSwift.swift */,
+				22D0E7F41A169F2400C9ECAA /* Float.swift */,
+				22D0E7F51A169F2400C9ECAA /* Int.swift */,
+				22D0E7F61A169F2400C9ECAA /* NSArray.swift */,
+				22D0E7F71A169F2400C9ECAA /* Range.swift */,
+				22D0E7F81A169F2400C9ECAA /* Sequence.swift */,
+				22D0E7F91A169F2400C9ECAA /* String.swift */,
+			);
+			name = ExSwift;
 			sourceTree = "<group>";
 		};
 		F17C93BF19E24BEC00BB77F1 = {
@@ -380,7 +420,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
+				22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */,
 				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
+				22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */,
 				22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */,
 				224501141A0F334200E18F82 /* CollectionOfPlanes.swift in Sources */,
 				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
@@ -388,17 +430,25 @@
 				F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */,
 				227708D719EE016A0095CD9D /* SketchView.swift in Sources */,
 				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
+				22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */,
+				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
+				22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */,
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
+				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
 				F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */,
+				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
 				F18C864719FD9F4500211229 /* CollectionOfFoldlings.swift in Sources */,
 				8874A7121A05B61F00F78283 /* Plane.swift in Sources */,
 				22C0D68A1A04965C00D521CA /* Bezier.swift in Sources */,
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
 				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
 				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
+				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
