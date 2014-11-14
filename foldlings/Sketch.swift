@@ -269,16 +269,19 @@ class Sketch : NSObject,NSCoding  {
                 var closest = getClosest(start)// get closest adjacent edge
                 p.append(start)
                 visited.append(start)
-                
-                while !contains(p, closest)
+
+                // check if twin has not been crossed and not in plane
+                while !contains(p, closest) && !closest.crossed
                 {
                     p.append(closest)
+                    // TODO set plane to edge.plane
                     visited.append(closest)
-                    closest = getClosest(closest)// get closest adjacent edge
-                    
+                    closest = getClosest(closest)
                 }
-                //println("plane: \(p)")
+                
+                if !closest.crossed{// if you didn't cross twin, make it a plane
                 planes.addPlane(Plane(edges: p))
+                }
             }
         }
         println("planecount: \(planes.count)")
@@ -286,23 +289,12 @@ class Sketch : NSObject,NSCoding  {
     
     //get closest adjancent edge
     // get angle between lines
-    // if next edge is its own twin
     func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
         
         for next in adjacency[current.end]!
         {
-            
-            if next == current // if in adjacency//check in plane?
-            {
-                if adjacency[current.end]!.count < 2 // for while drawing if only one line
-                {
-                    return current
-                }
-                continue
-            }
-            
             if closest == nil  // make the first edge the closest
             {
                 closest = next
@@ -316,6 +308,11 @@ class Sketch : NSObject,NSCoding  {
             if  curr_ang > next_ang// if the current angle is bigger than the next edge
             {
                 closest = next
+                
+                if closest == current.twin// if twin is in adjacency
+                {
+                    closest.crossed = true
+                }
             }
         }
         return closest
