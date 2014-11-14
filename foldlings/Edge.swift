@@ -168,13 +168,23 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return Edge.getColor(self.kind, fold:self.fold)
     }
     
-    // this is completely unecessary, but convenient
+    /// this is completely unecessary, but convenient
     func yDistTo(e:Edge)-> CGFloat{
 
-        return self.start.y - e.start.y
+        return abs(self.start.y - e.start.y)
     
     }
     
+    /// makes a straight edge between two point
+    class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind) -> Edge{
+        
+        let path = UIBezierPath()
+        path.moveToPoint(start)
+        path.addLineToPoint(end)
+        let edge = Edge(start: start, end: end, path: path, kind:kind)
+        
+        return edge
+    }
     
     
 }

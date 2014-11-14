@@ -97,6 +97,13 @@ class Sketch : NSObject,NSCoding  {
     }
     
     
+    /// add an already-constructed edge
+    func addEdge(edge:Edge) -> Edge {
+        
+        return addEdge(edge.start,end:edge.end, path:edge.path, kind: edge.kind)
+    
+    }
+
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
