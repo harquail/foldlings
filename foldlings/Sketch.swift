@@ -259,6 +259,8 @@ class Sketch : NSObject,NSCoding  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
+    
+    /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
         planes.removeAll()
@@ -294,17 +296,61 @@ class Sketch : NSObject,NSCoding  {
                     {
                         e.plane = plane
                     }
+                } else {
+                    closest.crossed = false
                 }
             }
         }
+        
     }
+    
+    
+    //get closest adjancent edge
+    // get angle between lines
+    func getClosest(current: Edge) -> Edge
+    {
+        var closest: Edge!
+//        println("adjacency \( adjacency[current.end]!.count )")
+
+        if adjacency[current.end]!.count < 2 {
+            closest = adjacency[current.end]![0]
+            closest.crossed = true
+            return closest
+        }
+        
+        for next in adjacency[current.end]!
+        {
+            if closest == nil  // make the first edge the closest
+            {
+                closest = next
+                continue
+            }
+            if current.twin == closest {
+                closest = next
+                continue
+            }
+            
+            // compare for greater angle for closest and next
+
+            let curr_ang = getAngle(current, closest)
+            let next_ang = getAngle(current, next)
+            
+            if  next_ang < curr_ang  && next_ang > 0 // if the current angle is bigger than the next edge
+                // least angle greater than zero
+            {
+                closest = next
+            }
+        }
+        return closest
+    }
+    
     
     /// build tabs as necessary from te planes
     func buildTabs() {
-
+        
         for tab in tabs {
             var bottomFold:Edge? = nil
-
+            
             let plane1 = tab.plane
             let plane2 = tab.twin.plane
             
@@ -339,43 +385,12 @@ class Sketch : NSObject,NSCoding  {
                 newright.addLineToPoint(newfoldend)
                 addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
             }
-
+            
         }
-
+        
         
     }
-    
-    //get closest adjancent edge
-    // get angle between lines
-    func getClosest(current: Edge) -> Edge
-    {
-        var closest: Edge!
-        
-        for next in adjacency[current.end]!
-        {
-            if closest == nil  // make the first edge the closest
-            {
-                closest = next
-                continue
-            }
-            
-            // compare for greater angle for closest and next
 
-            let curr_ang = getAngle(current, closest)
-            let next_ang = getAngle(current, next)
-            
-            if  next_ang < curr_ang// if the current angle is bigger than the next edge
-            {
-                if closest == current.twin// if twin is in adjacency
-                {// only add if adjacency is 2 items
-                    closest.crossed = true
-                    continue
-                }
-                closest = next
-            }
-        }
-        return closest
-    }
     
     /// look through edges and return vertex in the hit distance if found
     func vertexHitTest(point:CGPoint) -> CGPoint?

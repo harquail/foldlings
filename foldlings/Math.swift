@@ -20,14 +20,6 @@ func square(a: CGFloat) -> CGFloat{
     return a * a
 }
 
-// two end points and then shared point
-//func getAngle(x0: CGPoint, x1: CGPoint, x2: CGPoint) ->Double{
-//    
-//    let d1 = CGPointNormalize(CGPointSubtract(x1, x0) )
-//    let d2 = CGPointNormalize(CGPointSubtract(x2,x0) )
-//    
-//    return Double(CGPointGetAngleBetween(d1, d2)) * (180/M_PI)// it's now in radians and not in degrees
-//}
 
 func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     
@@ -42,7 +34,7 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     let dot = x1*x2 + y1*y2 //  dot product
     let det = x1*y2 - y1*x2 // determinant
     
-    return atan2(det,dot) // atan2(y, x) or atan2(sin, cos)
+    return atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
 }
 
 struct Vector2D  {
