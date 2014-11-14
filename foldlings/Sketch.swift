@@ -286,8 +286,8 @@ class Sketch : NSObject,NSCoding  {
             {
                 p.append(start)
                 visited.append(start)
+                
                 var closest = getClosest(start)// get closest adjacent edge
-
 
                 // check if twin has not been crossed and not in plane
                 while  closest.end != start.start && !closest.crossed
@@ -304,15 +304,17 @@ class Sketch : NSObject,NSCoding  {
                 
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
-                    planes.addPlane(plane)
-                    println("plane \(plane)")
-                    for e in p
-                    {
+                    if !checkBorderPlane(plane) {
                         planes.addPlane(plane)
-//                      println("plane \(plane)")
+    //                    println("plane \(plane)")
                         for e in p
                         {
-                            e.plane = plane
+                            planes.addPlane(plane)
+    //                      println("plane \(plane)")
+                            for e in p
+                            {
+                                e.plane = plane
+                            }
                         }
                     }
                 }
@@ -360,6 +362,11 @@ class Sketch : NSObject,NSCoding  {
                 closest = next
             }
             //if next_ang == 0
+        }
+        
+        // if nil means only twin edge so return twin
+        if closest == nil {
+            closest = current.twin
         }
         return closest
     }
