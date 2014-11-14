@@ -289,6 +289,7 @@ class Sketch : NSObject,NSCoding  {
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     planes.addPlane(plane)
+                    println("planeCount \(planes.count)")
                     for e in p
                     {
                         e.plane = plane
@@ -337,17 +338,18 @@ class Sketch : NSObject,NSCoding  {
             }
             
             // compare for greater angle for closest and next
-            let curr_ang = getAngle(current.end, current.start, closest.end)
-            let next_ang = getAngle(current.end, current.start, next.end)
+
+            let curr_ang = getAngle(current, closest)
+            let next_ang = getAngle(current, next)
             
-            if  curr_ang > next_ang// if the current angle is bigger than the next edge
+            if  next_ang < curr_ang// if the current angle is bigger than the next edge
             {
-                closest = next
-                
                 if closest == current.twin// if twin is in adjacency
-                {
+                {// only add if adjacency is 2 items
                     closest.crossed = true
+                    continue
                 }
+                closest = next
             }
         }
         return closest
