@@ -80,6 +80,49 @@ class Plane: Printable, Hashable {
         return node
     }
     
+    func bottomFold() -> Edge{
+        
+        let maxPoint = CGPointMake(CGFloat.max, CGFloat.max)
+        var minEdge:Edge = Edge(start:  maxPoint, end: maxPoint, path: UIBezierPath())
+        
+        for edge in edges{
+        
+            if(edge.kind ==  .Fold){
+                
+                if(edge.start.y < minEdge.start.y){
+                
+                minEdge = edge
+                    
+                }
+            }
+        }
+        
+        return minEdge
+    
+    }
+    
+    
+    func topFold() -> Edge{
+        
+        let minPoint = CGPointMake(CGFloat.min, CGFloat.min)
+        var maxEdge:Edge = Edge(start:  minPoint, end: minPoint, path: UIBezierPath())
+        
+        for edge in edges{
+            
+            if(edge.kind ==  .Fold){
+                
+                if(edge.start.y > maxEdge.start.y){
+                    
+                    maxEdge = edge
+                    
+                }
+            }
+        }
+        
+        return maxEdge
+        
+    }
+    
     func sanitizePath(){
         path = sanitizedPath(path)
 
