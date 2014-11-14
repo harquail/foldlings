@@ -59,6 +59,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var fold = Fold.Unknown
     var kind = Kind.Cut
     var isMaster = false
+    var colorOverride:UIColor? = nil
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
         self.start = start
@@ -165,7 +166,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     func getColor() -> UIColor
     {
-        return Edge.getColor(self.kind, fold:self.fold)
+        if self.colorOverride != nil {
+            return self.colorOverride!
+        } else {
+            return Edge.getColor(self.kind, fold:self.fold)
+        }
     }
     
     /// this is completely unecessary, but convenient
@@ -185,6 +190,5 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
         return edge
     }
-    
     
 }
