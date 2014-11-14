@@ -11,6 +11,16 @@ import UIKit
 //how fine to make the subdivisions -- is divided by the length of the line
 let kBezierIncrements:CGFloat = 0.5
 
+
+//reverse the path
+func reversePath(path:UIBezierPath) -> UIBezierPath
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements)
+    let revpoints = points.reverse()
+    return pathFromPoints(smoothPoints(revpoints))
+}
+
 func pathFromPoints(path:[CGPoint]) -> UIBezierPath
 {
     var npath = UIBezierPath()

@@ -35,7 +35,7 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
-        let color = getRandomColor()
+        let color = getRandomColor(0.8)
         if !contains(planes, plane) {
             planes.append(plane)
         }
@@ -83,14 +83,7 @@ class CollectionOfPlanes: Printable, Hashable {
         return true
     }
     
-    
-    func getRandomColor() -> UIColor{
-        var randomRed:CGFloat = CGFloat(drand48())
-        var randomGreen:CGFloat = CGFloat(drand48())
-        var randomBlue:CGFloat = CGFloat(drand48())
-        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
-    }
-    
+        
 
 }
 

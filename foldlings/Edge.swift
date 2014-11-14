@@ -180,6 +180,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     }
     
+    func reversePath()
+    {
+        
+    }
+    
     /// makes a straight edge between two point
     class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind) -> Edge{
         

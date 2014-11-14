@@ -108,7 +108,8 @@ class Sketch : NSObject,NSCoding  {
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
         var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-        var m = Edge(start: end, end: start, path: path, kind: kind, isMaster:isMaster)
+        let revpath = reversePath(path) // need to reverse the path for better drawing
+        var m = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
         e.twin = m
         m.twin = e
         
