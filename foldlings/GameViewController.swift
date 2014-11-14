@@ -15,6 +15,10 @@ class GameViewController: UIViewController {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
+    
+    //constants
+    let zeroDegrees =  Float(0.0*M_PI)
+    let ninetyDegrees = Float(0.5*M_PI)
 //    var shareRectangle: CGRect
     
     
@@ -95,16 +99,20 @@ class GameViewController: UIViewController {
         
         
         
+        
+        
+        
         //new stuff
         //TODO: fix
         
+        
         let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-
+        
         let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
-//        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
+        //        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
         
         let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
-//        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
+        //        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
         
         let bottomRight = CGPointMake(0, 0)
         
@@ -126,25 +134,64 @@ class GameViewController: UIViewController {
         
         var edges = [Edge(start: topLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: bottomLeft, path: path3),Edge(start: bottomLeft, end: topLeft, path: path4)]
         
-        let plane = Plane(edges: edges)
-        plane.sanitizePath()
-        
-        let awkwardTestNode = plane.node()
-        
-        // TODO: fix magic numbers
-        awkwardTestNode.position.x -= 3.9
-        awkwardTestNode.position.y -= 3.0
-        awkwardTestNode.position.z -= 4.5
         
         
-        let zeroDegrees =  Float(0.0*M_PI)
-        let ninetyDegrees = Float(0.5*M_PI)
+        func addPlaneToScene(edges:[Edge], parent:SCNNode) -> SCNNode {
+            
+            let plane = Plane(edges: edges)
+            plane.sanitizePath()
+            
+            let node = plane.node()
+            
+            // TODO: fix magic numbers
+//            node.position.x -= 3.9
+//            node.position.y -= 3.0
+//            node.position.z -= 4.5
+            
+            
+            let zeroDegrees =  Float(0.0*M_PI)
+            let ninetyDegrees = Float(0.5*M_PI)
+            
+            //set rotation to start angle
+            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
+            parent.addChildNode(node)
+            node.addAnimation(fadeIn(), forKey: "fade in")
+            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
         
-        //set rotation to start angle
-        awkwardTestNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
-        scene.rootNode.addChildNode(awkwardTestNode)
-        awkwardTestNode.addAnimation(fadeIn(), forKey: "fade in")
-        awkwardTestNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+
+            return node;
+            
+        }
+        
+        func addHoleToScene(edges:[Edge], parent:SCNNode) -> SCNNode{
+            
+            let plane = Plane(edges: edges)
+            plane.sanitizePath()
+            plane.kind = .Hole
+            
+            
+            // TODO: duplicated code
+            let node = plane.node()
+            changePivot(node)
+
+            
+            // TODO: fix magic numbers
+            node.position.x -= 3.9
+            node.position.y -= 3.0
+            node.position.z -= 4.5
+            //set rotation to start angle
+            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
+            parent.addChildNode(node)
+            node.addAnimation(fadeIn(), forKey: "fade in")
+            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+         
+            return node;
+        }
+        
+    
+        
+        addHoleToScene(edges, scene.rootNode)
+
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -159,7 +206,7 @@ class GameViewController: UIViewController {
         scnView.showsStatistics = true
         
         // configure the view
-        scnView.backgroundColor = UIColor.blackColor()
+        scnView.backgroundColor = UIColor.greenColor()
         
         // add a tap gesture recognizer
         
@@ -207,7 +254,22 @@ class GameViewController: UIViewController {
         
     }
     
+    func changePivot(node:SCNNode){
     
+    var minVec = UnsafeMutablePointer<SCNVector3>.alloc(0)
+    var maxVec = UnsafeMutablePointer<SCNVector3>.alloc(1)
+    if node.getBoundingBoxMin(minVec, max: maxVec) {
+    let distance = SCNVector3(
+    x: maxVec.memory.x - minVec.memory.x,
+    y: maxVec.memory.y - minVec.memory.y,
+    z: maxVec.memory.z - minVec.memory.z)
+    
+    node.pivot = SCNMatrix4MakeTranslation(0, -distance.y, 0)
+    minVec.dealloc(0)
+    maxVec.dealloc(1)
+    }
+    
+    }
     
     
     

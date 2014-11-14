@@ -15,6 +15,14 @@ func == (lhs: Plane, rhs: Plane) -> Bool {
 
 
 class Plane: Printable, Hashable {
+    
+    
+    enum Kind: String {
+        case Hole = "Hole"
+        case Plane = "Plane"
+    }
+    
+    var kind = Kind.Plane
     var edges : [Edge]!
     var path = UIBezierPath()
     var description: String {
@@ -54,14 +62,20 @@ class Plane: Printable, Hashable {
     func node() -> SCNNode{
         
         let node = SCNNode()
-
-        let shape = SCNShape(path: path, extrusionDepth: 0)
-        let white = SCNMaterial()
-        white.diffuse.contents = UIColor.whiteColor()
-        white.doubleSided = true
         
+        // TODO: might need to increase extrusion depth for holes (if there's z-fighting
+        let shape = SCNShape(path: path, extrusionDepth: 0)
+        let material = SCNMaterial()
+
+        if(self.kind == .Hole){
+        material.diffuse.contents = UIColor.blackColor()
+        }
+        else{
+            material.diffuse.contents = UIColor.whiteColor()
+        }
+        material.doubleSided = true
         node.geometry = shape
-        node.geometry?.firstMaterial = white
+        node.geometry?.firstMaterial = material
         
         return node
     }

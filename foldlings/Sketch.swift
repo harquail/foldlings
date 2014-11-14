@@ -290,8 +290,7 @@ class Sketch : NSObject,NSCoding  {
                 planes.addPlane(Plane(edges: p))
             }
         }
-        //println(planes.count)
-//        return planes
+        println("planecount: \(planes.count)")
     }
     
     //get closest adjancent edge
