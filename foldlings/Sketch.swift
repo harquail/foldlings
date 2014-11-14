@@ -295,13 +295,14 @@ class Sketch : NSObject,NSCoding  {
     
     /// build tabs as necessary from te planes
     func buildTabs() {
-        
+
         for tab in tabs {
+            var bottomFold:Edge? = nil
+
             let plane1 = tab.plane
             let plane2 = tab.twin.plane
             
             var lowestY = CGFloat.max
-            var bottomFold:Edge? = nil
             for plane in [plane1, plane2] {
                 if let p = plane {
                     for edge in p.edges
@@ -312,9 +313,30 @@ class Sketch : NSObject,NSCoding  {
                     }
                 }
             }
+            if bottomFold != nil {
+                let distance = abs(drivingEdge.start.y  - bottomFold!.start.y)
+                let newfoldstart = CGPointMake(tab.start.x, tab.start.y-distance)
+                let newfoldend = CGPointMake(tab.end.x, tab.end.y-distance)
+                //new fold
+                let newfold = UIBezierPath()
+                newfold.moveToPoint(newfoldstart)
+                newfold.addLineToPoint(newfoldend)
+                addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
+                //left edge
+                let newleft = UIBezierPath()
+                newleft.moveToPoint(tab.start)
+                newleft.addLineToPoint(newfoldstart)
+                addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
+                //right edge
+                let newright = UIBezierPath()
+                newright.moveToPoint(tab.end)
+                newright.addLineToPoint(newfoldend)
+                addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+            }
+
         }
+
         
-        //TODO: finish this shit
     }
     
     //get closest adjancent edge
