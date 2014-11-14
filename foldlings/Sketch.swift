@@ -301,11 +301,14 @@ class Sketch : NSObject,NSCoding  {
                 
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
-                    planes.addPlane(plane)
-//                    println("plane \(plane)")
-                    for e in p
+                    if !checkBorderPlane(plane)
                     {
-                        e.plane = plane
+                        planes.addPlane(plane)
+//                      println("plane \(plane)")
+                        for e in p
+                        {
+                            e.plane = plane
+                        }
                     }
                 } else {
                     closest.crossed = false
@@ -496,32 +499,28 @@ class Sketch : NSObject,NSCoding  {
     // returns true if this plane is equal to the border edges plane
     func checkBorderPlane(plane:Plane) -> Bool
     {
-        var list:[CGPoint] = [CGPoint]()
+        var listOfPlanePoints:[CGPoint] = [CGPoint]()
         for edge in plane.edges {
-            list.append(edge.start)
-            list.append(edge.end)
+            listOfPlanePoints.append(edge.start)
+            listOfPlanePoints.append(edge.end)
         }
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge1.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge1.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge3.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge3.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2point5.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2point5.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4point5.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4point5.end ) } )
-
         
-        let b = list.count == 0
-//        println("checking plane to borders: \(b), \(list.count)")
+        var listOfBorderPoints:[CGPoint] = [CGPoint]()
+        listOfBorderPoints.append(self.bEdge1.start)
+        listOfBorderPoints.append(self.bEdge1.end)
+        
+        listOfBorderPoints.append(self.bEdge3.start)
+        listOfBorderPoints.append(self.bEdge3.end)
+        
+        listOfBorderPoints.append(self.drivingEdge.start)
+        listOfBorderPoints.append(self.drivingEdge.end)
+        
+        listOfPlanePoints = listOfPlanePoints.unique()
+        
+        let intersection = listOfBorderPoints.intersection(listOfPlanePoints)
+        let b = intersection.count == listOfPlanePoints.count && intersection.count == listOfBorderPoints.count
+        
+//        println("checking plane to borders: \(b), \(intersection.count)")
         return b
     }
     
