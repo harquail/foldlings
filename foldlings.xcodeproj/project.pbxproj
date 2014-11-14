@@ -44,6 +44,8 @@
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
 		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
+		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
+		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
+		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +161,8 @@
 				22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */,
 				F11B551E19FDFCE200169A07 /* foldlings_background.jpg */,
 				F11B551F19FDFCE200169A07 /* fold_logo.png */,
+				F1E309611A15839300C09792 /* tab.png */,
+				F1E309631A15854C00C09792 /* roundedrect.png */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -325,10 +331,12 @@
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
 				F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
+				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
+				F1E309621A15839300C09792 /* tab.png in Resources */,
 				F11B552119FDFCE200169A07 /* fold_logo.png in Resources */,
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
