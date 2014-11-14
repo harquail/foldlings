@@ -301,7 +301,7 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
-        println("planecount: \(planes.count)")
+        
     }
     
     

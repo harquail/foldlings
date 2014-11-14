@@ -172,7 +172,6 @@ class GameViewController: UIViewController {
             
             // TODO: duplicated code
             let node = plane.node()
-            changePivot(node)
 
             
             // TODO: fix magic numbers
@@ -180,7 +179,8 @@ class GameViewController: UIViewController {
             node.position.y -= 3.0
             node.position.z -= 4.5
             //set rotation to start angle
-            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
+            changePivot(node)
+//            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
             parent.addChildNode(node)
             node.addAnimation(fadeIn(), forKey: "fade in")
             node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
@@ -264,7 +264,12 @@ class GameViewController: UIViewController {
     y: maxVec.memory.y - minVec.memory.y,
     z: maxVec.memory.z - minVec.memory.z)
     
-    node.pivot = SCNMatrix4MakeTranslation(0, -distance.y, 0)
+    // pivots around bottom edge
+    node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
+    
+    //pivots around top edge
+    node.pivot = SCNMatrix4MakeTranslation(0, distance.y, 0)
+
     minVec.dealloc(0)
     maxVec.dealloc(1)
     }
