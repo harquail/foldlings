@@ -51,13 +51,6 @@ class Plane: Printable, Hashable {
         
         self.sanitizePath()
     }
-    
-    func addToPlane(edge: Edge)
-    {
-        edges.append(edge)
-        path.appendPath(edge.path)
-    }
-        
 
     func node() -> SCNNode{
         
@@ -148,6 +141,7 @@ class Plane: Printable, Hashable {
             switch (currPath.type.value) {
             case kCGPathElementMoveToPoint.value:
                 let p = currPath.points[0].CGPointValue()
+                outPath.addLineToPoint(p)
                 
             case kCGPathElementAddLineToPoint.value:
                 let p = currPath.points[0].CGPointValue()

@@ -107,24 +107,26 @@ class Sketch : NSObject,NSCoding  {
     
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
-        var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-        var m = Edge(start: end, end: start, path: path, kind: kind, isMaster:isMaster)
-        e.twin = m
-        m.twin = e
+        var revpath = reversePath(path) // need to reverse the path for better drawing
+        var edge = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
+        var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
+        //flipping the above seems to work better but keeping it right now
+        edge.twin = twin
+        twin.twin = edge
         
-        if !contains(edges, e) {
-            edges.append(e)
+        if !contains(edges, edge) {
+            edges.append(edge)
         }
         
         if adjacency[start] != nil{
-            adjacency[start]!.append(e)
+            adjacency[start]!.append(edge)
         } else {
-            adjacency[start] = [e]
+            adjacency[start] = [edge]
         }
         if adjacency[end] != nil {
-            adjacency[end]!.append(m)
+            adjacency[end]!.append(twin)
         } else {
-            adjacency[end] = [m]
+            adjacency[end] = [twin]
         }
         
         // keep folds in ascending order by start position y height from bottom up
@@ -132,20 +134,20 @@ class Sketch : NSObject,NSCoding  {
         // inefficient? who cares
         if kind == .Fold
         {
-            if e !== drivingEdge && !contains(folds, e) //NOTE: driving fold not in folds
+            if edge !== drivingEdge && !contains(folds, edge) //NOTE: driving fold not in folds
             {
-                folds.append(e)
+                folds.append(edge)
                 folds.sort({ $0.start.y > $1.start.y })
             }
         }
         
         if kind == .Tab
         {
-            if !contains(tabs, e) { tabs.append(e) }
+            if !contains(tabs, edge) { tabs.append(edge) }
         }
         
         // check if our new edge is a hole that encloses other edges
-        if CGPointEqualToPoint(e.start, e.end)
+        if CGPointEqualToPoint(edge.start, edge.end)
         {
             if let collisions = shapeHitTest(path)
             {
@@ -158,7 +160,7 @@ class Sketch : NSObject,NSCoding  {
         //skip 0th fold
         initPlanes()
         
-        return e
+        return edge
     }
     
     ///removes and edge from edges and adjacency
@@ -306,7 +308,12 @@ class Sketch : NSObject,NSCoding  {
                     println("plane \(plane)")
                     for e in p
                     {
-                        e.plane = plane
+                        planes.addPlane(plane)
+//                      println("plane \(plane)")
+                        for e in p
+                        {
+                            e.plane = plane
+                        }
                     }
                 }
                 else {
@@ -497,32 +504,28 @@ class Sketch : NSObject,NSCoding  {
     // returns true if this plane is equal to the border edges plane
     func checkBorderPlane(plane:Plane) -> Bool
     {
-        var list:[CGPoint] = [CGPoint]()
+        var listOfPlanePoints:[CGPoint] = [CGPoint]()
         for edge in plane.edges {
-            list.append(edge.start)
-            list.append(edge.end)
+            listOfPlanePoints.append(edge.start)
+            listOfPlanePoints.append(edge.end)
         }
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge1.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge1.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge3.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge3.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2point5.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge2point5.end ) } )
-
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4point5.start ) } )
-        list = list.filter( { !CGPointEqualToPoint($0, self.bEdge4point5.end ) } )
-
         
-        let b = list.count == 0
-//        println("checking plane to borders: \(b), \(list.count)")
+        var listOfBorderPoints:[CGPoint] = [CGPoint]()
+        listOfBorderPoints.append(self.bEdge1.start)
+        listOfBorderPoints.append(self.bEdge1.end)
+        
+        listOfBorderPoints.append(self.bEdge3.start)
+        listOfBorderPoints.append(self.bEdge3.end)
+        
+        listOfBorderPoints.append(self.drivingEdge.start)
+        listOfBorderPoints.append(self.drivingEdge.end)
+        
+        listOfPlanePoints = listOfPlanePoints.unique()
+        
+        let intersection = listOfBorderPoints.intersection(listOfPlanePoints)
+        let b = intersection.count == listOfPlanePoints.count && intersection.count == listOfBorderPoints.count
+        
+//        println("checking plane to borders: \(b), \(intersection.count)")
         return b
     }
     

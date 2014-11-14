@@ -240,6 +240,12 @@ class SketchView: UIView {
                     }
                     
                 }
+                for plane in sketch.planes.planes {
+                    let c = getRandomColor(0.3)
+                    c.setFill()
+                    plane.path.usesEvenOddFillRule = false
+                    plane.path.fill()
+                }
             }
             else // this is a grayscale for print image
             {

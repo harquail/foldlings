@@ -41,15 +41,15 @@ class CollectionOfFoldlings: UIViewController {
 
         switch(num){
         case 0:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:300, midFoldHeight:30, bottomWidth:300, topWidth:300)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, topXStart: 100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
         case 1:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, topXStart: 100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
         case 2:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, topXStart: 100, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
         case 3:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, topXStart: 100, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
         case 4:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
         default:
             break
 //            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:400, topWidth:150)
@@ -176,7 +176,7 @@ class CollectionOfFoldlings: UIViewController {
     }
     
     
-    func boringTestPlaneInSketch(s:Sketch, xStart:CGFloat, foldHeightBelowMaster:CGFloat, midFoldHeight:CGFloat, bottomWidth:CGFloat, topWidth:CGFloat) {
+    func boringTestPlaneInSketch(s:Sketch, xStart:CGFloat, topXStart:CGFloat, foldHeightBelowMaster:CGFloat, midFoldHeight:CGFloat, bottomWidth:CGFloat, topWidth:CGFloat) {
     
         //for now, assuming topWidth == bottomWidth
         
@@ -217,11 +217,18 @@ class CollectionOfFoldlings: UIViewController {
         
         let masterMinusMid = masterFoldLeft.yDistTo(bottomFold)
         
+        
+//        if( ){
         let topFoldStart = CGPointMake(midFoldStart.x, midFoldStart.y - masterMinusMid)
         let topFoldEnd = CGPointMake(midFoldEnd.x, topFoldStart.y)
         let topFold = Edge.straightEdgeBetween(topFoldStart, end: topFoldEnd, kind: .Fold)
         s.addEdge(topFold)
+
         
+//        let topFoldStart = CGPointMake(drivingEdgeStart.x + xStart + (0.5 * bottomWidth) - (0.5 * topWidth), midFoldStart.y - masterMinusMid)
+//        let topFoldEnd = CGPointMake(topFoldStart.x + (0.5 * topWidth), topFoldStart.y)
+//        let topFold = Edge.straightEdgeBetween(topFoldStart, end: topFoldEnd, kind: .Fold)
+//        s.addEdge(topFold)
         
         let connectionOne = Edge.straightEdgeBetween(topFoldStart, end: midFoldStart, kind: .Cut)
         s.addEdge(connectionOne)
