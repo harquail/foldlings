@@ -168,6 +168,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return Edge.getColor(self.kind, fold:self.fold)
     }
     
+    // this is completely unecessary, but convenient
+    func yDistTo(e:Edge)-> CGFloat{
+
+        return self.start.y - e.start.y
+    
+    }
+    
     
     
 }
