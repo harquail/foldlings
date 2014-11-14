@@ -194,6 +194,16 @@
                                     <action selector="EraseButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="FdW-lm-o7l"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55H-lU-gbh">
+                                <rect key="frame" x="384" y="768" width="113" height="105"/>
+                                <state key="normal" backgroundImage="fold.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="yXa-Il-rqF"/>
+                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="AxJ-ux-OIz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
