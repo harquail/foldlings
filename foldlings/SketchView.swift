@@ -262,7 +262,7 @@ class SketchView: UIView {
     }
     
     
-    /// erase hitpoint edgee
+    /// erase hitpoint edge
     func erase(touchPoint: CGPoint)
     {//TODO: refactor this to sketch
         for (i,e) in enumerate(sketch.edges)

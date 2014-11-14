@@ -41,17 +41,19 @@ class CollectionOfFoldlings: UIViewController {
 
         switch(num){
         case 0:
-            simpleSketch(vc.sketchView.sketch)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:300, midFoldHeight:30, bottomWidth:300, topWidth:300)
         case 1:
-            break
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
         case 2:
-            break
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
         case 3:
-            break
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:200, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
         case 4:
-            break
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
         default:
             break
+//            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:400, topWidth:150)
+
         }
         
         (vc.view as SketchView).forceRedraw()
@@ -174,13 +176,70 @@ class CollectionOfFoldlings: UIViewController {
     }
     
     
-    func boringTestPlaneInSketch(s:Sketch, xStart:Float, foldHeightBelowMaster:Float, midFoldHeight:Float, width:Float) {
+    func boringTestPlaneInSketch(s:Sketch, xStart:CGFloat, foldHeightBelowMaster:CGFloat, midFoldHeight:CGFloat, bottomWidth:CGFloat, topWidth:CGFloat) {
     
+        //for now, assuming topWidth == bottomWidth
+        
         //first draw bottom fold below Master
         //then draw mid fold
         // measure distance between midfold and master
         // use points known to generate cuts n folds (top fold and connections)
         // optionally, delete master fold segment inside plane
+        
+        
+        let drivingEdgeStart = s.drivingEdge.start
+        let drivingEdgeEnd = s.drivingEdge.end
+        s.removeEdge(s.drivingEdge) //remove master fold
+        
+        let bottomFoldStart = CGPointMake(drivingEdgeStart.x + xStart ,drivingEdgeStart.y + foldHeightBelowMaster)
+        let bottomFoldEnd = CGPointMake(bottomFoldStart.x + bottomWidth, bottomFoldStart.y)
+        let bottomFold = Edge.straightEdgeBetween(bottomFoldStart, end: bottomFoldEnd, kind: .Fold)
+        s.addEdge(bottomFold)
+        
+        
+        let midFoldStart = CGPointMake(bottomFoldStart.x, drivingEdgeStart.y - midFoldHeight)
+        let midFoldEnd = CGPointMake(bottomFoldEnd.x, midFoldStart.y)
+        let midFold = Edge.straightEdgeBetween(midFoldStart, end: midFoldEnd, kind: .Fold)
+        s.addEdge(midFold)
+        
+        
+        let masterFoldLeftStart = CGPointMake(drivingEdgeStart.x, drivingEdgeStart.y)
+        let masterFoldLeftEnd = CGPointMake(midFoldStart.x, drivingEdgeStart.y)
+        let masterFoldLeft = Edge.straightEdgeBetween(masterFoldLeftStart, end: masterFoldLeftEnd, kind: .Fold)
+        s.addEdge(masterFoldLeft)
+        
+        let masterFoldRightStart = CGPointMake(drivingEdgeEnd.x, drivingEdgeStart.y)
+        let masterFoldRightEnd = CGPointMake(midFoldEnd.x, drivingEdgeStart.y)
+        let masterFoldRight = Edge.straightEdgeBetween(masterFoldRightStart, end: masterFoldRightEnd, kind: .Fold)
+        s.addEdge(masterFoldRight)
+        
+        
+        
+        let masterMinusMid = masterFoldLeft.yDistTo(bottomFold)
+        
+        let topFoldStart = CGPointMake(midFoldStart.x, midFoldStart.y - masterMinusMid)
+        let topFoldEnd = CGPointMake(midFoldEnd.x, topFoldStart.y)
+        let topFold = Edge.straightEdgeBetween(topFoldStart, end: topFoldEnd, kind: .Fold)
+        s.addEdge(topFold)
+        
+        
+        let connectionOne = Edge.straightEdgeBetween(topFoldStart, end: midFoldStart, kind: .Cut)
+        s.addEdge(connectionOne)
+
+        let connectionTwo = Edge.straightEdgeBetween(topFoldEnd, end: midFoldEnd, kind: .Cut)
+        s.addEdge(connectionTwo)
+
+        let connectionThree = Edge.straightEdgeBetween(midFoldStart, end: masterFoldLeftEnd, kind: .Cut)
+        s.addEdge(connectionThree)
+        
+        let connectionFour = Edge.straightEdgeBetween(midFoldEnd, end: masterFoldRightEnd, kind: .Cut)
+        s.addEdge(connectionFour)
+        
+        let connectionFive = Edge.straightEdgeBetween(masterFoldLeftEnd, end: bottomFoldStart, kind: .Cut)
+        s.addEdge(connectionFive)
+        
+        let connectionSix = Edge.straightEdgeBetween(masterFoldRightEnd, end: bottomFoldEnd, kind: .Cut)
+        s.addEdge(connectionSix)
     
     }
 
