@@ -287,7 +287,12 @@ class Sketch : NSObject,NSCoding  {
                 }
                 
                 if !closest.crossed{// if you didn't cross twin, make it a plane
-                planes.addPlane(Plane(edges: p))
+                    var plane = Plane(edges: p)
+                    planes.addPlane(plane)
+                    for e in p
+                    {
+                        e.plane = plane
+                    }
                 }
             }
         }
