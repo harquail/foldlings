@@ -290,15 +290,19 @@ class Sketch : NSObject,NSCoding  {
                 while  closest.end != start.start && !closest.crossed
                 {
                     p.append(closest)
-                    // TODO set plane to edge.plane
                     visited.append(closest)
                     closest = getClosest(closest)
+                }
+
+                if closest.end == start.start{
+                    p.append(closest)
+                    visited.append(closest)
                 }
                 
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     planes.addPlane(plane)
-                    println("plane \(plane)")
+//                    println("plane \(plane)")
                     for e in p
                     {
                         e.plane = plane
@@ -343,7 +347,7 @@ class Sketch : NSObject,NSCoding  {
             let curr_ang = getAngle(current, closest)
             let next_ang = getAngle(current, next)
             
-            if  next_ang < curr_ang  && next_ang > 0 // if the current angle is bigger than the next edge
+            if  next_ang < curr_ang  && next_ang >= 0 // if the current angle is bigger than the next edge
                 // least angle greater than zero
             {
                 closest = next
