@@ -419,7 +419,7 @@ class SketchView: UIView {
         endPaths.removeAll(keepCapacity: false)
         incrementalImage = bitmap(false) // the bitmap isn't grayscale
         sketch.getPlanes()//evaluate into planes
-        sketch.buildTabs()
+        //sketch.buildTabs()
 
     }
     

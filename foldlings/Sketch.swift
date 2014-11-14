@@ -282,9 +282,10 @@ class Sketch : NSObject,NSCoding  {
                 
             else
             {
-                var closest = getClosest(start)// get closest adjacent edge
                 p.append(start)
                 visited.append(start)
+                var closest = getClosest(start)// get closest adjacent edge
+
 
                 // check if twin has not been crossed and not in plane
                 while  closest.end != start.start && !closest.crossed
@@ -302,18 +303,18 @@ class Sketch : NSObject,NSCoding  {
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     planes.addPlane(plane)
-//                    println("plane \(plane)")
+                    println("plane \(plane)")
                     for e in p
                     {
                         e.plane = plane
                     }
-                } else {
+                }
+                else {
                     closest.crossed = false
                 }
             }
         }
-        println("planeCount \(planes.count)")
-
+        //println("planeCount \(planes.count)")
     }
     
     
@@ -332,26 +333,26 @@ class Sketch : NSObject,NSCoding  {
         
         for next in adjacency[current.end]!
         {
+            if current.twin === next || contains(visited, next){//if the current closest is twin or it's already visited, the 
+                continue
+            }
+            
             if closest == nil  // make the first edge the closest
             {
                 closest = next
                 continue
             }
-            if current.twin == closest || contains(visited, closest){//if the current closest is twin or it's already visited, the next is now closest
-                closest = next
-                continue
-            }
-            
-            // compare for greater angle for closest and next
 
+            // compare for greater angle for closest and next
             let curr_ang = getAngle(current, closest)
             let next_ang = getAngle(current, next)
             
-            if  next_ang < curr_ang  && next_ang >= 0 // if the current angle is bigger than the next edge
+            if  next_ang < curr_ang//  && next_ang != 0 // if the current angle is bigger than the next edge
                 // least angle greater than zero
             {
                 closest = next
             }
+            //if next_ang == 0
         }
         return closest
     }
