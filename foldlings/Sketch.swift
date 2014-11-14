@@ -20,7 +20,7 @@ class Sketch : NSObject,NSCoding  {
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
     var visited : [Edge]!
-    var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()
+    var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
     var drivingEdge: Edge!
     var bEdge1: Edge!  //top
     var bEdge2: Edge!  //right
@@ -100,6 +100,9 @@ class Sketch : NSObject,NSCoding  {
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
         var e = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
+        var m = Edge(start: end, end: start, path: path, kind: kind, isMaster:isMaster)
+        e.twin = m
+        m.twin = e
         
         if !contains(edges, e) {
             edges.append(e)
@@ -111,9 +114,9 @@ class Sketch : NSObject,NSCoding  {
             adjacency[start] = [e]
         }
         if adjacency[end] != nil {
-            adjacency[end]!.append(e)
+            adjacency[end]!.append(m)
         } else {
-            adjacency[end] = [e]
+            adjacency[end] = [m]
         }
         
         // keep folds in ascending order by start position y height from bottom up
@@ -156,11 +159,12 @@ class Sketch : NSObject,NSCoding  {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
             }
-            if adjacency[edge.end] != nil {
-                adjacency[edge.end] = adjacency[edge.end]!.filter({ $0 != edge })
-                if adjacency[edge.end]!.count == 0 { adjacency[edge.end] = nil }
+            var twin = edge.twin
+            if adjacency[twin.start] != nil {
+                adjacency[twin.start] = adjacency[twin.start]!.filter({ $0 != twin })
+                if adjacency[twin.start]!.count == 0 { adjacency[twin.start] = nil }
             }
-            
+
             initPlanes()
         }
     }
@@ -286,8 +290,7 @@ class Sketch : NSObject,NSCoding  {
                 planes.addPlane(Plane(edges: p))
             }
         }
-        //println(planes.count)
-        return planes
+        println("planecount: \(planes.count)")
     }
     
     //get closest adjancent edge

@@ -21,6 +21,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         }
     }
     
+    var twin:Edge!
+    
     
     enum Kind: String {
         case Fold = "Fold"
