@@ -57,7 +57,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-ES-5WL">
                                 <rect key="frame" x="129" y="326" width="167" height="148"/>
-                                <state key="normal" title="one" backgroundImage="cut.png"/>
+                                <state key="normal" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="HFB-wp-u1d"/>
                                     <action selector="oneButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="5ij-O3-QMk"/>
@@ -65,7 +65,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgr-QL-Afw">
                                 <rect key="frame" x="298" y="326" width="167" height="148"/>
-                                <state key="normal" title="two" backgroundImage="cut.png"/>
+                                <state key="normal" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Pn6-qL-IUv"/>
                                     <action selector="twoButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="aQd-Oa-XJu"/>
@@ -73,23 +73,15 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L88-SC-Z9m">
                                 <rect key="frame" x="473" y="326" width="167" height="148"/>
-                                <state key="normal" title="three" backgroundImage="cut.png"/>
+                                <state key="normal" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="X5q-Vc-v4b"/>
                                     <action selector="threeButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="I2r-Yb-flb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA7-AK-mhe">
-                                <rect key="frame" x="129" y="549" width="167" height="148"/>
-                                <state key="normal" title="four" backgroundImage="cut.png"/>
-                                <connections>
-                                    <action selector="fourButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Xar-vv-rNs"/>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="WJH-Kc-V3I"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6h-K7-U0T">
                                 <rect key="frame" x="298" y="549" width="167" height="148"/>
-                                <state key="normal" title="five" backgroundImage="cut.png"/>
+                                <state key="normal" backgroundImage="cut.png"/>
                                 <connections>
                                     <action selector="fiveButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="2SL-5m-8TW"/>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="d0b-pI-ufR"/>
@@ -125,6 +117,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA7-AK-mhe">
+                                <rect key="frame" x="129" y="549" width="167" height="148"/>
+                                <state key="normal" backgroundImage="cut.png"/>
+                                <connections>
+                                    <action selector="fourButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Xar-vv-rNs"/>
+                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="WJH-Kc-V3I"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
