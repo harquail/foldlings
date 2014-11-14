@@ -23,6 +23,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     var twin:Edge!
     var crossed = false
+    var plane:Plane?
     
     
     enum Kind: String {

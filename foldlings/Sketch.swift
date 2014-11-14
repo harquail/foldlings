@@ -19,6 +19,7 @@ class Sketch : NSObject,NSCoding  {
     //for now, cuts are in this array too
     var edges : [Edge] = []
     var folds : [Edge] = [] // may not need to keep this but for now
+    var tabs  : [Edge] = [] // tabbytabbbss
     var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
     var drivingEdge: Edge!
@@ -124,11 +125,16 @@ class Sketch : NSObject,NSCoding  {
         // inefficient? who cares
         if kind == .Fold
         {
-            if e !== drivingEdge //NOTE: driving fold not in folds
+            if e !== drivingEdge && !contains(folds, e) //NOTE: driving fold not in folds
             {
                 folds.append(e)
                 folds.sort({ $0.start.y > $1.start.y })
             }
+        }
+        
+        if kind == .Tab
+        {
+            if !contains(tabs, e) { tabs.append(e) }
         }
         
         // check if our new edge is a hole that encloses other edges
@@ -155,6 +161,7 @@ class Sketch : NSObject,NSCoding  {
             edge.path.removeAllPoints()
             edges = edges.filter({ $0 != edge })
             folds = folds.filter({ $0 != edge })
+            tabs  = tabs.filter({ $0 != edge })
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
@@ -284,6 +291,30 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
+    }
+    
+    /// build tabs as necessary from te planes
+    func buildTabs() {
+        
+        for tab in tabs {
+            let plane1 = tab.plane
+            let plane2 = tab.twin.plane
+            
+            var lowestY = CGFloat.max
+            var bottomFold:Edge? = nil
+            for plane in [plane1, plane2] {
+                if let p = plane {
+                    for edge in p.edges
+                    {
+                        if edge.kind == .Fold && edge.start.y >= lowestY {
+                            bottomFold = edge
+                        }
+                    }
+                }
+            }
+        }
+        
+        //TODO: finish this shit
     }
     
     //get closest adjancent edge
