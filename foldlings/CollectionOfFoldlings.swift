@@ -41,7 +41,7 @@ class CollectionOfFoldlings: UIViewController {
 
         switch(num){
         case 0:
-            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:300, midFoldHeight:30, bottomWidth:300, topWidth:300)
+            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
         case 1:
             boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
         case 2:
