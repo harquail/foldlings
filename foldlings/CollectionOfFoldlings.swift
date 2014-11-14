@@ -1,6 +1,6 @@
 //
 //
-
+import Foundation
 import UIKit
 
 class CollectionOfFoldlings: UIViewController {
@@ -131,29 +131,29 @@ class CollectionOfFoldlings: UIViewController {
         
         
         //border edges
-        top.moveToPoint(s1)
-        top.addLineToPoint(s2)
-        s.addEdge(s1, end: s2, path: top, kind: Edge.Kind.Cut )
-        
-        rside1.moveToPoint(s2)
-        rside1.addLineToPoint(c4)
-        s.addEdge(s2, end: c4, path: rside1, kind: Edge.Kind.Cut )
-        
-        rside2.moveToPoint(c4)
-        rside2.addLineToPoint(s4)
-        s.addEdge(c4, end: s4, path: rside2, kind: Edge.Kind.Cut )
-        
-        bottom.moveToPoint(s4)
-        bottom.addLineToPoint(s5)
-        s.addEdge(s4, end: s5, path: bottom, kind: Edge.Kind.Cut )
-        
-        lside1.moveToPoint(s5)
-        lside1.addLineToPoint(c1)
-        s.addEdge(s5, end: c1, path: lside1, kind: Edge.Kind.Cut )
-        
-        lside2.moveToPoint(c1)
-        lside2.addLineToPoint(s1)
-        s.addEdge(c1, end: s1, path: lside2, kind: Edge.Kind.Cut )
+//        top.moveToPoint(s1)
+//        top.addLineToPoint(s2)
+//        s.addEdge(s1, end: s2, path: top, kind: Edge.Kind.Cut )
+//        
+//        rside1.moveToPoint(s2)
+//        rside1.addLineToPoint(c4)
+//        s.addEdge(s2, end: c4, path: rside1, kind: Edge.Kind.Cut )
+//        
+//        rside2.moveToPoint(c4)
+//        rside2.addLineToPoint(s4)
+//        s.addEdge(c4, end: s4, path: rside2, kind: Edge.Kind.Cut )
+//        
+//        bottom.moveToPoint(s4)
+//        bottom.addLineToPoint(s5)
+//        s.addEdge(s4, end: s5, path: bottom, kind: Edge.Kind.Cut )
+//        
+//        lside1.moveToPoint(s5)
+//        lside1.addLineToPoint(c1)
+//        s.addEdge(s5, end: c1, path: lside1, kind: Edge.Kind.Cut )
+//        
+//        lside2.moveToPoint(c1)
+//        lside2.addLineToPoint(s1)
+//        s.addEdge(c1, end: s1, path: lside2, kind: Edge.Kind.Cut )
         
         //centerfold
         cfold1.moveToPoint(c1)
@@ -171,6 +171,17 @@ class CollectionOfFoldlings: UIViewController {
         
         
         
+    }
+    
+    
+    func boringTestPlaneInSketch(s:Sketch, xStart:Float, foldHeightBelowMaster:Float, midFoldHeight:Float, width:Float) {
+    
+        //first draw bottom fold below Master
+        //then draw mid fold
+        // measure distance between midfold and master
+        // use points known to generate cuts n folds (top fold and connections)
+        // optionally, delete master fold segment inside plane
+    
     }
 
     
