@@ -12,6 +12,9 @@ func == (lhs: CollectionOfPlanes, rhs: CollectionOfPlanes) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
+// set this to false to turn off plane edge coloring
+var kOverrideColor = true
+
 class CollectionOfPlanes: Printable, Hashable {
     var description: String {
         return ",".join(planes.map({ "\($0)" }))
@@ -32,6 +35,7 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
+        let color = getRandomColor()
         if !contains(planes, plane) {
             planes.append(plane)
         }
@@ -41,6 +45,7 @@ class CollectionOfPlanes: Printable, Hashable {
         }
         
         for edge in plane.edges {
+            if kOverrideColor { edge.colorOverride = color }
             if edge.kind == .Fold {
                 for p in planes {
                     for e in p.edges! {
@@ -76,6 +81,14 @@ class CollectionOfPlanes: Printable, Hashable {
     {
         
         return true
+    }
+    
+    
+    func getRandomColor() -> UIColor{
+        var randomRed:CGFloat = CGFloat(drand48())
+        var randomGreen:CGFloat = CGFloat(drand48())
+        var randomBlue:CGFloat = CGFloat(drand48())
+        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     }
     
 

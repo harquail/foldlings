@@ -298,7 +298,7 @@ class Sketch : NSObject,NSCoding  {
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     planes.addPlane(plane)
-                    println("planeCount \(planes.count)")
+                    //println("plane \(plane)")
                     for e in p
                     {
                         e.plane = plane
@@ -308,7 +308,8 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
-        
+        //println("planeCount \(planes.count)")
+
     }
     
     
@@ -332,7 +333,7 @@ class Sketch : NSObject,NSCoding  {
                 closest = next
                 continue
             }
-            if current.twin == closest {
+            if current.twin == closest || contains(visited, closest) {//if the current closest is twin or it's already visited, the next is now closest
                 closest = next
                 continue
             }
