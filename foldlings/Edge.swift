@@ -117,7 +117,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         var color: UIColor!
         switch kind
         {
-        case .Fold:
+        case .Fold, .Tab:
             switch fold {
                 case .Hill:
                     color = Color.Hill
@@ -140,7 +140,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         var color: UIColor!
         switch kind
         {
-        case .Fold:
+        case .Fold, .Tab:
             switch fold {
             case .Hill:
                 color = LaserColor.Hill

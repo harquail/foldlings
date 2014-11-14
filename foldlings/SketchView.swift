@@ -287,7 +287,7 @@ class SketchView: UIView {
             // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
             var newEnd = (sketchMode == .Cut) ? CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) : tempEnd
             
-            if ( sketchMode == .Fold)
+            if ( sketchMode == .Fold || sketchMode == .Tab)
             {
                 // makes only straight horizontal fold lines
                 // basically make a completely new line every movement so its only 2 points ever
@@ -324,7 +324,7 @@ class SketchView: UIView {
         // only use first y-value
         // or
         // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        if sketchMode == .Fold {
+        if sketchMode == .Fold || sketchMode == .Tab {
             tempEnd = CGPointMake(endpoint.x,  tempStart.y)
         } else {
             tempEnd = endpoint
@@ -335,7 +335,7 @@ class SketchView: UIView {
         {
             // test for self intersections
             if let np = Edge.hitTest(path, point:tempEnd) {
-                if sketchMode != .Fold {
+                if sketchMode != .Fold && sketchMode != .Tab {
                     tempEnd = np
                     closed = true
                 }
@@ -394,12 +394,12 @@ class SketchView: UIView {
             }
         }
         
-        if edgekind == Edge.Kind.Fold && !grayscale {
-            path.setLineDash([10,5], count: 2, phase:0)
-        }
-        else if edgekind == Edge.Kind.Fold && grayscale{
-            path.setLineDash([1,10], count: 2, phase:0)
-            
+        if edgekind == Edge.Kind.Fold || edgekind == Edge.Kind.Tab {
+            if grayscale {
+                path.setLineDash([1,10], count: 2, phase:0)
+            } else {
+                path.setLineDash([10,5], count: 2, phase:0)
+            }
         }
         else {
             path.setLineDash(nil, count: 0, phase:0)

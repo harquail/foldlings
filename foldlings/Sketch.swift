@@ -284,7 +284,6 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
-        //println(planes.count)
     }
     
     //get closest adjancent edge
