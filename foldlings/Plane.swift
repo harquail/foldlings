@@ -27,7 +27,7 @@ class Plane: Printable, Hashable {
         case Vertical = "Vertical"
     }
     
-    var kind = Kind.Plane
+    var kind = Kind.Hole
     var orientation = Orientation.Horizontal
     var edges : [Edge]!
     var path = UIBezierPath()

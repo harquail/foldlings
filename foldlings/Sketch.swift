@@ -118,6 +118,10 @@ class Sketch : NSObject,NSCoding  {
         if !contains(edges, edge) {
             edges.append(edge)
         }
+        if !contains(edges, twin) {
+            edges.append(twin)
+        }
+
         
         if adjacency[start] != nil{
             adjacency[start]!.append(edge)
@@ -168,15 +172,16 @@ class Sketch : NSObject,NSCoding  {
     func removeEdge(edge:Edge)
     {
         if !edge.isMaster {
+            var twin = edge.twin
             edge.path.removeAllPoints()
             edges = edges.filter({ $0 != edge })
+            edges = edges.filter({ $0 != twin })
             folds = folds.filter({ $0 != edge })
             tabs  = tabs.filter({ $0 != edge })
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
             }
-            var twin = edge.twin
             if adjacency[twin.start] != nil {
                 adjacency[twin.start] = adjacency[twin.start]!.filter({ $0 != twin })
                 if adjacency[twin.start]!.count == 0 { adjacency[twin.start] = nil }
@@ -291,34 +296,36 @@ class Sketch : NSObject,NSCoding  {
                 var closest = getClosest(start)// get closest adjacent edge
 
                 // check if twin has not been crossed and not in plane
-                while  closest.end != start.start && !closest.crossed
+                while !CGPointEqualToPoint(closest.end, start.start) && !closest.crossed
                 {
                     p.append(closest)
                     visited.append(closest)
                     closest = getClosest(closest)
                 }
 
-                if closest.end == start.start{
+                if CGPointEqualToPoint(closest.end, start.start) {
                     p.append(closest)
                     visited.append(closest)
                 }
                 
-                if !closest.crossed{// if you didn't cross twin, make it a plane
+                if !closest.crossed {// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
-                    if !checkBorderPlane(plane) {
-                        planes.addPlane(plane)
-                        for e in p
-                        {
-                            e.plane = plane
+                    for e in p
+                    {
+                        e.plane = plane
+                        if e.kind == .Fold{
+                            plane.kind = .Plane
                         }
                     }
+                    plane.orientation = .Vertical
+                    planes.addPlane(plane)
                 }
+                    
                 else {
                     closest.crossed = false
                 }
             }
         }
-        println("planeCount \(planes.count)")
     }
     
     
@@ -327,7 +334,6 @@ class Sketch : NSObject,NSCoding  {
     func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
-//        println("adjacency \( adjacency[current.end]!.count )")
 
         if adjacency[current.end]!.count < 2 {
             closest = adjacency[current.end]![0]
@@ -351,17 +357,16 @@ class Sketch : NSObject,NSCoding  {
             let curr_ang = getAngle(current, closest)
             let next_ang = getAngle(current, next)
             
-            if  next_ang < curr_ang//  && next_ang != 0 // if the current angle is bigger than the next edge
-                // least angle greater than zero
+            if  next_ang < curr_ang // if the current angle is bigger than the next edge
             {
                 closest = next
             }
-            //if next_ang == 0
         }
         
         // if nil means only twin edge so return twin
         if closest == nil {
             closest = current.twin
+            closest.crossed = true
         }
         return closest
     }
