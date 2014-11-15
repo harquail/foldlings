@@ -9,12 +9,14 @@ import CoreGraphics
 import SceneKit
 import UIKit
 
-func == (lhs: Plane, rhs: Plane) -> Bool {
+func == (lhs: Plane, rhs: Plane) -> Bool
+{
     return lhs.hashValue == rhs.hashValue
 }
 
 
-class Plane: Printable, Hashable {
+class Plane: Printable, Hashable
+{
     
     
     enum Kind: String {
@@ -138,6 +140,7 @@ class Plane: Printable, Hashable {
 
     }
     
+    /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
         
@@ -167,13 +170,13 @@ class Plane: Printable, Hashable {
             case kCGPathElementAddQuadCurveToPoint.value:
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
-                outPath.addQuadCurveToPoint(p1, controlPoint: p2)
+                outPath.addQuadCurveToPoint(p2, controlPoint: p1)
                 
             case kCGPathElementAddCurveToPoint.value:
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
                 let p3 = currPath.points[2].CGPointValue()
-                outPath.addCurveToPoint(p1, controlPoint1: p2, controlPoint2: p2)
+                outPath.addCurveToPoint(p3, controlPoint1: p1, controlPoint2: p2)
             default:
                 //println("other: \(currPath.type.value)")
                 break
