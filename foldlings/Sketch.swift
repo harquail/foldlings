@@ -361,7 +361,6 @@ class Sketch : NSObject,NSCoding  {
             {
                 closest = next
             }
-            //if next_ang == 0
         }
         
         // if nil means only twin edge so return twin
