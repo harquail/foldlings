@@ -19,8 +19,21 @@ func reversePath(path:UIBezierPath) -> UIBezierPath
     let points = getSubdivisions(elements)
     let revpoints = points.reverse()
     return linePathFromPoints(smoothPoints(revpoints))
+}
+
+func isCounterClockwise(path:UIBezierPath) -> Bool
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements, increments:1)
     
-    //TODO: check this and make pathFromPoints instead once working?
+    var total:CGFloat = 0.0
+    for var i = 1; i < points.count; i++
+    {
+        total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
+    }
+    
+    println("path direction: \(total)")
+    return total < 0
 }
 
 func linePathFromPoints(path:[CGPoint]) -> UIBezierPath
@@ -173,7 +186,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 /// finds path elements and subdivides them
 /// currently supports movepoints and addcurves
 /// needs line and quad curve to be complete
-func getSubdivisions(elements:NSArray) -> [CGPoint]{
+func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint]{
     
     var bezierPoints = [CGPoint]();
     var subdivPoints = [CGPoint]();
@@ -235,7 +248,7 @@ func getSubdivisions(elements:NSArray) -> [CGPoint]{
 
 
 /// only currently supports cubic curves and lines
-func subdivide(points:[CGPoint]) -> [CGPoint]
+func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGPoint]
 {
     var npoints:[CGPoint] = [CGPoint]()
     
@@ -243,7 +256,7 @@ func subdivide(points:[CGPoint]) -> [CGPoint]
     case 4:
         let bounds = pathFromPoints(points).bounds
         let length = max(bounds.width, bounds.height)
-        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements / length {
+        for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
             let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
             npoints.append(point);
         }
@@ -252,7 +265,7 @@ func subdivide(points:[CGPoint]) -> [CGPoint]
         let end = points[1]
         let length = CGPointGetDistance(start, end)
         let ste = (end.x - start.x, end.y - start.y)
-        for var t:CGFloat = 0.0; t <= 1.00001; t += kBezierIncrements / length{
+        for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length{
             let point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
             npoints.append(point);
         }
