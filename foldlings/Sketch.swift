@@ -309,10 +309,7 @@ class Sketch : NSObject,NSCoding  {
                     }
                     planes.addPlane(plane)
                 }
-                    
-                else {
-                    closest.crossed = false
-                }
+                closest.crossed = false
             }
         }
     }
