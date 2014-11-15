@@ -308,7 +308,7 @@ class Sketch : NSObject,NSCoding  {
                     visited.append(closest)
                 }
                 
-                if !closest.crossed {// if you didn't cross twin, make it a plane
+                if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     for e in p
                     {
