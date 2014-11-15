@@ -31,6 +31,7 @@ class Plane: Printable, Hashable
         case Vertical = "Vertical"
     }
     
+    var color = getRandomColor(0.8)
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
     var edges : [Edge]!
@@ -68,18 +69,18 @@ class Plane: Printable, Hashable
         
         // make the node
         let node = SCNNode()
-        let shape = SCNShape(path: path, extrusionDepth: 0)
+        var shape = SCNShape(path: path, extrusionDepth: 0)
         
         let material = SCNMaterial()
         
         // holes are black, and extruded to prevent z-fighting
         if(self.kind == .Hole){
-        let shape = SCNShape(path: path, extrusionDepth: 1)
+        shape = SCNShape(path: path, extrusionDepth: 1)
         material.diffuse.contents = UIColor.blackColor()
         }
         else{
         // planes are white (for now, random color)
-            material.diffuse.contents = getRandomColor(1)
+            material.diffuse.contents = self.color
         }
         // planes are visible from both sides
         material.doubleSided = true

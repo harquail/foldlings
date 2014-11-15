@@ -51,7 +51,7 @@ class SketchView: UIView {
         
         // TODO: name should be set when creating sketch
         sketch = Sketch(named: "name")
-        incrementalImage = bitmap(false)
+        incrementalImage = bitmap(grayscale: false)
     }
     
     override func drawRect(rect: CGRect)
@@ -205,7 +205,7 @@ class SketchView: UIView {
     }
     
     /// constructs a greyscale bitmap preview image of the sketch
-    func bitmap(grayscale:Bool) -> UIImage {
+    func bitmap(#grayscale:Bool) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
@@ -241,7 +241,7 @@ class SketchView: UIView {
                     
                 }
                 for plane in sketch.planes.planes {
-                    let c = getRandomColor(0.3)
+                    let c = plane.color
                     c.setFill()
                     plane.path.usesEvenOddFillRule = false
                     plane.path.fill()
@@ -421,10 +421,11 @@ class SketchView: UIView {
     func forceRedraw()
     {
         incrementalImage = nil
-        self.setNeedsDisplay() //draw to clear the deleted path
         endPaths.removeAll(keepCapacity: false)
-        incrementalImage = bitmap(false) // the bitmap isn't grayscale
         sketch.getPlanes()//evaluate into planes
+        incrementalImage = bitmap(grayscale: false) // the bitmap isn't grayscale
+        self.setNeedsDisplay() //draw to clear the deleted path
+
         //sketch.buildTabs()
 
     }
