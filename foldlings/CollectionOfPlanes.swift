@@ -35,7 +35,7 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
-        if isCounterClockwise(plane.path) {
+        if !isCounterClockwise(plane.path) {
             let color = getRandomColor(0.8)
             if !contains(planes, plane) {
                 planes.append(plane)
