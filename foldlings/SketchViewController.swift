@@ -17,11 +17,7 @@ class SketchViewController: UIViewController{
     @IBOutlet var selected: UIImageView!
 
     
-    @IBAction func CardsButtonClicked(sender: UIButton) {
-        
-        Archivist.appendSketchToFile(sketchView.sketch)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+
     @IBAction func EraseButtonClicked(sender: UIButton) {
         
         
@@ -62,6 +58,7 @@ class SketchViewController: UIViewController{
             viewController.setButtonBG(sketchView.previewImage())
             viewController.laserImage = sketchView.bitmap(grayscale: true)
             viewController.planes = sketchView.sketch.planes
+            viewController.parentButton = sketchView.previewButton
 //            viewController.
             // pass data to next view
         }

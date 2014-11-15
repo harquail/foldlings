@@ -34,6 +34,7 @@ class SketchView: UIView {
     var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
+    var gameView = GameViewController()
     
     
     override init(frame: CGRect) {
@@ -427,8 +428,19 @@ class SketchView: UIView {
         incrementalImage = bitmap(grayscale: false) // the bitmap isn't grayscale
         self.setNeedsDisplay() //draw to clear the deleted path
 
+    //        setGameView()
     }
     
+    
+    func setGameView(){
+    
+    gameView = GameViewController()
+    gameView.setButtonBG(previewImage())
+    gameView.laserImage = bitmap(grayscale: true)
+    gameView.planes = sketch.planes
+    gameView.makeScene()
+    previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+    }
     
     func simpleSketch()->Sketch
     {
@@ -592,6 +604,10 @@ class SketchView: UIView {
         return c
     }
     
+    
+    func setButtonBG(image:UIImage){
+        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+    }
     
     ///MARK: simplemode functions
     

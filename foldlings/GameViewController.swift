@@ -16,7 +16,9 @@ class GameViewController: UIViewController {
     var bgImage:UIImage!
     var laserImage:UIImage!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
-    
+    var parentButton = UIButton()
+    let scene = SCNScene()
+
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
@@ -25,10 +27,19 @@ class GameViewController: UIViewController {
     
     @IBOutlet var backToSketchButton: UIButton!
     
+    /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
+        
+        parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
+//    @IBAction func CardsButtonClicked(sender: UIButton) {
+//        println("CARDS CLICKED")
+////        Archivist.appendSketchToFile(sketchView.sketch)
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     @IBAction func printButton (sender: UIButton){
         
@@ -58,9 +69,13 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        makeScene()
         
+    }
+    
+    func makeScene(){
+    
         // create a new scene
-        let scene = SCNScene()
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -96,13 +111,13 @@ class GameViewController: UIViewController {
             node.position.z -= 4.5
             node.scale = SCNVector3Make(0.01, 0.01, 0.01)
             
-//            // TODO: fix
-//            // change node's pivot based on whether it is .Horizontal
-//            changePivot(node)
-//            // set rotation to start angle
-//             node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
+            //            // TODO: fix
+            //            // change node's pivot based on whether it is .Horizontal
+            //            changePivot(node)
+            //            // set rotation to start angle
+            //             node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
             // animate node rotating between two angles
-              node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
@@ -133,7 +148,7 @@ class GameViewController: UIViewController {
         scnView.showsStatistics = true
         
         // configure the view
-        scnView.backgroundColor = UIColor.darkGrayColor()
+        scnView.backgroundColor = UIColor.blackColor()
         
         
         // back button
@@ -227,6 +242,26 @@ class GameViewController: UIViewController {
         
     }
     
+    func previewImage() -> UIImage?{
+        var sceneView = SCNView()
+        sceneView.scene = scene
+        return sceneView.snapshot()
+    }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "backtoSketchSegue") {
+            
+            let viewController:SketchViewController = segue.destinationViewController as SketchViewController
+            viewController.sketchView.setButtonBG(previewImage()!)
+            
+//            viewController.setButtonBG(sketchView.previewImage())
+//            viewController.laserImage = sketchView.bitmap(grayscale: true)
+//            viewController.planes = sketchView.sketch.planes
+            //            viewController.
+            // pass data to next view
+        }
+    }
     
     
 }
