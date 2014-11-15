@@ -17,11 +17,7 @@ class SketchViewController: UIViewController{
     @IBOutlet var selected: UIImageView!
 
     
-    @IBAction func CardsButtonClicked(sender: UIButton) {
-        
-        Archivist.appendSketchToFile(sketchView.sketch)
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+
     @IBAction func EraseButtonClicked(sender: UIButton) {
         
         
@@ -57,9 +53,13 @@ class SketchViewController: UIViewController{
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
 
-            let viewController:GameViewController = sketchView.gameView
+            let viewController:GameViewController = segue.destinationViewController as GameViewController
             
-           //            viewController.
+            viewController.setButtonBG(sketchView.previewImage())
+            viewController.laserImage = sketchView.bitmap(grayscale: true)
+            viewController.planes = sketchView.sketch.planes
+            viewController.parentButton = sketchView.previewButton
+//            viewController.
             // pass data to next view
         }
     }

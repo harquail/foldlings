@@ -427,21 +427,18 @@ class SketchView: UIView {
         incrementalImage = bitmap(grayscale: false) // the bitmap isn't grayscale
         self.setNeedsDisplay() //draw to clear the deleted path
 
-        
-        //sketch.buildTabs()
-        setGameView()
+    //        setGameView()
     }
     
     
     func setGameView(){
     
-        
     gameView = GameViewController()
     gameView.setButtonBG(previewImage())
     gameView.laserImage = bitmap(grayscale: true)
     gameView.planes = sketch.planes
-    gameView.viewDidLoad()
-        
+    gameView.makeScene()
+    previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
     }
     
     func simpleSketch()->Sketch
@@ -606,6 +603,10 @@ class SketchView: UIView {
         return c
     }
     
+    
+    func setButtonBG(image:UIImage){
+        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+    }
     
     ///MARK: simplemode functions
     
