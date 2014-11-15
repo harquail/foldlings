@@ -16,13 +16,14 @@ let kBezierIncrements:CGFloat = 0.5
 func isCounterClockwise(path:UIBezierPath) -> Bool
 {
     let elements = path.getPathElements()
-    let points = getSubdivisions(elements, increments:1)
+    let points = getSubdivisions(elements, increments:25)
     
     var total:CGFloat = 0.0
     for var i = 1; i < points.count; i++
     {
         total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
     }
+    
     return total > 0
 }
 
@@ -201,7 +202,7 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
             let p = currPath.points[0].CGPointValue()
             bezierPoints.append(p)
             let pointsToSub:[CGPoint] = [priorPoint, p]
-            subdivPoints  += subdivide(pointsToSub)
+            subdivPoints  += subdivide(pointsToSub, increments: increments)
             priorPoint = p
             index++
         case kCGPathElementAddQuadCurveToPoint.value:
@@ -220,7 +221,7 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
             bezierPoints.append(p2);
             bezierPoints.append(p3);
             let pointsToSub:[CGPoint] = [priorPoint, p1, p2, p3]
-            subdivPoints  += subdivide(pointsToSub)
+            subdivPoints  += subdivide(pointsToSub, increments: increments)
             priorPoint = p3
             index += 3
         case kCGPathElementCloseSubpath.value:

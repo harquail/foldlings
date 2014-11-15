@@ -424,6 +424,7 @@ class SketchView: UIView {
         incrementalImage = nil
         endPaths.removeAll(keepCapacity: false)
         sketch.getPlanes()//evaluate into planes
+        sketch.buildTabs()
         incrementalImage = bitmap(grayscale: false) // the bitmap isn't grayscale
         self.setNeedsDisplay() //draw to clear the deleted path
 

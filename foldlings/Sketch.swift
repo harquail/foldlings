@@ -149,17 +149,6 @@ class Sketch : NSObject,NSCoding  {
             if !contains(tabs, edge) { tabs.append(edge) }
         }
         
-        // check if our new edge is a hole that encloses other edges
-        if CGPointEqualToPoint(edge.start, edge.end)
-        {
-            if let collisions = shapeHitTest(path)
-            {
-                for collidingEdge in collisions {
-                    self.removeEdge(collidingEdge)
-                }
-            }
-        }
-        
         return edge
     }
     
@@ -168,11 +157,10 @@ class Sketch : NSObject,NSCoding  {
     {
         if !edge.isMaster {
             var twin = edge.twin
-            edge.path.removeAllPoints()
-            edges = edges.filter({ $0 != edge })
-            edges = edges.filter({ $0 != twin })
-            folds = folds.filter({ $0 != edge })
-            tabs  = tabs.filter({ $0 != edge })
+            edges = edges - edge
+            edges = edges - twin
+            folds = folds - edge
+            tabs  = tabs - edge
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
@@ -285,7 +273,7 @@ class Sketch : NSObject,NSCoding  {
                     closest = getClosest(closest)
                 }
 
-                if CGPointEqualToPoint(closest.end, start.start) {
+                if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
                     p.append(closest)
                     visited.append(closest)
                 }
@@ -295,11 +283,16 @@ class Sketch : NSObject,NSCoding  {
                     for e in p
                     {
                         e.plane = plane
-                        if e.kind == .Fold{
+                        if e.kind == .Fold || e.kind == .Tab{
                             plane.kind = .Plane
                         }
                     }
                     plane.orientation = .Vertical
+                    
+                    //if one edge hole, ensure that hole is right direction
+                    if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
+                        plane.path = plane.path.bezierPathByReversingPath()
+                    }
                     planes.addPlane(plane)
                 }
                     
@@ -363,13 +356,14 @@ class Sketch : NSObject,NSCoding  {
             let plane1 = tab.plane
             let plane2 = tab.twin.plane
             
-            var lowestY = CGFloat.max
+            var lowestY:CGFloat = 0.0
             for plane in [plane1, plane2] {
                 if let p = plane {
                     for edge in p.edges
                     {
-                        if edge.kind == .Fold && edge.start.y >= lowestY {
+                        if edge.kind == .Fold && edge.start.y > lowestY {
                             bottomFold = edge
+                            lowestY = edge.start.y
                         }
                     }
                 }
@@ -382,17 +376,21 @@ class Sketch : NSObject,NSCoding  {
                 let newfold = UIBezierPath()
                 newfold.moveToPoint(newfoldstart)
                 newfold.addLineToPoint(newfoldend)
-                addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
+                var newFoldEdge = addEdge(newfoldstart, end: newfoldend, path: newfold, kind: Edge.Kind.Fold)
                 //left edge
                 let newleft = UIBezierPath()
                 newleft.moveToPoint(tab.start)
                 newleft.addLineToPoint(newfoldstart)
-                addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
+                var newLeftEdge = addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
                 //right edge
                 let newright = UIBezierPath()
                 newright.moveToPoint(tab.end)
                 newright.addLineToPoint(newfoldend)
-                addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+                var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+            
+                // move tab from tabs to edges so we don't redraw this again
+                tabs = tabs - tab
+                tabs = tabs - tab.twin
             }
             
         }
