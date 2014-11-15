@@ -285,7 +285,7 @@ class Sketch : NSObject,NSCoding  {
                     closest = getClosest(closest)
                 }
 
-                if CGPointEqualToPoint(closest.end, start.start) {
+                if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
                     p.append(closest)
                     visited.append(closest)
                 }
@@ -295,11 +295,16 @@ class Sketch : NSObject,NSCoding  {
                     for e in p
                     {
                         e.plane = plane
-                        if e.kind == .Fold{
+                        if e.kind == .Fold || e.kind == .Tab{
                             plane.kind = .Plane
                         }
                     }
                     plane.orientation = .Vertical
+                    
+                    //if one edge hole, ensure that hole is right direction
+                    if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
+                        plane.path = plane.path.bezierPathByReversingPath()
+                    }
                     planes.addPlane(plane)
                 }
                     
