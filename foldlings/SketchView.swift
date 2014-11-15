@@ -240,6 +240,12 @@ class SketchView: UIView {
                     }
                     
                 }
+                for plane in sketch.planes.planes {
+                    let c = getRandomColor(0.3)
+                    c.setFill()
+                    plane.path.usesEvenOddFillRule = false
+                    plane.path.fill()
+                }
             }
             else // this is a grayscale for print image
             {
@@ -419,7 +425,7 @@ class SketchView: UIView {
         endPaths.removeAll(keepCapacity: false)
         incrementalImage = bitmap(false) // the bitmap isn't grayscale
         sketch.getPlanes()//evaluate into planes
-        sketch.buildTabs()
+        //sketch.buildTabs()
 
     }
     
