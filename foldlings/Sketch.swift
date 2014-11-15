@@ -305,19 +305,19 @@ class Sketch : NSObject,NSCoding  {
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     if !checkBorderPlane(plane) {
-                        plane.orientation = .Vertical
-                        planes.addPlane(plane)
                         // set plane fo edge
-                        for e in p
+                        for e in p// check for holes
                         {
-                            planes.addPlane(plane)
-                            for e in p
-                            {
-                                e.plane = plane
+                            e.plane = plane
+                            if e.kind == .Fold{
+                                plane.kind = .Plane
                             }
                         }
+                        plane.orientation = .Vertical
+                        planes.addPlane(plane)
                     }
                 }
+                    
                 else {
                     closest.crossed = false
                 }
@@ -331,8 +331,7 @@ class Sketch : NSObject,NSCoding  {
     func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
-//        println("adjacency \( adjacency[current.end]!.count )")
-
+        
         if adjacency[current.end]!.count < 2 {
             closest = adjacency[current.end]![0]
             closest.crossed = true
