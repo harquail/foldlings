@@ -545,15 +545,17 @@ class SketchView: UIView {
     
     
     func previewImage() -> UIImage {
+
+        return incrementalImage
         
-        UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
-        
-        //        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
-        incrementalImage.drawInRect( sketch.drawingBounds, blendMode: kCGBlendModeNormal, alpha: 1)
-        //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
-        let copied = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return copied;
+//        UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
+//        
+//        //        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
+//        incrementalImage.drawInRect( self.bounds, blendMode: kCGBlendModeNormal, alpha: 1)
+//        //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
+//        let copied = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+//        return copied;
         
     }
     
