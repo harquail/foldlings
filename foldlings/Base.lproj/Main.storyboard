@@ -168,17 +168,6 @@
                                     <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="a0O-IN-HpN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAq-0O-Knm">
-                                <rect key="frame" x="508" y="768" width="244" height="228"/>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
-                                <state key="normal" title="preview &amp; print" backgroundImage="small_preview.jpeg">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="PreviewSegue" id="nen-Mt-An5"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
                                 <rect key="frame" x="88" y="866" width="140" height="138"/>
                                 <state key="normal" backgroundImage="erase.png">
@@ -204,6 +193,17 @@
                                 </state>
                                 <connections>
                                     <action selector="CutButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="1yp-4i-dme"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAq-0O-Knm">
+                                <rect key="frame" x="521" y="694" width="247" height="330"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
+                                <state key="normal" backgroundImage="small_preview.jpeg">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="PreviewSegue" id="nen-Mt-An5"/>
                                 </connections>
                             </button>
                         </subviews>

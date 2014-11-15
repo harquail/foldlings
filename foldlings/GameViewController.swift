@@ -244,10 +244,29 @@ class GameViewController: UIViewController {
         
     }
     
-    func previewImage() -> UIImage?{
-        var sceneView = SCNView()
-        sceneView.scene = scene
-        return sceneView.snapshot()
+    func previewImage() -> UIImage{
+//        var sceneView = SCNView()
+//        sceneView.scene = scene
+////        let image = sceneView.snapshot()
+//        let image = self.view.snapshotViewAfterScreenUpdates(false)
+//
+//        println(image.description)
+        
+        
+        self.backToSketchButton.alpha = 0
+        
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
+        // [view.layer renderInContext:UIGraphicsGetCurrentContext()]; // <- same result...
+        
+        view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
+//        [viewdrawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+        var img = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+//        self.backToSketchButton.alpha = 0
+
+        
+        
+        return img
     }
     
     
@@ -255,7 +274,7 @@ class GameViewController: UIViewController {
         if (segue.identifier == "backtoSketchSegue") {
             
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
-            viewController.sketchView.setButtonBG(previewImage()!)
+            viewController.sketchView.setButtonBG(previewImage())
             
 //            viewController.setButtonBG(sketchView.previewImage())
 //            viewController.laserImage = sketchView.bitmap(grayscale: true)
