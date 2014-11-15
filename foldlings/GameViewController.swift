@@ -136,50 +136,54 @@ class GameViewController: UIViewController {
         var edges = [Edge(start: topLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: bottomLeft, path: path3),Edge(start: bottomLeft, end: topLeft, path: path4)]
         
         
-        
-        func addPlaneToScene(edges:[Edge], parent:SCNNode) -> SCNNode {
-            
-            let plane = Plane(edges: edges)
-            plane.sanitizePath()
-            
-            let node = plane.node()
-            
-            // TODO: fix magic numbers
-//            node.position.x -= 3.9
-//            node.position.y -= 3.0
-//            node.position.z -= 4.5
-            
-            
-            let zeroDegrees =  Float(0.0*M_PI)
-            let ninetyDegrees = Float(0.5*M_PI)
-            
-            //set rotation to start angle
-            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
-            parent.addChildNode(node)
-            node.addAnimation(fadeIn(), forKey: "fade in")
-            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
-        
-            return node;
-            
-        }
-        
-        func addHoleToScene(plane:Plane, parent:SCNNode) -> SCNNode{
+//        
+//        func addPlaneToScene(edges:[Edge], parent:SCNNode) -> SCNNode {
+//            
+//            let plane = Plane(edges: edges)
+//            plane.sanitizePath()
+//            
+//            let node = plane.node()
+//            
+//            // TODO: fix magic numbers
+////            node.position.x -= 3.9
+////            node.position.y -= 3.0
+////            node.position.z -= 4.5
+//            
+//            
+//            let zeroDegrees =  Float(0.0*M_PI)
+//            let ninetyDegrees = Float(0.5*M_PI)
+//            
+//            //set rotation to start angle
+//            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
+//            parent.addChildNode(node)
+//            node.addAnimation(fadeIn(), forKey: "fade in")
+//            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+//        
+//            return node;
+//            
+//        }
+//        
+        func addPlaneToScene(plane:Plane, parent:SCNNode) -> SCNNode{
             
 //            let plane = Plane(edges: edges)
 //            plane.sanitizePath()
-            plane.kind = .Hole
+//            plane.kind = .Hole
             
             
             // TODO: duplicated code
             let node = plane.node()
 
             
+            if(plane.kind == .Hole){
+            println("hole")
+            }
+            
             // TODO: fix magic numbers
             node.position.x -= 3.9
             node.position.y -= 3.0
             node.position.z -= 4.5
             //set rotation to start angle
-            changePivot(node)
+//            changePivot(node)
 //            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
             parent.addChildNode(node)
             node.addAnimation(fadeIn(), forKey: "fade in")
@@ -197,7 +201,7 @@ class GameViewController: UIViewController {
         
         for plane in planes.planes {
         
-            addHoleToScene(plane,scene.rootNode)
+            addPlaneToScene(plane,scene.rootNode)
             println("plane addded")
             
         }
@@ -215,7 +219,7 @@ class GameViewController: UIViewController {
         scnView.showsStatistics = true
         
         // configure the view
-        scnView.backgroundColor = UIColor.greenColor()
+        scnView.backgroundColor = UIColor.darkGrayColor()
         
         // add a tap gesture recognizer
         
