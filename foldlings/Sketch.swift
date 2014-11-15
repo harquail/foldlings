@@ -297,9 +297,11 @@ class Sketch : NSObject,NSCoding  {
                         e.plane = plane
                         if e.kind == .Fold || e.kind == .Tab{
                             plane.kind = .Plane
+                            if (e.kind == .Fold){
+                                plane.orientation = .Vertical
+                            }
                         }
                     }
-                    plane.orientation = .Vertical
                     
                     //if one edge hole, ensure that hole is right direction
                     if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
