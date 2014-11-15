@@ -55,6 +55,7 @@ class GameViewController: UIViewController {
     
     
     /// pop up sharing dialog with an image to share
+    /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
         
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
@@ -117,6 +118,7 @@ class GameViewController: UIViewController {
             //            // set rotation to start angle
             //             node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
             // animate node rotating between two angles
+            //TODO: Make hinges not pivots 
             node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
             
             // add node to parent (parent's translation/rotation affect this one
