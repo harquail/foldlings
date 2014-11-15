@@ -183,7 +183,7 @@ class GameViewController: UIViewController {
 //            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
             parent.addChildNode(node)
             node.addAnimation(fadeIn(), forKey: "fade in")
-            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+//            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
          
             node.scale = SCNVector3Make(0.01, 0.01, 0.01)
             
@@ -192,7 +192,7 @@ class GameViewController: UIViewController {
         
     
         
-        addPlaneToScene(edges, scene.rootNode)
+//        addPlaneToScene(edges, scene.rootNode)
 
         
         for plane in planes.planes {
