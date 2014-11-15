@@ -36,7 +36,7 @@ class CollectionOfPlanes: Printable, Hashable {
     func addPlane(plane:Plane)
     {
         if isCounterClockwise(plane.path) {
-            let color = getRandomColor(0.8)
+            let color = plane.color
             if !contains(planes, plane) {
                 planes.append(plane)
             }
