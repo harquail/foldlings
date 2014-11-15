@@ -185,7 +185,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
     
-    /// makes a straight edge between two point
+    /// makes a straight edge between two points, constructing the path as well
     class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind) -> Edge{
         
         let path = UIBezierPath()

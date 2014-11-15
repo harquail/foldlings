@@ -22,6 +22,8 @@ class Plane: Printable, Hashable {
         case Plane = "Plane"
     }
     
+    
+    /// whether a plane should end horizontal or vertical after folding
     enum Orientation: String {
         case Horizontal = "Horizontal"
         case Vertical = "Vertical"
@@ -58,27 +60,34 @@ class Plane: Printable, Hashable {
         self.sanitizePath()
     }
 
+    
+    /// makes an SCNNode by extruding the UIBezierPath
     func node() -> SCNNode{
         
+        // make the node
         let node = SCNNode()
+        let shape = SCNShape(path: path, extrusionDepth: 0)
         
-        // TODO: might need to increase extrusion depth for holes (if there's z-fighting
-        let shape = SCNShape(path: path, extrusionDepth: 1)
         let material = SCNMaterial()
-
+        
+        // holes are black, and extruded to prevent z-fighting
         if(self.kind == .Hole){
+        let shape = SCNShape(path: path, extrusionDepth: 1)
         material.diffuse.contents = UIColor.blackColor()
         }
         else{
+        // planes are white (for now, random color)
             material.diffuse.contents = getRandomColor(1)
         }
-        material.doubleSided = false
+        // planes are visible from both sides
+        material.doubleSided = true
         node.geometry = shape
         node.geometry?.firstMaterial = material
         
         return node
     }
     
+    /// the fold with minimum y height in a plane
     func bottomFold() -> Edge{
         
         let maxPoint = CGPointMake(CGFloat.max, CGFloat.max)
@@ -101,6 +110,7 @@ class Plane: Printable, Hashable {
     }
     
     
+    /// the fold with maximum y height in a plane
     func topFold() -> Edge{
         
         let minPoint = CGPointMake(CGFloat.min, CGFloat.min)
@@ -122,12 +132,13 @@ class Plane: Printable, Hashable {
         
     }
     
+    /// close the path and remove MoveToPoint instructions
     func sanitizePath(){
         path = sanitizedPath(path)
 
     }
     
-    // remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
+    /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
         
         let elements = path.getPathElements()

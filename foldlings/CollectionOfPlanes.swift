@@ -12,7 +12,7 @@ func == (lhs: CollectionOfPlanes, rhs: CollectionOfPlanes) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-// set this to false to turn off plane edge coloring
+/// set this to false to turn off plane edge coloring
 var kOverrideColor = true
 
 class CollectionOfPlanes: Printable, Hashable {
@@ -79,6 +79,8 @@ class CollectionOfPlanes: Printable, Hashable {
         adjacency = [Plane : [Plane]]()
     }
     
+    
+    // #TODO lol
     func validateGraph() -> Bool
     {
         

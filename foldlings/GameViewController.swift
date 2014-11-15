@@ -16,11 +16,11 @@ class GameViewController: UIViewController {
     var bgImage:UIImage!
     var laserImage:UIImage!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
-
+    
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
-//    var shareRectangle: CGRect
+    //    var shareRectangle: CGRect
     
     
     @IBOutlet var backToSketchButton: UIButton!
@@ -34,20 +34,18 @@ class GameViewController: UIViewController {
         
         
         popupShare(bgImage, xposition:273)
-
+        
         
     }
     
     @IBAction func laserButton (sender: UIButton){
-        
         popupShare(laserImage, xposition:100)
-       
-        
     }
     
     
+    /// pop up sharing dialog with an image to share
     func popupShare(image:UIImage, xposition:CGFloat){
-    
+        
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController!.sourceView = self.view
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
@@ -58,17 +56,8 @@ class GameViewController: UIViewController {
     }
     
     
-    // Make fake graph that follows the rules:
-    // take edges and adjacency lists
-    // search through and make planes
-    // put planes in a list
-    // send list to another thing
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        rect = CGRectMake(0, 0, 1000, 300)
         
         // create a new scene
         let scene = SCNScene()
@@ -96,114 +85,38 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
-        
-        
-        
-        
-        
-        
-        
-        //new stuff
-        //TODO: fix
-        
-        
-        let topRight = CGPointMake(0, self.view.bounds.height/2*0.01)
-        
-        let topLeft = CGPointMake(self.view.bounds.width*0.01, self.view.bounds.height/2*0.01)
-        //        let offTopLeft = CGPointMake(self.view.bounds.width*0.01 + 1, self.view.bounds.height/2*0.01 + 1)
-        
-        let bottomLeft = CGPointMake(self.view.bounds.width*0.01, 0)
-        //        let offBottomLeft = CGPointMake(self.view.bounds.width*0.01 + 1, 0)
-        
-        let bottomRight = CGPointMake(0, 0)
-        
-        var path = UIBezierPath();
-        path.moveToPoint(topLeft)
-        path.addLineToPoint(topRight)
-        
-        let path2 = UIBezierPath();
-        path2.moveToPoint(bottomRight)
-        path2.addLineToPoint(bottomRight)
-        
-        let path3 = UIBezierPath();
-        path3.moveToPoint(bottomLeft)
-        path3.addLineToPoint(bottomLeft)
-        
-        let path4 = UIBezierPath();
-        path4.moveToPoint(topLeft)
-        path4.addLineToPoint(topLeft)
-        
-        var edges = [Edge(start: topLeft, end: topRight, path: path),Edge(start: topRight, end: bottomRight, path: path2),Edge(start: bottomRight, end: bottomLeft, path: path3),Edge(start: bottomLeft, end: topLeft, path: path4)]
-        
-        
-//        
-//        func addPlaneToScene(edges:[Edge], parent:SCNNode) -> SCNNode {
-//            
-//            let plane = Plane(edges: edges)
-//            plane.sanitizePath()
-//            
-//            let node = plane.node()
-//            
-//            // TODO: fix magic numbers
-////            node.position.x -= 3.9
-////            node.position.y -= 3.0
-////            node.position.z -= 4.5
-//            
-//            
-//            let zeroDegrees =  Float(0.0*M_PI)
-//            let ninetyDegrees = Float(0.5*M_PI)
-//            
-//            //set rotation to start angle
-//            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:zeroDegrees)
-//            parent.addChildNode(node)
-//            node.addAnimation(fadeIn(), forKey: "fade in")
-//            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
-//        
-//            return node;
-//            
-//        }
-//        
+        /// subfunction; adds a plane to the scene with a given parent
         func addPlaneToScene(plane:Plane, parent:SCNNode) -> SCNNode{
             
-//            let plane = Plane(edges: edges)
-//            plane.sanitizePath()
-//            plane.kind = .Hole
-            
-            
-            // TODO: duplicated code
             let node = plane.node()
-
             
-            if(plane.kind == .Hole){
-            println("hole")
-            }
-            
-            // TODO: fix magic numbers
+            // move node to where the camera can see it
             node.position.x -= 3.9
             node.position.y -= 3.0
             node.position.z -= 4.5
-            //set rotation to start angle
-//            changePivot(node)
-//            node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
-            parent.addChildNode(node)
-            node.addAnimation(fadeIn(), forKey: "fade in")
-//            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
-         
-            println(node)
             node.scale = SCNVector3Make(0.01, 0.01, 0.01)
             
+//            // TODO: fix
+//            // change node's pivot based on whether it is .Horizontal
+//            changePivot(node)
+//            // set rotation to start angle
+//             node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
+            // animate node rotating between two angles
+              node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+            
+            // add node to parent (parent's translation/rotation affect this one
+            parent.addChildNode(node)
+            node.addAnimation(fadeIn(), forKey: "fade in")
+            
+            println(node)
             return node;
         }
         
-    
         
-//        addPlaneToScene(edges, scene.rootNode)
-
-        
+        // add each plane to the scene
         for plane in planes.planes {
-        
+            
             addPlaneToScene(plane,scene.rootNode)
-            println("plane addded")
             
         }
         
@@ -222,27 +135,16 @@ class GameViewController: UIViewController {
         // configure the view
         scnView.backgroundColor = UIColor.darkGrayColor()
         
-        // add a tap gesture recognizer
         
-        //        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        //        let gestureRecognizers = NSMutableArray()
-        //        gestureRecognizers.addObject(tapGesture)
-        //        if let existingGestureRecognizers = scnView.gestureRecognizers {
-        //            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
-        //        }
-        //        scnView.gestureRecognizers = gestureRecognizers
-        
-        
+        // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
-        
-        
     }
     
     
+    /// fade in animation makes it less jarring
     func fadeIn() -> CABasicAnimation{
-        
         var fadeIn = CABasicAnimation(keyPath:"opacity");
         fadeIn.duration = 2.0;
         fadeIn.fromValue = 0.0;
@@ -251,8 +153,9 @@ class GameViewController: UIViewController {
     }
     
     
-    //back and forth rotation animation
-    //TODO: fix magic numbers
+    /// back and forth rotation animation
+    /// this is magical
+    /// very sketchy idea of how it works
     func rotationAnimation(startAngle:Float, endAngle:Float) -> CAKeyframeAnimation{
         let anim = CAKeyframeAnimation(keyPath: "rotation")
         anim.duration = 14;
@@ -268,37 +171,45 @@ class GameViewController: UIViewController {
         
     }
     
+    
+    /// moves the pivot of a node from the top edge to the bottom edge
+    /// but it doesn't seem to work
     func changePivot(node:SCNNode){
-    
-    var minVec = UnsafeMutablePointer<SCNVector3>.alloc(0)
-    var maxVec = UnsafeMutablePointer<SCNVector3>.alloc(1)
-    if node.getBoundingBoxMin(minVec, max: maxVec) {
         
-    let distance = SCNVector3(
-    x: maxVec.memory.x - minVec.memory.x,
-    y: maxVec.memory.y - minVec.memory.y,
-    z: maxVec.memory.z - minVec.memory.z)
+        // take the bounding box
+        var minVec = UnsafeMutablePointer<SCNVector3>.alloc(0)
+        var maxVec = UnsafeMutablePointer<SCNVector3>.alloc(1)
+        if node.getBoundingBoxMin(minVec, max: maxVec) {
+            
+            //and get the length of each direction
+            let distance = SCNVector3(
+                x: maxVec.memory.x - minVec.memory.x,
+                y: maxVec.memory.y - minVec.memory.y,
+                z: maxVec.memory.z - minVec.memory.z)
+            
+            
+            // pivots around bottom edge
+            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
+            
+            //pivots around top edge
+//            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
+//            http://ronnqvi.st/3d-with-scenekit/
+            // LIESSSSS
+            node.pivot = SCNMatrix4MakeTranslation(0, distance.y/2, 0)
+            
+            println("plane")
+            println(distance.x)
+            println(distance.y)
+            println(distance.z)
+            println()
+            
+            
+            // we have to dealloc the unsafe pointer
+            // I hate it
+            minVec.dealloc(0)
+            maxVec.dealloc(1)
+        }
         
-    
-
-
-    
-    // pivots around bottom edge
-    node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-    
-    //pivots around top edge
-    node.pivot = SCNMatrix4MakeTranslation(0, distance.y, 0)
-
-        println("plane")
-        println(distance.x)
-        println(distance.y)
-        println(distance.z)
-        println()
-
-    minVec.dealloc(0)
-    maxVec.dealloc(1)
-    }
-    
     }
     
     
@@ -308,6 +219,7 @@ class GameViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
     }
     
+    // sets preview button image
     func setButtonBG(image:UIImage){
         
         bgImage = image;
