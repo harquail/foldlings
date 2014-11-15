@@ -18,7 +18,7 @@ func reversePath(path:UIBezierPath) -> UIBezierPath
     let elements = path.getPathElements()
     let points = getSubdivisions(elements)
     let revpoints = points.reverse()
-    return linePathFromPoints(smoothPoints(revpoints))
+    return pathFromPoints(smoothPoints(revpoints))
 }
 
 func isCounterClockwise(path:UIBezierPath) -> Bool
@@ -32,8 +32,8 @@ func isCounterClockwise(path:UIBezierPath) -> Bool
         total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
     }
     
-    println("path direction: \(total)")
-    return total < 0
+//    println("path direction: \(total)")
+    return total > 0
 }
 
 func linePathFromPoints(path:[CGPoint]) -> UIBezierPath
