@@ -61,7 +61,7 @@ class Plane: Printable, Hashable {
         let material = SCNMaterial()
 
         if(self.kind == .Hole){
-        material.diffuse.contents = UIColor.blackColor()
+        material.diffuse.contents = getRandomColor(1)
         }
         else{
             material.diffuse.contents = UIColor.whiteColor()
