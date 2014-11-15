@@ -22,7 +22,13 @@ class Plane: Printable, Hashable {
         case Plane = "Plane"
     }
     
+    enum Orientation: String {
+        case Horizontal = "Horizontal"
+        case Vertical = "Vertical"
+    }
+    
     var kind = Kind.Plane
+    var orientation = Orientation.Horizontal
     var edges : [Edge]!
     var path = UIBezierPath()
     var description: String {
