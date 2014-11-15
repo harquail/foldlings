@@ -305,12 +305,12 @@ class Sketch : NSObject,NSCoding  {
                 if !closest.crossed{// if you didn't cross twin, make it a plane
                     var plane = Plane(edges: p)
                     if !checkBorderPlane(plane) {
+                        plane.orientation = .Vertical
                         planes.addPlane(plane)
-    //                    println("plane \(plane)")
+                        // set plane fo edge
                         for e in p
                         {
                             planes.addPlane(plane)
-    //                      println("plane \(plane)")
                             for e in p
                             {
                                 e.plane = plane
@@ -323,7 +323,6 @@ class Sketch : NSObject,NSCoding  {
                 }
             }
         }
-        //println("planeCount \(planes.count)")
     }
     
     
