@@ -149,17 +149,6 @@ class Sketch : NSObject,NSCoding  {
             if !contains(tabs, edge) { tabs.append(edge) }
         }
         
-        // check if our new edge is a hole that encloses other edges
-        if CGPointEqualToPoint(edge.start, edge.end)
-        {
-            if let collisions = shapeHitTest(path)
-            {
-                for collidingEdge in collisions {
-                    self.removeEdge(collidingEdge)
-                }
-            }
-        }
-        
         return edge
     }
     
@@ -168,11 +157,10 @@ class Sketch : NSObject,NSCoding  {
     {
         if !edge.isMaster {
             var twin = edge.twin
-            edge.path.removeAllPoints()
-            edges = edges.filter({ $0 != edge })
-            edges = edges.filter({ $0 != twin })
-            folds = folds.filter({ $0 != edge })
-            tabs  = tabs.filter({ $0 != edge })
+            edges = edges - edge
+            edges = edges - twin
+            folds = folds - edge
+            tabs  = tabs - edge
             if adjacency[edge.start] != nil {
                 adjacency[edge.start] = adjacency[edge.start]!.filter({ $0 != edge })
                 if adjacency[edge.start]!.count == 0 { adjacency[edge.start] = nil }
@@ -388,7 +376,7 @@ class Sketch : NSObject,NSCoding  {
                 let newfold = UIBezierPath()
                 newfold.moveToPoint(newfoldstart)
                 newfold.addLineToPoint(newfoldend)
-                var newFoldEdge = addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
+                var newFoldEdge = addEdge(newfoldstart, end: newfoldend, path: newfold, kind: Edge.Kind.Fold)
                 //left edge
                 let newleft = UIBezierPath()
                 newleft.moveToPoint(tab.start)
@@ -401,7 +389,8 @@ class Sketch : NSObject,NSCoding  {
                 var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
             
                 // move tab from tabs to edges so we don't redraw this again
-                tabs = tabs.filter( { $0 != tab } )
+                tabs = tabs - tab
+                tabs = tabs - tab.twin
             }
             
         }
