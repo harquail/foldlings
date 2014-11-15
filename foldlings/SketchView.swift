@@ -227,11 +227,11 @@ class SketchView: UIView {
             if(!grayscale){
                 for e in sketch.edges
                 {
-                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
-                    {
-                        UIColor.blackColor().setFill()
-                        e.path.fill()
-                    }
+//                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
+//                    {
+//                        UIColor.blackColor().setFill()
+//                        e.path.fill()
+//                    }
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                     // just draw that point to indicate it...
@@ -243,7 +243,7 @@ class SketchView: UIView {
                 for plane in sketch.planes.planes {
                     let c = getRandomColor(0.3)
                     c.setFill()
-                    plane.path.usesEvenOddFillRule = false
+                    //plane.path.usesEvenOddFillRule = false
                     plane.path.fill()
                 }
             }

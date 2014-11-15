@@ -35,22 +35,24 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
-        let color = getRandomColor(0.8)
-        if !contains(planes, plane) {
-            planes.append(plane)
-        }
-        
-        if adjacency[plane] == nil {
-            adjacency[plane] = []
-        }
-        
-        for edge in plane.edges {
-            if kOverrideColor { edge.colorOverride = color }
-            if edge.kind == .Fold {
-                for p in planes {
-                    for e in p.edges! {
-                        if edge == e {
-                            adjacency[plane]!.append(p)
+        if isCounterClockwise(plane.path) {
+            let color = getRandomColor(0.8)
+            if !contains(planes, plane) {
+                planes.append(plane)
+            }
+            
+            if adjacency[plane] == nil {
+                adjacency[plane] = []
+            }
+            
+            for edge in plane.edges {
+                if kOverrideColor { edge.colorOverride = color }
+                if edge.kind == .Fold {
+                    for p in planes {
+                        for e in p.edges! {
+                            if edge == e {
+                                adjacency[plane]!.append(p)
+                            }
                         }
                     }
                 }

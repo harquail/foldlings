@@ -63,7 +63,7 @@ class Plane: Printable, Hashable {
         let node = SCNNode()
         
         // TODO: might need to increase extrusion depth for holes (if there's z-fighting
-        let shape = SCNShape(path: path, extrusionDepth: 0)
+        let shape = SCNShape(path: path, extrusionDepth: 1)
         let material = SCNMaterial()
 
         if(self.kind == .Hole){

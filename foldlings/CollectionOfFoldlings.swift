@@ -223,10 +223,12 @@ class CollectionOfFoldlings: UIViewController {
         let topFoldEnd = CGPointMake(midFoldEnd.x, topFoldStart.y)
         let topFold = Edge.straightEdgeBetween(topFoldStart, end: topFoldEnd, kind: .Fold)
         s.addEdge(topFold)
+        
+        
 
         
-//        let topFoldStart = CGPointMake(drivingEdgeStart.x + xStart + (0.5 * bottomWidth) - (0.5 * topWidth), midFoldStart.y - masterMinusMid)
-//        let topFoldEnd = CGPointMake(topFoldStart.x + (0.5 * topWidth), topFoldStart.y)
+//        let topFoldStart = CGPointMake(drivingEdgeStart.x + xStart , midFoldStart.y - masterMinusMid)
+//        let topFoldEnd = CGPointMake(topFoldStart.x + topWidth, topFoldStart.y)
 //        let topFold = Edge.straightEdgeBetween(topFoldStart, end: topFoldEnd, kind: .Fold)
 //        s.addEdge(topFold)
         
