@@ -189,6 +189,7 @@ class GameViewController: UIViewController {
             node.addAnimation(fadeIn(), forKey: "fade in")
 //            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
          
+            println(node)
             node.scale = SCNVector3Make(0.01, 0.01, 0.01)
             
             return node;
