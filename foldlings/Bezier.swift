@@ -23,7 +23,7 @@ func isCounterClockwise(path:UIBezierPath) -> Bool
     {
         total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
     }
-        
+    
     return total > 0
 }
 
