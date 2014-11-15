@@ -194,6 +194,7 @@ class GameViewController: UIViewController {
             //pivots around top edge
 //            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
 //            http://ronnqvi.st/3d-with-scenekit/
+            
             // LIESSSSS
             node.pivot = SCNMatrix4MakeTranslation(0, distance.y/2, 0)
             
