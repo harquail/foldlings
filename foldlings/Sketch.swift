@@ -108,10 +108,8 @@ class Sketch : NSObject,NSCoding  {
     func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge
     {
         var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
-//        var revpath = reversePath(path) // need to reverse the path for better drawing
         var edge = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
         var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
-        //flipping the above seems to work better but keeping it right now
         edge.twin = twin
         twin.twin = edge
         
@@ -162,9 +160,6 @@ class Sketch : NSObject,NSCoding  {
             }
         }
         
-        //skip 0th fold
-        initPlanes()
-        
         return edge
     }
     
@@ -187,22 +182,9 @@ class Sketch : NSObject,NSCoding  {
                 if adjacency[twin.start]!.count == 0 { adjacency[twin.start] = nil }
             }
 
-            initPlanes()
         }
     }
     
-    func initPlanes()
-    {
-        //TODO: this is a placeholder, not how you actually do it
-        for var i = 0; i < folds.count; i++ {
-            if (i % 2) == 0 {
-                folds[i].fold = .Valley
-            } else {
-                folds[i].fold = .Hill
-            }
-        }
-        
-    }
     
     /// makes border edges
     /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
