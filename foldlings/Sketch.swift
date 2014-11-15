@@ -368,13 +368,14 @@ class Sketch : NSObject,NSCoding  {
             let plane1 = tab.plane
             let plane2 = tab.twin.plane
             
-            var lowestY = CGFloat.max
+            var lowestY:CGFloat = 0.0
             for plane in [plane1, plane2] {
                 if let p = plane {
                     for edge in p.edges
                     {
-                        if edge.kind == .Fold && edge.start.y >= lowestY {
+                        if edge.kind == .Fold && edge.start.y > lowestY {
                             bottomFold = edge
+                            lowestY = edge.start.y
                         }
                     }
                 }
@@ -387,17 +388,20 @@ class Sketch : NSObject,NSCoding  {
                 let newfold = UIBezierPath()
                 newfold.moveToPoint(newfoldstart)
                 newfold.addLineToPoint(newfoldend)
-                addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
+                var newFoldEdge = addEdge(tab.start, end: tab.end, path: newfold, kind: Edge.Kind.Fold)
                 //left edge
                 let newleft = UIBezierPath()
                 newleft.moveToPoint(tab.start)
                 newleft.addLineToPoint(newfoldstart)
-                addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
+                var newLeftEdge = addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
                 //right edge
                 let newright = UIBezierPath()
                 newright.moveToPoint(tab.end)
                 newright.addLineToPoint(newfoldend)
-                addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+                var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+            
+                // move tab from tabs to edges so we don't redraw this again
+                tabs = tabs.filter( { $0 != tab } )
             }
             
         }
