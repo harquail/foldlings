@@ -16,7 +16,8 @@ class GameViewController: UIViewController {
     var bgImage:UIImage!
     var laserImage:UIImage!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
-    
+    let scene = SCNScene()
+
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
@@ -60,7 +61,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene()
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -133,7 +133,7 @@ class GameViewController: UIViewController {
         scnView.showsStatistics = true
         
         // configure the view
-        scnView.backgroundColor = UIColor.darkGrayColor()
+        scnView.backgroundColor = UIColor.blackColor()
         
         
         // back button
@@ -227,6 +227,15 @@ class GameViewController: UIViewController {
         
     }
     
+    func previewImage() -> UIImage{
+    
+        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0)
+        self.view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: false)        //        //
+        let copied = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return copied;
+        
+    }
     
     
 }

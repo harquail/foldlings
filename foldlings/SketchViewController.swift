@@ -57,12 +57,9 @@ class SketchViewController: UIViewController{
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
 
-            let viewController:GameViewController = segue.destinationViewController as GameViewController
+            let viewController:GameViewController = sketchView.gameView
             
-            viewController.setButtonBG(sketchView.previewImage())
-            viewController.laserImage = sketchView.bitmap(grayscale: true)
-            viewController.planes = sketchView.sketch.planes
-//            viewController.
+           //            viewController.
             // pass data to next view
         }
     }
