@@ -15,7 +15,8 @@ class GameViewController: UIViewController {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
-    
+    var planes:CollectionOfPlanes = CollectionOfPlanes()
+
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
@@ -78,7 +79,7 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 100)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -158,15 +159,14 @@ class GameViewController: UIViewController {
             node.addAnimation(fadeIn(), forKey: "fade in")
             node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
         
-
             return node;
             
         }
         
-        func addHoleToScene(edges:[Edge], parent:SCNNode) -> SCNNode{
+        func addHoleToScene(plane:Plane, parent:SCNNode) -> SCNNode{
             
-            let plane = Plane(edges: edges)
-            plane.sanitizePath()
+//            let plane = Plane(edges: edges)
+//            plane.sanitizePath()
             plane.kind = .Hole
             
             
@@ -185,13 +185,22 @@ class GameViewController: UIViewController {
             node.addAnimation(fadeIn(), forKey: "fade in")
             node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
          
+            node.scale = SCNVector3Make(0.01, 0.01, 0.01)
+            
             return node;
         }
         
     
         
-        addHoleToScene(edges, scene.rootNode)
+        addPlaneToScene(edges, scene.rootNode)
 
+        
+        for plane in planes.planes {
+        
+            addHoleToScene(plane,scene.rootNode)
+            println("plane addded")
+            
+        }
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -200,7 +209,7 @@ class GameViewController: UIViewController {
         scnView.scene = scene
         
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = false
+        scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
@@ -259,16 +268,27 @@ class GameViewController: UIViewController {
     var minVec = UnsafeMutablePointer<SCNVector3>.alloc(0)
     var maxVec = UnsafeMutablePointer<SCNVector3>.alloc(1)
     if node.getBoundingBoxMin(minVec, max: maxVec) {
+        
     let distance = SCNVector3(
     x: maxVec.memory.x - minVec.memory.x,
     y: maxVec.memory.y - minVec.memory.y,
     z: maxVec.memory.z - minVec.memory.z)
+        
+    
+
+
     
     // pivots around bottom edge
     node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
     
     //pivots around top edge
     node.pivot = SCNMatrix4MakeTranslation(0, distance.y, 0)
+
+        println("plane")
+        println(distance.x)
+        println(distance.y)
+        println(distance.z)
+        println()
 
     minVec.dealloc(0)
     maxVec.dealloc(1)
