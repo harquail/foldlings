@@ -17,7 +17,11 @@ class SketchViewController: UIViewController{
     @IBOutlet var selected: UIImageView!
 
     
-
+    @IBAction func CardsButtonClicked(sender: UIButton) {
+        
+        Archivist.appendSketchToFile(sketchView.sketch)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     @IBAction func EraseButtonClicked(sender: UIButton) {
         
         
