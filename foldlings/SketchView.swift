@@ -226,13 +226,17 @@ class SketchView: UIView {
             
             
             if(!grayscale){
+                // print planes first if exist
+                for plane in sketch.planes.planes {
+                    let c = plane.color
+                    c.setFill()
+                    plane.path.usesEvenOddFillRule = false
+                    plane.path.fill()
+                }
+
+                //print all edges
                 for e in sketch.edges
                 {
-//                    if CGPointEqualToPoint(e.start, e.end) //is a loop draw filled
-//                    {
-//                        UIColor.blackColor().setFill()
-//                        e.path.fill()
-//                    }
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                     // just draw that point to indicate it...
@@ -240,12 +244,6 @@ class SketchView: UIView {
                         drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
                     }
                     
-                }
-                for plane in sketch.planes.planes {
-                    let c = plane.color
-                    c.setFill()
-                    plane.path.usesEvenOddFillRule = false
-                    plane.path.fill()
                 }
             }
             else // this is a grayscale for print image
@@ -421,12 +419,35 @@ class SketchView: UIView {
     
     func forceRedraw()
     {
-        incrementalImage = nil
-        endPaths.removeAll(keepCapacity: false)
-        sketch.getPlanes()//evaluate into planes
-        sketch.buildTabs()
-        incrementalImage = bitmap(grayscale: false) // the bitmap isn't grayscale
-        self.setNeedsDisplay() //draw to clear the deleted path
+        
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        let lockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
+
+        dispatch_async(dispatch_get_global_queue(priority, 0), {
+            dispatch_sync(lockQueue) {
+                self.sketch.getPlanes()//evaluate into planes
+                if self.sketch.buildTabs() {
+                    // if buildtabs returns that it did any changes rerun buildplanes again
+                    self.sketch.getPlanes()
+                    if self.sketch.buildTabs() { self.sketch.getPlanes() }
+                }
+            }
+
+            dispatch_async(dispatch_get_main_queue(), {
+                dispatch_sync(lockQueue) {
+                    self.incrementalImage = nil
+                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                    self.setNeedsDisplay() //draw to clear the deleted path
+                }
+            })
+        })
+        
+        dispatch_sync(lockQueue) {
+            self.incrementalImage = nil
+            self.endPaths.removeAll(keepCapacity: false)
+            self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+            self.setNeedsDisplay() //draw to clear the deleted path
+        }
 
     //        setGameView()
     }
