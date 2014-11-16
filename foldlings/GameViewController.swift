@@ -302,7 +302,7 @@ class GameViewController: UIViewController {
     
     func jointBetweenPlanes(plane:Plane,plane2:Plane){
         
-//        let joint = SCNPhysicsHingeJoint(bodyA: plane.lazyNode().physicsBody, axisA: plane.lazyNode().physicsBody, anchorA: <#SCNVector3#>, bodyB: <#SCNPhysicsBody#>, axisB: <#SCNVector3#>, anchorB: <#SCNVector3#>))
+//        let joint = SCNPhysicsHingeJoint(bodyA: plane.lazyNode().physicsBody, axisA: , anchorA: SCNVector3, bodyB: plane2.lazyNode().physicsBody, axisB: <#SCNVector3#>, anchorB: <#SCNVector3#>))
     
     }
     
