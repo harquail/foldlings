@@ -428,10 +428,7 @@ class GameViewController: UIViewController {
     func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
         
         //find edge planes share
-        let sharedEdge = planeA.topFold()
-        
-        
-//        CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
+        let sharedEdge = CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
         
         // get the start and end points of the edge they share
         let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
