@@ -69,8 +69,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        makeSceneToTestHinges()
-        makeScene()
+        makeSceneToTestHinges()
+//        makeScene()
         
     }
     
@@ -125,6 +125,8 @@ class GameViewController: UIViewController {
         }
         
         
+        
+        
 //        let zerozero = CGPointMake(0, 0)
 //        let zeroone = CGPointMake(0, 1)
 //        let onezero = CGPointMake(1, 0)
@@ -145,7 +147,13 @@ class GameViewController: UIViewController {
         
         let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
 
-        let nodes = [rootRect, friend, friendofAFriend]
+        let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, 2, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 2, 0))
+        
+        
+
+        scene.physicsWorld.addBehavior(hinge)
+        
+        let nodes = [rootRect, friend]
 
         
         for node in nodes{
@@ -215,7 +223,7 @@ class GameViewController: UIViewController {
             if move == true
             {
                 println("move")
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
@@ -289,12 +297,14 @@ class GameViewController: UIViewController {
         
         println("# planes")
         println(planes.planes.count)
+    
+        
         let plane1 = planes.planes[0]
         let plane2 = planes.planes[1]
         
-        plane2.lazyNode().physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: plane2.lazyNode().geometry!, options: nil))
+        plane2.lazyNode().physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: plane2.lazyNode().geometry!, options: nil))
 
-        
+        //TODO: change back
         addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
         
         
@@ -436,25 +446,34 @@ class GameViewController: UIViewController {
         
         // get the start and end points of the edge they share
         let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
-        
         let endPoint =  SCNVector3Make(Float(sharedEdge!.end.x), Float(sharedEdge!.end.y), Float(0.0))
         
         
         // axis is the vector between them
-        let axisInWorld = SCNVector3Make(startPoint.x - endPoint.x, startPoint.y - endPoint.y, startPoint.z - endPoint.z)
-        let axisInA = planeA.lazyNode().convertPosition(axisInWorld, toNode: scene.rootNode)
-        let axisInB = planeB.lazyNode().convertPosition(axisInWorld, toNode: scene.rootNode)
+        let axisInWorld = SCNVector3Make(0.0, 1, 0.0)
+        let axisInA = axisInWorld
+        let axisInB = axisInWorld
+        
+        makeSphere(atPoint: planeA.lazyNode().convertPosition(axisInA, toNode: scene.rootNode))
+        
         
         // anchor is the start point
-        let anchorInA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
-        let anchorInB = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+        let anchorInA = startPoint
+        let anchorInB = startPoint
         
-        makeSphere(atPoint: startPoint)
-        makeSphere(atPoint: endPoint)
+//        let startA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+//        let startB = planeB.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+//        
 
 
         // do the thing
-        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
+//        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
+
+        
+                let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
+        
+        
+
         
         scene.physicsWorld.addBehavior(hinge)
 
@@ -477,6 +496,7 @@ class GameViewController: UIViewController {
     func makeSphere(#atPoint: SCNVector3) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
+//        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
     }
