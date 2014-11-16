@@ -22,8 +22,9 @@ class GameViewController: UIViewController {
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
-    //    var shareRectangle: CGRect
-    
+    var hinges :[SCNPhysicsHingeJoint] = []
+    var planePath :[Plane] = []
+
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -154,6 +155,8 @@ class GameViewController: UIViewController {
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
+                    let top = planes.topPlane!()
+                    getJoint(top, hill: false)
                 
                 }                
             }
@@ -288,13 +291,23 @@ class GameViewController: UIViewController {
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
-    func getJoint(plane: Plane)
-    {
-        var visited : [Plane] = []
-        var adj = planes 
-        
+    func getJoint(plane: Plane, hill: Bool)
+    {   let bottom = planes.bottomPlane!()
+        // call make joint between curr plane and p using Bool
+        if plane == bottom{
+            addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+            return
+        }
+        let adj: [Plane] = planes.adjacency[plane]!
+        // loop through the adj starting with top plane
+        for p in adj
+        {
+            addJointBetweenPlanes(plane, planeB: p, angleLimit: 0.0)
+            getJoint(p, hill: !hill)
+        }
     }
-    
+
+
     //https://developer.apple.com/library/mac/documentation/SceneKit/Reference/SCNPhysicsHingeJoint_Class/
     /// adds a physics joint between two planes that share an edge
     func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
