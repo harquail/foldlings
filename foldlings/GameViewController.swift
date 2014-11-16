@@ -2,8 +2,6 @@
 //  GameViewController.swift
 //  foldlings
 //
-//  Created by nook on 10/6/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 import UIKit
@@ -28,24 +26,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
-        
         parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
-    
-//    @IBAction func CardsButtonClicked(sender: UIButton) {
-//        println("CARDS CLICKED")
-////        Archivist.appendSketchToFile(sketchView.sketch)
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
+        
     @IBAction func printButton (sender: UIButton){
-        
-        
         popupShare(bgImage, xposition:273)
-        
-        
     }
     
     @IBAction func laserButton (sender: UIButton){
@@ -56,7 +42,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
-        
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController!.sourceView = self.view
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
@@ -73,6 +58,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         makeScene()
         
     }
+
+    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval)
+    {
+        
+    }
+
     
     func makeSceneToTestHinges(){
     
@@ -99,8 +90,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
         
    
-        
-        
         //makes a rectangular node for testing
         func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
             
@@ -289,6 +278,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
+        scnView.delegate = self
         
         // set the scene to the view
         scnView.scene = scene

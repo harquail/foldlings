@@ -2,8 +2,6 @@
 //  AppDelegate.swift
 //  foldlings
 //
-//  Created by nook on 10/6/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 import UIKit
