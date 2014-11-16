@@ -165,9 +165,9 @@ class GameViewController: UIViewController {
             addPlaneToScene(plane,parent,move)
         }
         
-        let top = planes.topPlane!
-        visited.append(top)
-        getJoint(top, hill: false)
+//        let top = planes.topPlane!
+//        visited.append(top)
+//        getJoint(top, hill: false)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
