@@ -121,7 +121,7 @@ class GameViewController: UIViewController {
         // add each plane to the scene
         for plane in planes.planes {
             
-            // remove node, so everything is nice and fresh 
+            // remove node, so everything is nice and fresh
             plane.clearNode()
             
             // if plane is second plane, don't add physics body
