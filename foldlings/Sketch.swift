@@ -283,11 +283,26 @@ class Sketch : NSObject,NSCoding  {
                         self.visited.append(closest)
                     }
                     
-                    //if one edge hole, ensure that hole is right direction
-//                    if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
-//                        plane.path = plane.path.bezierPathByReversingPath()
-//                    }
-                    planes.addPlane(plane)
+                    if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
+                        var plane = Plane(edges: p)
+                        for e in p
+                        {
+                            e.plane = plane
+                            if e.kind == .Fold || e.kind == .Tab{
+                                plane.kind = .Plane
+                                if (e.kind == .Fold){
+                                    plane.orientation = .Vertical
+                                }
+                            }
+                        }
+                        
+                        //if one edge hole, ensure that hole is right direction
+                        if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
+                            plane.path = plane.path.bezierPathByReversingPath()
+                        }
+                        self.planes.addPlane(plane)
+                    }
+                    closest.crossed = false
                 }
             }
         }
