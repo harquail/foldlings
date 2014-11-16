@@ -25,6 +25,8 @@ class CollectionOfPlanes: Printable, Hashable {
         }
     }
     
+    let planeAdjacencylockQueue = dispatch_queue_create("com.Foldlings.LockPlaneAdjacencyQueue", nil)
+    
     var planes:[Plane] = []
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
     
@@ -35,23 +37,25 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane)
     {
-        if isCounterClockwise(plane.path) {
-            let color = plane.color
-            if !contains(planes, plane) {
-                planes.append(plane)
-            }
-            
-            if adjacency[plane] == nil {
-                adjacency[plane] = []
-            }
-            
-            for edge in plane.edges {
-                if kOverrideColor { edge.colorOverride = color }
-                if edge.kind == .Fold {
-                    for p in planes {
-                        for e in p.edges! {
-                            if edge == e {
-                                adjacency[plane]!.append(p)
+        dispatch_sync(planeAdjacencylockQueue) {
+            if isCounterClockwise(plane.path) {
+                let color = plane.color
+                if !contains(self.planes, plane) {
+                    self.planes.append(plane)
+                }
+                
+                if self.adjacency[plane] == nil {
+                    self.adjacency[plane] = []
+                }
+                
+                for edge in plane.edges {
+                    if kOverrideColor { edge.colorOverride = color }
+                    if edge.kind == .Fold {
+                        for p in self.planes {
+                            for e in p.edges! {
+                                if edge == e {
+                                    self.adjacency[plane]!.append(p)
+                                }
                             }
                         }
                     }
@@ -62,21 +66,25 @@ class CollectionOfPlanes: Printable, Hashable {
     
     func removePlane(plane:Plane)
     {
-        planes = planes.filter({ $0 != plane })
-        
-        if adjacency[plane] != nil {
-            adjacency[plane] = nil
-        }
-        for (k,v) in adjacency {
-            adjacency[k]!.filter({ $0 != plane })
+        dispatch_sync(planeAdjacencylockQueue) {
+            self.planes = self.planes.filter({ $0 != plane })
+            
+            if self.adjacency[plane] != nil {
+                self.adjacency[plane] = nil
+            }
+            for (k,v) in self.adjacency {
+                self.adjacency[k]!.filter({ $0 != plane })
+            }
         }
     }
     
     //just re-init it all
     func removeAll()
     {
-        planes =  []
-        adjacency = [Plane : [Plane]]()
+        dispatch_sync(planeAdjacencylockQueue) {
+            self.planes =  []
+            self.adjacency = [Plane : [Plane]]()
+        }
     }
     
     
