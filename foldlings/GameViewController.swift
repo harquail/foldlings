@@ -106,6 +106,7 @@ class GameViewController: UIViewController {
             
             let node = plane.lazyNode()
             
+            
             if move == true
             {
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
@@ -131,12 +132,29 @@ class GameViewController: UIViewController {
             // remove node, so everything is nice and fresh
             plane.clearNode()
             
+            var parent = scene.rootNode
+            // if plane is a hole, it's parent should be the plane that contains it
+            if(plane.kind == Plane.Kind.Hole){
+            
+                println("hole found")
+                
+                let parentPlane = plane.containerPlane(planes.planes)
+                    
+                if parentPlane != nil{
+                 
+                    parent = parentPlane!.lazyNode()
+                
+                }
+                //= .lazyNode()
+                
+            }
+            
             // if plane is second plane, don't add physics body
             var move: Bool = true
             if i > 0{
                 move = false
             }
-            addPlaneToScene(plane,scene.rootNode,move)
+            addPlaneToScene(plane,parent,move)
         }
         
         

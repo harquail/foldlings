@@ -83,7 +83,7 @@ class Plane: Printable, Hashable
             // holes are black, and extruded to prevent z-fighting
             if(self.kind == .Hole){
                 shape = SCNShape(path: path, extrusionDepth: 1)
-                material.diffuse.contents = UIColor.blackColor()
+                material.diffuse.contents = UIColor.whiteColor()
             }
             else{
                 // planes are white (for now, random color)
@@ -96,11 +96,11 @@ class Plane: Printable, Hashable
             
             node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!, options: nil))
             // move node to where the camera can see it
-            node!.position.x -= 3.9
+            node!.position.x += -3.9
             node!.position.y += 7.0
-            node!.position.z -= 4.5
+            node!.position.z += -4.5
             node!.scale = SCNVector3Make(0.01, -0.01, 0.01)
-
+            
         }
         return node!
     }
@@ -201,6 +201,34 @@ class Plane: Printable, Hashable
     func hasEdge(edge:Edge) -> Bool
     {
         return self.edges.contains(edge)
+    }
+    
+    func containerPlane(planes:[Plane]) -> Plane? {
+        
+        for (i,potentialParent) in enumerate(planes){
+            
+            //skip it if we're testing against ourselves
+            if potentialParent == self{
+            continue
+            }
+            
+            for edge in self.edges{
+            
+                if(potentialParent.path.containsPoint(edge.start)){
+                
+                    println(potentialParent)
+                    println()
+
+                    
+                return potentialParent
+                    
+                }
+                
+            }
+            
+        }
+    
+        return nil
     }
     
 }

@@ -292,9 +292,9 @@ class Sketch : NSObject,NSCoding  {
                     }
                     
                     //if one edge hole, ensure that hole is right direction
-                    if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
-                        plane.path = plane.path.bezierPathByReversingPath()
-                    }
+//                    if CGPointEqualToPoint(start.start, start.end) && !isCounterClockwise(plane.path){
+//                        plane.path = plane.path.bezierPathByReversingPath()
+//                    }
                     planes.addPlane(plane)
                 }
                 closest.crossed = false
