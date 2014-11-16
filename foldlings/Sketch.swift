@@ -517,11 +517,13 @@ class Sketch : NSObject,NSCoding  {
     
     func isTopEdge(edge:Edge) -> Bool
     {
-        return edge == bEdge1
+        let b = edge == bEdge1 || edge == bEdge1.twin
+        return b
     }
     func isBottomEdge(edge:Edge) -> Bool
     {
-        return edge == bEdge3
+        let b = edge == bEdge3 || edge == bEdge3.twin
+        return b
     }
     
 }
