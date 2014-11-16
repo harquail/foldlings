@@ -105,6 +105,7 @@ class GameViewController: UIViewController {
             
             let node = plane.node()
             
+            node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             // move node to where the camera can see it
             node.position.x -= 3.9
             node.position.y -= 3.0
