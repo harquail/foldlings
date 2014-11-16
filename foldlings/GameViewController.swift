@@ -69,8 +69,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeSceneToTestHinges()
-//        makeScene()
+//        makeSceneToTestHinges()
+        makeScene()
         
     }
     
