@@ -11,7 +11,7 @@ import QuartzCore
 import SceneKit
 import Foundation
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
@@ -69,8 +69,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeSceneToTestHinges()
-//        makeScene()
+//        makeSceneToTestHinges()
+        makeScene()
         
     }
     
@@ -127,6 +127,9 @@ class GameViewController: UIViewController {
         
         
         
+
+        
+        
 //        let zerozero = CGPointMake(0, 0)
 //        let zeroone = CGPointMake(0, 1)
 //        let onezero = CGPointMake(1, 0)
@@ -147,20 +150,25 @@ class GameViewController: UIViewController {
         
         let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
 
-        let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, 2, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 2, 0))
+        let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, -1, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 1, 0))
         
         
+//        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
 
+        
         scene.physicsWorld.addBehavior(hinge)
         
+        
+        
         let nodes = [rootRect, friend]
-
         
         for node in nodes{
             scene.rootNode.addChildNode(node)
         }
         
-
+//        rootRect.rotation.
+        
+//        friend.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotate")
 
         
 //        scene.rootNode.addChildNode(node)
@@ -334,6 +342,8 @@ class GameViewController: UIViewController {
         anim.duration = 14;
         anim.cumulative = false;
         anim.repeatCount = .infinity;
+        
+        
         anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
         anim.keyTimes = [NSNumber(float: Float(0.0)),NSNumber(float: Float(1)),NSNumber(float: Float(1.4)),NSNumber(float: Float(2.4))]
         anim.removedOnCompletion = false;
