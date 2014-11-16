@@ -22,9 +22,7 @@ class GameViewController: UIViewController {
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
-    var hinges :[SCNPhysicsHingeJoint] = []
-    var planePath :[Plane] = []
-
+    var visited: [Plane] = []
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -158,8 +156,7 @@ class GameViewController: UIViewController {
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
-                    let top = planes.topPlane!
-                    getJoint(top, hill: false)
+
                 
                 }                
             }
@@ -168,6 +165,9 @@ class GameViewController: UIViewController {
             addPlaneToScene(plane,parent,move)
         }
         
+        let top = planes.topPlane!
+        visited.append(top)
+        getJoint(top, hill: false)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -295,11 +295,15 @@ class GameViewController: UIViewController {
     func getJoint(plane: Plane, hill: Bool)
     {   let bottom = planes.bottomPlane!
         // call make joint between curr plane and p using Bool
-        if plane == bottom{
+        
+        if plane == bottom || contains(visited, plane){
+            if plane == bottom {
             addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+            }
             return
         }
         let adj: [Plane] = planes.adjacency[plane]!
+        visited.append(plane)
         // loop through the adj starting with top plane
         for p in adj
         {
