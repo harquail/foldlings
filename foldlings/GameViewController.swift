@@ -259,8 +259,8 @@ class GameViewController: UIViewController {
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
-                    let top = planes.topPlane!
-                    getJoint(top, hill: false)
+//                    let top = planes.topPlane!
+//                    getJoint(top, hill: false)
                 
                 }                
             }
@@ -284,6 +284,15 @@ class GameViewController: UIViewController {
         
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
+        
+        
+        println("# planes")
+        println(planes.planes.count)
+        let plane1 = planes.planes[0]
+        let plane2 = planes.planes[1]
+        
+        addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
+        
         
         
         // back button
