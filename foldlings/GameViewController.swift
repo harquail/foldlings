@@ -133,6 +133,10 @@ class GameViewController: UIViewController {
         
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
+            
+            // remove node, so everything is nice and fresh 
+            plane.clearNode()
+            
             // if plane is second plane, don't add physics body
             var move: Bool = true
             if i > 0{
