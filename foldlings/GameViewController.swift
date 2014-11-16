@@ -114,12 +114,6 @@ class GameViewController: UIViewController {
             {
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
-            // move node to where the camera can see it
-            node.position.x -= 3.9
-            node.position.y += 7.0
-            node.position.z -= 4.5
-            node.scale = SCNVector3Make(0.01, -0.01, 0.01)
-            
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
