@@ -105,13 +105,22 @@ class GameViewController: UIViewController {
         func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
             
             
-            println("plane:")
-            println(plane.path)
             
             let node = plane.lazyNode()
+            println("plane:")
+            println(node.debugDescription)
 
-            node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-
+            
+            
+            
+            if move == true
+            {
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+            }
+            else
+            {
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+            }
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
@@ -265,24 +274,13 @@ class GameViewController: UIViewController {
     }
     
     func previewImage() -> UIImage{
-//        var sceneView = SCNView()
-//        sceneView.scene = scene
-////        let image = sceneView.snapshot()
-//        let image = self.view.snapshotViewAfterScreenUpdates(false)
-//
-//        println(image.description)
-        
-        
+        // TODO: clear other buttons here too
         self.backToSketchButton.alpha = 0
         
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
-        // [view.layer renderInContext:UIGraphicsGetCurrentContext()]; // <- same result...
-        
         view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
-//        [viewdrawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
         var img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-//        self.backToSketchButton.alpha = 0
 
         
         
@@ -296,11 +294,23 @@ class GameViewController: UIViewController {
     }
     func jointBetweenPlanes(plane:Plane,plane2:Plane){
         
-//        let edgeeWhereWeWantJoint:Edge = Edge(start: <#CGPoint#>, end: <#CGPoint#>, path: UIBezierPath()
+        let endPoint =  SCNVector3Make(Float(sharedEdge!.end.x), Float(sharedEdge!.end.y), Float(0.0))
         
-        //how to find location of edge start in world?  Probably transform/scale by the
         
-//        let joint = SCNPhysicsHingeJoint(bodyA: plane.lazyNode().physicsBody, axisA: , anchorA: SCNVector3, bodyB: plane2.lazyNode().physicsBody, axisB: <#SCNVector3#>, anchorB: <#SCNVector3#>))
+        // axis is the vector between them
+        let axisInWorld = SCNVector3Make(startPoint.x - endPoint.x, startPoint.y - endPoint.y, startPoint.z - endPoint.z)
+        let axisInA = planeA.lazyNode().convertPosition(axisInWorld, fromNode: scene.rootNode)
+        let axisInB = planeB.lazyNode().convertPosition(axisInWorld, fromNode: scene.rootNode)
+        
+        // anchor is the start point
+        let anchorInA = planeA.lazyNode().convertPosition(startPoint, fromNode: scene.rootNode)
+        let anchorInB = planeA.lazyNode().convertPosition(startPoint, fromNode: scene.rootNode)
+
+        // do the thing
+        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
+        
+        scene.physicsWorld.addBehavior(hinge)
+
     
     }
     
