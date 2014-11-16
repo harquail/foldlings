@@ -297,7 +297,7 @@ class Sketch : NSObject,NSCoding  {
                             }
                         }
                         
-                        self.planes.addPlane(plane)
+                        self.planes.addPlane(plane, sketch: self)
                     }
                     closest.crossed = false
                 }
@@ -331,11 +331,19 @@ class Sketch : NSObject,NSCoding  {
                     }
 
                     // compare for greater angle for closest and next
-                    let curr_ang = getAngle(current, closest)
-                    let next_ang = getAngle(current, next)
+                    var curr_ang = getAngle(current, closest)
+                    var next_ang = getAngle(current, next)
                     
-                    if  next_ang < curr_ang // if the current angle is bigger than the next edge
-                    {
+                    if next_ang == curr_ang {
+                        let curr_centroid = findCentroid(closest.path)
+                        let next_centroid = findCentroid(next.path)
+                        curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
+                        next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
+//                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
+                    }
+                    
+
+                    if  next_ang < curr_ang  { // if the current angle is bigger than the next edge
                         closest = next
                     }
                 }
@@ -345,6 +353,7 @@ class Sketch : NSObject,NSCoding  {
                     closest = current.twin
                     closest.crossed = true
                 }
+                
             }
         }
             
@@ -502,6 +511,17 @@ class Sketch : NSObject,NSCoding  {
         let newpoint = CGPointMake(x, y)
         return newpoint
         
+    }
+    
+    
+    
+    func isTopEdge(edge:Edge) -> Bool
+    {
+        return edge == bEdge1
+    }
+    func isBottomEdge(edge:Edge) -> Bool
+    {
+        return edge == bEdge3
     }
     
 }
