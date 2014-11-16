@@ -217,11 +217,11 @@ class GameViewController: UIViewController {
             
             if move == true
             {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             
             // add node to parent (parent's translation/rotation affect this one
@@ -424,7 +424,10 @@ class GameViewController: UIViewController {
     func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
         
         //find edge planes share
-        let sharedEdge = CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
+        let sharedEdge = planeA.topFold()
+        
+        
+//        CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
         
         // get the start and end points of the edge they share
         let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
