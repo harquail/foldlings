@@ -158,15 +158,13 @@ class GameViewController: UIViewController {
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
-                    let top = planes.topPlane!()
+                    let top = planes.topPlane!
                     getJoint(top, hill: false)
                 
                 }                
             }
             
-            
-
-           var move: Bool = true
+            var move: Bool = true
             addPlaneToScene(plane,parent,move)
         }
         
@@ -295,7 +293,7 @@ class GameViewController: UIViewController {
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
     func getJoint(plane: Plane, hill: Bool)
-    {   let bottom = planes.bottomPlane!()
+    {   let bottom = planes.bottomPlane!
         // call make joint between curr plane and p using Bool
         if plane == bottom{
             addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
