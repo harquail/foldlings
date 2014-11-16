@@ -422,8 +422,10 @@ class GameViewController: UIViewController {
         
         if plane == bottom || contains(visited, plane){
             if plane == bottom {
-            addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+            //addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+            println("bottom!")
             }
+            println(visited)
             return
         }
         let adj: [Plane] = planes.adjacency[plane]!
