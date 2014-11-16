@@ -115,7 +115,7 @@ class GameViewController: UIViewController {
             
             if move == true
             {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
@@ -159,10 +159,10 @@ class GameViewController: UIViewController {
             }
             
             // if plane is second plane, don't add physics body
-            var move: Bool = true
-            if i > 0{
-                move = false
-            }
+           var move: Bool = true
+//            if i > 0{
+//                move = false
+//            }
             addPlaneToScene(plane,parent,move)
         }
         
