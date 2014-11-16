@@ -347,53 +347,59 @@ class Sketch : NSObject,NSCoding  {
     
     
     /// build tabs as necessary from te planes
-    func buildTabs() {
+    func buildTabs() -> Bool {
+        var retB = false
         
         for tab in tabs {
             var bottomFold:Edge? = nil
             
             let plane1 = tab.plane
             let plane2 = tab.twin.plane
+            var plane:Plane?
             
-            var lowestY:CGFloat = 0.0
-            for plane in [plane1, plane2] {
-                if let p = plane {
-                    for edge in p.edges
-                    {
-                        if edge.kind == .Fold && edge.start.y > lowestY {
-                            bottomFold = edge
-                            lowestY = edge.start.y
-                        }
+            for p in [plane1, plane2] {
+                if p != nil {
+                    if !p!.hasEdge(bEdge1) {
+                        plane = p
+                        bottomFold = p!.bottomFold()
                     }
                 }
             }
             if bottomFold != nil {
-                let distance = abs(drivingEdge.start.y  - bottomFold!.start.y)
-                let newfoldstart = CGPointMake(tab.start.x, tab.start.y-distance)
-                let newfoldend = CGPointMake(tab.end.x, tab.end.y-distance)
-                //new fold
-                let newfold = UIBezierPath()
-                newfold.moveToPoint(newfoldstart)
-                newfold.addLineToPoint(newfoldend)
-                var newFoldEdge = addEdge(newfoldstart, end: newfoldend, path: newfold, kind: Edge.Kind.Fold)
-                //left edge
-                let newleft = UIBezierPath()
-                newleft.moveToPoint(tab.start)
-                newleft.addLineToPoint(newfoldstart)
-                var newLeftEdge = addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
-                //right edge
-                let newright = UIBezierPath()
-                newright.moveToPoint(tab.end)
-                newright.addLineToPoint(newfoldend)
-                var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
-            
-                // move tab from tabs to edges so we don't redraw this again
-                tabs = tabs - tab
-                tabs = tabs - tab.twin
+                
+                if bottomFold!.start.y == drivingEdge.start.y {
+                    println("removing fold in middle of planes")
+                    removeEdge(bottomFold!)
+                    retB = true
+                } else {
+                    let distance = abs(drivingEdge.start.y  - bottomFold!.start.y)
+                    let newfoldstart = CGPointMake(tab.start.x, tab.start.y-distance)
+                    let newfoldend = CGPointMake(tab.end.x, tab.end.y-distance)
+                    //new fold
+                    let newfold = UIBezierPath()
+                    newfold.moveToPoint(newfoldstart)
+                    newfold.addLineToPoint(newfoldend)
+                    var newFoldEdge = addEdge(newfoldstart, end: newfoldend, path: newfold, kind: Edge.Kind.Fold)
+                    //left edge
+                    let newleft = UIBezierPath()
+                    newleft.moveToPoint(tab.start)
+                    newleft.addLineToPoint(newfoldstart)
+                    var newLeftEdge = addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
+                    //right edge
+                    let newright = UIBezierPath()
+                    newright.moveToPoint(tab.end)
+                    newright.addLineToPoint(newfoldend)
+                    var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
+                
+                    // move tab from tabs to edges so we don't redraw this again
+                    tabs = tabs - tab
+                    tabs = tabs - tab.twin
+                    retB = true
+                }
             }
             
         }
-        
+        return retB
         
     }
 
