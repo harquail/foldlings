@@ -36,7 +36,10 @@ class Plane: Printable, Hashable
     var orientation = Orientation.Horizontal
     var edges : [Edge]!
     var path = UIBezierPath()
-    var node:SCNNode? = nil
+    private var node:SCNNode? = nil
+    let transformToCamera = SCNVector3Make(-3.9, 7.0, -4.5)
+    let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
+
     
     var description: String {
         return "\n".join(edges.map({ "\($0)" }))
@@ -94,13 +97,14 @@ class Plane: Printable, Hashable
             node!.geometry = shape
             node!.geometry?.firstMaterial = material
             
-            node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!, options: nil))
-            // move node to where the camera can see it
-            node!.position.x += -3.9
-            node!.position.y += 7.0
-            node!.position.z += -4.5
-            node!.scale = SCNVector3Make(0.01, -0.01, 0.01)
+            node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!
+                , options: nil))
             
+            
+            
+            // move node to where the camera can see it
+            node!.position = transformToCamera
+            node!.scale = scaleToCamera
         }
         return node!
     }

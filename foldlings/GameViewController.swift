@@ -142,11 +142,14 @@ class GameViewController: UIViewController {
                     
                 if parentPlane != nil{
                  
+                    let n = plane.lazyNode()
+                    
+                    n.transform = SCNMatrix4Identity
+                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
+                    
                     parent = parentPlane!.lazyNode()
                 
-                }
-                //= .lazyNode()
-                
+                }                
             }
             
             // if plane is second plane, don't add physics body
