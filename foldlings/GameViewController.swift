@@ -272,25 +272,13 @@ class GameViewController: UIViewController {
     }
     
     func previewImage() -> UIImage{
-//        var sceneView = SCNView()
-//        sceneView.scene = scene
-////        let image = sceneView.snapshot()
-//        let image = self.view.snapshotViewAfterScreenUpdates(false)
-//
-//        println(image.description)
-        
-        
         // TODO: clear other buttons here too
         self.backToSketchButton.alpha = 0
         
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
-        // [view.layer renderInContext:UIGraphicsGetCurrentContext()]; // <- same result...
-        
         view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
-//        [viewdrawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
         var img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-//        self.backToSketchButton.alpha = 0
 
         
         
@@ -303,13 +291,12 @@ class GameViewController: UIViewController {
     func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
         
         //find edge planes share
-        let edgeWhereWeWantJoint:Edge = Edge(start: CGPointZero, end: CGPointZero, path: UIBezierPath())
-        
+        let sharedEdge = CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
         
         // get the start and end points of the edge they share
-        let startPoint = SCNVector3Make(Float(edgeWhereWeWantJoint.start.x), Float(edgeWhereWeWantJoint.start.y), Float(0.0))
+        let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
         
-        let endPoint =  SCNVector3Make(Float(edgeWhereWeWantJoint.end.x), Float(edgeWhereWeWantJoint.end.y), Float(0.0))
+        let endPoint =  SCNVector3Make(Float(sharedEdge!.end.x), Float(sharedEdge!.end.y), Float(0.0))
         
         
         // axis is the vector between them
