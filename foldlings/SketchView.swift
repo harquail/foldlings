@@ -182,9 +182,14 @@ class SketchView: UIView {
                     }
                     var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
                     if cut {
-                        // if there are problems with circles might be ehre
-                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        // this checks for cutting off the tops above tabs
+                        if !(sketchMode == .Tab && endColEdge.start == startPoint) {
+                            self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        }
+                        // this checks for cutting off the tops above tabs
+                        if !(sketchMode == .Tab && endColEdge.end == startPoint) {
+                            self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        }
                     } else {
                         self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
                         self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
