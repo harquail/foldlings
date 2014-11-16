@@ -302,6 +302,10 @@ class GameViewController: UIViewController {
     
     func jointBetweenPlanes(plane:Plane,plane2:Plane){
         
+//        let edgeeWhereWeWantJoint:Edge = Edge(start: <#CGPoint#>, end: <#CGPoint#>, path: UIBezierPath()
+        
+        //how to find location of edge start in world?  Probably transform/scale by the
+        
 //        let joint = SCNPhysicsHingeJoint(bodyA: plane.lazyNode().physicsBody, axisA: , anchorA: SCNVector3, bodyB: plane2.lazyNode().physicsBody, axisB: <#SCNVector3#>, anchorB: <#SCNVector3#>))
     
     }

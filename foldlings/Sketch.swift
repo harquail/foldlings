@@ -30,6 +30,7 @@ class Sketch : NSObject,NSCoding  {
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
     var bEdge4point5: Edge!  //left2
+    var borderEdges: [Edge] = []
 
     var name:String
     var planes:CollectionOfPlanes = CollectionOfPlanes()
@@ -244,6 +245,8 @@ class Sketch : NSObject,NSCoding  {
         path4point5.addLineToPoint(b4)
         bEdge4point5 = addEdge(midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)//left2
         
+        borderEdges = [bEdge1, bEdge1.twin, bEdge2, bEdge2.twin, bEdge2point5, bEdge2point5.twin,
+            bEdge3, bEdge3.twin, bEdge4, bEdge4.twin, bEdge4point5, bEdge4point5.twin]
         // note width here has to subtract the border
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
@@ -428,13 +431,17 @@ class Sketch : NSObject,NSCoding  {
     }
     
     /// returns the edge and nearest hitpoint to point given
-    func edgeHitTest(point:CGPoint) -> (Edge, CGPoint)?
+    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
     {
-        var r:(Edge,CGPoint)? = nil
+        var r:(Edge?,CGPoint)? = nil
         for edge in self.edges
         {
             if let np = edge.hitTest(point) {
-                r = (edge, np)
+                if !borderEdges.contains(edge) && !borderEdges.contains(edge.twin){
+                    r = (edge, np)
+                } else {
+                    r = (nil, point)
+                }
             }
         }
         
