@@ -80,13 +80,13 @@ class Plane: Printable, Hashable
             
             // make the node
             node = SCNNode()
-            var shape = SCNShape(path: path, extrusionDepth: 0)
+            var shape = SCNShape(path: path, extrusionDepth: 1)
             
             let material = SCNMaterial()
             
             // holes are black, and extruded to prevent z-fighting
             if(self.kind == .Hole){
-                shape = SCNShape(path: path, extrusionDepth: 1)
+                shape = SCNShape(path: path, extrusionDepth: 2)
                 material.diffuse.contents = UIColor.whiteColor()
             }
             else{
