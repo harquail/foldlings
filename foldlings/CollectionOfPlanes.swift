@@ -51,8 +51,12 @@ class CollectionOfPlanes: Printable, Hashable {
                 }
                 
                 for edge in plane.edges {
-                    if sketch.isTopEdge(edge) { self.topPlane = plane }
-                    else if sketch.isBottomEdge(edge) { self.bottomPlane = plane }
+                    if sketch.isTopEdge(edge) {
+                        self.topPlane = plane
+                    }
+                    else if sketch.isBottomEdge(edge) {
+                        self.bottomPlane = plane
+                    }
                     
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold {
@@ -67,6 +71,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 }
             }
         }
+        
     }
     
     func removePlane(plane:Plane)
