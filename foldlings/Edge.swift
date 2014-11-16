@@ -11,6 +11,10 @@ func == (lhs: Edge, rhs: Edge) -> Bool {
     return lhs === rhs
 }
 
+func ~= (lhs: Edge, rhs: Edge) -> Bool {
+    return lhs == rhs || lhs == rhs.twin
+}
+
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue), \(path)"
