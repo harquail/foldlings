@@ -289,9 +289,11 @@ class GameViewController: UIViewController {
         return img
     }
     
-    func getJoint(){
-
-}
+    func getJoint(plane: Plane)
+    {
+        
+        
+    }
     func jointBetweenPlanes(plane:Plane,plane2:Plane){
         
 //        let edgeeWhereWeWantJoint:Edge = Edge(start: <#CGPoint#>, end: <#CGPoint#>, path: UIBezierPath()
