@@ -288,9 +288,9 @@ class Sketch : NSObject,NSCoding  {
                         for e in p
                         {
                             e.plane = plane
-                            if e.kind == .Fold || e.kind == .Tab{
+                            if e.kind == .Fold || e.kind == .Tab {
                                 plane.kind = .Plane
-                                if (e.kind == .Fold){
+                                if (e.kind == .Fold) {
                                     plane.orientation = .Vertical
                                 }
                             }

@@ -36,6 +36,11 @@ class SketchView: UIView {
     var endEdgeCollision:Edge?
     var gameView = GameViewController()
     
+    let redrawPriority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+    let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
+    var redrawing:Bool = false
+
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -419,48 +424,46 @@ class SketchView: UIView {
     
     func forceRedraw()
     {
-        
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        let lockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
-
-        dispatch_async(dispatch_get_global_queue(priority, 0), {
-            dispatch_sync(lockQueue) {
-                self.sketch.getPlanes()//evaluate into planes
-                if self.sketch.buildTabs() {
-                    // if buildtabs returns that it did any changes rerun buildplanes again
-                    self.sketch.getPlanes()
-                    if self.sketch.buildTabs() { self.sketch.getPlanes() }
+        if !self.redrawing {
+            dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
+                self.redrawing = true
+                dispatch_sync(self.redrawLockQueue) {
+                    self.sketch.getPlanes() //evaluate into planes
+                    if self.sketch.buildTabs() {
+                        // if buildtabs returns that it did any changes rerun buildplanes again
+                        self.sketch.getPlanes()
+                        if self.sketch.buildTabs() { self.sketch.getPlanes() }
+                    }
                 }
-            }
 
-            dispatch_async(dispatch_get_main_queue(), {
-                dispatch_sync(lockQueue) {
-                    self.incrementalImage = nil
-                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                    self.setNeedsDisplay() //draw to clear the deleted path
-                }
+                dispatch_async(dispatch_get_main_queue(), {
+                    dispatch_sync(self.redrawLockQueue) {
+                        self.incrementalImage = nil
+                        self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                        self.setNeedsDisplay() //draw to clear the deleted path
+                        self.redrawing = false
+                    }
+                })
             })
-        })
-        
-        dispatch_sync(lockQueue) {
-            self.incrementalImage = nil
-            self.endPaths.removeAll(keepCapacity: false)
-            self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-            self.setNeedsDisplay() //draw to clear the deleted path
+            
+            dispatch_sync(self.redrawLockQueue) {
+                self.incrementalImage = nil
+                self.endPaths.removeAll(keepCapacity: false)
+                self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                self.setNeedsDisplay() //draw to clear the deleted path
+            }
         }
 
-    //        setGameView()
     }
     
     
     func setGameView(){
-    
-    gameView = GameViewController()
-    gameView.setButtonBG(previewImage())
-    gameView.laserImage = bitmap(grayscale: true)
-    gameView.planes = sketch.planes
-    gameView.makeScene()
-    previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+        gameView = GameViewController()
+        gameView.setButtonBG(previewImage())
+        gameView.laserImage = bitmap(grayscale: true)
+        gameView.planes = sketch.planes
+        gameView.makeScene()
+        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
     }
     
     func simpleSketch()->Sketch
@@ -578,35 +581,8 @@ class SketchView: UIView {
     
     
     func previewImage() -> UIImage {
-
         return incrementalImage
-        
-//        UIGraphicsBeginImageContextWithOptions(sketch.drawingBounds.size, false, 0);
-//        
-//        //        let croppedImage = cropImage(incrementalImage,rect: sketch.drawingBounds)
-//        incrementalImage.drawInRect( self.bounds, blendMode: kCGBlendModeNormal, alpha: 1)
-//        //        self.drawViewHierarchyInRect(sketch.drawingBounds, afterScreenUpdates:true)
-//        let copied = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
-//        return copied;
-        
     }
-    
-    
-    //
-    //    func cropImage(image:UIImage, rect:CGRect) -> UIImage{
-    //        if (image.scale > 1.0) {
-    //            let rect = CGRectMake(rect.origin.x * image.scale,
-    //                rect.origin.y * image.scale,
-    //                rect.size.width * image.scale,
-    //                rect.size.height * image.scale);
-    //        }
-    //
-    //        let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
-    //        let result = UIImage(CGImage: imageRef,)!
-    //        result.scale = image.scale
-    //        return result
-    //    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
