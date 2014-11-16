@@ -109,18 +109,9 @@ class GameViewController: UIViewController {
             println(plane.path)
             
             let node = plane.lazyNode()
-            
-            
-            
-            
-            if move == true
-            {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            }
-            else
-            {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            }
+
+            node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
@@ -131,7 +122,7 @@ class GameViewController: UIViewController {
             return node;
         }
         
-        
+        // main loop for defining plane things
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
             
@@ -160,9 +151,6 @@ class GameViewController: UIViewController {
             
             // if plane is second plane, don't add physics body
            var move: Bool = true
-//            if i > 0{
-//                move = false
-//            }
             addPlaneToScene(plane,parent,move)
         }
         
