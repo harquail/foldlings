@@ -88,7 +88,7 @@ class CollectionOfPlanes: Printable, Hashable {
     }
     
     /// return the shared edge between two planes assuming adjacency
-    func sharedEdgeBetween(#plane1:Plane, plane2:Plane) -> Edge? {
+    class func sharedEdgeBetween(#plane1:Plane, plane2:Plane) -> Edge? {
         var intersection = plane1.edges.intersection(plane2.edges)
         return intersection.filter( { $0.kind == .Fold || $0.kind == .Tab} ).first
     }
