@@ -104,16 +104,9 @@ class GameViewController: UIViewController {
         /// subfunction; adds a plane to the scene with a given parent
         func addPlaneToScene(plane:Plane, parent:SCNNode) -> SCNNode{
             
-            let node = plane.node()
+            let node = plane.lazyNode()
             
-            node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            // move node to where the camera can see it
-            node.position.x -= 3.9
-            node.position.y += 7.0
-            node.position.z -= 4.5
-            node.scale = SCNVector3Make(0.01, -0.01, 0.01)
             
-
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
@@ -127,6 +120,10 @@ class GameViewController: UIViewController {
         
         // add each plane to the scene
         for plane in planes.planes {
+            
+            // remove node, so everything is nice and fresh 
+            plane.clearNode()
+            
             // if plane is second plane, don't add physics body
             addPlaneToScene(plane,scene.rootNode)
         }
@@ -263,6 +260,12 @@ class GameViewController: UIViewController {
         return img
     }
     
+    
+    func jointBetweenPlanes(plane:Plane,plane2:Plane){
+        
+//        let joint = SCNPhysicsHingeJoint(bodyA: plane.lazyNode().physicsBody, axisA: plane.lazyNode().physicsBody, anchorA: <#SCNVector3#>, bodyB: <#SCNPhysicsBody#>, axisB: <#SCNVector3#>, anchorB: <#SCNVector3#>))
+    
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "backtoSketchSegue") {

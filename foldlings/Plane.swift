@@ -36,6 +36,8 @@ class Plane: Printable, Hashable
     var orientation = Orientation.Horizontal
     var edges : [Edge]!
     var path = UIBezierPath()
+    var node:SCNNode? = nil
+    
     var description: String {
         return "\n".join(edges.map({ "\($0)" }))
     }
@@ -45,7 +47,7 @@ class Plane: Printable, Hashable
         }
     }
     
-
+    
     
     init()
     {
@@ -62,32 +64,45 @@ class Plane: Printable, Hashable
         
         self.sanitizePath()
     }
-
+    
+    func clearNode(){
+        node = nil
+    }
     
     /// makes an SCNNode by extruding the UIBezierPath
-    func node() -> SCNNode{
+    func lazyNode() -> SCNNode{
         
-        // make the node
-        let node = SCNNode()
-        var shape = SCNShape(path: path, extrusionDepth: 0)
-        
-        let material = SCNMaterial()
-        
-        // holes are black, and extruded to prevent z-fighting
-        if(self.kind == .Hole){
-        shape = SCNShape(path: path, extrusionDepth: 1)
-        material.diffuse.contents = UIColor.blackColor()
+        if node == nil
+        {
+            // make the node
+            node = SCNNode()
+            var shape = SCNShape(path: path, extrusionDepth: 0)
+            
+            let material = SCNMaterial()
+            
+            // holes are black, and extruded to prevent z-fighting
+            if(self.kind == .Hole){
+                shape = SCNShape(path: path, extrusionDepth: 1)
+                material.diffuse.contents = UIColor.blackColor()
+            }
+            else{
+                // planes are white (for now, random color)
+                material.diffuse.contents = self.color
+            }
+            // planes are visible from both sides
+            material.doubleSided = true
+            node!.geometry = shape
+            node!.geometry?.firstMaterial = material
+            
+            node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!, options: nil))
+            // move node to where the camera can see it
+            node!.position.x -= 3.9
+            node!.position.y += 7.0
+            node!.position.z -= 4.5
+            node!.scale = SCNVector3Make(0.01, -0.01, 0.01)
+
         }
-        else{
-        // planes are white (for now, random color)
-            material.diffuse.contents = self.color
-        }
-        // planes are visible from both sides
-        material.doubleSided = true
-        node.geometry = shape
-        node.geometry?.firstMaterial = material
-        
-        return node
+        return node!
     }
     
     /// the fold with minimum y height in a plane
@@ -97,19 +112,19 @@ class Plane: Printable, Hashable
         var minEdge:Edge = Edge(start:  maxPoint, end: maxPoint, path: UIBezierPath())
         
         for edge in edges{
-        
+            
             if(edge.kind ==  .Fold){
                 
                 if(edge.start.y < minEdge.start.y){
-                
-                minEdge = edge
+                    
+                    minEdge = edge
                     
                 }
             }
         }
         
         return minEdge
-    
+        
     }
     
     
@@ -138,7 +153,7 @@ class Plane: Printable, Hashable
     /// close the path and remove MoveToPoint instructions
     func sanitizePath(){
         path = sanitizedPath(path)
-
+        
     }
     
     /// closes and combines paths into one
@@ -146,7 +161,7 @@ class Plane: Printable, Hashable
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
         
         let elements = path.getPathElements()
-
+        
         let els = elements as [CGPathElementObj]
         var outPath = UIBezierPath()
         
