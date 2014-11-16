@@ -69,9 +69,110 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        makeSceneToTestHinges()
         makeScene()
         
     }
+    
+    func makeSceneToTestHinges(){
+    
+        // create and add a camera to the scene
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        scene.rootNode.addChildNode(cameraNode)
+        
+        // place the camera
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        
+        // create and add a light to the scene
+        let lightNode = SCNNode()
+        lightNode.light = SCNLight()
+        lightNode.light!.type = SCNLightTypeOmni
+        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+        scene.rootNode.addChildNode(lightNode)
+        
+        // create and add an ambient light to the scene
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light!.type = SCNLightTypeAmbient
+        ambientLightNode.light!.color = UIColor.darkGrayColor()
+        scene.rootNode.addChildNode(ambientLightNode)
+        
+   
+        
+        
+        //makes a rectangular node for testing
+        func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
+            
+            let node = SCNNode()
+            let shape = SCNShape(path: UIBezierPath(rect: CGRect(origin: origin, size: size)), extrusionDepth: 0.0)
+            
+            let material = SCNMaterial()
+            material.diffuse.contents = color
+            material.doubleSided = true
+            
+            node.geometry = shape
+            node.geometry?.firstMaterial = material
+            
+            node.position = SCNVector3Make(node.position.x, node.position.y, node.position.z + zPosition)
+            
+            
+            let dynamism = dynamic ? SCNPhysicsBodyType.Dynamic: SCNPhysicsBodyType.Kinematic
+            
+            node.physicsBody = SCNPhysicsBody(type: dynamism, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+        
+            return node
+        }
+        
+        
+//        let zerozero = CGPointMake(0, 0)
+//        let zeroone = CGPointMake(0, 1)
+//        let onezero = CGPointMake(1, 0)
+//        let oneone = CGPointMake(1, 1)
+//        
+//        let topEdge = Edge.straightEdgeBetween(zerozero, end: zeroone, kind: .Cut)
+//        let rightEdge = Edge.straightEdgeBetween(zeroone, end: onezero, kind: .Cut)
+//        let bottomEdge = Edge.straightEdgeBetween(onezero, end: oneone, kind: .Cut)
+//        let leftEdge = Edge.straightEdgeBetween(oneone, end: zerozero, kind: .Cut)
+//        let plane = Plane(edges: [topEdge,rightEdge,bottomEdge,leftEdge])
+        
+        
+
+        
+        let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
+        
+        let friend = rectangularNode(color: UIColor.blueColor(), CGPointMake(0.0,1), 0, CGSizeMake(5, 1), dynamic:true)
+        
+        let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
+
+        let nodes = [rootRect, friend, friendofAFriend]
+
+        
+        for node in nodes{
+            scene.rootNode.addChildNode(node)
+        }
+        
+
+
+        
+//        scene.rootNode.addChildNode(node)
+        
+        // retrieve the SCNView
+        let scnView = self.view as SCNView
+        
+        // set the scene to the view
+        scnView.scene = scene
+        
+        // allows the user to manipulate the camera
+        scnView.allowsCameraControl = true
+        
+        // show statistics such as fps and timing information
+        scnView.showsStatistics = true
+        
+        // configure the view
+        scnView.backgroundColor = UIColor.blackColor()
+    }
+
     
     func makeScene(){
     
