@@ -104,7 +104,13 @@ class GameViewController: UIViewController {
         /// subfunction; adds a plane to the scene with a given parent
         func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
             
+            
+            println("plane:")
+            println(plane.path)
+            
             let node = plane.lazyNode()
+            
+            
             
             
             if move == true

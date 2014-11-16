@@ -77,6 +77,7 @@ class Plane: Printable, Hashable
         
         if node == nil
         {
+            
             // make the node
             node = SCNNode()
             var shape = SCNShape(path: path, extrusionDepth: 0)
