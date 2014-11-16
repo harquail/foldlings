@@ -102,10 +102,23 @@ class GameViewController: UIViewController {
         
         
         /// subfunction; adds a plane to the scene with a given parent
-        func addPlaneToScene(plane:Plane, parent:SCNNode) -> SCNNode{
+        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
             
             let node = plane.lazyNode()
             
+            if move == true
+            {
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+            }
+            else
+            {
+                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+            }
+            // move node to where the camera can see it
+            node.position.x -= 3.9
+            node.position.y += 7.0
+            node.position.z -= 4.5
+            node.scale = SCNVector3Make(0.01, -0.01, 0.01)
             
             
             // add node to parent (parent's translation/rotation affect this one
@@ -119,14 +132,19 @@ class GameViewController: UIViewController {
         
         
         // add each plane to the scene
-        for plane in planes.planes {
+        for (i, plane) in enumerate(planes.planes) {
             
             // remove node, so everything is nice and fresh
             plane.clearNode()
             
             // if plane is second plane, don't add physics body
-            addPlaneToScene(plane,scene.rootNode)
+            var move: Bool = true
+            if i > 0{
+                move = false
+            }
+            addPlaneToScene(plane,scene.rootNode,move)
         }
+        
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
