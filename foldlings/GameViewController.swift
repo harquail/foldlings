@@ -107,8 +107,8 @@ class GameViewController: UIViewController {
             
             
             let node = plane.lazyNode()
-            println("plane:")
-            println(node.debugDescription)
+//            println("plane:")
+//            println(node.debugDescription)
 
             
             
@@ -126,6 +126,9 @@ class GameViewController: UIViewController {
             parent.addChildNode(node)
 
             node.addAnimation(fadeIn(), forKey: "fade in")
+            
+            showPlaneCorners(plane, node: node)
+
             
             //println(node)
             return node;
@@ -158,8 +161,7 @@ class GameViewController: UIViewController {
                 }                
             }
             
-            // if plane is second plane, don't add physics body
-           var move: Bool = true
+            var move: Bool = true
             addPlaneToScene(plane,parent,move)
         }
         
@@ -301,19 +303,39 @@ class GameViewController: UIViewController {
         
         // axis is the vector between them
         let axisInWorld = SCNVector3Make(startPoint.x - endPoint.x, startPoint.y - endPoint.y, startPoint.z - endPoint.z)
-        let axisInA = planeA.lazyNode().convertPosition(axisInWorld, fromNode: scene.rootNode)
-        let axisInB = planeB.lazyNode().convertPosition(axisInWorld, fromNode: scene.rootNode)
+        let axisInA = planeA.lazyNode().convertPosition(axisInWorld, toNode: scene.rootNode)
+        let axisInB = planeB.lazyNode().convertPosition(axisInWorld, toNode: scene.rootNode)
         
         // anchor is the start point
-        let anchorInA = planeA.lazyNode().convertPosition(startPoint, fromNode: scene.rootNode)
-        let anchorInB = planeA.lazyNode().convertPosition(startPoint, fromNode: scene.rootNode)
+        let anchorInA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+        let anchorInB = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
 
         // do the thing
         let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
         
         scene.physicsWorld.addBehavior(hinge)
 
+    }
     
+    /// function to show plane corners and shows how to get the anchor points
+    func showPlaneCorners(plane:Plane, node:SCNNode) {
+        
+        for edge in plane.edges {
+            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
+            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
+            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
+            makeSphere(atPoint: anchorStart)
+            makeSphere(atPoint: anchorEnd)
+        }
+    }
+    
+    ///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3) {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+        sphereNode.position = atPoint
+        scene.rootNode.addChildNode(sphereNode)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
