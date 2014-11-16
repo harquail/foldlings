@@ -150,6 +150,8 @@ class GameViewController: UIViewController {
             }
             
             // if plane is second plane, don't add physics body
+            // walk tree, save path, record fold and hill or valley, place hinge into visited
+
            var move: Bool = true
             addPlaneToScene(plane,parent,move)
         }
@@ -287,7 +289,9 @@ class GameViewController: UIViewController {
         return img
     }
     
-    
+    func getJoint(){
+
+}
     func jointBetweenPlanes(plane:Plane,plane2:Plane){
         
 //        let edgeeWhereWeWantJoint:Edge = Edge(start: <#CGPoint#>, end: <#CGPoint#>, path: UIBezierPath()
