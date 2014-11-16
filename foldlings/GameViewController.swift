@@ -158,8 +158,7 @@ class GameViewController: UIViewController {
                 }                
             }
             
-            // if plane is second plane, don't add physics body
-            // walk tree, save path, record fold and hill or valley, place hinge into visited
+            
 
            var move: Bool = true
             addPlaneToScene(plane,parent,move)
@@ -281,18 +280,30 @@ class GameViewController: UIViewController {
         view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
         var img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-
+        
         
         
         return img
     }
     
+    // if plane is second plane, don't add physics body
+    // walk tree, save path, record fold and hill or valley, place hinge into visited
     func getJoint(plane: Plane)
     {
-        
+        var visited : [Plane] = []
+        var adj = planes 
         
     }
-    func jointBetweenPlanes(plane:Plane,plane2:Plane){
+    
+    //https://developer.apple.com/library/mac/documentation/SceneKit/Reference/SCNPhysicsHingeJoint_Class/
+    /// adds a physics joint between two planes that share an edge
+    func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
+        
+        //find edge planes share
+        let sharedEdge = CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
+        
+        // get the start and end points of the edge they share
+        let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
         
         let endPoint =  SCNVector3Make(Float(sharedEdge!.end.x), Float(sharedEdge!.end.y), Float(0.0))
         
