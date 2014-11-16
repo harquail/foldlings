@@ -112,29 +112,22 @@ class GameViewController: UIViewController {
             node.position.z -= 4.5
             node.scale = SCNVector3Make(0.01, -0.01, 0.01)
             
-            //            // TODO: fix
-            //            // change node's pivot based on whether it is .Horizontal
-            //            changePivot(node)
-            //            // set rotation to start angle
-            //             node.rotation = SCNVector4(x: 1, y: 0, z: 0, w:ninetyDegrees)
-            // animate node rotating between two angles
-            //TODO: Make hinges not pivots 
-            //node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "spin around")
+
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
+
             node.addAnimation(fadeIn(), forKey: "fade in")
             
-            println(node)
+            //println(node)
             return node;
         }
         
         
         // add each plane to the scene
         for plane in planes.planes {
-            
+            // if plane is second plane, don't add physics body
             addPlaneToScene(plane,scene.rootNode)
-            
         }
         
         // retrieve the SCNView
