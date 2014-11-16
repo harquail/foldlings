@@ -131,7 +131,7 @@ class GameViewController: UIViewController {
             return node;
         }
         
-        
+        // main loop for defining plane things
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
             
@@ -160,9 +160,6 @@ class GameViewController: UIViewController {
             
             // if plane is second plane, don't add physics body
            var move: Bool = true
-//            if i > 0{
-//                move = false
-//            }
             addPlaneToScene(plane,parent,move)
         }
         

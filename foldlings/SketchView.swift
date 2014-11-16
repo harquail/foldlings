@@ -278,17 +278,14 @@ class SketchView: UIView {
     
     
     /// erase hitpoint edge
-    func erase(touchPoint: CGPoint)
-    {//TODO: refactor this to sketch
-        for (i,e) in enumerate(sketch.edges)
+    func erase(touchPoint: CGPoint) {
+        if var (edge, np) = sketch.edgeHitTest(touchPoint)
         {
-            if  e.hitTest(touchPoint) != nil
-            {
-                sketch.removeEdge(e) //remove
+            if edge != nil && !edge!.isMaster {
+                sketch.removeEdge(edge!)
                 forceRedraw()
             }
         }
-        
     }
     
     ///makes bezier by stringing segments together
@@ -370,8 +367,6 @@ class SketchView: UIView {
             // check that we're not closing a path
             //  needs to make sure that the path bounds are greater than minlinelength
             if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
-                //lets close the cut path and make a hole
-                //TODO: this needs revisiting once planes is working
                 tempEnd = tempStart
                 closed = true
             }

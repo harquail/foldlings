@@ -160,20 +160,18 @@ class Sketch : NSObject,NSCoding  {
     func removeEdge(edge:Edge)
     {
         dispatch_sync(edgeAdjacencylockQueue) {
-            if !edge.isMaster {
-                var twin = edge.twin
-                self.edges = self.edges - edge
-                self.edges = self.edges - twin
-                self.folds = self.folds - edge
-                self.tabs  = self.tabs - edge
-                if self.adjacency[edge.start] != nil {
-                    self.adjacency[edge.start] = self.adjacency[edge.start]!.filter({ $0 != edge })
-                    if self.adjacency[edge.start]!.count == 0 { self.adjacency[edge.start] = nil }
-                }
-                if self.adjacency[twin.start] != nil {
-                    self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
-                    if self.adjacency[twin.start]!.count == 0 { self.adjacency[twin.start] = nil }
-                }
+            var twin = edge.twin
+            self.edges = self.edges - edge
+            self.edges = self.edges - twin
+            self.folds = self.folds - edge
+            self.tabs  = self.tabs - edge
+            if self.adjacency[edge.start] != nil {
+                self.adjacency[edge.start] = self.adjacency[edge.start]!.filter({ $0 != edge })
+                if self.adjacency[edge.start]!.count == 0 { self.adjacency[edge.start] = nil }
+            }
+            if self.adjacency[twin.start] != nil {
+                self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
+                if self.adjacency[twin.start]!.count == 0 { self.adjacency[twin.start] = nil }
             }
         }
     }
@@ -200,7 +198,7 @@ class Sketch : NSObject,NSCoding  {
         path.setLineDash([10,5], count: 2, phase:0)
         path.lineWidth = kLineWidth
         
-        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:false)
+        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
         drivingEdge.fold = .Valley
         
         //border paths
