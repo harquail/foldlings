@@ -31,11 +31,13 @@ class CollectionOfPlanes: Printable, Hashable {
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
     
     var count:Int { get { return planes.count } }
+    var topPlane:Plane? = nil
+    var bottomPlane:Plane? = nil
     
     
     /// adds a plane into the graph
     /// uses the fold type edges to determine adjacency
-    func addPlane(plane:Plane)
+    func addPlane(plane:Plane, sketch:Sketch)
     {
         dispatch_sync(planeAdjacencylockQueue) {
             if isCounterClockwise(plane.path) {
@@ -49,6 +51,9 @@ class CollectionOfPlanes: Printable, Hashable {
                 }
                 
                 for edge in plane.edges {
+                    if sketch.isTopEdge(edge) { self.topPlane = plane }
+                    else if sketch.isBottomEdge(edge) { self.bottomPlane = plane }
+                    
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold {
                         for p in self.planes {
