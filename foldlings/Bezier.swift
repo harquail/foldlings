@@ -11,7 +11,20 @@ import UIKit
 //how fine to make the subdivisions -- is divided by the length of the line
 let kBezierIncrements:CGFloat = 0.5
 
-
+func findCentroid(path:UIBezierPath) -> CGPoint
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements, increments:25)
+    var npoint:CGPoint = CGPointZero
+    
+    for point in points {
+        npoint = CGPointAdd(npoint, point)
+    }
+    npoint = CGPointMake(npoint.x / CGFloat(points.count), npoint.y / CGFloat(points.count))
+    
+    return npoint
+    
+}
 
 func isCounterClockwise(path:UIBezierPath) -> Bool
 {
