@@ -11,7 +11,7 @@ import QuartzCore
 import SceneKit
 import Foundation
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
