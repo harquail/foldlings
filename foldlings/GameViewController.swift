@@ -286,6 +286,15 @@ class GameViewController: UIViewController {
         scnView.backgroundColor = UIColor.blackColor()
         
         
+        println("# planes")
+        println(planes.planes.count)
+        let plane1 = planes.planes[0]
+        let plane2 = planes.planes[1]
+        
+        addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
+        
+        
+        
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
