@@ -182,15 +182,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     {
         let bottom = planes.bottomPlane!
         
-        println("recurseCount: \(recurseCount)")
-        // call make joint between curr plane and p using Bool
-        
         if plane == bottom || contains(visited, plane){
             if plane == bottom {
-                println("bottom!")
                 return nil
             } else {
-                println("already been here")
                 return nil
             }
         }
@@ -267,37 +262,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
         
         return anim
-        
-    }
-    
-    
-    /// moves the pivot of a node from the top edge to the bottom edge
-    /// but it doesn't seem to work
-    func changePivot(node:SCNNode){
-        
-        // take the bounding box
-        var minVec = UnsafeMutablePointer<SCNVector3>.alloc(0)
-        var maxVec = UnsafeMutablePointer<SCNVector3>.alloc(1)
-        if node.getBoundingBoxMin(minVec, max: maxVec) {
-            
-            //and get the length of each direction
-            let distance = SCNVector3(
-                x: maxVec.memory.x - minVec.memory.x,
-                y: maxVec.memory.y - minVec.memory.y,
-                z: maxVec.memory.z - minVec.memory.z)
-            
-//            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-//            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
-//            http://ronnqvi.st/3d-with-scenekit/
-            
-            // LIESSSSS
-            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-            
-            // we have to dealloc the unsafe pointer
-            // I hate it
-            minVec.dealloc(0)
-            maxVec.dealloc(1)
-        }
         
     }
     

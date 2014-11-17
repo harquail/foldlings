@@ -2,7 +2,6 @@
 //  AboutViewController.swift
 //  foldlings
 //
-//  Created by Tim Tregubov on 10/18/14.
 //
 
 import UIKit
