@@ -450,13 +450,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             makeSphere(atPoint: anchorEnd)
         }
     }
+
+    func parentSphere(plane:Plane) -> SCNNode {
+        
+        let bottom = plane.bottomFold()!
+    
+        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
+        let masterSphere = makeSphere(atPoint: startPoint)
+        
+        return masterSphere
+        
+    }
+
+
     
     ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3) {
+    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
+        return sphereNode
     }
 
 ///makes a little sphere at the given point in world space

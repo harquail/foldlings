@@ -39,8 +39,8 @@ class Plane: Printable, Hashable
     private var node:SCNNode? = nil
 //    let transformToCamera = SCNVector3Make(0,0,0)
 //    let scaleToCamera = SCNVector3Make(1,1,1)
-    let transformToCamera = SCNVector3Make(-3.9, 7.0, -4.5)
-    let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
+    let transformToCamera = SCNVector3Make(-3.9, -3.5, -4.5)
+    let scaleToCamera = SCNVector3Make(0.01, 0.01, 0.01)
 
     
     var description: String {
