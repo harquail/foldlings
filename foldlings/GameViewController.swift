@@ -130,7 +130,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         
         visited = []
-        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false) {
+        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
             scene.rootNode.addChildNode(topPlaneSphere)
         }
         // make bottomPlane manually
@@ -170,8 +170,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
         child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
-//        child.transform = SCNMatrix4Identity
-//        child.scale = SCNVector3Make(1.0,1.0,1.0)
 
     }
     
@@ -179,11 +177,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
-    func createPlaneTree(plane: Plane, hill: Bool) -> SCNNode?
+    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
     {
         let bottom = planes.bottomPlane!
-        let top = planes.topPlane!
-        var useBottom = (plane == top)
+        
+        println("recurseCount: \(recurseCount)")
         // call make joint between curr plane and p using Bool
         
         if plane == bottom || contains(visited, plane){
@@ -199,8 +197,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // functionality here
         var node = plane.lazyNode()
         node.addAnimation(fadeIn(), forKey: "fade in")
-//        showPlaneCorners(plane, node: node)
         
+        var useBottom = (recurseCount == 0)
         let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
         plane.masterSphere = masterSphere
         masterSphere.addChildNode(node)
@@ -219,7 +217,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // loop through the adj starting with top plane
         for p in adj
         {
-            if let childSphere = createPlaneTree(p, hill: !hill) {
+            let rc = recurseCount + 1
+            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
                 undoParentTranslate(masterSphere, child: childSphere)
@@ -339,7 +338,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
 
     
-    // TODO: fail gracefully
     private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
         
         var edge:Edge
@@ -354,6 +352,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
         let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
         let masterSphere = makeSphere(atPoint: anchorStart)
+        
+        let m = SCNMaterial()
+        m.diffuse.contents = UIColor.clearColor()
+        masterSphere.geometry?.firstMaterial = m
 
         return masterSphere
         
