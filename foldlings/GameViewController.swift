@@ -405,7 +405,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
     }
 
-    func parentSphere(plane:Plane, node:SCNNode) -> SCNNode {
+    private func parentSphere(plane:Plane, node:SCNNode) -> SCNNode {
         
         let bottom = plane.bottomFold()!
     
