@@ -204,12 +204,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         visited = []
         if var topPlaneNode = createPlaneTree(planes.topPlane!, hill: false) {
-            let masterSphere = parentSphere(planes.topPlane!,node: topPlaneNode)
-            planes.topPlane!.masterSphere = masterSphere
-            masterSphere.addChildNode(topPlaneNode)
-            undoParentTranslate(masterSphere, child: topPlaneNode)
-            topPlaneNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-            scene.rootNode.addChildNode(masterSphere)
+//            let masterSphere = parentSphere(planes.topPlane!,node: topPlaneNode)
+//            planes.topPlane!.masterSphere = masterSphere
+//            masterSphere.addChildNode(topPlaneNode)
+//            undoParentTranslate(masterSphere, child: topPlaneNode)
+//            topPlaneNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            scene.rootNode.addChildNode(topPlaneNode)
         }
         // make bottomPlane manually
         if var bottomPlane = planes.bottomPlane {
@@ -219,7 +219,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             masterSphere.addChildNode(bottomPlaneNode)
             undoParentTranslate(masterSphere, child: bottomPlaneNode)
             bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
-            bottomPlaneNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
             showPlaneCorners(bottomPlane, node: bottomPlaneNode)
             scene.rootNode.addChildNode(masterSphere)
         }
@@ -260,7 +259,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     {
         let bottom = planes.bottomPlane!
         // call make joint between curr plane and p using Bool
-        var node:SCNNode? = nil
         
         if plane == bottom || contains(visited, plane){
             if plane == bottom {
@@ -273,9 +271,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         
         // functionality here
-        node = plane.lazyNode()
-        node!.addAnimation(fadeIn(), forKey: "fade in")
-        showPlaneCorners(plane, node: node!)
+        var node = plane.lazyNode()
+        node.addAnimation(fadeIn(), forKey: "fade in")
+        showPlaneCorners(plane, node: node)
+        
+        let masterSphere = parentSphere(plane, node:node)
+        plane.masterSphere = masterSphere
+        masterSphere.addChildNode(node)
+        undoParentTranslate(masterSphere, child: node)
+        // different based on orientation
+        if plane.orientation == .Vertical {
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+        } else {
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+        }
+        
         
         var adj = planes.adjacency[plane]!
         visited.append(plane)
@@ -284,13 +294,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         {
             if let child = createPlaneTree(p, hill: !hill) {
                 // child hasn't reached bottom so do something to it
-//                node!.addChildNode(child)
-                scene.rootNode.addChildNode(child)
-                // actually need to insert sphere in here and parent node to it and set its parent to plane
-//                p.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+                node.addChildNode(child)
             }
         }
-        return node
+        return masterSphere
     }
     
     
