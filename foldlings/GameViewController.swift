@@ -181,12 +181,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             if move == true
             {
-                println("move")
+//                println("move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
-                println("not move")
+//                println("not move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             
@@ -243,9 +243,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             addPlaneToScene(plane,parent,move)
         }
         
-//        let top = planes.topPlane!
-//        visited.append(top)
-//        getJoint(top, hill: false)
+        let top = planes.topPlane!
+        visited = []
+        getJoint(top, hill: false)
+        //println("visited \(visited) \n")
+
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -377,57 +379,25 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     {   let bottom = planes.bottomPlane!
         // call make joint between curr plane and p using Bool
         
-        if plane == bottom || contains(visited, plane){
-            if plane == bottom {
-            addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+        if plane === bottom || contains(visited, plane){
+            if plane === bottom {
+                println("bottom!")
+                return
+            } else {
+                println("already been here: \(plane)")
+                return
             }
-            return
         }
         let adj: [Plane] = planes.adjacency[plane]!
         visited.append(plane)
+        println("adj: \(adj.count) \n")
         // loop through the adj starting with top plane
         for p in adj
         {
-            addJointBetweenPlanes(plane, planeB: p, angleLimit: 0.0)
             getJoint(p, hill: !hill)
         }
     }
 
-
-    //https://developer.apple.com/library/mac/documentation/SceneKit/Reference/SCNPhysicsHingeJoint_Class/
-    /// adds a physics joint between two planes that share an edge
-    func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
-        
-        //find edge planes share
-        let sharedEdge = CollectionOfPlanes.sharedEdgeBetween(plane1: planeA, plane2: planeB)
-        
-        // get the start and end points of the edge they share
-        let startPoint = SCNVector3Make(Float(sharedEdge!.start.x), Float(sharedEdge!.start.y), Float(0.0))
-        let endPoint =  SCNVector3Make(Float(sharedEdge!.end.x), Float(sharedEdge!.end.y), Float(0.0))
-        
-        
-        // axis is the vector between them
-        let axisInWorld = SCNVector3Make(0.0, 1, 0.0)
-        let axisInA = axisInWorld
-        let axisInB = axisInWorld
-        
-        makeSphere(atPoint: planeA.lazyNode().convertPosition(axisInA, toNode: scene.rootNode))
-        
-        // anchor is the start point
-        let anchorInA = startPoint
-        let anchorInB = startPoint
-        
-//        let startA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
-//        let startB = planeB.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
-//
-
-
-//        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
-        let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
-        
-        scene.physicsWorld.addBehavior(hinge)
-
-    }
     
     
     
