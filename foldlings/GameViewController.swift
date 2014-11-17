@@ -382,8 +382,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         if plane === bottom || contains(visited, plane){
             if plane === bottom {
                 println("bottom!")
+                return
             } else {
-                println("already been here")
+                println("already been here: \(plane)")
                 return
             }
         }
