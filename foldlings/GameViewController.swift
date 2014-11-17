@@ -69,79 +69,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
 
     
-    func makeSceneToTestHinges(){
-    
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = SCNLightTypeOmni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-        scene.rootNode.addChildNode(lightNode)
-        
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = SCNLightTypeAmbient
-        ambientLightNode.light!.color = UIColor.darkGrayColor()
-        scene.rootNode.addChildNode(ambientLightNode)
-        
-   
-        //makes a rectangular node for testing
-        func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
-            
-            let node = SCNNode()
-            let shape = SCNShape(path: UIBezierPath(rect: CGRect(origin: origin, size: size)), extrusionDepth: 1)
-            
-            let material = SCNMaterial()
-            material.diffuse.contents = color
-            material.doubleSided = true
-            
-            node.geometry = shape
-            node.geometry?.firstMaterial = material
-            node.position = SCNVector3Make(node.position.x, node.position.y, node.position.z + zPosition)
-            
-            let dynamism = dynamic ? SCNPhysicsBodyType.Dynamic: SCNPhysicsBodyType.Kinematic
-            node.physicsBody = SCNPhysicsBody(type: dynamism, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-        
-            return node
-        }
-
-        let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
-        let friend = rectangularNode(color: UIColor.blueColor(), CGPointMake(0.0,1), 0, CGSizeMake(5, 1), dynamic:true)
-        let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
-        let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, -1, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 1, 0))
-        
-        
-//        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
-        scene.physicsWorld.addBehavior(hinge)
-        
-        let nodes = [rootRect, friend]
-        
-        for node in nodes{
-            scene.rootNode.addChildNode(node)
-        }
-
-        // retrieve the SCNView
-        let scnView = self.view as SCNView
-        // set the scene to the view
-        scnView.scene = scene
-        // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
-        // show statistics such as fps and timing information
-        scnView.showsStatistics = true
-        // configure the view
-        scnView.backgroundColor = UIColor.blackColor()
-    }
-
-    
     func makeScene(){
     
         // create a new scene
@@ -280,10 +207,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         undoParentTranslate(masterSphere, child: node)
         
         // different based on orientation
-        if plane.orientation == .Vertical {
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-        } else {
+        if hill {
             masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+        } else {
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
         }
         
         
@@ -294,8 +221,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         {
             if let childSphere = createPlaneTree(p, hill: !hill) {
                 // child hasn't reached bottom so do something to it
-                node.addChildNode(childSphere)
-                undoParentTranslate(node, child: childSphere)
+                masterSphere.addChildNode(childSphere)
+                undoParentTranslate(masterSphere, child: childSphere)
 
             }
         }

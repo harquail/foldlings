@@ -291,9 +291,9 @@ class Sketch : NSObject,NSCoding  {
                             e.plane = plane
                             if e.kind == .Fold || e.kind == .Tab {
                                 plane.kind = .Plane
-                                if (e.kind == .Fold) {
-                                    plane.orientation = .Vertical
-                                }
+//                                if (e.kind == .Fold) {
+//                                    plane.orientation = .Vertical
+//                                }
                             }
                         }
                         
