@@ -193,6 +193,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
 
             node.addAnimation(fadeIn(), forKey: "fade in")
+
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotation")
             
 //            showNodePivot(node)
 //            showPlaneCorners(plane, node: node)
@@ -201,10 +203,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             
             if(i%2 == 0){
-                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
             }
             else{
-                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
+//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
             }
             i++
             return node;
@@ -407,8 +409,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         let bottom = plane.bottomFold()!
     
-            let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
-            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
+        let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
 
 //        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
         let masterSphere = makeSphere(atPoint: anchorStart)
