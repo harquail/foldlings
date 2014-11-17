@@ -20,6 +20,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
+    let fourtyFiveDegrees = Float(0.25*M_PI)
+
     var visited: [Plane] = []
     
     @IBOutlet var backToSketchButton: UIButton!
@@ -180,16 +182,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
+        var i = 0
         /// subfunction; adds a plane to the scene with a given parent
         func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
             
             
             let node = plane.lazyNode()
+            
+            changePivot(node)
 //            println("plane:")
 //            println(node.debugDescription)
-
-            
-            
             
             if move == true
             {
@@ -207,8 +209,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
             node.addAnimation(fadeIn(), forKey: "fade in")
             
-//            showPlaneCorners(plane, node: node)
-
+//            showNodePivot(node)
+            showPlaneCorners(plane, node: node)
+            
+            
+            if(i%2 == 0){
+            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            }
+            else{
+            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
+            }
+            i++
             
             //println(node)
             return node;
@@ -321,14 +332,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             
             // pivots around bottom edge
-            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
+//            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
             
             //pivots around top edge
 //            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
 //            http://ronnqvi.st/3d-with-scenekit/
             
             // LIESSSSS
-            node.pivot = SCNMatrix4MakeTranslation(0, distance.y/2, 0)
+            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
             
             println("plane")
             println(distance.x)
@@ -434,6 +445,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.physicsWorld.addBehavior(hinge)
 
     }
+    
+    
+    
+    func showNodePivot(node:SCNNode) {
+        
+    makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+
+    }
+    
     
     /// function to show plane corners and shows how to get the anchor points
     func showPlaneCorners(plane:Plane, node:SCNNode) {
