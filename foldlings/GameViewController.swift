@@ -181,12 +181,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             if move == true
             {
-                println("move")
+//                println("move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
-                println("not move")
+//                println("not move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             
@@ -246,7 +246,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let top = planes.topPlane!
         visited = []
         getJoint(top, hill: false)
-        println("visited \(visited) \n")
+        //println("visited \(visited) \n")
 
         
         // retrieve the SCNView
@@ -381,10 +381,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         if plane === bottom || contains(visited, plane){
             if plane === bottom {
-            println("bottom!")
-            //println(plane)
+                println("bottom!")
+            } else {
+                println("already been here")
+                return
             }
-            return
         }
         let adj: [Plane] = planes.adjacency[plane]!
         visited.append(plane)
