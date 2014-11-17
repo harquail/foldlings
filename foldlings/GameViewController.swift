@@ -203,13 +203,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         
         visited = []
-        if var topPlaneNode = createPlaneTree(planes.topPlane!, hill: false) {
-//            let masterSphere = parentSphere(planes.topPlane!,node: topPlaneNode)
-//            planes.topPlane!.masterSphere = masterSphere
-//            masterSphere.addChildNode(topPlaneNode)
-//            undoParentTranslate(masterSphere, child: topPlaneNode)
-//            topPlaneNode.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-            scene.rootNode.addChildNode(topPlaneNode)
+        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false) {
+            scene.rootNode.addChildNode(topPlaneSphere)
         }
         // make bottomPlane manually
         if var bottomPlane = planes.bottomPlane {
@@ -219,7 +214,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             masterSphere.addChildNode(bottomPlaneNode)
             undoParentTranslate(masterSphere, child: bottomPlaneNode)
             bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
-            showPlaneCorners(bottomPlane, node: bottomPlaneNode)
             scene.rootNode.addChildNode(masterSphere)
         }
         
@@ -249,6 +243,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
         child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
+//        child.transform = SCNMatrix4Identity
+//        child.scale = SCNVector3Make(1.0,1.0,1.0)
+
     }
     
     
@@ -258,6 +255,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func createPlaneTree(plane: Plane, hill: Bool) -> SCNNode?
     {
         let bottom = planes.bottomPlane!
+        let top = planes.topPlane!
+        var useBottom = (plane == top)
         // call make joint between curr plane and p using Bool
         
         if plane == bottom || contains(visited, plane){
@@ -273,12 +272,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // functionality here
         var node = plane.lazyNode()
         node.addAnimation(fadeIn(), forKey: "fade in")
-        showPlaneCorners(plane, node: node)
+//        showPlaneCorners(plane, node: node)
         
-        let masterSphere = parentSphere(plane, node:node)
+        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
         plane.masterSphere = masterSphere
         masterSphere.addChildNode(node)
         undoParentTranslate(masterSphere, child: node)
+        
         // different based on orientation
         if plane.orientation == .Vertical {
             masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
@@ -292,9 +292,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // loop through the adj starting with top plane
         for p in adj
         {
-            if let child = createPlaneTree(p, hill: !hill) {
+            if let childSphere = createPlaneTree(p, hill: !hill) {
                 // child hasn't reached bottom so do something to it
-                node.addChildNode(child)
+                node.addChildNode(childSphere)
+                undoParentTranslate(node, child: childSphere)
+
             }
         }
         return masterSphere
@@ -404,8 +406,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
             let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
             let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
-            makeSphere(atPoint: anchorStart)
-            makeSphere(atPoint: anchorEnd)
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
         }
     }
 
