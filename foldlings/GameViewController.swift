@@ -402,10 +402,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
     }
 
-    private func parentSphere(plane:Plane, node:SCNNode) -> SCNNode {
+    
+    // TODO: fail gracefully
+    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
         
-        let bottom = plane.bottomFold()!
-        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
+        var edge:Edge
+        
+        if(bottom){
+            edge = plane.bottomFold()!
+        }
+        else{
+            edge = plane.topFold()!
+        }
+        
+        let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
         let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
         let masterSphere = makeSphere(atPoint: anchorStart)
 
