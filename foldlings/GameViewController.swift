@@ -112,25 +112,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
             return node
         }
-        
-        
-        
-        
-
-        
-        
-//        let zerozero = CGPointMake(0, 0)
-//        let zeroone = CGPointMake(0, 1)
-//        let onezero = CGPointMake(1, 0)
-//        let oneone = CGPointMake(1, 1)
-//
-//        let topEdge = Edge.straightEdgeBetween(zerozero, end: zeroone, kind: .Cut)
-//        let rightEdge = Edge.straightEdgeBetween(zeroone, end: onezero, kind: .Cut)
-//        let bottomEdge = Edge.straightEdgeBetween(onezero, end: oneone, kind: .Cut)
-//        let leftEdge = Edge.straightEdgeBetween(oneone, end: zerozero, kind: .Cut)
-//        let plane = Plane(edges: [topEdge,rightEdge,bottomEdge,leftEdge])
-        
-        
 
         
         let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
@@ -154,14 +135,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         for node in nodes{
             scene.rootNode.addChildNode(node)
         }
-        
-//        rootRect.rotation.
-        
-//        friend.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotate")
 
-        
-//        scene.rootNode.addChildNode(node)
-        
         // retrieve the SCNView
         let scnView = self.view as SCNView
         
@@ -291,22 +265,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
-        
-        
-        println("# planes")
-        println(planes.planes.count)
-    
-        
-        let plane1 = planes.planes[0]
-        let plane2 = planes.planes[1]
-        
-        plane2.lazyNode().physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: plane2.lazyNode().geometry!, options: nil))
 
-        //TODO: change back
-        addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
-        
-        
-        
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
@@ -470,10 +429,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
 
         
-                let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
-        
-        
-
+        let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
         
         scene.physicsWorld.addBehavior(hinge)
 
@@ -499,6 +455,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
+    }
+
+///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+//        sphereGeometry
+        sphereNode.position = atPoint
+        inNode.addChildNode(sphereNode)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
