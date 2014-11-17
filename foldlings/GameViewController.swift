@@ -97,7 +97,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
             
             let node = SCNNode()
-            let shape = SCNShape(path: UIBezierPath(rect: CGRect(origin: origin, size: size)), extrusionDepth: 0.0)
+            let shape = SCNShape(path: UIBezierPath(rect: CGRect(origin: origin, size: size)), extrusionDepth: 1)
             
             let material = SCNMaterial()
             material.diffuse.contents = color
@@ -175,39 +175,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let node = plane.lazyNode()
             
-//            changePivot(node)
-//            println("plane:")
-//            println(node.debugDescription)
-            
             if move == true
             {
-//                println("move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             else
             {
-//                println("not move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
-
             node.addAnimation(fadeIn(), forKey: "fade in")
-            
-//            showNodePivot(node)
             showPlaneCorners(plane, node: node)
             
             
             if(i%2 == 0){
-            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
             }
             else{
-            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
+                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
             }
             i++
-            
-            //println(node)
             return node;
         }
         
@@ -243,11 +232,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             addPlaneToScene(plane,parent,move)
         }
         
-        let top = planes.topPlane!
         visited = []
-        getJoint(top, hill: false)
-        //println("visited \(visited) \n")
-
+        getJoint(planes.topPlane!, hill: false)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -326,23 +312,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 y: maxVec.memory.y - minVec.memory.y,
                 z: maxVec.memory.z - minVec.memory.z)
             
-            
-            // pivots around bottom edge
 //            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-            
-            //pivots around top edge
 //            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
 //            http://ronnqvi.st/3d-with-scenekit/
             
             // LIESSSSS
             node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-            
-            println("plane")
-            println(distance.x)
-            println(distance.y)
-            println(distance.z)
-            println()
-            
             
             // we have to dealloc the unsafe pointer
             // I hate it
@@ -379,18 +354,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     {   let bottom = planes.bottomPlane!
         // call make joint between curr plane and p using Bool
         
-        if plane === bottom || contains(visited, plane){
-            if plane === bottom {
+        if plane == bottom || contains(visited, plane){
+            if plane == bottom {
                 println("bottom!")
                 return
             } else {
-                println("already been here: \(plane)")
+                println("already been here")
                 return
             }
         }
-        let adj: [Plane] = planes.adjacency[plane]!
+        
+        var adj = planes.adjacency[plane]!
         visited.append(plane)
-        println("adj: \(adj.count) \n")
         // loop through the adj starting with top plane
         for p in adj
         {
@@ -402,15 +377,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     
     func showNodePivot(node:SCNNode) {
-        
-    makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
-
+        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
     }
     
     
     /// function to show plane corners and shows how to get the anchor points
     func showPlaneCorners(plane:Plane, node:SCNNode) {
-        
         for edge in plane.edges {
             let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
             let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))

@@ -63,8 +63,11 @@ class CollectionOfPlanes: Printable, Hashable {
                         for p in self.planes {
                             if p != plane { //don't add ourselves in
                                 for e in p.edges! {
-                                    if edge ~= e  {
+                                    if edge ~= e {
                                         self.adjacency[plane]!.append(p)
+                                        if !self.adjacency[p]!.contains(plane) {
+                                            self.adjacency[p]!.append(plane)
+                                        }
                                     }
                                 }
                             }
