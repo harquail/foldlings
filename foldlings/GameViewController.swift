@@ -22,6 +22,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
     let fourtyFiveDegrees = Float(0.25*M_PI)
+    var theOneSphere = SCNNode()
 
     var visited: [Plane] = []
     
