@@ -185,30 +185,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             }
 
 
-            let masterSphere = parentSphere(plane,node: node)
-            // add node to parent (parent's translation/rotation affect this one
-            masterSphere.addChildNode(node)
-
-            node.position = SCNVector3Make(node.position.x - masterSphere.position.x, node.position.y - masterSphere.position.y, node.position.z - masterSphere.position.z)
             
 
-            node.addAnimation(fadeIn(), forKey: "fade in")
-
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotation")
-            
-//            showNodePivot(node)
-//            showPlaneCorners(plane, node: node)
-
-            
-            
-            
-            if(i%2 == 0){
-//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-            }
-            else{
-//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
-            }
-            i++
             return node;
         }
         
@@ -235,9 +213,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
-
+                    
+                    parent.addChildNode(n)
                 
                 }
+            }else{
+            
+                let masterSphere = parentSphere(plane,node: plane.lazyNode())
+                masterSphere.addChildNode(plane.lazyNode())
+                plane.lazyNode().position = SCNVector3Make(plane.lazyNode().position.x - masterSphere.position.x, plane.lazyNode().position.y - masterSphere.position.y, plane.lazyNode().position.z - masterSphere.position.z)
+                plane.lazyNode().addAnimation(fadeIn(), forKey: "fade in")
+                masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotation")
+
             }
             
             var move: Bool = true

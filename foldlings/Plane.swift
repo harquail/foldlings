@@ -44,6 +44,7 @@ class Plane: Printable, Hashable
     var edges : [Edge]!
     var path = UIBezierPath()
     private var node:SCNNode? = nil
+    var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, -3.5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, 0.01, 0.01)
 
@@ -110,31 +111,6 @@ class Plane: Printable, Hashable
     
     
     
-//    private func parentSphere(plane:Plane, node:SCNNode) -> SCNNode {
-//        
-//        let bottom = plane.bottomFold()!
-//        
-//        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
-//        let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
-//        
-//        //        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
-//        let masterSphere = makeSphere(atPoint: anchorStart)
-//        
-//        return masterSphere
-//        
-//    }
-//    
-//    
-//    
-//    ///makes a little sphere at the given point in world space
-//    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
-//        let sphereGeometry = SCNSphere(radius: 0.15)
-//        let sphereNode = SCNNode(geometry: sphereGeometry)
-//        sphereNode.position = atPoint
-//        scene.rootNode.addChildNode(sphereNode)
-//        return sphereNode
-//    }
-//    
     
     /// the fold with minimum y height in a plane
     func bottomFold() -> Edge? {
