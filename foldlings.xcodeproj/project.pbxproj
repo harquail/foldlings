@@ -46,6 +46,9 @@
 		F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
 		F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F180D52A1A05D8D400AC05BC /* RBResizer.swift */; };
+		F1824ECF1A19E525008B0F66 /* last.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECC1A19E525008B0F66 /* last.png */; };
+		F1824ED01A19E525008B0F66 /* middle.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECD1A19E525008B0F66 /* middle.png */; };
+		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* CollectionOfFoldlings.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
 		F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B9AE771A06A64B00265AAE /* Archivist.swift */; };
@@ -118,6 +121,9 @@
 		F17C93E419E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foldlingsTests.swift; sourceTree = "<group>"; };
 		F180D52A1A05D8D400AC05BC /* RBResizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBResizer.swift; sourceTree = "<group>"; };
+		F1824ECC1A19E525008B0F66 /* last.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = last.png; path = ../last.png; sourceTree = "<group>"; };
+		F1824ECD1A19E525008B0F66 /* middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middle.png; path = ../middle.png; sourceTree = "<group>"; };
+		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* CollectionOfFoldlings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfFoldlings.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
 		F1B9AE771A06A64B00265AAE /* Archivist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivist.swift; sourceTree = "<group>"; };
@@ -172,6 +178,9 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F1824ECC1A19E525008B0F66 /* last.png */,
+				F1824ECD1A19E525008B0F66 /* middle.png */,
+				F1824ECE1A19E525008B0F66 /* first.png */,
 				22ED9F0719F367AB001F8AAA /* erase.png */,
 				22C3F4BE19F33FF200857C82 /* print.jpeg */,
 				22C3F4BF19F33FF200857C82 /* send.jpeg */,
@@ -377,12 +386,15 @@
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
 				F1E309621A15839300C09792 /* tab.png in Resources */,
+				F1824ED11A19E525008B0F66 /* first.png in Resources */,
 				F11B552119FDFCE200169A07 /* fold_logo.png in Resources */,
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
+				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
 				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
 				F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */,

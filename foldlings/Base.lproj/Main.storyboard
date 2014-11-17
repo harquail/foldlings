@@ -56,75 +56,47 @@
                                 <rect key="frame" x="34" y="76" width="700" height="120"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-ES-5WL">
-                                <rect key="frame" x="129" y="326" width="167" height="148"/>
-                                <state key="normal" backgroundImage="cut.png"/>
+                                <rect key="frame" x="105" y="333" width="167" height="148"/>
+                                <state key="normal" backgroundImage="first.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="HFB-wp-u1d"/>
                                     <action selector="oneButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="5ij-O3-QMk"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgr-QL-Afw">
-                                <rect key="frame" x="298" y="326" width="167" height="148"/>
-                                <state key="normal" backgroundImage="cut.png"/>
-                                <connections>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Pn6-qL-IUv"/>
-                                    <action selector="twoButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="aQd-Oa-XJu"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L88-SC-Z9m">
-                                <rect key="frame" x="473" y="326" width="167" height="148"/>
-                                <state key="normal" backgroundImage="cut.png"/>
+                                <rect key="frame" x="490" y="333" width="167" height="148"/>
+                                <state key="normal" backgroundImage="last.png"/>
                                 <connections>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="X5q-Vc-v4b"/>
                                     <action selector="threeButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="I2r-Yb-flb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6h-K7-U0T">
-                                <rect key="frame" x="298" y="549" width="167" height="148"/>
-                                <state key="normal" backgroundImage="cut.png"/>
+                                <rect key="frame" x="298" y="333" width="167" height="148"/>
+                                <state key="normal" backgroundImage="middle.png"/>
                                 <connections>
                                     <action selector="fiveButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="2SL-5m-8TW"/>
                                     <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="d0b-pI-ufR"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk0-cv-IPY">
-                                <rect key="frame" x="496" y="439" width="120" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="With" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J78-It-9mN">
+                                <rect key="frame" x="324" y="509" width="120" height="21"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J78-It-9mN">
-                                <rect key="frame" x="324" y="662" width="120" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpW-Lf-hTX">
+                                <rect key="frame" x="128" y="509" width="120" height="21"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jOF-7R-VF7">
-                                <rect key="frame" x="152" y="662" width="120" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Paper" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk0-cv-IPY">
+                                <rect key="frame" x="513" y="505" width="120" height="30"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpW-Lf-hTX">
-                                <rect key="frame" x="152" y="439" width="120" height="21"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
-                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4R-Ak-eJE">
-                                <rect key="frame" x="324" y="439" width="120" height="21"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
-                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA7-AK-mhe">
-                                <rect key="frame" x="129" y="549" width="167" height="148"/>
-                                <state key="normal" backgroundImage="cut.png"/>
-                                <connections>
-                                    <action selector="fourButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Xar-vv-rNs"/>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="WJH-Kc-V3I"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -355,10 +327,13 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
     <resources>
         <image name="cut.png" width="206" height="208"/>
         <image name="erase.png" width="208" height="208"/>
+        <image name="first.png" width="510" height="433"/>
         <image name="fold.png" width="206" height="208"/>
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
+        <image name="last.png" width="523" height="420"/>
         <image name="menu.png" width="206" height="208"/>
+        <image name="middle.png" width="490" height="394"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="roundedrect.png" width="192" height="215"/>
         <image name="send.jpeg" width="400" height="345"/>
