@@ -97,10 +97,8 @@ class Plane: Printable, Hashable
             node!.geometry = shape
             node!.geometry?.firstMaterial = material
             
-            node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!
-                , options: nil))
-            
-            
+//            node!.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: node!.geometry!
+//                , options: nil))
             
             // move node to where the camera can see it
             node!.position = transformToCamera

@@ -20,6 +20,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
+    let ninetyDegreesNeg = Float(-0.5*M_PI)
     let fourtyFiveDegrees = Float(0.25*M_PI)
 
     var visited: [Plane] = []
@@ -167,28 +168,93 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         ambientLightNode.light!.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
+        scene.physicsWorld.gravity.y = 0.0
         
-        var i = 0
-        /// subfunction; adds a plane to the scene with a given parent
-        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode {
-            
-            
-            let node = plane.lazyNode()
-            
-            if move == true
-            {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            }
-            else
-            {
-                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            }
-
-
-            
-
-            return node;
-        }
+//        var i = 0
+//        /// subfunction; adds a plane to the scene with a given parent
+//        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode {
+//            
+//            
+//            let node = plane.lazyNode()
+//            
+//            if move == true
+//            {
+//                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+//            }
+//            else
+//            {
+//                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+//            }
+//            
+//            // add node to parent (parent's translation/rotation affect this one
+//            parent.addChildNode(node)
+//            node.addAnimation(fadeIn(), forKey: "fade in")
+//            showPlaneCorners(plane, node: node)
+//            
+//            
+//            if(i%2 == 0){
+//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+//            }
+//            else{
+//                plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
+//            }
+//            i++
+//            return node;
+//        }
+//        
+//        // main loop for defining plane things
+//        // add each plane to the scene
+//        for (i, plane) in enumerate(planes.planes) {
+//            
+//            // remove node, so everything is nice and fresh
+//            plane.clearNode()
+//            
+//            var parent = scene.rootNode
+//            // if plane is a hole, it's parent should be the plane that contains it
+//            if(plane.kind == Plane.Kind.Hole){
+//            
+//                println("hole found")
+//                
+//                let parentPlane = plane.containerPlane(planes.planes)
+//                    
+//                if parentPlane != nil{
+//                 
+//                    let n = plane.lazyNode()
+//                    
+//                    n.transform = SCNMatrix4Identity
+//                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
+//                    
+//                    parent = parentPlane!.lazyNode()
+//
+//                
+//                }
+//            }
+//            
+//            var move: Bool = true
+//            addPlaneToScene(plane,parent,move)
+//        }
+//        
+//        var i = 0
+//        /// subfunction; adds a plane to the scene with a given parent
+//        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode {
+//            
+//            
+//            let node = plane.lazyNode()
+//            
+//            if move == true
+//            {
+//                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+//            }
+//            else
+//            {
+//                node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
+//            }
+//
+//
+//            
+//
+//            return node;
+//        }
         
         // main loop for defining plane things
         // add each plane to the scene
@@ -227,12 +293,30 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
             }
             
-            var move: Bool = true
-            addPlaneToScene(plane,parent,move)
+//            var move: Bool = true
+//            addPlaneToScene(plane,parent,move)
         }
+
         
         visited = []
-        getJoint(planes.topPlane!, hill: false)
+        //TODO: account for fake masterSphere here
+        if var topPlane = createPlaneTree(planes.topPlane!, hill: false) {
+            scene.rootNode.addChildNode(topPlane)
+            //TODO: apply the animation to the sphere
+            topPlane.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+
+        }
+        // make bottomPlane manually
+        if var bottomPlane = planes.bottomPlane {
+            bottomPlane.clearNode()
+            var node = bottomPlane.lazyNode()
+            node.addAnimation(fadeIn(), forKey: "fade in")
+            //TODO: apply the animation to the sphere
+            /// ACTUALLY NO ANIMATION FOR BOTTOM
+//            node.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            showPlaneCorners(bottomPlane, node: node)
+            scene.rootNode.addChildNode(node)
+        }
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -254,6 +338,49 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
+    }
+    
+    
+    
+    // if plane is second plane, don't add physics body
+    // walk tree, save path, record fold and hill or valley, place hinge into visited
+    func createPlaneTree(plane: Plane, hill: Bool) -> SCNNode?
+    {
+        let bottom = planes.bottomPlane!
+        // call make joint between curr plane and p using Bool
+        var node:SCNNode? = nil
+        
+        if plane == bottom || contains(visited, plane){
+            if plane == bottom {
+                println("bottom!")
+                
+                return nil
+            } else {
+                println("already been here")
+                return nil
+            }
+        }
+        
+        // functionality here
+        plane.clearNode()
+        node = plane.lazyNode()
+        node!.addAnimation(fadeIn(), forKey: "fade in")
+        showPlaneCorners(plane, node: node!)
+        
+        var adj = planes.adjacency[plane]!
+        visited.append(plane)
+        // loop through the adj starting with top plane
+        for p in adj
+        {
+            if let child = createPlaneTree(p, hill: !hill) {
+                // child hasn't reached bottom so do something to it
+//                node!.addChildNode(child)
+                scene.rootNode.addChildNode(child)
+                // actually need to insert sphere in here and parent node to it and set its parent to plane
+//                p.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            }
+        }
+        return node
     }
     
     
@@ -346,33 +473,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         UIGraphicsEndImageContext();
         return img
     }
-    
-    // if plane is second plane, don't add physics body
-    // walk tree, save path, record fold and hill or valley, place hinge into visited
-    func getJoint(plane: Plane, hill: Bool)
-    {   let bottom = planes.bottomPlane!
-        // call make joint between curr plane and p using Bool
-        
-        if plane == bottom || contains(visited, plane){
-            if plane == bottom {
-                println("bottom!")
-                return
-            } else {
-                println("already been here")
-                return
-            }
-        }
-        
-        var adj = planes.adjacency[plane]!
-        visited.append(plane)
-        // loop through the adj starting with top plane
-        for p in adj
-        {
-            getJoint(p, hill: !hill)
-        }
-    }
-
-    
     
     
     func showNodePivot(node:SCNNode) {
