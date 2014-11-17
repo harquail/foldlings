@@ -20,6 +20,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
+    let fourtyFiveDegrees = Float(0.25*M_PI)
+
     var visited: [Plane] = []
     
     @IBOutlet var backToSketchButton: UIButton!
@@ -59,6 +61,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
 
+    /// this runs every graphics update and can be used to animate stuffs
     func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval)
     {
         
@@ -102,33 +105,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             node.geometry = shape
             node.geometry?.firstMaterial = material
-            
             node.position = SCNVector3Make(node.position.x, node.position.y, node.position.z + zPosition)
             
-            
             let dynamism = dynamic ? SCNPhysicsBodyType.Dynamic: SCNPhysicsBodyType.Kinematic
-            
             node.physicsBody = SCNPhysicsBody(type: dynamism, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
         
             return node
         }
 
-        
         let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
-        
         let friend = rectangularNode(color: UIColor.blueColor(), CGPointMake(0.0,1), 0, CGSizeMake(5, 1), dynamic:true)
-        
         let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
-
         let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, -1, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 1, 0))
         
         
 //        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
-
-        
         scene.physicsWorld.addBehavior(hinge)
-        
-        
         
         let nodes = [rootRect, friend]
         
@@ -138,16 +130,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         // retrieve the SCNView
         let scnView = self.view as SCNView
-        
         // set the scene to the view
         scnView.scene = scene
-        
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
-        
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
-        
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
     }
@@ -180,16 +168,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
+        var i = 0
         /// subfunction; adds a plane to the scene with a given parent
-        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
+        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode {
             
             
             let node = plane.lazyNode()
+            
+//            changePivot(node)
 //            println("plane:")
 //            println(node.debugDescription)
-
-            
-            
             
             if move == true
             {
@@ -207,8 +195,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
             node.addAnimation(fadeIn(), forKey: "fade in")
             
-//            showPlaneCorners(plane, node: node)
-
+//            showNodePivot(node)
+            showPlaneCorners(plane, node: node)
+            
+            
+            if(i%2 == 0){
+            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            }
+            else{
+            plane.lazyNode().addAnimation(rotationAnimation(zeroDegrees, endAngle: fourtyFiveDegrees), forKey: "anim2")
+            }
+            i++
             
             //println(node)
             return node;
@@ -295,11 +292,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         anim.repeatCount = .infinity;
         
         
-        anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
-        anim.keyTimes = [NSNumber(float: Float(0.0)),NSNumber(float: Float(1)),NSNumber(float: Float(1.4)),NSNumber(float: Float(2.4))]
+        anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
+            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
+            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
+            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
+        anim.keyTimes = [NSNumber(float: Float(0.0)),
+            NSNumber(float: Float(1)),
+            NSNumber(float: Float(1.4)),
+            NSNumber(float: Float(2.4))]
         anim.removedOnCompletion = false;
         anim.fillMode = kCAFillModeForwards;
-        anim.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
+        anim.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
         
         return anim
         
@@ -323,14 +328,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             
             // pivots around bottom edge
-            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
+//            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
             
             //pivots around top edge
 //            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
 //            http://ronnqvi.st/3d-with-scenekit/
             
             // LIESSSSS
-            node.pivot = SCNMatrix4MakeTranslation(0, distance.y/2, 0)
+            node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
             
             println("plane")
             println(distance.x)
@@ -347,18 +352,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
     
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     // sets preview button image
     func setButtonBG(image:UIImage){
-        
         bgImage = image;
-        
     }
     
     func previewImage() -> UIImage{
@@ -369,9 +370,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
         var img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        
-        
-        
         return img
     }
     
@@ -399,6 +397,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
 
     
+    
+    
+    func showNodePivot(node:SCNNode) {
+        
+    makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+
+    }
+    
+    
     /// function to show plane corners and shows how to get the anchor points
     func showPlaneCorners(plane:Plane, node:SCNNode) {
         
@@ -416,7 +423,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func makeSphere(#atPoint: SCNVector3) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
-//        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
     }
@@ -425,7 +431,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
-//        sphereGeometry
         sphereNode.position = atPoint
         inNode.addChildNode(sphereNode)
     }
@@ -435,12 +440,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
-            
-//            viewController.setButtonBG(sketchView.previewImage())
-//            viewController.laserImage = sketchView.bitmap(grayscale: true)
-//            viewController.planes = sketchView.sketch.planes
-            //            viewController.
-            // pass data to next view
         }
     }
     
