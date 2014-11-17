@@ -86,7 +86,7 @@ class Plane: Printable, Hashable
             // holes are black, and extruded to prevent z-fighting
             if(self.kind == .Hole){
                 shape = SCNShape(path: path, extrusionDepth: 2)
-                material.diffuse.contents = UIColor.whiteColor()
+                material.diffuse.contents = UIColor.blackColor()
             }
             else{
                 // planes are white (for now, random color)
