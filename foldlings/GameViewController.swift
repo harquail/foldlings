@@ -16,7 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
-    
+
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
@@ -29,15 +29,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    //    @IBAction func CardsButtonClicked(sender: UIButton) {
-    //        println("CARDS CLICKED")
-    ////        Archivist.appendSketchToFile(sketchView.sketch)
-    //        self.dismissViewControllerAnimated(true, completion: nil)
-    //    }
-    
-    @IBAction func printButton (sender: UIButton){
-        
         
     @IBAction func printButton (sender: UIButton){
         popupShare(bgImage, xposition:273)
@@ -63,7 +54,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        makeSceneToTestHinges()
+//        makeSceneToTestHinges()
         makeScene()
         
     }
@@ -75,7 +66,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     
     func makeSceneToTestHinges(){
-        
+    
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -98,9 +89,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         ambientLightNode.light!.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
-        
-        
-        
+   
         //makes a rectangular node for testing
         func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
             
@@ -120,41 +109,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let dynamism = dynamic ? SCNPhysicsBodyType.Dynamic: SCNPhysicsBodyType.Kinematic
             
             node.physicsBody = SCNPhysicsBody(type: dynamism, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
-            
+        
             return node
         }
         
         
         
         
+
         
         
-        
-        //        let zerozero = CGPointMake(0, 0)
-        //        let zeroone = CGPointMake(0, 1)
-        //        let onezero = CGPointMake(1, 0)
-        //        let oneone = CGPointMake(1, 1)
-        //
-        //        let topEdge = Edge.straightEdgeBetween(zerozero, end: zeroone, kind: .Cut)
-        //        let rightEdge = Edge.straightEdgeBetween(zeroone, end: onezero, kind: .Cut)
-        //        let bottomEdge = Edge.straightEdgeBetween(onezero, end: oneone, kind: .Cut)
-        //        let leftEdge = Edge.straightEdgeBetween(oneone, end: zerozero, kind: .Cut)
-        //        let plane = Plane(edges: [topEdge,rightEdge,bottomEdge,leftEdge])
-        
+//        let zerozero = CGPointMake(0, 0)
+//        let zeroone = CGPointMake(0, 1)
+//        let onezero = CGPointMake(1, 0)
+//        let oneone = CGPointMake(1, 1)
+//
+//        let topEdge = Edge.straightEdgeBetween(zerozero, end: zeroone, kind: .Cut)
+//        let rightEdge = Edge.straightEdgeBetween(zeroone, end: onezero, kind: .Cut)
+//        let bottomEdge = Edge.straightEdgeBetween(onezero, end: oneone, kind: .Cut)
+//        let leftEdge = Edge.straightEdgeBetween(oneone, end: zerozero, kind: .Cut)
+//        let plane = Plane(edges: [topEdge,rightEdge,bottomEdge,leftEdge])
         
         
+
         
         let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
         
         let friend = rectangularNode(color: UIColor.blueColor(), CGPointMake(0.0,1), 0, CGSizeMake(5, 1), dynamic:true)
         
         let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
-        
+
         let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, -1, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 1, 0))
         
         
-        //        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
-        
+//        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
+
         
         scene.physicsWorld.addBehavior(hinge)
         
@@ -166,12 +155,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             scene.rootNode.addChildNode(node)
         }
         
-        //        rootRect.rotation.
+//        rootRect.rotation.
         
-        //        friend.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotate")
+//        friend.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotate")
+
         
-        
-        //        scene.rootNode.addChildNode(node)
+//        scene.rootNode.addChildNode(node)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -188,10 +177,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
     }
-    
+
     
     func makeScene(){
-        
+    
         // create a new scene
         
         // create and add a camera to the scene
@@ -222,9 +211,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             
             let node = plane.lazyNode()
-            //            println("plane:")
-            //            println(node.debugDescription)
-            
+//            println("plane:")
+//            println(node.debugDescription)
+
             
             
             
@@ -241,11 +230,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             // add node to parent (parent's translation/rotation affect this one
             parent.addChildNode(node)
-            
+
             node.addAnimation(fadeIn(), forKey: "fade in")
             
-            //            showPlaneCorners(plane, node: node)
-            
+//            showPlaneCorners(plane, node: node)
+
             
             //println(node)
             return node;
@@ -261,21 +250,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             var parent = scene.rootNode
             // if plane is a hole, it's parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole){
-                
+            
                 println("hole found")
                 
                 let parentPlane = plane.containerPlane(planes.planes)
-                
-                if parentPlane != nil{
                     
+                if parentPlane != nil{
+                 
                     let n = plane.lazyNode()
                     
                     n.transform = SCNMatrix4Identity
                     n.scale = SCNVector3Make(1.0, 1.0, 1.0)
                     
                     parent = parentPlane!.lazyNode()
-                    
-                    
+
+                
                 }
             }
             
@@ -283,9 +272,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             addPlaneToScene(plane,parent,move)
         }
         
-        //        let top = planes.topPlane!
-        //        visited.append(top)
-        //        getJoint(top, hill: false)
+//        let top = planes.topPlane!
+//        visited.append(top)
+//        getJoint(top, hill: false)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -303,7 +292,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
         
+        
+        println("# planes")
+        println(planes.planes.count)
+    
+        
+        let plane1 = planes.planes[0]
+        let plane2 = planes.planes[1]
+        
+        plane2.lazyNode().physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: plane2.lazyNode().geometry!, options: nil))
 
+        //TODO: change back
+        addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
+        
+        
+        
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
@@ -362,8 +365,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             node.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
             
             //pivots around top edge
-            //            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
-            //            http://ronnqvi.st/3d-with-scenekit/
+//            https://stackoverflow.com/questions/24734200/swift-how-to-change-the-pivot-of-a-scnnode-object
+//            http://ronnqvi.st/3d-with-scenekit/
             
             // LIESSSSS
             node.pivot = SCNMatrix4MakeTranslation(0, distance.y/2, 0)
@@ -419,7 +422,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         if plane == bottom || contains(visited, plane){
             if plane == bottom {
-                addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
+            addJointBetweenPlanes(plane, planeB: bottom, angleLimit: 0.0)
             }
             return
         }
@@ -432,8 +435,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             getJoint(p, hill: !hill)
         }
     }
-    
-    
+
+
     //https://developer.apple.com/library/mac/documentation/SceneKit/Reference/SCNPhysicsHingeJoint_Class/
     /// adds a physics joint between two planes that share an edge
     func addJointBetweenPlanes(planeA:Plane, planeB:Plane, angleLimit:Float){
@@ -458,14 +461,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let anchorInA = startPoint
         let anchorInB = startPoint
         
+//        let startA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+//        let startB = planeB.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
+//
+
+
+        // do the thing
+//        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
+
         
-        let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
+                let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
         
         
-        
+
         
         scene.physicsWorld.addBehavior(hinge)
-        
+
     }
     
     /// function to show plane corners and shows how to get the anchor points
@@ -485,7 +496,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func makeSphere(#atPoint: SCNVector3) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
-        //        sphereGeometry
+//        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
     }
@@ -496,6 +507,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
             
+//            viewController.setButtonBG(sketchView.previewImage())
+//            viewController.laserImage = sketchView.bitmap(grayscale: true)
+//            viewController.planes = sketchView.sketch.planes
+            //            viewController.
+            // pass data to next view
         }
     }
     
