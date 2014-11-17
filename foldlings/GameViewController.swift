@@ -189,14 +189,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //                println("not move")
                 node.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
             }
-            
+
+
+            let masterSphere = parentSphere(plane,node: node)
             // add node to parent (parent's translation/rotation affect this one
-            parent.addChildNode(node)
+            masterSphere.addChildNode(node)
+
+            node.position = SCNVector3Make(node.position.x - masterSphere.position.x, node.position.y - masterSphere.position.y, node.position.z - masterSphere.position.z)
+            
 
             node.addAnimation(fadeIn(), forKey: "fade in")
             
 //            showNodePivot(node)
-            showPlaneCorners(plane, node: node)
+//            showPlaneCorners(plane, node: node)
+
+            
             
             
             if(i%2 == 0){
@@ -421,13 +428,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
     }
 
-    func parentSphere(plane:Plane) -> SCNNode {
+    func parentSphere(plane:Plane, node:SCNNode) -> SCNNode {
         
         let bottom = plane.bottomFold()!
     
-        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
-        let masterSphere = makeSphere(atPoint: startPoint)
-        
+            let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
+            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+
+//        let startPoint = SCNVector3Make(Float(bottom.start.x), Float(bottom.start.y), Float(0.0))
+        let masterSphere = makeSphere(atPoint: anchorStart)
+
         return masterSphere
         
     }
