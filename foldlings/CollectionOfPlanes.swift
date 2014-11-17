@@ -61,9 +61,11 @@ class CollectionOfPlanes: Printable, Hashable {
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold || edge.kind == .Tab {
                         for p in self.planes {
-                            for e in p.edges! {
-                                if edge ~= e  {
-                                    self.adjacency[plane]!.append(p)
+                            if p != plane { //don't add ourselves in
+                                for e in p.edges! {
+                                    if edge ~= e  {
+                                        self.adjacency[plane]!.append(p)
+                                    }
                                 }
                             }
                         }
