@@ -189,7 +189,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let node = plane.lazyNode()
             
-            changePivot(node)
+//            changePivot(node)
 //            println("plane:")
 //            println(node.debugDescription)
             
