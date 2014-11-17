@@ -376,7 +376,7 @@ class Sketch : NSObject,NSCoding  {
                 if p != nil {
                     if !p!.hasEdge(bEdge1) {
                         plane = p
-                        bottomFold = p!.bottomFold()
+                        bottomFold = p!.bottomFold(tab: false)
                     }
                 }
             }
