@@ -2,8 +2,6 @@
 //  GameViewController.swift
 //  foldlings
 //
-//  Created by nook on 10/6/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 import UIKit
@@ -28,24 +26,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
-        
         parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
-    
-//    @IBAction func CardsButtonClicked(sender: UIButton) {
-//        println("CARDS CLICKED")
-////        Archivist.appendSketchToFile(sketchView.sketch)
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
+        
     @IBAction func printButton (sender: UIButton){
-        
-        
         popupShare(bgImage, xposition:273)
-        
-        
     }
     
     @IBAction func laserButton (sender: UIButton){
@@ -56,7 +42,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
-        
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController!.sourceView = self.view
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
@@ -73,6 +58,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         makeScene()
         
     }
+
+    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval)
+    {
+        
+    }
+
     
     func makeSceneToTestHinges(){
     
@@ -99,8 +90,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
         
    
-        
-        
         //makes a rectangular node for testing
         func rectangularNode(#color:UIColor,origin:CGPoint,zPosition:Float,size:CGSize, #dynamic:Bool)->SCNNode{
             
@@ -123,25 +112,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
             return node
         }
-        
-        
-        
-        
-
-        
-        
-//        let zerozero = CGPointMake(0, 0)
-//        let zeroone = CGPointMake(0, 1)
-//        let onezero = CGPointMake(1, 0)
-//        let oneone = CGPointMake(1, 1)
-//        
-//        let topEdge = Edge.straightEdgeBetween(zerozero, end: zeroone, kind: .Cut)
-//        let rightEdge = Edge.straightEdgeBetween(zeroone, end: onezero, kind: .Cut)
-//        let bottomEdge = Edge.straightEdgeBetween(onezero, end: oneone, kind: .Cut)
-//        let leftEdge = Edge.straightEdgeBetween(oneone, end: zerozero, kind: .Cut)
-//        let plane = Plane(edges: [topEdge,rightEdge,bottomEdge,leftEdge])
-        
-        
 
         
         let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
@@ -165,14 +135,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         for node in nodes{
             scene.rootNode.addChildNode(node)
         }
-        
-//        rootRect.rotation.
-        
-//        friend.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "rotate")
 
-        
-//        scene.rootNode.addChildNode(node)
-        
         // retrieve the SCNView
         let scnView = self.view as SCNView
         
@@ -276,7 +239,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                     parent = parentPlane!.lazyNode()
 
                 
-                }                
+                }
             }
             
             var move: Bool = true
@@ -289,6 +252,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
+        scnView.delegate = self
         
         // set the scene to the view
         scnView.scene = scene
@@ -301,22 +265,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
-        
-        
-        println("# planes")
-        println(planes.planes.count)
-    
-        
-        let plane1 = planes.planes[0]
-        let plane2 = planes.planes[1]
-        
-        plane2.lazyNode().physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic, shape: SCNPhysicsShape(geometry: plane2.lazyNode().geometry!, options: nil))
 
-        //TODO: change back
-        addJointBetweenPlanes(plane1, planeB: plane2, angleLimit: ninetyDegrees)
-        
-        
-        
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
@@ -475,17 +424,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
 //        let startA = planeA.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
 //        let startB = planeB.lazyNode().convertPosition(startPoint, toNode: scene.rootNode)
-//        
+//
 
 
         // do the thing
 //        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
 
         
-                let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
-        
-        
-
+        let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
         
         scene.physicsWorld.addBehavior(hinge)
 
@@ -511,6 +457,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
+    }
+
+///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+//        sphereGeometry
+        sphereNode.position = atPoint
+        inNode.addChildNode(sphereNode)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
