@@ -59,6 +59,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
 
+    /// this runs every graphics update and can be used to animate stuffs
     func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval)
     {
         
@@ -102,33 +103,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             node.geometry = shape
             node.geometry?.firstMaterial = material
-            
             node.position = SCNVector3Make(node.position.x, node.position.y, node.position.z + zPosition)
             
-            
             let dynamism = dynamic ? SCNPhysicsBodyType.Dynamic: SCNPhysicsBodyType.Kinematic
-            
             node.physicsBody = SCNPhysicsBody(type: dynamism, shape: SCNPhysicsShape(geometry: node.geometry!, options: nil))
         
             return node
         }
 
-        
         let rootRect = rectangularNode(color: UIColor.redColor(), CGPointMake(0.0, 0.0), 0, CGSizeMake(5, 1), dynamic:false)
-        
         let friend = rectangularNode(color: UIColor.blueColor(), CGPointMake(0.0,1), 0, CGSizeMake(5, 1), dynamic:true)
-        
         let friendofAFriend = rectangularNode(color: UIColor.greenColor(), CGPointMake(0.0,2), 0, CGSizeMake(5, 1), dynamic:true)
-
         let hinge = SCNPhysicsHingeJoint(bodyA: rootRect.physicsBody!, axisA: SCNVector3Make(1, 0, 0), anchorA: SCNVector3Make(0, -1, 0), bodyB: friend.physicsBody!, axisB: SCNVector3Make(1, 0, 0), anchorB: SCNVector3Make(0, 1, 0))
         
         
 //        rootRect.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(90))
-
-        
         scene.physicsWorld.addBehavior(hinge)
-        
-        
         
         let nodes = [rootRect, friend]
         
@@ -138,16 +128,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         // retrieve the SCNView
         let scnView = self.view as SCNView
-        
         // set the scene to the view
         scnView.scene = scene
-        
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
-        
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
-        
         // configure the view
         scnView.backgroundColor = UIColor.blackColor()
     }
@@ -181,15 +167,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         
         /// subfunction; adds a plane to the scene with a given parent
-        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode{
+        func addPlaneToScene(plane:Plane, parent:SCNNode, move: Bool) -> SCNNode {
             
             
             let node = plane.lazyNode()
-//            println("plane:")
-//            println(node.debugDescription)
-
-            
-            
             
             if move == true
             {
@@ -208,9 +189,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             node.addAnimation(fadeIn(), forKey: "fade in")
             
 //            showPlaneCorners(plane, node: node)
-
-            
-            //println(node)
             return node;
         }
         
@@ -345,18 +323,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
     
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     // sets preview button image
     func setButtonBG(image:UIImage){
-        
         bgImage = image;
-        
     }
     
     func previewImage() -> UIImage{
@@ -367,9 +341,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
         var img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        
-        
-        
         return img
     }
     
@@ -415,7 +386,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         makeSphere(atPoint: planeA.lazyNode().convertPosition(axisInA, toNode: scene.rootNode))
         
-        
         // anchor is the start point
         let anchorInA = startPoint
         let anchorInB = startPoint
@@ -425,10 +395,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //
 
 
-        // do the thing
 //        let hinge = SCNPhysicsHingeJoint(bodyA: planeA.lazyNode().physicsBody!, axisA: axisInA, anchorA: anchorInA, bodyB: planeB.lazyNode().physicsBody!, axisB: axisInB, anchorB: anchorInB)
-
-        
         let hinge = SCNPhysicsHingeJoint(body: planeA.lazyNode().physicsBody!, axis: axisInA, anchor: anchorInA)
         
         scene.physicsWorld.addBehavior(hinge)
@@ -452,7 +419,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func makeSphere(#atPoint: SCNVector3) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
-//        sphereGeometry
         sphereNode.position = atPoint
         scene.rootNode.addChildNode(sphereNode)
     }
@@ -461,7 +427,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
         let sphereGeometry = SCNSphere(radius: 0.15)
         let sphereNode = SCNNode(geometry: sphereGeometry)
-//        sphereGeometry
         sphereNode.position = atPoint
         inNode.addChildNode(sphereNode)
     }
@@ -471,12 +436,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
-            
-//            viewController.setButtonBG(sketchView.previewImage())
-//            viewController.laserImage = sketchView.bitmap(grayscale: true)
-//            viewController.planes = sketchView.sketch.planes
-            //            viewController.
-            // pass data to next view
         }
     }
     
