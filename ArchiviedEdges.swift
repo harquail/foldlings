@@ -17,7 +17,7 @@ var edges: [Edge] = []
 var folds: [Edge] = []
 var tabs: [Edge] = []
 
-class func appendToFile(sketch:Sketch)
+class func appendToFile(edges:ArchivedEdges)
 {
     var data = NSMutableDictionary()
     data.setObject(self, forKey: "edges")
@@ -26,23 +26,10 @@ class func appendToFile(sketch:Sketch)
     let path = paths.stringByAppendingPathComponent("data.plist")
     var fileManager = NSFileManager.defaultManager()
     
-    
-    //    println((data.objectForKey("sketches") as NSMutableDictionary).count)
-    
-    //    print(data.objectForKey("sketches"));
-    
     let pathToDesktop = "/Users/nook/Desktop/data.plist"
     println(pathToDesktop)
-    
-    
-    
-    //    pathToDesktop = NSString stringWithFormat:@"/Users/%@/Desktop/text.txt", NSUserName();
-    
-    //    var err = NSError()
+
     NSKeyedArchiver.archiveRootObject(data, toFile: pathToDesktop)
-    //    println(data.writeToFile(path, atomically: false))
-    
-    
 }
 
 
