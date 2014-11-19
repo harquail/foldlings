@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22061CA21A1B18180030079D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA11A1B18180030079D /* Queue.swift */; };
+		22061CA41A1B182F0030079D /* QNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA31A1B182F0030079D /* QNode.swift */; };
 		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
 		223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */; };
 		224501141A0F334200E18F82 /* CollectionOfPlanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224501131A0F334200E18F82 /* CollectionOfPlanes.swift */; };
@@ -74,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22061CA11A1B18180030079D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		22061CA31A1B182F0030079D /* QNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNode.swift; sourceTree = "<group>"; };
 		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
 		223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGPathElementObj.m; path = ../CGPathElementObj.m; sourceTree = "<group>"; };
@@ -158,9 +162,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22061CA01A1B17530030079D /* SwiftStructures */ = {
+			isa = PBXGroup;
+			children = (
+				22061CA31A1B182F0030079D /* QNode.swift */,
+				22061CA11A1B18180030079D /* Queue.swift */,
+			);
+			name = SwiftStructures;
+			sourceTree = "<group>";
+		};
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				22061CA01A1B17530030079D /* SwiftStructures */,
 				22D0E8041A169F3200C9ECAA /* ExSwift */,
 				225094F01A0CA21000E754CA /* BezierSimple.h */,
 				225094F11A0CA21000E754CA /* BezierSimple.m */,
@@ -458,6 +472,7 @@
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				22061CA21A1B18180030079D /* Queue.swift in Sources */,
 				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
 				F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */,
 				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
@@ -467,6 +482,7 @@
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
 				F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */,
 				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
+				22061CA41A1B182F0030079D /* QNode.swift in Sources */,
 				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
 				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
 			);

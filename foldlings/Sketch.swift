@@ -382,7 +382,12 @@ class Sketch : NSObject  {
             }
             if bottomFold != nil {
                 
-                if bottomFold!.start.y == drivingEdge.start.y {
+                if bottomFold!.start.y == drivingEdge.start.y &&
+                    (bottomFold!.start != drivingEdge.start) &&
+                    (bottomFold!.end != drivingEdge.start) &&
+                    (bottomFold!.start != drivingEdge.end) &&
+                    (bottomFold!.end != drivingEdge.end)
+                {
                     println("removing fold in middle of planes")
                     removeEdge(bottomFold!)
                     retB = true

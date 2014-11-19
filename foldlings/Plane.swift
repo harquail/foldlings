@@ -79,13 +79,13 @@ class Plane: Printable, Hashable
             
             // make the node
             node = SCNNode()
-            var shape = SCNShape(path: path, extrusionDepth: 1)
+            var shape = SCNShape(path: path, extrusionDepth: 5)
             
             let material = SCNMaterial()
             
             // holes are black, and extruded to prevent z-fighting
             if(self.kind == .Hole){
-                shape = SCNShape(path: path, extrusionDepth: 2)
+                shape = SCNShape(path: path, extrusionDepth: 10)
                 material.diffuse.contents = UIColor.blackColor()
             }
             else{
@@ -121,7 +121,6 @@ class Plane: Printable, Hashable
                 }
             }
         }
-        
         return minEdge
     }
     
@@ -210,26 +209,16 @@ class Plane: Printable, Hashable
         for (i,potentialParent) in enumerate(planes){
             
             //skip it if we're testing against ourselves
-            if potentialParent == self{
-            continue
+            if potentialParent == self {
+                continue
             }
             
             for edge in self.edges{
-            
                 if(potentialParent.path.containsPoint(edge.start)){
-                
-                    println(potentialParent)
-                    println()
-
-                    
-                return potentialParent
-                    
+                    return potentialParent
                 }
-                
             }
-            
         }
-    
         return nil
     }
     
