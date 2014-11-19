@@ -36,6 +36,8 @@
 		22D0E8031A169F2400C9ECAA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F91A169F2400C9ECAA /* String.swift */; };
 		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
 		8874A7121A05B61F00F78283 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874A7111A05B61F00F78283 /* Plane.swift */; };
+		F10FACC01A1D2774006541BF /* ArchiviedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchiviedEdges.swift */; };
+		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
@@ -107,6 +109,8 @@
 		22D0E7F91A169F2400C9ECAA /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
 		8874A7111A05B61F00F78283 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
+		F10FACBF1A1D2774006541BF /* ArchiviedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchiviedEdges.swift; path = ../ArchiviedEdges.swift; sourceTree = "<group>"; };
+		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +216,7 @@
 				22D0E7F71A169F2400C9ECAA /* Range.swift */,
 				22D0E7F81A169F2400C9ECAA /* Sequence.swift */,
 				22D0E7F91A169F2400C9ECAA /* String.swift */,
+				F10FACC11A1D2E98006541BF /* CGPoint.swift */,
 			);
 			name = ExSwift;
 			sourceTree = "<group>";
@@ -247,6 +252,7 @@
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
 				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
+				F10FACBF1A1D2774006541BF /* ArchiviedEdges.swift */,
 				F1B9AE791A06B37D00265AAE /* data.plist */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				22C0D6891A04965C00D521CA /* Bezier.swift */,
@@ -344,11 +350,11 @@
 				TargetAttributes = {
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = ZYN62B4489;
+						DevelopmentTeam = 66J7R72XF5;
 					};
 					F17C93DE19E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = ZYN62B4489;
+						DevelopmentTeam = 66J7R72XF5;
 						TestTargetID = F17C93C719E24BEC00BB77F1;
 					};
 				};
@@ -448,6 +454,7 @@
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
 				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
+				F10FACC01A1D2774006541BF /* ArchiviedEdges.swift in Sources */,
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
@@ -458,6 +465,7 @@
 				8874A7121A05B61F00F78283 /* Plane.swift in Sources */,
 				22C0D68A1A04965C00D521CA /* Bezier.swift in Sources */,
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
+				F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */,
 				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
 				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
 				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,

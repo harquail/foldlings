@@ -10,7 +10,7 @@ import CoreGraphics
 import UIKit
 
 
-class Sketch : NSObject,NSCoding  {
+class Sketch : NSObject  {
     
     @IBOutlet var previewButton:UIButton?
     
@@ -53,50 +53,50 @@ class Sketch : NSObject,NSCoding  {
         
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        
-        
-        aCoder.encodeObject(edges, forKey: "edges")
-        aCoder.encodeObject(folds, forKey: "folds")
-        
-        //convert CGPoints to NSValues
-        var adjsWithValues :[NSValue:Edge] = Dictionary<NSValue,Edge>()
-        
-        for (point,edge) in adjacency{
-            //TODO: wooppsssyyy
-            //            adjsWithValues[NSValue(CGPoint:point)]=edge
-        }
-        
-        aCoder.encodeObject(adjsWithValues, forKey: "adj")
-        aCoder.encodeObject(drivingEdge,forKey:"driving")
-        aCoder.encodeObject(bEdge1,forKey:"bEdge1")
-        aCoder.encodeObject(bEdge2,forKey:"bEdge2")
-        aCoder.encodeObject(bEdge3,forKey:"bEdge3")
-        aCoder.encodeObject(bEdge4,forKey:"bEdge4")
-        aCoder.encodeObject(name, forKey:"name")
-        
-    }
+//    func encodeWithCoder(aCoder: NSCoder) {
+//        
+//        
+//        aCoder.encodeObject(edges, forKey: "edges")
+//        aCoder.encodeObject(folds, forKey: "folds")
+//        
+//        //convert CGPoints to NSValues
+//        var adjsWithValues :[NSValue:Edge] = Dictionary<NSValue,Edge>()
+//        
+//        for (point,edge) in adjacency{
+//            //TODO: wooppsssyyy
+//            //            adjsWithValues[NSValue(CGPoint:point)]=edge
+//        }
+//        
+//        aCoder.encodeObject(adjsWithValues, forKey: "adj")
+//        aCoder.encodeObject(drivingEdge,forKey:"driving")
+//        aCoder.encodeObject(bEdge1,forKey:"bEdge1")
+//        aCoder.encodeObject(bEdge2,forKey:"bEdge2")
+//        aCoder.encodeObject(bEdge3,forKey:"bEdge3")
+//        aCoder.encodeObject(bEdge4,forKey:"bEdge4")
+//        aCoder.encodeObject(name, forKey:"name")
+//        
+//    }
     
-    required init(coder aDecoder: NSCoder) {
-        drawingBounds = CGRectMake(0, 0, 0, 0)
-        self.edges = aDecoder.decodeObjectForKey("edges") as Array
-        self.folds = aDecoder.decodeObjectForKey("folds") as Array
-        
-        //convert NSValues to CGPoints
-        var adjsWithValues :[NSValue:Edge] = aDecoder.decodeObjectForKey("adj") as Dictionary<NSValue,Edge>
-        for (p,e) in adjsWithValues{
-            //TODO: woopssyy
-            //            adjacency[p.CGPointValue()]=e
-        }
-        
-        drivingEdge = aDecoder.decodeObjectForKey("driving") as Edge
-        bEdge1 = aDecoder.decodeObjectForKey("bEdge1") as Edge
-        bEdge2 = aDecoder.decodeObjectForKey("bEdge2") as Edge
-        bEdge3 = aDecoder.decodeObjectForKey("bEdge3") as Edge
-        bEdge4 = aDecoder.decodeObjectForKey("bEdge4") as Edge
-        name = aDecoder.decodeObjectForKey("name") as String
-        
-    }
+//    required init(coder aDecoder: NSCoder) {
+//        drawingBounds = CGRectMake(0, 0, 0, 0)
+//        self.edges = aDecoder.decodeObjectForKey("edges") as Array
+//        self.folds = aDecoder.decodeObjectForKey("folds") as Array
+//        
+//        //convert NSValues to CGPoints
+//        var adjsWithValues :[NSValue:Edge] = aDecoder.decodeObjectForKey("adj") as Dictionary<NSValue,Edge>
+//        for (p,e) in adjsWithValues{
+//            //TODO: woopssyy
+//            //            adjacency[p.CGPointValue()]=e
+////        }
+//    
+//        drivingEdge = aDecoder.decodeObjectForKey("driving") as Edge
+//        bEdge1 = aDecoder.decodeObjectForKey("bEdge1") as Edge
+//        bEdge2 = aDecoder.decodeObjectForKey("bEdge2") as Edge
+//        bEdge3 = aDecoder.decodeObjectForKey("bEdge3") as Edge
+//        bEdge4 = aDecoder.decodeObjectForKey("bEdge4") as Edge
+//        name = aDecoder.decodeObjectForKey("name") as String
+//        
+//    }
     
     
     /// add an already-constructed edge

@@ -97,7 +97,7 @@ func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIB
     var minI = 0
     for (var i = 0; i < points.count; i++)
     {
-        let d = dist(points[i], point)
+        let d = CGPointGetDistance(points[i], point)
         if (d < mindist) {
             mindist = d
             minI = i
@@ -174,7 +174,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
         var minI = 0
         for (var i = 0; i < points.count; i++)
         {
-            let d = dist(points[i], point)
+            let d = CGPointGetDistance(points[i], point)
             if (d < mindist) {
                 mindist = d
                 minI = i

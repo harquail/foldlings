@@ -343,7 +343,7 @@ class SketchView: UIView {
         }
         
         //ignore intersections if we're just starting a line...
-        if ( dist(tempStart, tempEnd) > kMinLineLength)
+        if ( CGPointGetDistance(tempStart, tempEnd) > kMinLineLength)
         {
             // test for self intersections
             if let np = Edge.hitTest(path, point:tempEnd) {
