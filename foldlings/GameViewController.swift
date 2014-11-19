@@ -24,7 +24,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let fourtyFiveDegrees = Float(0.25*M_PI)
     var theOneSphere = SCNNode()
 
-    var visited: [Plane] = []
+    var visited: [Plane] = [Plane]()
+    var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -121,10 +122,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
 
         
-        visited = []
-        if var topPlane = planes.topPlane {
-            createPlanesBFS(topPlane)
+        visited = [Plane]()
+        notMyChild = [Int: [Plane]]()
+        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
+            scene.rootNode.addChildNode(topPlaneSphere)
         }
+
         
         // make bottomPlane manually
         if var bottomPlane = planes.bottomPlane {
@@ -166,151 +169,66 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
     
     
-    ///breadth first search
-    /// walk tree, save path, record fold and hill or valley, place hinge into visited
-    func createPlanesBFS(plane:Plane) {
-        
+    // if plane is second plane, don't add physics body
+    // walk tree, save path, record fold and hill or valley, place hinge into visited
+    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
+    {
+        if notMyChild[recurseCount] == nil {
+            notMyChild[recurseCount] = [Plane]()
+        }
         let bottom = planes.bottomPlane!
-        visited.append(bottom) // never consider bottom
         
-        
-        let colors:[UIColor] = [
-            UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.50, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.25, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-            UIColor(hue: 1.0, saturation: 0.0, brightness: 1.0, alpha: 0.8)
-        ]
-        
-        //new queue
-        var graphQueue: Queue<Plane> = Queue<Plane>()
-        
-        //queue a starting plane
-        graphQueue.enQueue(plane)
-        
-        var level = 0
-        var hill = false
-        var lastSphere : SCNNode = scene.rootNode
-        
-        while(!graphQueue.isEmpty()) {
-            println("level: \(level)")
-
-            //traverse the next queued vertex
-            let nplane = graphQueue.deQueue() as Plane!
-            let nplanenode = nplane.lazyNode()
-            let nsphere = parentSphere(nplane, node:nplanenode, bottom: (level == 0))
-            
-            //TODO: check undoParentTranslate look at convertPosition for Node
-            nsphere.addChildNode(nplanenode)
-            undoParentTranslate(nsphere, child: nplanenode) //imp
-            lastSphere.addChildNode(nsphere)
-            undoParentTranslate(lastSphere, child: nsphere) //imp
-
-            
-            let m = SCNMaterial()
-            m.diffuse.contents = colors[level]
-            nplanenode.geometry?.firstMaterial = m
-            nsphere.geometry?.firstMaterial = m
-
-            // different based on orientation
-            if hill {
-                nsphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-            } else {
-                nsphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-            }
-
-            //add unvisited  planes
-            for neighborPlane in planes.adjacency[nplane]! {
-                if !contains(visited, neighborPlane) {
-                    println("adding plane to queue..")
-                    graphQueue.enQueue(neighborPlane)
-                }
-            }
-
-            lastSphere = nsphere
-            level++
-            visited.append(nplane)
-            hill = !hill
+        if plane == bottom {
+            println("bottomed out")
+            return nil
+        }
+        if contains(visited, plane) {
+            println("been here")
+            return nil
         }
         
-        println("graph traversal complete..")
+        // functionality here
+        var node = plane.lazyNode()
+        
+        node.addAnimation(fadeIn(), forKey: "fade in")
+        
+        var useBottom = (recurseCount == 0)
+        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
+        plane.masterSphere = masterSphere
+        masterSphere.addChildNode(node)
+        undoParentTranslate(masterSphere, child: node)
+        
+        let m = SCNMaterial()
+        m.diffuse.contents = plane.color
+        node.geometry?.firstMaterial = m
+        
+        // different based on orientation
+        if hill {
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+        } else {
+            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+        }
+        
+        
+        var adj = planes.adjacency[plane]!
+        visited.append(plane)
+        notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+        // loop through the adj starting with top plane
+        for p in adj
+        {
+            // check previous recurse levels so we don't go BACK UP
+            if recurseCount == 0 || !flattenUntil(notMyChild, level: recurseCount).contains(p) {
+                let rc = recurseCount + 1
+                if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
+                    // child hasn't reached bottom so do something to it
+                    masterSphere.addChildNode(childSphere)
+                    undoParentTranslate(masterSphere, child: childSphere)
+
+                }
+            }
+        }
+        return masterSphere
     }
-    
-    
-//    // if plane is second plane, don't add physics body
-//    // walk tree, save path, record fold and hill or valley, place hinge into visited
-//    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
-//    {
-//        let bottom = planes.bottomPlane!
-//        let colors:[UIColor] = [
-//            UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.50, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.25, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
-//            UIColor(hue: 1.0, saturation: 0.0, brightness: 1.0, alpha: 0.8)
-//        ]
-//        
-//        if plane == bottom {
-//            println("bottomed out")
-//            return nil
-//        }
-//        if contains(visited, plane) {
-//            println("been here")
-//            return nil
-//        }
-//        
-//        // functionality here
-//        var node = plane.lazyNode()
-//        
-//        if(plane.kind != .Hole){
-//            node.addAnimation(fadeIn(), forKey: "fade in")
-//        }
-//        var useBottom = (recurseCount == 0)
-//        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
-//        plane.masterSphere = masterSphere
-//        masterSphere.addChildNode(node)
-//        undoParentTranslate(masterSphere, child: node)
-//        
-//        let m = SCNMaterial()
-//        m.diffuse.contents = colors[recurseCount]
-//        node.geometry?.firstMaterial = m
-//        masterSphere.geometry?.firstMaterial = m
-//        
-//        // different based on orientation
-//        if hill {
-////            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-//        } else {
-////            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-//        }
-//        
-//        
-//        var adj = planes.adjacency[plane]!
-//        visited.append(plane)
-//        // loop through the adj starting with top plane
-//        for p in adj
-//        {
-//            let rc = recurseCount + 1
-//            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
-//                // child hasn't reached bottom so do something to it
-//                masterSphere.addChildNode(childSphere)
-//                undoParentTranslate(masterSphere, child: childSphere)
-//
-//            }
-//        }
-//        return masterSphere
-//    }
     
     
     /// fade in animation makes it less jarring
@@ -320,6 +238,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         fadeIn.fromValue = 0.0;
         fadeIn.toValue = 1.0;
         return fadeIn
+    }
+    
+    ///returns a list from dict including all previous levels up to but including the one
+    func flattenUntil(adj: [Int:[Plane]], level:Int) -> [Plane] {
+        var list = [Plane]()
+        for (k,v) in adj
+        {
+            if k < level-1 {
+                list = list.union(v)
+            }
+        }
+        return list
     }
     
     
@@ -375,6 +305,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     func showNodePivot(node:SCNNode) {
         makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+        
     }
     
     
@@ -406,9 +337,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let anchorStart = node.convertPosition(startPoint, toNode: nil)
         let masterSphere = makeSphere(atPoint: anchorStart)
         
-//        let m = SCNMaterial()
-//        m.diffuse.contents = UIColor.clearColor()
-//        masterSphere.geometry?.firstMaterial = m
+        let m = SCNMaterial()
+        m.diffuse.contents = UIColor.clearColor()
+        masterSphere.geometry?.firstMaterial = m
 
         return masterSphere
         
