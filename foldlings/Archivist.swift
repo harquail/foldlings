@@ -22,15 +22,12 @@ class Archivist{
     
 //    print(data.objectForKey("sketches"));
     
-    let pathToDesktop = "/Users/nook/Desktop/data.plist"
-    println(pathToDesktop)
-    
-    
+//    let pathToDesktop = "/Users/nook/Desktop/data.plist"
     
 //    pathToDesktop = NSString stringWithFormat:@"/Users/%@/Desktop/text.txt", NSUserName();
 
 //    var err = NSError()
-    NSKeyedArchiver.archiveRootObject(data, toFile: pathToDesktop)
+//    NSKeyedArchiver.archiveRootObject(data, toFile: pathToDesktop)
 //    println(data.writeToFile(path, atomically: false))
  
     
