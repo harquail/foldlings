@@ -19,7 +19,7 @@ class SketchView: UIView {
     }
     
     // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
-    var simpleMode = true
+    var simpleMode = false
     
     
     var path: UIBezierPath! //currently drawing path
@@ -296,7 +296,7 @@ class SketchView: UIView {
     func erase(touchPoint: CGPoint) {
         if var (edge, np) = sketch.edgeHitTest(touchPoint)
         {
-            if edge != nil && !edge!.isMaster {
+            if edge != nil && ( (simpleMode && !edge!.isMaster) || !simpleMode ){
                 sketch.removeEdge(edge!)
                 forceRedraw()
             }

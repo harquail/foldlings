@@ -114,14 +114,14 @@ class Plane: Printable, Hashable
     /// the fold with minimum y height in a plane
     func bottomFold(tab:Bool = true) -> Edge? {
         
-        let maxPoint = CGPointMake(CGFloat.max, CGFloat.max)
         var minEdge:Edge? = nil
         
-        var minY:CGFloat = CGFloat.max
-        for edge in edges{
+        var minY:CGFloat = 0.0
+        for edge in edges {
             if(edge.kind ==  .Fold || (tab && edge.kind == .Tab) ) {
-                if(edge.start.y < minY) {
+                if(edge.start.y > minY) {
                     minEdge = edge
+                    minY = edge.start.y
                 }
             }
         }
@@ -129,16 +129,16 @@ class Plane: Printable, Hashable
     }
     
     /// the fold with maximum y height in a plane
-    func topFold() -> Edge? {
+    func topFold(tab:Bool = true) -> Edge? {
         
-        let minPoint = CGPointMake(CGFloat.min, CGFloat.min)
-        var maxEdge:Edge? = nil // = Edge(start:  minPoint, end: minPoint, path: UIBezierPath())
+        var maxEdge:Edge? = nil
         
-        var maxY:CGFloat = 0.0
-        for edge in edges{
-            if(edge.kind == .Fold  || edge.kind == .Tab){
-                if(edge.start.y > maxY) {
+        var maxY:CGFloat = CGFloat.max
+        for edge in edges {
+            if(edge.kind == .Fold  || (tab && edge.kind == .Tab) ) {
+                if(edge.start.y < maxY) {
                     maxEdge = edge
+                    maxY = edge.start.y
                 }
             }
         }
