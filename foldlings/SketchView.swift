@@ -19,7 +19,8 @@ class SketchView: UIView {
     }
     
     // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
-    var simpleMode = false
+    var simpleMode = !NSUserDefaults.standardUserDefaults().boolForKey("proMode")
+
     
     
     var path: UIBezierPath! //currently drawing path

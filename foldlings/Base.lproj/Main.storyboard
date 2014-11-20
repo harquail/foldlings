@@ -108,6 +108,9 @@
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cdu-oJ-phN">
                                 <rect key="frame" x="250" y="872" width="51" height="31"/>
+                                <connections>
+                                    <action selector="sliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="8Qt-TC-frV"/>
+                                </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Anb-QR-y6T">
                                 <rect key="frame" x="316" y="857" width="201" height="62"/>
@@ -116,6 +119,9 @@
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="proButtonTouched:" destination="xNl-vj-y2i" eventType="touchUpInside" id="sBQ-D1-nvG"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="enables folds above the center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ush-r7-pTz">
                                 <rect key="frame" x="250" y="916" width="290" height="28"/>
@@ -128,6 +134,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="iHJ-C0-HtL"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="slider" destination="cdu-oJ-phN" id="xlL-4f-h79"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

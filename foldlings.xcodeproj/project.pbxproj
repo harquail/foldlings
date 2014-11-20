@@ -189,6 +189,7 @@
 			children = (
 				227708D619EE016A0095CD9D /* SketchView.swift */,
 				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
+				F18C864519FD9F4500211229 /* CollectionOfFoldlings.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -277,7 +278,6 @@
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
-				F18C864519FD9F4500211229 /* CollectionOfFoldlings.swift */,
 				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 				F180D52A1A05D8D400AC05BC /* RBResizer.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,

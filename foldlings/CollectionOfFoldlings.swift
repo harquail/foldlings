@@ -6,6 +6,8 @@ import UIKit
 class CollectionOfFoldlings: UIViewController {
     
     
+    @IBOutlet var slider:UISwitch!
+    
     @IBAction func oneButton(sender: UIButton) {
         makeSketch(0)
         
@@ -25,6 +27,34 @@ class CollectionOfFoldlings: UIViewController {
     
     @IBAction func fiveButton(sender: UIButton) {
         makeSketch(4)    }
+    
+    
+    @IBAction func proButtonTouched(sender: AnyObject) {
+        toggleProMode()
+    }
+    
+    
+    @IBAction func sliderSlid(sender: AnyObject) {
+        toggleProMode()
+    }
+    
+    func toggleProMode(){
+        var isOn = slider.on
+        isOn = !isOn
+        
+        slider.setOn(isOn, animated: true)
+        NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: "proMode")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    
+    override func viewDidLoad() {
+        let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
+        slider?.setOn(on, animated: true)
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+    }
     
     func makeSketch(num:Int){
         
