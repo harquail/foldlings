@@ -29,6 +29,7 @@ class CollectionOfPlanes: Printable, Hashable {
     
     var planes:[Plane] = []
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
+    var foldToPlane : [Edge : [Plane]] = [Edge : [Plane]]()
     
     var count:Int { get { return planes.count } }
     var topPlane:Plane? = nil
