@@ -102,25 +102,6 @@ class CollectionOfPlanes: Printable, Hashable {
         }
     }
     
-    /// return the shared edge between two planes assuming adjacency
-    class func sharedEdgeBetween(#plane1:Plane, plane2:Plane) -> Edge? {
-        var plane1edges:[Edge] = []
-        for edge in plane1.edges {
-            plane1edges.append(edge)
-            plane1edges.append(edge.twin)
-        }
-        var plane2edges:[Edge] = []
-        for edge in plane2.edges {
-            plane2edges.append(edge)
-            plane2edges.append(edge.twin)
-        }
-        var intersection = plane1edges.intersection(plane2edges)
-        
-        var edge = intersection.filter( { $0.kind == .Fold || $0.kind == .Tab} ).first
-        return edge
-    }
-    
-    
     // #TODO lol
     func validateGraph() -> Bool
     {

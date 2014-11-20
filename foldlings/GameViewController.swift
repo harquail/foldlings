@@ -26,6 +26,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
+    var debugColor = true
+    let debugColors:[UIColor] = [
+        UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 1.0, saturation: 0.50, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 1.0, saturation: 0.25, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 1.0, saturation: 0.1, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 1.0, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 0.75, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 0.50, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 0.25, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 0.1, brightness: 1.0, alpha: 0.8),
+        UIColor(hue: 0.5, saturation: 0.0, brightness: 1.0, alpha: 0.8)
+    ]
+
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -122,7 +137,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
 
         
-        visited = [Plane]()
+        visited = []
         notMyChild = [Int: [Plane]]()
         if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
             scene.rootNode.addChildNode(topPlaneSphere)
@@ -178,14 +193,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         let bottom = planes.bottomPlane!
         
+        // base case if bottom
         if plane == bottom {
             println("bottomed out")
             return nil
         }
+        // base case already visited or going back up
         if contains(visited, plane) {
-            println("been here")
+            println("already been here")
             return nil
         }
+        // base case going back up
+        if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
+            println("belongs to prev")
+            return nil
+        }
+
         
         // functionality here
         var node = plane.lazyNode()
@@ -199,8 +222,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         undoParentTranslate(masterSphere, child: node)
         
         let m = SCNMaterial()
-        m.diffuse.contents = plane.color
+        if debugColor {
+            m.diffuse.contents = debugColors[recurseCount]
+        } else {
+            m.diffuse.contents = plane.color
+        }
         node.geometry?.firstMaterial = m
+        masterSphere.geometry?.firstMaterial = m
         
         // different based on orientation
         if hill {
@@ -216,17 +244,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // loop through the adj starting with top plane
         for p in adj
         {
-            // check previous recurse levels so we don't go BACK UP
-            if recurseCount == 0 || !flattenUntil(notMyChild, level: recurseCount).contains(p) {
-                let rc = recurseCount + 1
-                if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
-                    // child hasn't reached bottom so do something to it
-                    masterSphere.addChildNode(childSphere)
-                    undoParentTranslate(masterSphere, child: childSphere)
-
-                }
+            let rc = recurseCount + 1
+            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
+                // child hasn't reached bottom so do something to it
+                masterSphere.addChildNode(childSphere)
+                undoParentTranslate(masterSphere, child: childSphere)
             }
         }
+        println("recurse level: \(recurseCount)")
         return masterSphere
     }
     
@@ -333,7 +358,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             edge = plane.topFold()!
         }
         
-        let startPoint = SCNVector3Make(makeMid(edge.start.x, b:edge.end.x), Float(edge.start.y), Float(0.0))
+        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, b:edge.end.x)), Float(edge.start.y), Float(0.0))
         let anchorStart = node.convertPosition(startPoint, toNode: nil)
         let masterSphere = makeSphere(atPoint: anchorStart)
         
@@ -371,8 +396,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
     }
     
-    func makeMid(a:CGFloat, b:CGFloat) -> Float{
-        return Float((a + b)/2.0)
+    func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
+        return CGFloat((a + b)/2.0)
     }
     
     
