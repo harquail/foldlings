@@ -58,7 +58,10 @@ class SketchViewController: UIViewController{
 
             let viewController:GameViewController = segue.destinationViewController as GameViewController
             
-            viewController.setButtonBG(sketchView.bitmap(grayscale: false, circles: false))
+            let img = sketchView.bitmap(grayscale: false, circles: false)
+            let imgNew = img.copy() as UIImage
+            
+            viewController.setButtonBG(imgNew)
             
             
             viewController.laserImage = sketchView.bitmap(grayscale: true)

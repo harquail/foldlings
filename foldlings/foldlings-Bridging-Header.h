@@ -8,3 +8,4 @@
 #import "CGPathElementObj.h"
 #import "BezierSimple.h"
 #import "CGPoint+Vector.h"
+#import "SVGPathGenerator.h"

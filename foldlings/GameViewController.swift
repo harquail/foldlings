@@ -390,8 +390,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "backtoSketchSegue") {
             
-//            let viewController:SketchViewController = segue.destinationViewController as SketchViewController
-//            viewController.sketchView.setButtonBG(previewImage())
+            let viewController:SketchViewController = segue.destinationViewController as SketchViewController
+            viewController.sketchView.setButtonBG(previewImage())
         }
     }
     

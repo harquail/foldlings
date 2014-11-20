@@ -51,13 +51,20 @@ class ArchivedEdges : NSCoder {
     
     required init(coder aDecoder: NSCoder) {
         
-        
+//        adj = aDecoder.decodeObjectForKey("adj") as [[CGPoint] : Edge]
+        edges = aDecoder.decodeObjectForKey("edges") as [Edge]
+        folds = aDecoder.decodeObjectForKey("edges") as [Edge]
+        tabs = aDecoder.decodeObjectForKey("edges") as [Edge]
+
         
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         
-        
+        aCoder.encodeObject(edges, forKey: "edges")
+        aCoder.encodeObject(folds, forKey: "edges")
+        aCoder.encodeObject(tabs, forKey: "edges")
+
         
     }
     
