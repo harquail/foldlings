@@ -223,7 +223,16 @@ class SketchView: UIView {
     }
     
     /// constructs a greyscale bitmap preview image of the sketch
-    func bitmap(#grayscale:Bool) -> UIImage {
+    func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
+        
+        if(!circles){
+            println("no circles!  bad circles! no!")
+            
+        }
+        else{
+            println("yes plz! moar circles!")
+
+        }
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
@@ -265,7 +274,7 @@ class SketchView: UIView {
                     }
                     
                     // just draw that point to indicate it...
-                    if !e.path.empty && e.start != e.end {
+                    if circles && (!e.path.empty) && (e.start != e.end) {
                         drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
                     }
                     
@@ -474,7 +483,7 @@ class SketchView: UIView {
     
     func setGameView(){
         gameView = GameViewController()
-        gameView.setButtonBG(previewImage())
+//        gameView.setButtonBG(previewImage())
         gameView.laserImage = bitmap(grayscale: true)
         gameView.planes = sketch.planes
         gameView.makeScene()
@@ -595,9 +604,9 @@ class SketchView: UIView {
     }
     
     
-    func previewImage() -> UIImage {
-        return incrementalImage
-    }
+//    func previewImage() -> UIImage {
+//        return bitmap(grayscale: false, circles: false)
+//    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {

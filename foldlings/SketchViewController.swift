@@ -58,7 +58,7 @@ class SketchViewController: UIViewController{
 
             let viewController:GameViewController = segue.destinationViewController as GameViewController
             
-            viewController.setButtonBG(sketchView.previewImage())
+            viewController.setButtonBG(sketchView.bitmap(grayscale: false, circles: false))
             viewController.laserImage = sketchView.bitmap(grayscale: true)
             viewController.planes = sketchView.sketch.planes
             viewController.parentButton = sketchView.previewButton
