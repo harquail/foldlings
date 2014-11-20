@@ -7,7 +7,7 @@ class CollectionOfFoldlings: UIViewController {
     
     
     @IBAction func oneButton(sender: UIButton) {
-       makeSketch(0)
+        makeSketch(0)
         
     }
     
@@ -24,14 +24,14 @@ class CollectionOfFoldlings: UIViewController {
     }
     
     @IBAction func fiveButton(sender: UIButton) {
-      makeSketch(4)    }
+        makeSketch(4)    }
     
     func makeSketch(num:Int){
         
         
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
         self.presentViewController(vc, animated: true, completion: nil)
-
+        
         
         switch(num){
         case 0:
@@ -46,8 +46,8 @@ class CollectionOfFoldlings: UIViewController {
             boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
         default:
             break
-//            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:400, topWidth:150)
-
+            //            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:400, topWidth:150)
+            
         }
         
         (vc.view as SketchView).forceRedraw()
@@ -95,32 +95,32 @@ class CollectionOfFoldlings: UIViewController {
         let s5 = CGPointMake(0, 1024)
         
         
-//        edges
-                fold1.moveToPoint(b1)
-                fold1.addLineToPoint(b2)
-                s.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
+        //        edges
+        fold1.moveToPoint(b1)
+        fold1.addLineToPoint(b2)
+        s.addEdge(b1, end: b2, path: fold1, kind: Edge.Kind.Fold )
         
-                cut1.moveToPoint(b2)
-                cut1.addLineToPoint(b3)
-                s.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
+        cut1.moveToPoint(b2)
+        cut1.addLineToPoint(b3)
+        s.addEdge(b2, end: b3, path: cut1, kind: Edge.Kind.Cut )
         
-                cut2.moveToPoint(b3)
-                cut2.addLineToPoint(b4)
-                s.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
-        
-        
-                fold2.moveToPoint(b4)
-                fold2.addLineToPoint(b5)
-                s.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
+        cut2.moveToPoint(b3)
+        cut2.addLineToPoint(b4)
+        s.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
         
         
-                cut3.moveToPoint(b5)
-                cut3.addLineToPoint(b6)
-                s.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+        fold2.moveToPoint(b4)
+        fold2.addLineToPoint(b5)
+        s.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
         
-                cut4.moveToPoint(b6)
-                cut4.addLineToPoint(b1)
-                s.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
+        
+        cut3.moveToPoint(b5)
+        cut3.addLineToPoint(b6)
+        s.addEdge(b5, end: b6, path: cut3, kind: Edge.Kind.Cut )
+        
+        cut4.moveToPoint(b6)
+        cut4.addLineToPoint(b1)
+        s.addEdge(b6, end: b1, path: cut4, kind: Edge.Kind.Cut )
         
         //centerfold
         cfold1.moveToPoint(c1)
@@ -140,7 +140,7 @@ class CollectionOfFoldlings: UIViewController {
     
     
     func boringTestPlaneInSketch(s:Sketch, xStart:CGFloat, topXStart:CGFloat, foldHeightBelowMaster:CGFloat, midFoldHeight:CGFloat, bottomWidth:CGFloat, topWidth:CGFloat) {
-    
+        
         //for now, assuming topWidth == bottomWidth
         
         //first draw bottom fold below Master
@@ -188,10 +188,10 @@ class CollectionOfFoldlings: UIViewController {
         
         let connectionOne = Edge.straightEdgeBetween(topFoldStart, end: midFoldStart, kind: .Cut)
         s.addEdge(connectionOne)
-
+        
         let connectionTwo = Edge.straightEdgeBetween(topFoldEnd, end: midFoldEnd, kind: .Cut)
         s.addEdge(connectionTwo)
-
+        
         let connectionThree = Edge.straightEdgeBetween(midFoldStart, end: masterFoldLeftEnd, kind: .Cut)
         s.addEdge(connectionThree)
         
@@ -203,9 +203,9 @@ class CollectionOfFoldlings: UIViewController {
         
         let connectionSix = Edge.straightEdgeBetween(masterFoldRightEnd, end: bottomFoldEnd, kind: .Cut)
         s.addEdge(connectionSix)
-    
+        
     }
-
+    
     
     
 }

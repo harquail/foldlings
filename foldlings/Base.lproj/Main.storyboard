@@ -4,6 +4,24 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="LiM-8A-nzS">
+            <objects>
+                <viewController id="ONI-YJ-hgm" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="H0H-ZL-wD5"/>
+                        <viewControllerLayoutGuide type="bottom" id="6w0-Jd-cOR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2V7-s3-UU3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WpJ-dk-b6E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2597" y="-1136"/>
+        </scene>
         <!--Collection Of Foldlings-->
         <scene sceneID="POB-fl-LU2">
             <objects>
@@ -19,39 +37,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="foldlings_background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="9OF-2c-A6h">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLJ-dO-D4t">
-                                <rect key="frame" x="16" y="20" width="1977" height="2738"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="3LN-Qg-JOH" kind="show" id="kqo-u8-Mcg"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdT-a8-qea">
-                                <rect key="frame" x="304" y="902" width="170" height="58"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
-                                <state key="normal" title="ABOUT">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="S5n-fv-E6Z" kind="popoverPresentation" popoverAnchorView="jdT-a8-qea" id="n0d-bX-UJu">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
-                                <rect key="frame" x="266" y="836" width="247" height="58"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
-                                <state key="normal" title="MAKE NEW">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="3LN-Qg-JOH" kind="show" id="8Ua-Nr-rXS"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-Re-LAF">
                                 <rect key="frame" x="34" y="76" width="700" height="120"/>
                             </imageView>
@@ -97,6 +82,47 @@
                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdT-a8-qea">
+                                <rect key="frame" x="298" y="791" width="170" height="58"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="ABOUT">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="S5n-fv-E6Z" kind="popoverPresentation" popoverAnchorView="jdT-a8-qea" id="n0d-bX-UJu">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
+                                <rect key="frame" x="261" y="725" width="247" height="58"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="MAKE NEW">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="3LN-Qg-JOH" kind="show" id="8Ua-Nr-rXS"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cdu-oJ-phN">
+                                <rect key="frame" x="250" y="872" width="51" height="31"/>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Anb-QR-y6T">
+                                <rect key="frame" x="316" y="857" width="201" height="62"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="PRO MODE">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="enables folds above the center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ush-r7-pTz">
+                                <rect key="frame" x="250" y="916" width="290" height="28"/>
+                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="20"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -105,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1693" y="-224"/>
+            <point key="canvasLocation" x="-1695" y="-256"/>
         </scene>
         <!--Sketch View Controller-->
         <scene sceneID="Wv9-yy-re7">
@@ -341,7 +367,4 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="small_preview.jpeg" width="498" height="473"/>
         <image name="tab.png" width="128" height="173"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="kqo-u8-Mcg"/>
-    </inferredMetricsTieBreakers>
 </document>

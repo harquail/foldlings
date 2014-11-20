@@ -342,7 +342,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         masterSphere.geometry?.firstMaterial = m
 
         return masterSphere
-        
     }
 
 
