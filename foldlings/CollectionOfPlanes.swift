@@ -57,10 +57,11 @@ class CollectionOfPlanes: Printable, Hashable {
                     else if sketch.isBottomEdge(edge) {
                         self.bottomPlane = plane
                     }
-                    
+                    edge.plane = plane
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold || edge.kind == .Tab {
-                        for p in self.planes {
+                        plane.kind = .Plane
+                        for p in self.planes {// plane adjacency
                             if p != plane { //don't add ourselves in
                                 for e in p.edges! {
                                     if edge ~= e {
