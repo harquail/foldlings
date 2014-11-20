@@ -286,17 +286,6 @@ class Sketch : NSObject  {
                     
                     if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
                         var plane = Plane(edges: p)
-                        for e in p
-                        {
-                            e.plane = plane
-                            if e.kind == .Fold || e.kind == .Tab {
-                                plane.kind = .Plane
-//                                if (e.kind == .Fold) {
-//                                    plane.orientation = .Vertical
-//                                }
-                            }
-                        }
-                        
                         self.planes.addPlane(plane, sketch: self)
                     }
                     closest.crossed = false
