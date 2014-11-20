@@ -15,7 +15,6 @@ class SketchViewController: UIViewController{
     @IBOutlet var sketchView: SketchView!
 
     @IBOutlet var selected: UIImageView!
-
     
     @IBAction func CardsButtonClicked(sender: UIButton) {
         

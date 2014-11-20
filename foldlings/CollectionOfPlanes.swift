@@ -65,8 +65,10 @@ class CollectionOfPlanes: Printable, Hashable {
                                 for e in p.edges! {
                                     if edge ~= e {
                                         self.adjacency[plane]!.append(p)
+                                        self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
                                         if !self.adjacency[p]!.contains(plane) {
                                             self.adjacency[p]!.append(plane)
+                                            self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
                                         }
                                     }
                                 }
