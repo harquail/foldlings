@@ -244,11 +244,20 @@ class SketchView: UIView {
                     plane.path.fill()
                 }
 
+                
+                var twinsOfVisited = [Edge]()
                 //print all edges
                 for e in sketch.edges
                 {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                    
+                    
+                    //don't draw twin edges
+                    if(!twinsOfVisited.contains(e)){
                     e.path.stroke()
+                    twinsOfVisited.append(e.twin)
+                    }
+                    
                     // just draw that point to indicate it...
                     if !e.path.empty && e.start != e.end {
                         drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
