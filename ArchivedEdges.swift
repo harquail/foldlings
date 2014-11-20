@@ -52,9 +52,12 @@ class ArchivedEdges : NSCoder {
     required init(coder aDecoder: NSCoder) {
         
         
+        
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
+        
+        
         
     }
     
