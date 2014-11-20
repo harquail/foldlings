@@ -38,9 +38,13 @@ class Plane: Printable, Hashable
         case Vertical = "Vertical"
     }
     
-    var color = getRandomColor(0.8)
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
+    var color = getRandomColor(0.8)
+//    var color : UIColor { get{
+//        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
+//        }
+//        }
     var edges : [Edge]!
     var path = UIBezierPath()
     private var node:SCNNode? = nil

@@ -39,6 +39,7 @@ class SketchView: UIView {
     let redrawPriority = DISPATCH_QUEUE_PRIORITY_DEFAULT
     let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
     var redrawing:Bool = false
+    var canPreview:Bool = true
 
     
     
@@ -73,7 +74,11 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
+        //disallow preview button while drawing
         previewButton.alpha = 0.3
+        previewButton.userInteractionEnabled = false
+//        canPreview = false
+        
         var touch = touches.anyObject() as UITouch
         var touchPoint: CGPoint = touch.locationInView(self)
         startEdgeCollision = nil //reset edge collisions to nil
@@ -148,8 +153,10 @@ class SketchView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
+        //enable preview again
         previewButton.alpha = 1
-        
+        previewButton.userInteractionEnabled = true
+
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
@@ -244,7 +251,6 @@ class SketchView: UIView {
                     plane.path.fill()
                 }
 
-                
                 var twinsOfVisited = [Edge]()
                 //print all edges
                 for e in sketch.edges
