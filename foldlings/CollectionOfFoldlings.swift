@@ -9,7 +9,15 @@ class CollectionOfFoldlings: UIViewController {
     @IBOutlet var slider:UISwitch!
     
     @IBAction func oneButton(sender: UIButton) {
-        makeSketch(0)
+       
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        self.presentViewController(vc, animated: true, completion: nil)
+        vc.sketchView.sketch = ArchivedEdges.loadSaved()
+        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
+        vc.sketchView.forceRedraw()
+
+        println("sketch 1")
+//        makeSketch(0)
         
     }
     

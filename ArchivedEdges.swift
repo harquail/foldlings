@@ -9,7 +9,7 @@
 import Foundation
 
 
-class ArchivedEdges : NSCoding {
+class ArchivedEdges : NSObject, NSCoding {
     
     var adj : [CGPoint: [Edge]] = [CGPoint:[Edge]]()
     var edges: [Edge] = []
@@ -64,11 +64,12 @@ class ArchivedEdges : NSCoding {
             adj[key.CGPointValue()] = nsAdj[key]
         }
         
-    
         edges = aDecoder.decodeObjectForKey("edges") as [Edge]
-        folds = aDecoder.decodeObjectForKey("edges") as [Edge]
-        tabs = aDecoder.decodeObjectForKey("edges") as [Edge]
+        folds = aDecoder.decodeObjectForKey("folds") as [Edge]
+        tabs = aDecoder.decodeObjectForKey("tabs") as [Edge]
 
+       
+    
         
     }
     
@@ -82,32 +83,97 @@ class ArchivedEdges : NSCoding {
             nsKeys[NSValue(CGPoint: key)] = adj[key]
             
         }
-        aCoder.encodeObject(nsKeys, forKey: "adj")
-        aCoder.encodeObject (edges, forKey: "edges")
+
+        
+//        edges = siblicide(edges, edge: nil)
+        
+        var foundTwins:[Edge] = [Edge]()
+        var foundEdges:[Edge] = [Edge]()
+
+        for edge in edges{
+            
+            if !foundTwins.contains(edge)  && !foundEdges.contains(edge) {
+                
+                foundTwins.append(edge.twin)
+                foundEdges.append(edge)
+
+
+            }
+            
+        }
+        
+//        var i = 0
+//        for twin in foundTwins{
+//            i++
+//            edges.remove(twin)
+//            folds.remove(twin)
+//            tabs.remove(twin)
+//        }
+//        println("edges removed: \(i)")
+        
+        
+        aCoder.encodeObject(nsKeys, forKey: "adjs")
+        aCoder.encodeObject (foundEdges, forKey: "edges")
         aCoder.encodeObject (folds, forKey: "folds")
         aCoder.encodeObject (tabs, forKey: "tabs")
 
         
     }
     
+    
+    func siblicide(edges:[Edge], edge:Edge?) -> [Edge]{
+        
+        var tempEdges = edges
+        
+        if(edge != nil){
+        tempEdges.remove(edge!)
+        
+        for e in tempEdges{
+            if(edge != nil && tempEdges.contains(e.twin)){
+                return siblicide(tempEdges, edge: e.twin)
+            }
+        }
+            
+        }
+
+        println("\nsiblicide: \(tempEdges)")
+        return tempEdges
+    
+    }
+    
+    
     func save() {
         let data = NSKeyedArchiver.archivedDataWithRootObject(self)
-        println(data)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: "achivedEdges")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     class func loadSaved() -> Sketch? {
         
         if let data = NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges") as? NSData {
             if let unarchived = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ArchivedEdges{
+                println("loaded save")
                 let sktch = Sketch(named:"saved")
-                sktch.adjacency = unarchived.adj
-                sktch.edges = unarchived.edges
-                sktch.folds = unarchived.folds
-                sktch.tabs = unarchived.tabs
+//                sktch.adjacency = unarchived.adj
+//                sktch.edges.removeAll(keepCapacity: false)
+//                sktch.folds.removeAll(keepCapacity: false)
+//                sktch.tabs.removeAll(keepCapacity: false)
+//                sktch.adjacency.removeAll(keepCapacity: false)
+
+                
+                for edge in unarchived.edges{
+                    
+                    if !(edge.kind == Edge.Kind.Cut) || !edge.isMaster{
+                    sktch.addEdge(edge)
+                    }
+                }
+                
+//                sktch.getPlanes()
+                return sktch
             }
             
         }
+        println("failed to load save")
         return nil
     }
     
