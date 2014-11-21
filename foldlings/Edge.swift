@@ -28,7 +28,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var twin:Edge!
     var crossed = false
     var plane:Plane?
-    var dirty = true
+    var dirty = true //if the edge is dirty it'll be reevaluated for planes
     
     
     enum Kind: String {
