@@ -22,6 +22,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
     let fourtyFiveDegrees = Float(0.25*M_PI)
+    let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
+    let thirtyDegrees = Float(M_PI/6.0)
+    let thirtyDegreesNeg = Float(-M_PI/6.0)
+    let tenDegrees = Float(-M_PI/18.0)
+    let tenDegreesNeg = Float(-M_PI/18.0)
+
     var theOneSphere = SCNNode()
 
     var visited: [Plane] = [Plane]()
@@ -113,13 +119,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         scene.physicsWorld.gravity.y = 0.0
         
+        //create the OneShpere
+        scene.rootNode.addChildNode(theOneSphere)
+        theOneSphere.orientation.x = thirtyDegreesNeg
+        theOneSphere.orientation.y = thirtyDegreesNeg
+        theOneSphere.position.y = theOneSphere.position.y + 5.0
+        println("(\(theOneSphere.position.x), \(theOneSphere.position.y), \(theOneSphere.position.z))")
         // main loop for defining plane things
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
             
             plane.clearNode()
             
-            var parent = scene.rootNode
+            var parent = theOneSphere
             // if plane is a hole, it's parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole) {
                 
@@ -140,7 +152,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         visited = []
         notMyChild = [Int: [Plane]]()
         if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
-            scene.rootNode.addChildNode(topPlaneSphere)
+            theOneSphere.addChildNode(topPlaneSphere)
         }
 
         
@@ -148,7 +160,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         if var bottomPlane = planes.bottomPlane {
             let bottomPlaneNode = bottomPlane.lazyNode()
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-            scene.rootNode.addChildNode(masterSphere)
+            theOneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode)
             undoParentTranslate(masterSphere, child: bottomPlaneNode)
             bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
