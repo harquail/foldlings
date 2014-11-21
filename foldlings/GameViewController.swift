@@ -127,7 +127,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         //theOneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
         theOneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
 
-        println("(\(theOneSphere.position.x), \(theOneSphere.position.y), \(theOneSphere.position.z))")
         // main loop for defining plane things
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
