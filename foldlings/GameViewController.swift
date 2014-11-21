@@ -392,6 +392,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
+            
+//            let arch = ArchivedEdges(adj: viewController.sketchView.sketch.adjacency, edges: viewController.sketchView.sketch.edges, folds: viewController.sketchView.sketch.folds, tabs: viewController.sketchView.sketch.tabs)
+//            arch.save()
         }
     }
     
