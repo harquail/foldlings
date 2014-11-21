@@ -45,10 +45,9 @@ class ArchivedEdges : NSObject, NSCoding {
         return NSDictionary(contentsOfFile: path)!
     }
     
-    init(adj:[CGPoint: [Edge]], edges:[Edge], folds:[Edge], tabs:[Edge]){
+    init(adj:[CGPoint: [Edge]], edges:[Edge], tabs:[Edge]){
         self.adj = adj
         self.edges = edges
-        self.folds = folds
         self.tabs = tabs
     
     }
