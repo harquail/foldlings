@@ -19,7 +19,6 @@ class Sketch : NSObject  {
     //for now, cuts are in this array to
     let edgeAdjacencylockQueue = dispatch_queue_create("com.Foldlings.LockEdgeAdjacencyQueue", nil)
     var edges : [Edge] = []
-    var folds : [Edge] = [] // may not need to keep this but for now
     var tabs  : [Edge] = [] // tabbytabbbss
     var visited : [Edge]!
     var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
@@ -134,24 +133,26 @@ class Sketch : NSObject  {
             } else {
                 self.adjacency[end] = [twin]
             }
-        }
-        
-        // keep folds in ascending order by start position y height from bottom up
-        // note y starts at 0 on top of screen
-        // inefficient? who cares
-        if kind == .Fold
-        {
-            if edge !== drivingEdge && !contains(folds, edge) //NOTE: driving fold not in folds
-            {
-                let index = folds.insertionIndexOf(edge,  { $0.start.y > $1.start.y } )
-                folds.insert(edge, atIndex: index)
+            
+            // this fixes double planes 
+            // may be overkill in terms of number of planes cleared
+            //
+            for e in self.adjacency[start]! {
+                e.dirty = true
+                if e.plane != nil { self.planes.removePlane(e.plane!) }
             }
+            for e in self.adjacency[end]! {
+                e.dirty = true
+                if e.plane != nil { self.planes.removePlane(e.plane!) }
+            }
+
         }
         
         if kind == .Tab
         {
             if !contains(tabs, edge) { tabs.append(edge) }
         }
+        
         
         return edge
     }
@@ -163,10 +164,9 @@ class Sketch : NSObject  {
             if let plane = edge.plane { self.planes.removePlane(plane) }
             if let plane = edge.twin.plane { self.planes.removePlane(plane) }
             var twin = edge.twin
-            self.edges = self.edges - edge
-            self.edges = self.edges - twin
-            self.folds = self.folds - edge
-            self.tabs  = self.tabs - edge
+            self.edges.remove(edge)
+            self.edges.remove(twin)
+            self.tabs.remove(edge)
             if self.adjacency[edge.start] != nil {
                 self.adjacency[edge.start] = self.adjacency[edge.start]!.filter({ $0 != edge })
                 if self.adjacency[edge.start]!.count == 0 { self.adjacency[edge.start] = nil }
