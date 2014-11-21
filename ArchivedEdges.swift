@@ -10,7 +10,7 @@ import Foundation
 
 
 //TODO: NSCoding
-class ArchivedEdges : NSCoder {
+class ArchivedEdges : NSCoding {
     
     var adj : [CGPoint: [Edge]] = [CGPoint:[Edge]]()
     var edges: [Edge] = []

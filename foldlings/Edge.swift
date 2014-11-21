@@ -17,7 +17,7 @@ func ~= (lhs: Edge, rhs: Edge) -> Bool {
 
 }
 
-class Edge: NSObject, Printable, Hashable {
+class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
         return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue), \(path)"
     }
@@ -81,23 +81,23 @@ class Edge: NSObject, Printable, Hashable {
     }
 
     
-//    required init(coder aDecoder: NSCoder) {
-//        
-//        self.start = aDecoder.decodeCGPointForKey("start")
-//        self.end = aDecoder.decodeCGPointForKey("end")
-//        self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
-//        self.fold = Fold(rawValue: (aDecoder.decodeObjectForKey("fold") as String))!
-//        self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
-//
-//    }
+    required init(coder aDecoder: NSCoder) {
+        
+        self.start = aDecoder.decodeCGPointForKey("start")
+        self.end = aDecoder.decodeCGPointForKey("end")
+        self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
+        self.fold = Fold(rawValue: (aDecoder.decodeObjectForKey("fold") as String))!
+        self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
+
+    }
     
-//    func encodeWithCoder(aCoder: NSCoder) {
-//            aCoder.encodeCGPoint(start, forKey: "start")
-//            aCoder.encodeCGPoint(end, forKey: "end")
-//            aCoder.encodeObject(path, forKey: "path")
-//            aCoder.encodeObject( self.fold.rawValue, forKey:"fold" )
-//            aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
-//    }
+    func encodeWithCoder(aCoder: NSCoder) {
+            aCoder.encodeCGPoint(start, forKey: "start")
+            aCoder.encodeCGPoint(end, forKey: "end")
+            aCoder.encodeObject(path, forKey: "path")
+            aCoder.encodeObject( self.fold.rawValue, forKey:"fold" )
+            aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
+    }
 
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
         
