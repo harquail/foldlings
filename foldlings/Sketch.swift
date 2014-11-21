@@ -256,6 +256,9 @@ class Sketch : NSObject  {
         dispatch_sync(edgeAdjacencylockQueue) {
             self.planes.removeAll()
             self.visited = []
+            for each in self.edges {
+                each.plane = nil
+            }
             
             for (i, start) in enumerate(self.edges)//traverse edges
             {

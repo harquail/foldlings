@@ -226,15 +226,6 @@ class SketchView: UIView {
     /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
         
-        if(!circles){
-            println("no circles!  bad circles! no!")
-            
-        }
-        else{
-            println("yes plz! moar circles!")
-
-        }
-        
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
         

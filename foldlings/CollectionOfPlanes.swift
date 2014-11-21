@@ -29,7 +29,7 @@ class CollectionOfPlanes: Printable, Hashable {
     
     var planes:[Plane] = []
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
-    var foldToPlane : [Edge : [Plane]] = [Edge : [Plane]]()
+    var folds:[Edge]  = []
     
     var count:Int { get { return planes.count } }
     var topPlane:Plane? = nil
@@ -62,18 +62,18 @@ class CollectionOfPlanes: Printable, Hashable {
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold || edge.kind == .Tab {
                         plane.kind = .Plane
-                        for p in self.planes {// plane adjacency
-                            if p != plane { //don't add ourselves in
-                                for e in p.edges! {
-                                    if edge ~= e {
-                                        self.adjacency[plane]!.append(p)
-                                        self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
-                                        if !self.adjacency[p]!.contains(plane) {
-                                            self.adjacency[p]!.append(plane)
-                                            self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
-                                        }
-                                    }
-                                }
+                        
+                        
+                        if let p = edge.twin.plane {
+                            self.adjacency[plane]!.append(p)
+                            self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
+                            
+                            if self.adjacency[p] == nil {
+                                self.adjacency[p] = [plane]
+                            }
+                            else if !self.adjacency[p]!.contains(plane) {
+                                self.adjacency[p]!.append(plane)
+                                self.adjacency[p]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
                             }
                         }
                     }
@@ -103,6 +103,7 @@ class CollectionOfPlanes: Printable, Hashable {
         dispatch_sync(planeAdjacencylockQueue) {
             self.planes =  []
             self.adjacency = [Plane : [Plane]]()
+            self.folds = []
         }
     }
     
