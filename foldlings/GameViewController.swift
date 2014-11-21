@@ -123,7 +123,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             // if plane is a hole, it's parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole) {
                 
-                plane.clearNode()
                 let parentPlane = plane.containerPlane(planes.planes)
                     
                 if parentPlane != nil{

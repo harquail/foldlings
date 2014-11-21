@@ -53,6 +53,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 for edge in plane.edges {
                     edge.dirty = false //mark it as clean
                     if sketch.isTopEdge(edge) {
+                        println("toplaaane")
                         self.topPlane = plane
                     }
                     else if sketch.isBottomEdge(edge) {
@@ -62,7 +63,6 @@ class CollectionOfPlanes: Printable, Hashable {
                     if kOverrideColor { edge.colorOverride = color }
                     if edge.kind == .Fold || edge.kind == .Tab {
                         plane.kind = .Plane
-                        
                         
                         if let p = edge.twin.plane {
                             let index = self.adjacency[plane]!.insertionIndexOf(p,  { $0.topFold()!.start.y < $1.topFold()!.start.y } )
@@ -88,19 +88,25 @@ class CollectionOfPlanes: Printable, Hashable {
     {
         dispatch_sync(planeAdjacencylockQueue) {
             
-            plane.edges.map { $0.dirty=true }
-            plane.edges.map { $0.plane=nil }
+            for edge in plane.edges {
+                edge.dirty = true
+                edge.plane = nil
+            }
+            
+            if self.topPlane == plane { self.topPlane = nil }
+            if self.bottomPlane == plane { self.bottomPlane = nil }
+            
+            for p in self.planes {
+                if self.adjacency[p] != nil {
+                    self.adjacency[p]!.remove(plane)
+                }
+            }
+            
+            self.adjacency[plane] = nil
+            
             
             self.planes.remove(plane)
-            
-            if self.adjacency[plane] != nil {
-                for p in self.adjacency[plane]! {
-                    if self.adjacency[p] != nil {
-                        self.adjacency[p]!.remove(plane)
-                    }
-                }
-                self.adjacency[plane] = nil
-            }
+
         }
     }
     
