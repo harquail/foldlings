@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22061CA21A1B18180030079D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA11A1B18180030079D /* Queue.swift */; };
 		22061CA41A1B182F0030079D /* QNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA31A1B182F0030079D /* QNode.swift */; };
+		220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */; };
 		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
 		223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */; };
 		224501141A0F334200E18F82 /* CollectionOfPlanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224501131A0F334200E18F82 /* CollectionOfPlanes.swift */; };
@@ -101,6 +102,7 @@
 /* Begin PBXFileReference section */
 		22061CA11A1B18180030079D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		22061CA31A1B182F0030079D /* QNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNode.swift; sourceTree = "<group>"; };
+		220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+InsertionIntoSorted.swift"; sourceTree = "<group>"; };
 		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
 		223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGPathElementObj.m; path = ../CGPathElementObj.m; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
+				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
 				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
@@ -644,6 +647,7 @@
 				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
 				22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
+				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,

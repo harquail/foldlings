@@ -65,15 +65,14 @@ class CollectionOfPlanes: Printable, Hashable {
                         
                         
                         if let p = edge.twin.plane {
-                            self.adjacency[plane]!.append(p)
-                            self.adjacency[plane]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
-                            
+                            let index = self.adjacency[plane]!.insertionIndexOf(p,  { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+                            self.adjacency[plane]!.insert(p, atIndex: index)
                             if self.adjacency[p] == nil {
                                 self.adjacency[p] = [plane]
                             }
                             else if !self.adjacency[p]!.contains(plane) {
-                                self.adjacency[p]!.append(plane)
-                                self.adjacency[p]!.sort { $0.topFold()!.start.y < $1.topFold()!.start.y }
+                                let index = self.adjacency[p]!.insertionIndexOf(plane,  { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+                                self.adjacency[p]!.insert(plane, atIndex: index)
                             }
                         }
                     }
