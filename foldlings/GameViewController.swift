@@ -25,7 +25,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
     let thirtyDegrees = Float(M_PI/6.0)
     let thirtyDegreesNeg = Float(-M_PI/6.0)
-    let tenDegrees = Float(-M_PI/18.0)
+    let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
 
     var theOneSphere = SCNNode()
@@ -107,7 +107,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = SCNLightTypeDirectional
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 15)
+        lightNode.position = SCNVector3(x: 0, y: 10, z: 20)
         scene.rootNode.addChildNode(lightNode)
         
         // create and add an ambient light to the scene
@@ -121,9 +121,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
-        theOneSphere.orientation.x = thirtyDegreesNeg
-        theOneSphere.orientation.y = thirtyDegreesNeg
-        theOneSphere.position.y = theOneSphere.position.y + 5.0
+        theOneSphere.position.y = theOneSphere.position.y + 4.0
+
+        
+        //theOneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
+        theOneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
+
         println("(\(theOneSphere.position.x), \(theOneSphere.position.y), \(theOneSphere.position.z))")
         // main loop for defining plane things
         // add each plane to the scene
