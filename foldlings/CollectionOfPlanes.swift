@@ -29,7 +29,6 @@ class CollectionOfPlanes: Printable, Hashable {
     
     var planes:[Plane] = []
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
-    var folds:[Edge]  = []
     
     var count:Int { get { return planes.count } }
     var topPlane:Plane? = nil
@@ -52,6 +51,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 }
                 
                 for edge in plane.edges {
+                    edge.dirty = false //mark it as clean
                     if sketch.isTopEdge(edge) {
                         self.topPlane = plane
                     }
@@ -82,16 +82,24 @@ class CollectionOfPlanes: Printable, Hashable {
         
     }
     
+    
+    /// remove a plane and set dirty on edges
     func removePlane(plane:Plane)
     {
         dispatch_sync(planeAdjacencylockQueue) {
-            self.planes = self.planes.filter({ $0 != plane })
+            
+            plane.edges.map { $0.dirty=true }
+            plane.edges.map { $0.plane=nil }
+            
+            self.planes.remove(plane)
             
             if self.adjacency[plane] != nil {
+                for p in self.adjacency[plane]! {
+                    if self.adjacency[p] != nil {
+                        self.adjacency[p]!.remove(plane)
+                    }
+                }
                 self.adjacency[plane] = nil
-            }
-            for (k,v) in self.adjacency {
-                self.adjacency[k]!.filter({ $0 != plane })
             }
         }
     }
@@ -102,7 +110,6 @@ class CollectionOfPlanes: Printable, Hashable {
         dispatch_sync(planeAdjacencylockQueue) {
             self.planes =  []
             self.adjacency = [Plane : [Plane]]()
-            self.folds = []
         }
     }
     
