@@ -11,22 +11,34 @@ class SketchViewController: UIViewController{
     
     
     @IBOutlet var sketchView: SketchView!
-
+    
     @IBOutlet var selected: UIImageView!
     
     @IBAction func CardsButtonClicked(sender: UIButton) {
         
-        Archivist.appendSketchToFile(sketchView.sketch)
+        
+        
+        let arch = ArchivedEdges(adj: sketchView.sketch.adjacency, edges: sketchView.sketch.edges, folds: sketchView.sketch.folds, tabs: sketchView.sketch.tabs)
+        arch.save()
+        
+//        let saved = ArchivedEdges.loadSaved()
+//        println(saved!.edges)
+//        println(saved!.adjacency)
+//        println(saved!.folds)
+//        println(saved!.tabs)
+//        
+        
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
         
         
-//        [UIView beginAnimations:@"MoveView" context:nil];
-//        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-//        [UIView setAnimationDuration:0.5f];
-//        self.BigView.frame = CGRectMake(newXPoistion, newYPosistion, samewidth, sameheight);
-//        [UIView commitAnimations];
+        //        [UIView beginAnimations:@"MoveView" context:nil];
+        //        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        //        [UIView setAnimationDuration:0.5f];
+        //        self.BigView.frame = CGRectMake(newXPoistion, newYPosistion, samewidth, sameheight);
+        //        [UIView commitAnimations];
         
         
         //TODO: Animate frame movement
@@ -53,7 +65,7 @@ class SketchViewController: UIViewController{
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
-
+            
             let viewController:GameViewController = segue.destinationViewController as GameViewController
             
             let img = sketchView.bitmap(grayscale: false, circles: false)
@@ -65,7 +77,7 @@ class SketchViewController: UIViewController{
             viewController.laserImage = sketchView.bitmap(grayscale: true)
             viewController.planes = sketchView.sketch.planes
             viewController.parentButton = sketchView.previewButton
-//            viewController.
+            //            viewController.
             // pass data to next view
         }
     }

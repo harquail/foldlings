@@ -407,6 +407,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
             let viewController:SketchViewController = segue.destinationViewController as SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
+            
         }
     }
     

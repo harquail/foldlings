@@ -87,15 +87,34 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
         self.fold = Fold(rawValue: (aDecoder.decodeObjectForKey("fold") as String))!
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
+        self.isMaster = aDecoder.decodeBoolForKey("isMaster")
+//        self.twin = aDecoder.decodeObjectForKey("twin") as Edge
+
 
     }
     
+    
+    
     func encodeWithCoder(aCoder: NSCoder) {
+        
+//        var start: CGPoint
+//        var end: CGPoint
+//        var path = UIBezierPath()
+//        var fold = Fold.Unknown
+//        var kind = Kind.Cut
+//        var isMaster = false
+//        var colorOverride:UIColor? = nil
+
+        
             aCoder.encodeCGPoint(start, forKey: "start")
             aCoder.encodeCGPoint(end, forKey: "end")
             aCoder.encodeObject(path, forKey: "path")
             aCoder.encodeObject( self.fold.rawValue, forKey:"fold" )
             aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
+            aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+//            aCoder.encodeObject(self.twin, forKey: "twin")
+
+
     }
 
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
