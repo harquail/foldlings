@@ -143,8 +143,8 @@ class Sketch : NSObject  {
         {
             if edge !== drivingEdge && !contains(folds, edge) //NOTE: driving fold not in folds
             {
-                folds.append(edge)
-                folds.sort({ $0.start.y > $1.start.y })
+                let index = folds.insertionIndexOf(edge,  { $0.start.y > $1.start.y } )
+                folds.insert(edge, atIndex: index)
             }
         }
         
@@ -160,6 +160,8 @@ class Sketch : NSObject  {
     func removeEdge(edge:Edge)
     {
         dispatch_sync(edgeAdjacencylockQueue) {
+            if let plane = edge.plane { self.planes.removePlane(plane) }
+            if let plane = edge.twin.plane { self.planes.removePlane(plane) }
             var twin = edge.twin
             self.edges = self.edges - edge
             self.edges = self.edges - twin
@@ -249,46 +251,47 @@ class Sketch : NSObject  {
         drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
     }
     
-    
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
-            self.planes.removeAll()
             self.visited = []
             
             for (i, start) in enumerate(self.edges)//traverse edges
             {
-                var p : [Edge] = []
-                
-                var isContained = contains(self.visited, start)
-                
-                if !isContained// skipped over already visited edges
-                {
-                    p.append(start)
+                if start.dirty {
                     
-                    self.visited.append(start)
+                    var p : [Edge] = []
                     
-                    var closest = self.getClosest(start)// get closest adjacent edge
-
-                    // check if twin has not been crossed and not in plane
-                    while !CGPointEqualToPoint(closest.end, start.start) && !closest.crossed
+                    var isContained = contains(self.visited, start)
+                    
+                    if !isContained// skipped over already visited edges
                     {
-                        p.append(closest)
-                        self.visited.append(closest)
-                        closest = self.getClosest(closest)
-                    }
+                        p.append(start)
+                        
+                        self.visited.append(start)
+                        
+                        var closest = self.getClosest(start)// get closest adjacent edge
 
-                    if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
-                        p.append(closest)
-                        self.visited.append(closest)
+                        // check if twin has not been crossed and not in plane
+                        while !CGPointEqualToPoint(closest.end, start.start) && !closest.crossed
+                        {
+                            p.append(closest)
+                            self.visited.append(closest)
+                            closest = self.getClosest(closest)
+                        }
+
+                        if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
+                            p.append(closest)
+                            self.visited.append(closest)
+                        }
+                        
+                        if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
+                            var plane = Plane(edges: p)
+                            self.planes.addPlane(plane, sketch: self)
+                        }
+                        closest.crossed = false
                     }
-                    
-                    if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
-                        var plane = Plane(edges: p)
-                        self.planes.addPlane(plane, sketch: self)
-                    }
-                    closest.crossed = false
                 }
             }
         }
