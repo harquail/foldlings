@@ -9,9 +9,10 @@ key methods and classes
 Smoothing User Input 
 -----------------------------------
 
+
 Plane Detection
 -----------------------------------
-func getPlanes() in 
+func getPlanes() in Sketch.swift
 
 Plane Parenting and Doubly-Connected Edge List
 -----------------------------------
