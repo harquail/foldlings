@@ -404,8 +404,10 @@ class Sketch : NSObject  {
                     var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
                 
                     // move tab from tabs to edges so we don't redraw this again
-                    tabs = tabs - tab
-                    tabs = tabs - tab.twin
+                    tab.kind = .Fold
+                    tab.twin.kind = .Fold
+                    tabs.remove(tab)
+                    tabs.remove(tab.twin)
                     retB = true
                 }
             }
@@ -432,6 +434,20 @@ class Sketch : NSObject  {
         }
         
         return (minDist < kHitTestRadius*1.5) ? np : nil
+    }
+    
+    /// returns the plane that contains the hitpoint
+    func planeHitTest(point:CGPoint) -> Plane?
+    {
+        var p:Plane? = nil
+        for plane in self.planes.planes
+        {
+            if plane.path.containsPoint(point) {
+                p = plane
+                break
+            }
+        }
+        return p
     }
     
     /// returns the edge and nearest hitpoint to point given

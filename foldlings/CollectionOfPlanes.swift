@@ -53,7 +53,6 @@ class CollectionOfPlanes: Printable, Hashable {
                 for edge in plane.edges {
                     edge.dirty = false //mark it as clean
                     if sketch.isTopEdge(edge) {
-                        println("toplaaane")
                         self.topPlane = plane
                     }
                     else if sketch.isBottomEdge(edge) {

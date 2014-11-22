@@ -32,7 +32,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
-    var debugColor = true
+    var debugColor = false
     let debugColors:[UIColor] = [
         UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
         UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
@@ -81,12 +81,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
-        
-    }
-
-    /// this runs every graphics update and can be used to animate stuffs
-    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval)
-    {
         
     }
 

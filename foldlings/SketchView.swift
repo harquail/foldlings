@@ -302,6 +302,8 @@ class SketchView: UIView {
                 sketch.removeEdge(edge!)
                 forceRedraw()
             }
+        } else if var plane = sketch.planeHitTest(touchPoint) {
+            sketch.planes.removePlane(plane)
         }
     }
     
