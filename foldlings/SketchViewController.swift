@@ -21,13 +21,6 @@ class SketchViewController: UIViewController{
         let arch = ArchivedEdges(adj: sketchView.sketch.adjacency, edges: sketchView.sketch.edges, tabs: sketchView.sketch.tabs)
         arch.save()
         
-//        let saved = ArchivedEdges.loadSaved()
-//        println(saved!.edges)
-//        println(saved!.adjacency)
-//        println(saved!.folds)
-//        println(saved!.tabs)
-//        
-        
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }

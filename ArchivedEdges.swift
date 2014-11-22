@@ -100,16 +100,7 @@ class ArchivedEdges : NSObject, NSCoding {
             }
             
         }
-        
-//        var i = 0
-//        for twin in foundTwins{
-//            i++
-//            edges.remove(twin)
-//            folds.remove(twin)
-//            tabs.remove(twin)
-//        }
-//        println("edges removed: \(i)")
-        
+
         
         aCoder.encodeObject(nsKeys, forKey: "adjs")
         aCoder.encodeObject (foundEdges, forKey: "edges")
