@@ -11,10 +11,11 @@ Smoothing User Input
 
 Plane Detection
 -----------------------------------
-func getPlanes() 
+func getPlanes() in 
 
 Plane Parenting and Doubly-Connected Edge List
 -----------------------------------
+func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
 
 Generating Tabs
 -----------------------------------
