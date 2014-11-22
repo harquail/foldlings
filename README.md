@@ -22,6 +22,6 @@ Generating Tabs
 -----------------------------------
 func buildTabs() -> Bool in Sketch.swift
 
-3D Planes
+3D Planes using SceneKit
 -----------------------------------
 func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
