@@ -11,6 +11,7 @@ Smoothing User Input
 
 Plane Detection
 -----------------------------------
+func getPlanes() 
 
 Plane Parenting and Doubly-Connected Edge List
 -----------------------------------
