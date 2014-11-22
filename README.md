@@ -8,7 +8,7 @@ key methods and classes
 
 Smoothing User Input 
 -----------------------------------
-
+func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint] in Bezier.swift
 
 Plane Detection
 -----------------------------------
