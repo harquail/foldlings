@@ -17,6 +17,7 @@ Plane Parenting and Doubly-Connected Edge List
 
 Generating Tabs
 -----------------------------------
+func buildTabs() -> Bool in Sketch.swift
 
 3D Planes
 -----------------------------------
