@@ -2,6 +2,7 @@
 //  CGPathElementObj.m
 //  foldlings
 //
+///  a path element object to ease passing this around and pulling these out from the opaque cgpath 
 //
 
 #import "CGPathElementObj.h"

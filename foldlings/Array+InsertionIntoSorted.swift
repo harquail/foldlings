@@ -10,7 +10,10 @@
 import Foundation
 
 
+
 extension Array {
+    /// gets the insertion index into a sorted array at the appropriate place
+    /// using binary insertion search
     func insertionIndexOf(elem: T, isOrderedBefore: (T, T) -> Bool) -> Int {
         var lo = 0
         var hi = self.count - 1

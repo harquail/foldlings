@@ -73,7 +73,6 @@
 		F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D619E24BEC00BB77F1 /* Images.xcassets */; };
 		F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
-		F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F180D52A1A05D8D400AC05BC /* RBResizer.swift */; };
 		F1824ECF1A19E525008B0F66 /* last.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECC1A19E525008B0F66 /* last.png */; };
 		F1824ED01A19E525008B0F66 /* middle.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECD1A19E525008B0F66 /* middle.png */; };
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
@@ -203,7 +202,6 @@
 		F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = foldlingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93E419E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foldlingsTests.swift; sourceTree = "<group>"; };
-		F180D52A1A05D8D400AC05BC /* RBResizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBResizer.swift; sourceTree = "<group>"; };
 		F1824ECC1A19E525008B0F66 /* last.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = last.png; path = ../last.png; sourceTree = "<group>"; };
 		F1824ECD1A19E525008B0F66 /* middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middle.png; path = ../middle.png; sourceTree = "<group>"; };
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
@@ -249,6 +247,8 @@
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
+				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
 				F153BB631A1EAED50029FDF2 /* SVGgh */,
 				22061CA01A1B17530030079D /* SwiftStructures */,
 				22D0E8041A169F3200C9ECAA /* ExSwift */,
@@ -447,13 +447,10 @@
 				22C0D6891A04965C00D521CA /* Bezier.swift */,
 				223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */,
 				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
-				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
-				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
 				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
-				F180D52A1A05D8D400AC05BC /* RBResizer.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
@@ -667,7 +664,6 @@
 				F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */,
 				F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */,
 				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
-				F180D52B1A05D8D400AC05BC /* RBResizer.swift in Sources */,
 				F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */,
 				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
 				F18C864719FD9F4500211229 /* CollectionOfFoldlings.swift in Sources */,

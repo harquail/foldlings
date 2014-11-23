@@ -183,7 +183,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
     }
     
-    
+    /// this undos any translation between the child and parent
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
         child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)

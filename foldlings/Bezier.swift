@@ -11,6 +11,7 @@ import UIKit
 //how fine to make the subdivisions -- is divided by the length of the line
 let kBezierIncrements:CGFloat = 0.5
 
+///find the average point on a point
 func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
@@ -26,6 +27,8 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     
 }
 
+
+/// is the path given drawn in counterclockwise winding order
 func isCounterClockwise(path:UIBezierPath) -> Bool
 {
     let elements = path.getPathElements()
@@ -40,6 +43,8 @@ func isCounterClockwise(path:UIBezierPath) -> Bool
     return total > 0
 }
 
+
+/// get a path of line segments from a set of points
 func linePathFromPoints(path:[CGPoint]) -> UIBezierPath
 {
     var npath = UIBezierPath()
@@ -54,6 +59,8 @@ func linePathFromPoints(path:[CGPoint]) -> UIBezierPath
     return npath
 }
 
+
+///recunstruct a bezier path from a set of points
 func pathFromPoints(path:[CGPoint]) -> UIBezierPath
 {
     var npath = UIBezierPath()
@@ -165,7 +172,6 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
         let p1:CGPoint = (elements[0] as CGPathElementObj).points[0].CGPointValue()
         let p2:CGPoint = (elements[1] as CGPathElementObj).points[0].CGPointValue()
         let np = nearestPointOnLine(point, p1, p2)
-//        println("found closest point to line: \(np) to \(point)")
         return np
     } else {
         // otherwise must be a curve so get subdivisions and find nearest point
@@ -180,8 +186,6 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
                 minI = i
             }
         }
-//        println("found closest point to curve: \(points[minI]) to \(point)")
-
         return points[minI]
     }
 

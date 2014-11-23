@@ -11,6 +11,8 @@ func == (lhs: Edge, rhs: Edge) -> Bool {
     return lhs === rhs
 }
 
+
+/// equality that considers twins
 func ~= (lhs: Edge, rhs: Edge) -> Bool {
     return lhs == rhs || lhs == rhs.twin
 }
@@ -81,40 +83,23 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
     
     required init(coder aDecoder: NSCoder) {
-        
         self.start = aDecoder.decodeCGPointForKey("start")
         self.end = aDecoder.decodeCGPointForKey("end")
         self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
         self.fold = Fold(rawValue: (aDecoder.decodeObjectForKey("fold") as String))!
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
-//        self.twin = aDecoder.decodeObjectForKey("twin") as Edge
-
-
     }
     
     
     
     func encodeWithCoder(aCoder: NSCoder) {
-        
-//        var start: CGPoint
-//        var end: CGPoint
-//        var path = UIBezierPath()
-//        var fold = Fold.Unknown
-//        var kind = Kind.Cut
-//        var isMaster = false
-//        var colorOverride:UIColor? = nil
-
-        
             aCoder.encodeCGPoint(start, forKey: "start")
             aCoder.encodeCGPoint(end, forKey: "end")
             aCoder.encodeObject(path, forKey: "path")
             aCoder.encodeObject( self.fold.rawValue, forKey:"fold" )
             aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
             aCoder.encodeBool(self.isMaster, forKey: "isMaster")
-//            aCoder.encodeObject(self.twin, forKey: "twin")
-
-
     }
 
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
@@ -126,6 +111,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
     
+    /// edge hit test
     class func hitTest(path: UIBezierPath, point:CGPoint, radius:CGFloat = kHitTestRadius) -> CGPoint? {
         var np:CGPoint? = nil
         if Edge.tapTargetForPath(path, radius: radius).containsPoint(point) {
@@ -138,6 +124,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return Edge.hitTest(path, point:point, radius:radius)
     }
     
+    
+    /// get the color of the edge by type
     class func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
     {
         var color: UIColor!
@@ -202,11 +190,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
         return abs(self.start.y - e.start.y)
     
-    }
-    
-    func reversePath()
-    {
-        
     }
     
     /// makes a straight edge between two points, constructing the path as well

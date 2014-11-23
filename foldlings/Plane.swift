@@ -173,7 +173,6 @@ class Plane: Printable, Hashable
             switch (currPath.type.value) {
             case kCGPathElementMoveToPoint.value:
                 let p = currPath.points[0].CGPointValue()
-//                outPath.addLineToPoint(p)
                 
             case kCGPathElementAddLineToPoint.value:
                 let p = currPath.points[0].CGPointValue()
@@ -190,14 +189,10 @@ class Plane: Printable, Hashable
                 let p3 = currPath.points[2].CGPointValue()
                 outPath.addCurveToPoint(p3, controlPoint1: p1, controlPoint2: p2)
             default:
-                //println("other: \(currPath.type.value)")
                 break
             }
         }
-        //println(outPath)
         outPath.closePath()
-        
-        
         return outPath
         
     }

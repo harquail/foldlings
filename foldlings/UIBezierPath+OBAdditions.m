@@ -13,6 +13,7 @@
 
 @implementation UIBezierPath (OBAdditions)
 
+
 - (void)ob_enumerateElementsUsingBlock:(OBUIBezierPathEnumerationHandler)handler
 {
     CGPathRef cgPath = self.CGPath;
@@ -50,14 +51,6 @@
             [points addObject:[NSValue valueWithCGPoint:element->points[i]]];
         }
         CGPathElementObj* pe = [[CGPathElementObj alloc] initWithType:element->type points:points];
-//      NSArray *points = [NSArray arrayWithObjects:
-//            [NSValue valueWithCGPoint:CGPointMake(5.5, 6.6)],
-//            [NSValue valueWithCGPoint:CGPointMake(7.7, 8.8)],
-//            nil];
-//        On the flip side, when you're pulling the values out of the array:
-//        
-//        NSValue *val = [points objectAtIndex:0];
-//        CGPoint p = [val CGPointValue];
         [elements addObject:pe];
     }];
     

@@ -2,7 +2,7 @@
 //  Bezier+Additions.m
 //  foldlings
 //
-//
+//  some codes from: http://stackoverflow.com/questions/8702696/drawing-smooth-curves-methods-neede
 
 #import "BezierSimple.h"
 #import "CGPoint+Vector.h"

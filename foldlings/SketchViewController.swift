@@ -15,24 +15,12 @@ class SketchViewController: UIViewController{
     @IBOutlet var selected: UIImageView!
     
     @IBAction func CardsButtonClicked(sender: UIButton) {
-        
-        
-        
         let arch = ArchivedEdges(adj: sketchView.sketch.adjacency, edges: sketchView.sketch.edges, tabs: sketchView.sketch.tabs)
         arch.save()
-        
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
-        
-        
-        //        [UIView beginAnimations:@"MoveView" context:nil];
-        //        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-        //        [UIView setAnimationDuration:0.5f];
-        //        self.BigView.frame = CGRectMake(newXPoistion, newYPosistion, samewidth, sameheight);
-        //        [UIView commitAnimations];
-        
         
         //TODO: Animate frame movement
         selected.frame = CGRectMake(105, 885, selected.frame.width, selected.frame.height)
@@ -70,7 +58,6 @@ class SketchViewController: UIViewController{
             viewController.laserImage = sketchView.bitmap(grayscale: true)
             viewController.planes = sketchView.sketch.planes
             viewController.parentButton = sketchView.previewButton
-            //            viewController.
             // pass data to next view
         }
     }

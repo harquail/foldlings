@@ -2,8 +2,6 @@
 //  ArchiviedEdges.swift
 //  foldlings
 //
-//  Created by nook on 11/19/14.
-//  Copyright (c) 2014 nook. All rights reserved.
 //
 
 import Foundation
@@ -82,53 +80,22 @@ class ArchivedEdges : NSObject, NSCoding {
             nsKeys[NSValue(CGPoint: key)] = adj[key]
             
         }
-
-        
-//        edges = siblicide(edges, edge: nil)
         
         var foundTwins:[Edge] = [Edge]()
         var foundEdges:[Edge] = [Edge]()
 
         for edge in edges{
-            
             if !foundTwins.contains(edge)  && !foundEdges.contains(edge) {
-                
                 foundTwins.append(edge.twin)
                 foundEdges.append(edge)
-
-
             }
             
         }
-
-        
         aCoder.encodeObject(nsKeys, forKey: "adjs")
         aCoder.encodeObject (foundEdges, forKey: "edges")
         aCoder.encodeObject (folds, forKey: "folds")
         aCoder.encodeObject (tabs, forKey: "tabs")
 
-        
-    }
-    
-    
-    func siblicide(edges:[Edge], edge:Edge?) -> [Edge]{
-        
-        var tempEdges = edges
-        
-        if(edge != nil){
-        tempEdges.remove(edge!)
-        
-        for e in tempEdges{
-            if(edge != nil && tempEdges.contains(e.twin)){
-                return siblicide(tempEdges, edge: e.twin)
-            }
-        }
-            
-        }
-
-        println("\nsiblicide: \(tempEdges)")
-        return tempEdges
-    
     }
     
     
