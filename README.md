@@ -6,9 +6,11 @@ Crafting a 3D paper pop-up can be a lot of fun for the whole family, but designi
 key methods and classes
 =========
 
-Smoothing User Input 
+Smoothing User Input  
 -----------------------------------
-func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint] in Bezier.swift
+func makeBezier(aborted:Bool=false)  in SketchView.swift
+func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat   in Bezier.swift
+func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint]  in Bezier.swift
 
 Plane Detection
 -----------------------------------
