@@ -8,22 +8,23 @@ key methods and classes
 
 Smoothing User Input  
 -----------------------------------
-func makeBezier(aborted:Bool=false)  in SketchView.swift
-func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat   in Bezier.swift
-func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint]  in Bezier.swift
+     func makeBezier(aborted:Bool=false)  in SketchView.swift
+     func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat   in Bezier.swift
+     func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -> [CGPoint]  in Bezier.swift
 
 Plane Detection
 -----------------------------------
-func getPlanes() in Sketch.swift
+     func getPlanes() in Sketch.swift
+     func addPlane(plane:Plane, sketch:Sketch)  in CollectionOfPlanes.swift
 
 Plane Parenting and Doubly-Connected Edge List
 -----------------------------------
-func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
+     func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
 
 Generating Tabs
 -----------------------------------
-func buildTabs() -> Bool in Sketch.swift
+     func buildTabs() -> Bool in Sketch.swift
 
 3D Planes using SceneKit
 -----------------------------------
-func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
+     func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode? in GameViewController.swift
