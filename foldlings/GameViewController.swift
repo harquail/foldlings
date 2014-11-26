@@ -220,7 +220,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // functionality here
         var node = plane.lazyNode()
         
+        if(plane.kind != .Hole){
         node.addAnimation(fadeIn(), forKey: "fade in")
+        }
         
         var useBottom = (recurseCount == 0)
         let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
