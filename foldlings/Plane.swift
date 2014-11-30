@@ -91,10 +91,14 @@ class Plane: Printable, Hashable
             if(self.kind == .Hole){
                 shape = SCNShape(path: path, extrusionDepth: 5.5)
                 material.diffuse.contents = UIColor.blackColor()
+                material.shininess = 0
+                
             }
             else{
                 // planes are white (for now, random color)
                 material.diffuse.contents = self.color
+                material.shininess = 0
+
             }
             // planes are visible from both sides
             material.doubleSided = true

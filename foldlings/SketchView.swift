@@ -50,6 +50,8 @@ class SketchView: UIView {
     
     required init(coder aDecoder: NSCoder)
     {
+        
+        
         super.init(coder: aDecoder)
         self.multipleTouchEnabled = false;
         self.backgroundColor = UIColor.whiteColor()
@@ -58,7 +60,7 @@ class SketchView: UIView {
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         
         // TODO: name should be set when creating sketch
-        sketch = Sketch(named: "name")
+        sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
     }
     
@@ -483,11 +485,11 @@ class SketchView: UIView {
         gameView.planes = sketch.planes
         gameView.makeScene()
         previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
-    }
+    }       
     
-    func simpleSketch()->Sketch
+    func simpleSketch(dex:Int, name:String)->Sketch
     {
-        var asketch = Sketch(named: "simple sketch")
+        var asketch = Sketch(at:dex, named:name)
         
         var fold1 = UIBezierPath()
         var cut1 = UIBezierPath()

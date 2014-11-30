@@ -31,15 +31,17 @@ class Sketch : NSObject  {
     var bEdge4point5: Edge!  //left2
     var borderEdges: [Edge] = []
 
-    var name:String
+    var index:Int
+    var name: String
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
 
 
-    init(named:String)
+    init(at:Int, named:String)
     {
         
+        index = at
         name = named
         //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
