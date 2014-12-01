@@ -138,10 +138,15 @@ class ArchivedEdges : NSObject, NSCoding {
             return names
         }
         
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey("edgeNames") as? [String] {
+        if let data = ArchivedEdges.archivedSketchNames() {
             names = data
         }
         return names
+    }
+    
+    class func archivedSketchNames() -> [String]?{
+    
+        return NSUserDefaults.standardUserDefaults().objectForKey("edgeNames") as? [String]
     }
     
     //should take the index of the sketch we want to retrieve...
