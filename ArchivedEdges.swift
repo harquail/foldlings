@@ -190,5 +190,17 @@ class ArchivedEdges : NSObject, NSCoding {
         
     }
     
+    class func removeAll() {
+        
+        if let names = ArchivedEdges.archivedSketchNames(){
+        for(var i = 0; i<names.count; i++){
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(i)")
+        }
+        }
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("edgeNames")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+    }
+    
     
 }

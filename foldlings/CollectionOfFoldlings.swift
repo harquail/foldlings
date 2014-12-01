@@ -10,51 +10,100 @@ import Foundation
 import UIKit
 
 class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
-
-    let names = ArchivedEdges.archivedSketchNames()!
+    
+    let names = ArchivedEdges.archivedSketchNames()
+    var cells = [FoldlingCell]()
     
     override init() {
         super.init()
         self.dataSource = self
         self.delegate = self
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
         self.dataSource = self
         self.delegate = self
-
+        
     }
-
+    
     func collectionView(collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int{
             
-            println("saved sketches: \(names.count)")
-            return names.count
+            if (names != nil){
+                println("saved sketches: \(names!.count)")
+                return names!.count
+            }
+            else{
+                return 0
+            }
     }
     
     func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-    
+            
             let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("foldlingsCell", forIndexPath: indexPath) as FoldlingCell
-//            let picture = UIImage()
-//            let label = UILabel()
+            
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+
+            
+            //            let picture = UIImage()
+            //            let label = UILabel()
             
             let index = indexPath.row
-            let cellName = names[index]
-//            label.text =
+            let cellName = names![index]
+            //            label.text =
             
             cell.label!.text = cellName
             cell.label!.sizeToFit()
-
+            cell.addGestureRecognizer(tapRecognizer)
+            cell.index = index
+            
             var view = cell.contentView
             
             view.backgroundColor = UIColor.whiteColor()
-//            view.addSubview(label)
+            //            view.addSubview(label)
             view.sizeToFit()
             
+            
+            cells.append(cell)
             return cell
     }
+    
+    func handleTap(sender: UITapGestureRecognizer) {
+        if sender.state == .Ended {
+            for cell in cells{
+            
+                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
+                    println("Clicked: \(cell.label!.text)")
+                    
+                    let story = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+                    
+                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+                    
+                    vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
+                    vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
+                    vc.sketchView.forceRedraw()
+                    
+                }
+            }
+
+        }
+    }
+    
+    func handlePress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Ended {
+            for cell in cells{
+                
+                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
+                    println("Clicked: \(cell.label!.text)")
+                }
+            }
+            
+        }
+    }
+    
     
     
 }

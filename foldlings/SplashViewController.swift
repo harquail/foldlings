@@ -9,15 +9,15 @@ class SplashViewController: UIViewController {
     @IBOutlet var slider:UISwitch!
     
     @IBAction func oneButton(sender: UIButton) {
-       
+        
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
         self.presentViewController(vc, animated: true, completion: nil)
         vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: 0)
         vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
         vc.sketchView.forceRedraw()
-
+        
         println("sketch 1")
-//        makeSketch(0)
+        //        makeSketch(0)
         
     }
     
@@ -61,7 +61,50 @@ class SplashViewController: UIViewController {
         slider?.setOn(on, animated: true)
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        let names = ArchivedEdges.archivedSketchNames()
+        
+        if(names == nil || names!.count < 5){
+            createTestSketches()
+        }
+        
+    }
+    /// we probably have to store the screenshots of our test scenes somewhere, because we can't instantiate their views easily here
+    func createTestSketches(){
+        
+        ArchivedEdges.removeAll()
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+//        self.presentViewController(vc, animated: true, completion: nil)
+        
+        
+        var localSketch:Sketch
+        for (var i = 0; i < 10; i++){
+            
+            localSketch = Sketch(at: i, named: "Sketch \(i)")
+            
+            switch(i){
+                
+            case 1:
+                boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
+            case 2:
+                boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
+            case 3:
+                boringTestPlaneInSketch(localSketch, xStart:200, topXStart: 100, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
+
+            case 4:
+                boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
+            default:
+                boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
+            }
+            
+            let arch = ArchivedEdges(sketch:localSketch)
+            arch.save()
+        }
+        
+        
+//        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
+//        vc.sketchView.forceRedraw()
+        
+        
     }
     
     func makeSketch(num:Int){
@@ -74,6 +117,7 @@ class SplashViewController: UIViewController {
         switch(num){
         case 0:
             boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, topXStart: 100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
+            
         case 1:
             boringTestPlaneInSketch(vc.sketchView.sketch, xStart:100, topXStart: 100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
         case 2:
