@@ -15,20 +15,7 @@ class ArchivedEdges : NSObject, NSCoding {
     var tabs: [Edge] = []
     var names = [String]()
     var index = 0
-    //    func saveToFile()
-    //    {
-    //        var data = NSMutableDictionary()
-    //        data.setObject(self, forKey: "edges")
-    //
-    //        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-    //        let path = paths.stringByAppendingPathComponent("data.plist")
-    //        var fileManager = NSFileManager.defaultManager()
-    //
-    //        let pathToDesktop = "/Users/nook/Desktop/data.plist"
-    //        println(pathToDesktop)
-    //
-    //        NSKeyedArchiver.archiveRootObject(data, toFile: pathToDesktop)
-    //    }
+    
     
     class func initFromFile() -> NSDictionary
     {
@@ -145,7 +132,7 @@ class ArchivedEdges : NSObject, NSCoding {
     }
     
     class func archivedSketchNames() -> [String]?{
-    
+        
         return NSUserDefaults.standardUserDefaults().objectForKey("edgeNames") as? [String]
     }
     
@@ -178,6 +165,8 @@ class ArchivedEdges : NSObject, NSCoding {
             let current = names[i]
             let previous = i - 1
             NSUserDefaults.standardUserDefaults().setObject(current, forKey: "achivedEdges\(previous)")
+            NSUserDefaults.standardUserDefaults().setObject(current, forKey: "archivedSketchImage\(previous)")
+            
         }
         
         // remove last
@@ -185,21 +174,50 @@ class ArchivedEdges : NSObject, NSCoding {
         names.removeAtIndex(index)
         NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(index)")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(index)")
         NSUserDefaults.standardUserDefaults().synchronize()
         
         
     }
     
-    class func removeAll() {
-        
-        if let names = ArchivedEdges.archivedSketchNames(){
-        for(var i = 0; i<names.count; i++){
-            NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(i)")
+    class func setImage(dex:Int, image:UIImage){
+        let imageData = UIImageJPEGRepresentation(image, 1)
+        let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).jpg"
+        let path = self.documentsPathForFileName(relativePath)
+        imageData.writeToFile(path, atomically: true)
+        NSUserDefaults.standardUserDefaults().setObject(relativePath, forKey: "archivedSketchImage\(dex)")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func archivedImage(dex:Int) -> UIImage?{
+        let possibleOldImagePath = NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(dex)") as String?
+        if let oldImagePath = possibleOldImagePath {
+            let oldFullPath = self.documentsPathForFileName(oldImagePath)
+            let oldImageData = NSData(contentsOfFile: oldFullPath)
+            // here is your saved image:
+            if((oldImageData) != nil){
+                return UIImage(data: oldImageData!)
+            }
         }
+        return nil
+    }
+    
+    private class func documentsPathForFileName(name: String) -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
+        let path = paths[0] as String;
+        let fullPath = path.stringByAppendingPathComponent(name)
+        return fullPath
+    }
+    
+    class func removeAll() {
+        if let names = ArchivedEdges.archivedSketchNames(){
+            for(var i = 0; i<names.count; i++){
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(i)")
+            }
         }
         NSUserDefaults.standardUserDefaults().removeObjectForKey("edgeNames")
         NSUserDefaults.standardUserDefaults().synchronize()
-
+        
     }
     
     

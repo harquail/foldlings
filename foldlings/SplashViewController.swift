@@ -62,7 +62,6 @@ class SplashViewController: UIViewController {
         super.viewDidLoad()
         
         let names = ArchivedEdges.archivedSketchNames()
-        
         if(names == nil || names!.count < 5){
             createTestSketches()
         }
@@ -73,14 +72,13 @@ class SplashViewController: UIViewController {
         
         ArchivedEdges.removeAll()
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
-//        self.presentViewController(vc, animated: true, completion: nil)
         
         
         var localSketch:Sketch
         for (var i = 0; i < 10; i++){
             
             localSketch = Sketch(at: i, named: "Sketch \(i)")
-            
+
             switch(i){
                 
             case 1:
@@ -95,13 +93,12 @@ class SplashViewController: UIViewController {
             default:
                 boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
             }
-            
+//            self.presentViewController(vc, animated: true, completion: nil)
+//            vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
             let arch = ArchivedEdges(sketch:localSketch)
             arch.save()
         }
         
-        
-//        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
 //        vc.sketchView.forceRedraw()
         
         

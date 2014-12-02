@@ -24,6 +24,8 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         super.init(coder:aDecoder)
         self.dataSource = self
         self.delegate = self
+        //invalidate sketches once every second
+
         
     }
     
@@ -31,7 +33,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         numberOfItemsInSection section: Int) -> Int{
             
             if (names != nil){
-                println("saved sketches: \(names!.count)")
+//                println("saved sketches: \(names!.count)")
                 return names!.count
             }
             else{
@@ -45,14 +47,20 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("foldlingsCell", forIndexPath: indexPath) as FoldlingCell
             
             let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-
+            
             
             //            let picture = UIImage()
             //            let label = UILabel()
             
             let index = indexPath.row
             let cellName = names![index]
-            //            label.text =
+
+     
+
+            
+            if let archivedImage = ArchivedEdges.archivedImage(index){
+                cell.image?.image = archivedImage
+            }
             
             cell.label!.text = cellName
             cell.label!.sizeToFit()
@@ -73,25 +81,23 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .Ended {
             for cell in cells{
-            
+                
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
-                    
-                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
-                    
-                    vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-                    vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
-                    vc.sketchView.forceRedraw()
-                    
+                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
+                        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
+                        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
+                        vc.sketchView.forceRedraw()
+                    })
                 }
             }
-
+            
         }
     }
-    
+
     func handlePress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Ended {
             for cell in cells{
@@ -105,5 +111,16 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     }
     
     
+    func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    
+    ///invalidate cells when view loads
+    func invalidateCells() {
+        for cell in cells{
+        }
+    }
+
     
 }
