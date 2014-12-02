@@ -23,4 +23,10 @@ func getRandomColor(alpha:CGFloat) -> UIColor{
 }
 
 
+func getSmartRandomColor(alpha:CGFloat, horizontal: Bool) -> UIColor{
+    var randomRed:CGFloat = CGFloat(drand48())
+    var randomGreen:CGFloat = CGFloat(drand48())
+    var randomBlue:CGFloat = CGFloat(drand48())
+    return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: alpha)
+}
 

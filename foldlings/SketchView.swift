@@ -248,6 +248,7 @@ class SketchView: UIView {
                 // print planes first if exist
                 for plane in sketch.planes.planes {
                     let c = plane.color
+                    //set pleasing colors here based on orientation
                     c.setFill()
                     plane.path.usesEvenOddFillRule = false
                     plane.path.fill()
