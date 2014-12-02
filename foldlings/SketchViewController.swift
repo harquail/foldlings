@@ -14,8 +14,10 @@ class SketchViewController: UIViewController{
     
     @IBOutlet var selected: UIImageView!
     
+    // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
-        let arch = ArchivedEdges(adj: sketchView.sketch.adjacency, edges: sketchView.sketch.edges, tabs: sketchView.sketch.tabs)
+        let arch = ArchivedEdges(sketch:sketchView.sketch)
+        ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
         arch.save()
         
         self.dismissViewControllerAnimated(true, completion: nil)

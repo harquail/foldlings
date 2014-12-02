@@ -22,10 +22,10 @@
             </objects>
             <point key="canvasLocation" x="-2597" y="-1136"/>
         </scene>
-        <!--Collection Of Foldlings-->
+        <!--Splash View Controller-->
         <scene sceneID="POB-fl-LU2">
             <objects>
-                <viewController storyboardIdentifier="SplashPage" id="xNl-vj-y2i" customClass="CollectionOfFoldlings" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashPage" id="xNl-vj-y2i" customClass="SplashViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tgl-Ne-fpY"/>
                         <viewControllerLayoutGuide type="bottom" id="yNq-6X-lC4"/>
@@ -40,50 +40,44 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-Re-LAF">
                                 <rect key="frame" x="34" y="76" width="700" height="120"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-ES-5WL">
-                                <rect key="frame" x="105" y="333" width="167" height="148"/>
-                                <state key="normal" backgroundImage="first.png"/>
-                                <connections>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="HFB-wp-u1d"/>
-                                    <action selector="oneButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="5ij-O3-QMk"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L88-SC-Z9m">
-                                <rect key="frame" x="490" y="333" width="167" height="148"/>
-                                <state key="normal" backgroundImage="last.png"/>
-                                <connections>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="X5q-Vc-v4b"/>
-                                    <action selector="threeButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="I2r-Yb-flb"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6h-K7-U0T">
-                                <rect key="frame" x="298" y="333" width="167" height="148"/>
-                                <state key="normal" backgroundImage="middle.png"/>
-                                <connections>
-                                    <action selector="fiveButton:" destination="xNl-vj-y2i" eventType="touchUpInside" id="2SL-5m-8TW"/>
-                                    <action selector="laserButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="d0b-pI-ufR"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="With" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J78-It-9mN">
-                                <rect key="frame" x="324" y="509" width="120" height="21"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
-                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpW-Lf-hTX">
-                                <rect key="frame" x="128" y="509" width="120" height="21"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
-                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Paper" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk0-cv-IPY">
-                                <rect key="frame" x="513" y="505" width="120" height="30"/>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="29"/>
-                                <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <collectionView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="STP-FZ-aLb" customClass="CollectionOfFoldlings" customModule="foldlings" customModuleProvider="target">
+                                <rect key="frame" x="16" y="211" width="736" height="534"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zUc-vS-EIs">
+                                    <size key="itemSize" width="178" height="231"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="40" minY="0.0" maxX="40" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="foldlingsCell" id="ZcN-o7-kvu" customClass="FoldlingCell" customModule="foldlings" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="178" height="231"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This Label has a bunch of " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4Q-Of-ft4">
+                                                    <rect key="frame" x="0.0" y="202" width="175" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYA-su-tXr">
+                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="180"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <connections>
+                                            <outlet property="image" destination="dYA-su-tXr" id="sBB-xA-ljs"/>
+                                            <outlet property="label" destination="P4Q-Of-ft4" id="O3w-tY-3Bu"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdT-a8-qea">
-                                <rect key="frame" x="298" y="791" width="170" height="58"/>
+                                <rect key="frame" x="298" y="825" width="170" height="58"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="ABOUT">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -96,7 +90,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
-                                <rect key="frame" x="261" y="725" width="247" height="58"/>
+                                <rect key="frame" x="261" y="759" width="247" height="58"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="MAKE NEW">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -107,13 +101,13 @@
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cdu-oJ-phN">
-                                <rect key="frame" x="250" y="872" width="51" height="31"/>
+                                <rect key="frame" x="250" y="906" width="51" height="31"/>
                                 <connections>
                                     <action selector="sliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="8Qt-TC-frV"/>
                                 </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Anb-QR-y6T">
-                                <rect key="frame" x="316" y="857" width="201" height="62"/>
+                                <rect key="frame" x="316" y="891" width="201" height="62"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="PRO MODE">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -124,7 +118,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="enables folds above the center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ush-r7-pTz">
-                                <rect key="frame" x="250" y="916" width="290" height="28"/>
+                                <rect key="frame" x="250" y="950" width="290" height="28"/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="20"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -362,13 +356,10 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
     <resources>
         <image name="cut.png" width="206" height="208"/>
         <image name="erase.png" width="208" height="208"/>
-        <image name="first.png" width="510" height="433"/>
         <image name="fold.png" width="206" height="208"/>
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
-        <image name="last.png" width="523" height="420"/>
         <image name="menu.png" width="206" height="208"/>
-        <image name="middle.png" width="490" height="394"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="roundedrect.png" width="192" height="215"/>
         <image name="send.jpeg" width="400" height="345"/>
