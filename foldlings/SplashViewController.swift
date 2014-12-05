@@ -49,7 +49,7 @@ class SplashViewController: UIViewController {
     func toggleProMode(){
         var isOn = slider.on
         isOn = !isOn
-        
+             Flurry.logEvent("pro mode toggled", withParameters: NSDictionary(dictionary: ["on":isOn]))
         slider.setOn(isOn, animated: true)
         NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: "proMode")
         NSUserDefaults.standardUserDefaults().synchronize()

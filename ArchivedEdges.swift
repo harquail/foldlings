@@ -17,6 +17,7 @@ class ArchivedEdges : NSObject, NSCoding {
     var index = 0
     
     
+    
     class func initFromFile() -> NSDictionary
     {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String

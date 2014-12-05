@@ -83,7 +83,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             for cell in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
-                    println("Clicked: \(cell.label!.text)")
+
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
@@ -92,6 +92,10 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                         vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
                         vc.sketchView.forceRedraw()
                     })
+                    
+                    Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
+                    println("Clicked: \(cell.label!.text)")
+
                 }
             }
             
@@ -104,6 +108,9 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
+                    
+                    Flurry.logEvent("deleted foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
+
                 }
             }
             
@@ -115,6 +122,21 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         return true
     }
 
+    
+    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
+        
+        println(NSStringFromSelector(action))
+        
+        if (NSStringFromSelector(action) == "cut:" || NSStringFromSelector(action) ==  "delete:"){
+            return true
+        }
+        return false
+
+    }
+    
+    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
+        println("action perfomed")
+    }
     
     ///invalidate cells when view loads
     func invalidateCells() {

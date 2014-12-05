@@ -66,6 +66,10 @@
 		F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB961A1EAED50029FDF2 /* GHControlFactory.m */; };
 		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
 		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
+		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
+		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
+		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
+		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
@@ -193,6 +197,11 @@
 		F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGDocumentView.m; sourceTree = "<group>"; };
 		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
 		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
+		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
+		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -226,6 +235,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
+				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
+				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +263,7 @@
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				F160F3B81A31463900B469CA /* Flurry */,
 				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
 				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
 				F153BB631A1EAED50029FDF2 /* SVGgh */,
@@ -415,10 +428,21 @@
 			path = "Views and Layers";
 			sourceTree = "<group>";
 		};
+		F160F3B81A31463900B469CA /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				F160F3B91A31463900B469CA /* Flurry.h */,
+				F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */,
+			);
+			path = Flurry;
+			sourceTree = "<group>";
+		};
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
+				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
+				F160F3BC1A31473800B469CA /* Security.framework */,
 				F17C93E219E24BEC00BB77F1 /* foldlingsTests */,
 				F17C93C919E24BEC00BB77F1 /* Products */,
 			);
@@ -438,6 +462,7 @@
 			children = (
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
+				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
@@ -659,6 +684,7 @@
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
 				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
+				F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */,
 				F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */,
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
@@ -816,6 +842,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings/Flurry",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
@@ -832,6 +862,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings/Flurry",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";

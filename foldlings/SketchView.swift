@@ -96,7 +96,7 @@ class SketchView: UIView {
         switch sketchMode
         {
         case .Erase:
-            erase(touchPoint);
+            erase(touchPoint)
         case .Cut, .Fold, .Tab:
             // simplemode check for fold drawing
             if simpleMode && !simpleModeFoldInBounds(touchPoint, sketchMode: sketchMode)  {

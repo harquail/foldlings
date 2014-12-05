@@ -52,15 +52,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
+        Flurry.logEvent("back to 2d land")
+
         parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
         
     @IBAction func printButton (sender: UIButton){
+        Flurry.logEvent("shared print-out image")
+
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
+        Flurry.logEvent("shared laser image")
+
         popupShare(laserImage, xposition:100)
     }
     
