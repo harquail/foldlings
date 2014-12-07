@@ -2,6 +2,7 @@
 //
 import Foundation
 import UIKit
+import Armchair
 
 class SplashViewController: UIViewController {
     
@@ -57,6 +58,8 @@ class SplashViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        
+        Armchair.showPromptIfNecessary()
         let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
         slider?.setOn(on, animated: true)
         super.viewDidLoad()

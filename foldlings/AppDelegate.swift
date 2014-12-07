@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import Armchair
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         Flurry.setCrashReportingEnabled(true)
         Flurry.startSession(KEY_FLURRY)
+        Armchair.appID(APP_STORE_ID)
+//        Armchair.debugEnabled(true)
         return true
     }
 
