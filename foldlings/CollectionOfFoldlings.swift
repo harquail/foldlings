@@ -102,10 +102,9 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                     
                     Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
                     println("Clicked: \(cell.label!.text)")
-
+                    
                 }
             }
-            
         }
     }
 
@@ -144,8 +143,18 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         ArchivedEdges.removeAtIndex(indexPath.row)
         names?.removeAtIndex(indexPath.row)
         self.deleteItemsAtIndexPaths([indexPath])
+        for cell in cells{
+            if(cell.index > indexPath.row){
+                cell.index -= 1
+                println("index moved to \(cell.index)")
+            }
+        }
+        
         
     }
+    
+    
+    
     
     ///invalidate cells when view loads
     func invalidateCells() {
