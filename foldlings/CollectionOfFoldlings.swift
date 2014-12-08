@@ -11,7 +11,7 @@ import UIKit
 
 class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let names = ArchivedEdges.archivedSketchNames()
+    var names = ArchivedEdges.archivedSketchNames()
     var cells = [FoldlingCell]()
     
     override init() {
@@ -26,20 +26,27 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         self.delegate = self
         //invalidate sketches once every second
 
-        
+    }
+    
+    override func reloadData() {
+        super.reloadData()
+        names = ArchivedEdges.archivedSketchNames()
     }
     
     func collectionView(collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int{
             
             if (names != nil){
-//                println("saved sketches: \(names!.count)")
                 return names!.count
             }
             else{
                 return 0
             }
     }
+    override func didMoveToSuperview() {
+        self.reloadData()
+    }
+    
     
     func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
@@ -108,9 +115,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
-                    
                     Flurry.logEvent("deleted foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
-
                 }
             }
             
@@ -135,7 +140,11 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     }
     
     func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
-        println("action perfomed")
+        
+        ArchivedEdges.removeAtIndex(indexPath.row)
+        names?.removeAtIndex(indexPath.row)
+        self.deleteItemsAtIndexPaths([indexPath])
+        
     }
     
     ///invalidate cells when view loads

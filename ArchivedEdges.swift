@@ -153,13 +153,38 @@ class ArchivedEdges : NSObject, NSCoding {
                 return sktch
             }
         }
-        println("failed to load save")
+        println("failed to load save at: \(dex)")
         return nil
     }
     
+    class func removeAtIndex(index:Int) {
+        var i:Int
+        var names = archivedSketchNames()
+        println("names\(names)")
+        println("removing object at \(index)")
+
+        if(names != nil){
+            for(i = index; i<names!.count - 1; i++){
+                let current = i
+                let next = names![i + 1]
+                NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(current)")
+                println("set object for achivedEdges\(current)")
+                NSUserDefaults.standardUserDefaults().setObject(next, forKey: "archivedSketchImage\(current)")
+            }
+            
+            // remove last
+            names!.removeAtIndex(index)
+            println("names\(names)")
+            NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(names?.count)")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(names?.count)")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    
     /// needs to remove from NSUserDefaults, as well
     func remove() {
-        
         // move everything down one
         var i:Int
         for(i = index; i<names.count; ++i){
@@ -171,14 +196,11 @@ class ArchivedEdges : NSObject, NSCoding {
         }
         
         // remove last
-        
         names.removeAtIndex(index)
         NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(index)")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(index)")
         NSUserDefaults.standardUserDefaults().synchronize()
-        
-        
     }
     
     class func setImage(dex:Int, image:UIImage){

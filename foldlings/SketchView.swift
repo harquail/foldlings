@@ -9,6 +9,9 @@ import UIKit
 
 class SketchView: UIView {
     
+    
+    
+    
     @IBOutlet var previewButton: UIButton!
     
     enum Mode {
