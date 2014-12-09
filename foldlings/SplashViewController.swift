@@ -97,14 +97,14 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         for (var i = 0; i < 10; i++){
             localSketch = Sketch(at: i, named: "Sketch \(i)")
             switch(i){
-            case 1:
+            case 0:
                 boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
-            case 2:
+            case 1:
                 boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
-            case 3:
+            case 2:
                 boringTestPlaneInSketch(localSketch, xStart:200, topXStart: 100, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
 
-            case 4:
+            case 3:
                 boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
             default:
                 boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)

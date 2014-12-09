@@ -39,7 +39,7 @@ class ArchivedEdges : NSObject, NSCoding {
         self.edges = edges
         self.tabs = tabs
         self.index = index
-        if(index>fetchNames().count){
+        if(index>=fetchNames().count){
             addName(name)
         }
         
@@ -53,7 +53,7 @@ class ArchivedEdges : NSObject, NSCoding {
         self.edges = sketch.edges
         self.tabs = sketch.tabs
         self.index = sketch.index
-        if(index>fetchNames().count){
+        if(index>=fetchNames().count){
             addName(sketch.name)
         }
         
