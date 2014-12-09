@@ -12,7 +12,7 @@ import UIKit
 class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var names = ArchivedEdges.archivedSketchNames()
-    var cells = [FoldlingCell]()
+    var cells = [Int:FoldlingCell]()
     
     override init() {
         super.init()
@@ -81,13 +81,14 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             view.sizeToFit()
             
             
-            cells.append(cell)
+            cells[index] = cell
             return cell
     }
     
+    
     func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .Ended {
-            for cell in cells{
+            for (index, cell) in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
 
@@ -110,7 +111,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
 
     func handlePress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Ended {
-            for cell in cells{
+            for (index, cell) in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
@@ -143,7 +144,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         ArchivedEdges.removeAtIndex(indexPath.row)
         names?.removeAtIndex(indexPath.row)
         self.deleteItemsAtIndexPaths([indexPath])
-        for cell in cells{
+        for (index, cell) in cells{
             if(cell.index > indexPath.row){
                 cell.index -= 1
                 println("index moved to \(cell.index)")

@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 import Armchair
 
-class SplashViewController: UIViewController {
+class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     @IBOutlet var slider:UISwitch!
     
@@ -20,8 +20,24 @@ class SplashViewController: UIViewController {
     
     @IBAction func newButtonPressed(sender: AnyObject) {
 
-        transitionToFreshSketch("rawr")
+         let alert = UIAlertView(title: "Sketch Name", message: "", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
+        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
+        alert.tag = 1
+        alert.show()
     }
+    
+ 
+
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if (alertView.tag == 1) {
+            if (buttonIndex == 1) {
+                let textField = alertView.textFieldAtIndex(0)
+                transitionToFreshSketch(textField!.text)
+            }
+            
+        }
+    }
+
     
     func transitionToFreshSketch(name:String){
 
