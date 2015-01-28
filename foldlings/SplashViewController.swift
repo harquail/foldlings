@@ -2,54 +2,67 @@
 //
 import Foundation
 import UIKit
+import Armchair
 
-class SplashViewController: UIViewController {
-    
+class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     @IBOutlet var slider:UISwitch!
     
-    @IBAction func oneButton(sender: UIButton) {
-        
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
-        self.presentViewController(vc, animated: true, completion: nil)
-        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: 0)
-        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
-        vc.sketchView.forceRedraw()
-        
-        println("sketch 1")
-        //        makeSketch(0)
-        
-    }
-    
-    @IBAction func twoButton(sender: UIButton) {
-        makeSketch(1)
-    }
-    
-    @IBAction func threeButton(sender: UIButton) {
-        makeSketch(2)
-    }
-    
-    @IBAction func fourButton(sender: UIButton) {
-        makeSketch(3)
-    }
-    
-    @IBAction func fiveButton(sender: UIButton) {
-        makeSketch(4)    }
-    
+    @IBOutlet var collectionOfFoldlings: CollectionOfFoldlings!
     
     @IBAction func proButtonTouched(sender: AnyObject) {
         toggleProMode()
     }
     
-    
     @IBAction func sliderSlid(sender: AnyObject) {
         toggleProMode()
+    }
+    
+    @IBAction func newButtonPressed(sender: AnyObject) {
+
+         let alert = UIAlertView(title: "Sketch Name", message: "", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
+        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
+        alert.tag = 1
+        alert.show()
+    }
+    
+ 
+
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if (alertView.tag == 1) {
+            if (buttonIndex == 1) {
+                let textField = alertView.textFieldAtIndex(0)
+                transitionToFreshSketch(textField!.text)
+            }
+            
+        }
+    }
+
+    
+    func transitionToFreshSketch(name:String){
+
+        println("transitioned to fresh sketch")
+//        collectionOfFoldlings.r
+
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        self.presentViewController(vc, animated: true, completion: {
+            vc.sketchView.forceRedraw()
+        })
+        
+        vc.sketchView.sketch.index = ArchivedEdges.archivedSketchNames()!.count + 1
+        vc.sketchView.sketch.name = name
+        println(vc.sketchView.sketch.index)
+        Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]))
+        
+
+
     }
     
     func toggleProMode(){
         var isOn = slider.on
         isOn = !isOn
-        
+             Flurry.logEvent("pro mode toggled", withParameters: NSDictionary(dictionary: ["on":isOn]))
         slider.setOn(isOn, animated: true)
         NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: "proMode")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -57,59 +70,55 @@ class SplashViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        Armchair.showPromptIfNecessary()
         let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
         slider?.setOn(on, animated: true)
         super.viewDidLoad()
         
         let names = ArchivedEdges.archivedSketchNames()
-        if(names == nil || names!.count < 5){
+        if(true){
+            //names == nil || names!.count < 5
             createTestSketches()
         }
         
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        collectionOfFoldlings.reloadData()
+    }
+    
     /// we probably have to store the screenshots of our test scenes somewhere, because we can't instantiate their views easily here
     func createTestSketches(){
         
         ArchivedEdges.removeAll()
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
         
-        
         var localSketch:Sketch
         for (var i = 0; i < 10; i++){
-            
             localSketch = Sketch(at: i, named: "Sketch \(i)")
-
             switch(i){
-                
-            case 1:
+            case 0:
                 boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:300, midFoldHeight:80, bottomWidth:300, topWidth:300)
-            case 2:
+            case 1:
                 boringTestPlaneInSketch(localSketch, xStart:100, topXStart: 100, foldHeightBelowMaster:100, midFoldHeight:30, bottomWidth:50, topWidth:50)
-            case 3:
+            case 2:
                 boringTestPlaneInSketch(localSketch, xStart:200, topXStart: 100, foldHeightBelowMaster:200, midFoldHeight:90, bottomWidth:200, topWidth:200)
 
-            case 4:
+            case 3:
                 boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
             default:
                 boringTestPlaneInSketch(localSketch, xStart:150, topXStart: 100, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:150, topWidth:150)
             }
-//            self.presentViewController(vc, animated: true, completion: nil)
-//            vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
             let arch = ArchivedEdges(sketch:localSketch)
             arch.save()
         }
-        
-//        vc.sketchView.forceRedraw()
-        
         
     }
     
     func makeSketch(num:Int){
         
-        
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
         self.presentViewController(vc, animated: true, completion: nil)
-        
         
         switch(num){
         case 0:
@@ -128,7 +137,6 @@ class SplashViewController: UIViewController {
             //            boringTestPlaneInSketch(vc.sketchView.sketch, xStart:150, foldHeightBelowMaster:150, midFoldHeight:100, bottomWidth:400, topWidth:150)
             
         }
-        
         (vc.view as SketchView).forceRedraw()
     }
     
@@ -143,7 +151,6 @@ class SplashViewController: UIViewController {
         var cfold1 = UIBezierPath()
         var cfold2 = UIBezierPath()
         var cfold3 = UIBezierPath()
-        
         
         var top = UIBezierPath()
         var rside1 = UIBezierPath()
@@ -160,7 +167,6 @@ class SplashViewController: UIViewController {
         let b5 = CGPointMake(260, 680)
         let b6 = CGPointMake(260, 512)
         
-        
         // for centerfold
         let c1 = CGPointMake(0, 512)//s6
         let c2 = CGPointMake(260, 512)
@@ -172,7 +178,6 @@ class SplashViewController: UIViewController {
         let s2 = CGPointMake(768, 0)
         let s4 = CGPointMake(768, 1024)
         let s5 = CGPointMake(0, 1024)
-        
         
         //        edges
         fold1.moveToPoint(b1)
@@ -187,11 +192,9 @@ class SplashViewController: UIViewController {
         cut2.addLineToPoint(b4)
         s.addEdge(b3, end: b4, path: cut2, kind: Edge.Kind.Cut )
         
-        
         fold2.moveToPoint(b4)
         fold2.addLineToPoint(b5)
         s.addEdge(b4, end: b5, path: fold2, kind: Edge.Kind.Fold )
-        
         
         cut3.moveToPoint(b5)
         cut3.addLineToPoint(b6)
@@ -228,7 +231,6 @@ class SplashViewController: UIViewController {
         // use points known to generate cuts n folds (top fold and connections)
         // optionally, delete master fold segment inside plane
         
-        
         let drivingEdgeStart = s.drivingEdge.start
         let drivingEdgeEnd = s.drivingEdge.end
         s.removeEdge(s.drivingEdge) //remove master fold
@@ -255,10 +257,7 @@ class SplashViewController: UIViewController {
         let masterFoldRight = Edge.straightEdgeBetween(masterFoldRightStart, end: masterFoldRightEnd, kind: .Fold)
         s.addEdge(masterFoldRight)
         
-        
-        
         let masterMinusMid = masterFoldLeft.yDistTo(bottomFold)
-        
         
         let topFoldStart = CGPointMake(midFoldStart.x, midFoldStart.y - masterMinusMid)
         let topFoldEnd = CGPointMake(midFoldEnd.x, topFoldStart.y)
@@ -284,8 +283,5 @@ class SplashViewController: UIViewController {
         s.addEdge(connectionSix)
         
     }
-    
-    
-    
 }
 

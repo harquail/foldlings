@@ -17,6 +17,7 @@ class ArchivedEdges : NSObject, NSCoding {
     var index = 0
     
     
+    
     class func initFromFile() -> NSDictionary
     {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
@@ -38,7 +39,7 @@ class ArchivedEdges : NSObject, NSCoding {
         self.edges = edges
         self.tabs = tabs
         self.index = index
-        if(index>fetchNames().count){
+        if(index>=fetchNames().count){
             addName(name)
         }
         
@@ -52,7 +53,7 @@ class ArchivedEdges : NSObject, NSCoding {
         self.edges = sketch.edges
         self.tabs = sketch.tabs
         self.index = sketch.index
-        if(index>fetchNames().count){
+        if(index>=fetchNames().count){
             addName(sketch.name)
         }
         
@@ -152,33 +153,37 @@ class ArchivedEdges : NSObject, NSCoding {
                 return sktch
             }
         }
-        println("failed to load save")
+        println("failed to load save at: \(dex)")
         return nil
     }
     
-    /// needs to remove from NSUserDefaults, as well
-    func remove() {
-        
-        // move everything down one
+    class func removeAtIndex(index:Int) {
         var i:Int
-        for(i = index; i<names.count; ++i){
-            let current = names[i]
-            let previous = i - 1
-            NSUserDefaults.standardUserDefaults().setObject(current, forKey: "achivedEdges\(previous)")
-            NSUserDefaults.standardUserDefaults().setObject(current, forKey: "archivedSketchImage\(previous)")
+        var names = archivedSketchNames()
+        println("names\(names)")
+        println("removing object at \(index)")
+
+        if(names != nil){
+            for(i = index; i<names!.count-1; i++){
+                if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as NSData?{
+                NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
+                }
+                println("set object for achivedEdges\(i)")
+                if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as String?{
+                    NSUserDefaults.standardUserDefaults().setObject(nextImage, forKey: "archivedSketchImage\(i)")
+                }
+            }
             
+            // remove last
+            names!.removeAtIndex(index)
+            println("names\(names)")
+            NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(names?.count)")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(names?.count)")
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
-        
-        // remove last
-        
-        names.removeAtIndex(index)
-        NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(index)")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(index)")
-        NSUserDefaults.standardUserDefaults().synchronize()
-        
-        
     }
+    
     
     class func setImage(dex:Int, image:UIImage){
         let imageData = UIImageJPEGRepresentation(image, 1)
@@ -213,6 +218,8 @@ class ArchivedEdges : NSObject, NSCoding {
         if let names = ArchivedEdges.archivedSketchNames(){
             for(var i = 0; i<names.count; i++){
                 NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(i)")
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(i)")
+
             }
         }
         NSUserDefaults.standardUserDefaults().removeObjectForKey("edgeNames")

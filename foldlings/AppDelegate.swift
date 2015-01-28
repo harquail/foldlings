@@ -1,10 +1,11 @@
-//
+    //
 //  AppDelegate.swift
 //  foldlings
 //
 //
 
 import UIKit
+import Armchair
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Flurry.setCrashReportingEnabled(true)
+        Flurry.startSession(KEY_FLURRY)
+        Armchair.appID(APP_STORE_ID)
+//        Armchair.debugEnabled(true)
         return true
     }
 
@@ -29,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

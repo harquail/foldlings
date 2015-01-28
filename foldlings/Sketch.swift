@@ -33,23 +33,29 @@ class Sketch : NSObject  {
 
     var index:Int
     var name: String
+    var origin:Origin
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
+    
+    enum Origin: String {
+        case UserCreated = "User"
+        case Sample = "Sample"
+    }
+    
 
-
-    init(at:Int, named:String)
+    init(at:Int, named:String, userOriginated:Bool = true)
     {
         
         index = at
         name = named
-        //insert master fold and make borders into cuts
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
-        
+        origin = userOriginated ? .UserCreated : .Sample
         let scaleFactor = CGFloat(0.9)
         super.init()
+        //insert master fold and make borders into cuts
         makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
         
     }

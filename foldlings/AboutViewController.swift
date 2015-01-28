@@ -10,6 +10,7 @@ class AboutViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Flurry.logEvent("about viewed")
 
         // Do any additional setup after loading the view.
     }

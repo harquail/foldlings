@@ -11,8 +11,8 @@ import UIKit
 
 class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let names = ArchivedEdges.archivedSketchNames()
-    var cells = [FoldlingCell]()
+    var names = ArchivedEdges.archivedSketchNames()
+    var cells = [Int:FoldlingCell]()
     
     override init() {
         super.init()
@@ -26,20 +26,27 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         self.delegate = self
         //invalidate sketches once every second
 
-        
+    }
+    
+    override func reloadData() {
+        super.reloadData()
+        names = ArchivedEdges.archivedSketchNames()
     }
     
     func collectionView(collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int{
             
             if (names != nil){
-//                println("saved sketches: \(names!.count)")
                 return names!.count
             }
             else{
                 return 0
             }
     }
+    override func didMoveToSuperview() {
+        self.reloadData()
+    }
+    
     
     func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
@@ -74,16 +81,17 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             view.sizeToFit()
             
             
-            cells.append(cell)
+            cells[index] = cell
             return cell
     }
     
+    
     func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .Ended {
-            for cell in cells{
+            for (index, cell) in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
-                    println("Clicked: \(cell.label!.text)")
+
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
@@ -92,18 +100,22 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                         vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
                         vc.sketchView.forceRedraw()
                     })
+                    
+                    Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
+                    println("Clicked: \(cell.label!.text)")
+                    
                 }
             }
-            
         }
     }
 
     func handlePress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Ended {
-            for cell in cells{
+            for (index, cell) in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
+                    Flurry.logEvent("deleted foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
                 }
             }
             
@@ -115,6 +127,35 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         return true
     }
 
+    
+    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
+        
+        println(NSStringFromSelector(action))
+        
+        if (NSStringFromSelector(action) == "cut:" || NSStringFromSelector(action) ==  "delete:"){
+            return true
+        }
+        return false
+
+    }
+    
+    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
+        
+        ArchivedEdges.removeAtIndex(indexPath.row)
+        names?.removeAtIndex(indexPath.row)
+        self.deleteItemsAtIndexPaths([indexPath])
+        for (index, cell) in cells{
+            if(cell.index > indexPath.row){
+                cell.index -= 1
+                println("index moved to \(cell.index)")
+            }
+        }
+        
+        
+    }
+    
+    
+    
     
     ///invalidate cells when view loads
     func invalidateCells() {
