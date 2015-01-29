@@ -28,7 +28,7 @@ class SketchViewController: UIViewController{
         Flurry.logEvent("erase button clicked")
 
         //TODO: Animate frame movement
-        selected.frame = CGRectMake(105, 885, selected.frame.width, selected.frame.height)
+        selected.frame = CGRectMake(sender.frame.origin.x + 12, 885, selected.frame.width, selected.frame.height)
         
         sketchView.sketchMode = SketchView.Mode.Erase
     }
@@ -37,24 +37,49 @@ class SketchViewController: UIViewController{
     {
         Flurry.logEvent("cut button clicked")
 
-        selected.frame = CGRectMake(306, 885, selected.frame.width, selected.frame.height)
+        
+        selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Cut
     }
     
     @IBAction func FoldButtonClicked(sender: UIButton)
     {
         Flurry.logEvent("fold button clicked")
-
-        selected.frame = CGRectMake(203, 885, selected.frame.width, selected.frame.height)
+        
+        selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Fold
     }
     
     @IBAction func TabButtonClicked(sender: UIButton) {
         Flurry.logEvent("tab button clicked")
 
-        selected.frame = CGRectMake(399, 885, selected.frame.width, selected.frame.height)
+        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Tab
     }
+    
+    @IBAction func MirrorButtonClicked(sender: UIButton) {
+        Flurry.logEvent("mirror button clicked")
+        
+        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
+        sketchView.sketchMode = SketchView.Mode.Mirror
+    }
+
+    @IBAction func TrackButtonClicked(sender: UIButton) {
+        Flurry.logEvent("track button clicked")
+        
+        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
+        sketchView.sketchMode = SketchView.Mode.Track
+    }
+    
+    @IBAction func SliderButtonClicked(sender: UIButton) {
+        Flurry.logEvent("slider button clicked")
+        
+        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
+        sketchView.sketchMode = SketchView.Mode.Slider
+    }
+    
+    
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             

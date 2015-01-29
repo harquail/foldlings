@@ -19,6 +19,9 @@ class SketchView: UIView {
         case Cut
         case Fold
         case Tab
+        case Mirror
+        case Track
+        case Slider
     }
     
     // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this

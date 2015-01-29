@@ -45,6 +45,10 @@
 		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
+		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
+		F145829B1A79E89000760799 /* preview_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582971A79E89000760799 /* preview_button.png */; };
+		F145829C1A79E89000760799 /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582981A79E89000760799 /* slider_button.png */; };
+		F145829D1A79E89000760799 /* track_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582991A79E89000760799 /* track_button.png */; };
 		F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */; };
 		F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */; };
 		F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6B1A1EAED50029FDF2 /* GHText.m */; };
@@ -206,6 +210,10 @@
 		F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Armchair.xcodeproj; path = Armchair/Armchair.xcodeproj; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
+		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
+		F14582971A79E89000760799 /* preview_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview_button.png; sourceTree = "<group>"; };
+		F14582981A79E89000760799 /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_button.png; sourceTree = "<group>"; };
+		F14582991A79E89000760799 /* track_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_button.png; sourceTree = "<group>"; };
 		F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAttributedObject.h; sourceTree = "<group>"; };
 		F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAttributedObject.m; sourceTree = "<group>"; };
 		F153BB671A1EAED50029FDF2 /* GHPathDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathDescription.h; sourceTree = "<group>"; };
@@ -368,6 +376,10 @@
 				F11B551F19FDFCE200169A07 /* fold_logo.png */,
 				F1E309611A15839300C09792 /* tab.png */,
 				F1E309631A15854C00C09792 /* roundedrect.png */,
+				F14582961A79E89000760799 /* mirror_button.png */,
+				F14582971A79E89000760799 /* preview_button.png */,
+				F14582981A79E89000760799 /* slider_button.png */,
+				F14582991A79E89000760799 /* track_button.png */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -720,10 +732,13 @@
 			files = (
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
 				F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */,
+				F145829C1A79E89000760799 /* slider_button.png in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
+				F145829B1A79E89000760799 /* preview_button.png in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
+				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
 				F1E309621A15839300C09792 /* tab.png in Resources */,
@@ -739,6 +754,7 @@
 				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
 				F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */,
+				F145829D1A79E89000760799 /* track_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
