@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xNl-vj-y2i">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xNl-vj-y2i">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -151,28 +151,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.29999999999999966" contentMode="scaleToFill" fixedFrame="YES" image="roundedrect.png" translatesAutoresizingMaskIntoConstraints="NO" id="A1y-XT-r2k">
-                                <rect key="frame" x="306" y="885" width="108" height="120"/>
+                                <rect key="frame" x="236" y="885" width="108" height="120"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khL-CF-cVu">
-                                <rect key="frame" x="-1" y="891" width="113" height="105"/>
-                                <state key="normal" backgroundImage="menu.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="CardsButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="2s8-7j-shA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtr-Cq-XFj">
-                                <rect key="frame" x="201" y="891" width="113" height="105"/>
-                                <state key="normal" backgroundImage="fold.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="a0O-IN-HpN"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR3-V2-jgy">
-                                <rect key="frame" x="88" y="866" width="140" height="138"/>
+                                <rect key="frame" x="21" y="867" width="140" height="138"/>
                                 <state key="normal" backgroundImage="erase.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -180,8 +162,17 @@
                                     <action selector="EraseButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="FdW-lm-o7l"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtr-Cq-XFj">
+                                <rect key="frame" x="130" y="893" width="113" height="105"/>
+                                <state key="normal" backgroundImage="fold.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FoldButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="a0O-IN-HpN"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55H-lU-gbh">
-                                <rect key="frame" x="418" y="898" width="68" height="93"/>
+                                <rect key="frame" x="355" y="898" width="68" height="93"/>
                                 <state key="normal" backgroundImage="tab.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -189,8 +180,35 @@
                                     <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="AxJ-ux-OIz"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dlB-l8-afd">
+                                <rect key="frame" x="451" y="898" width="76" height="93"/>
+                                <state key="normal" backgroundImage="mirror_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Vl5-m5-WId"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7E3-Hw-k3U">
+                                <rect key="frame" x="548" y="898" width="68" height="93"/>
+                                <state key="normal" backgroundImage="track_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="CEe-Rm-5YI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pd-ES-zXc">
+                                <rect key="frame" x="642" y="898" width="71" height="93"/>
+                                <state key="normal" backgroundImage="slider_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="bLi-eH-CU5"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgE-ai-VvN">
-                                <rect key="frame" x="300" y="892" width="114" height="106"/>
+                                <rect key="frame" x="233" y="893" width="114" height="106"/>
                                 <state key="normal" backgroundImage="cut.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -198,10 +216,19 @@
                                     <action selector="CutButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="1yp-4i-dme"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khL-CF-cVu">
+                                <rect key="frame" x="-12" y="-9" width="113" height="105"/>
+                                <state key="normal" backgroundImage="menu.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CardsButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="2s8-7j-shA"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAq-0O-Knm">
-                                <rect key="frame" x="521" y="694" width="247" height="330"/>
+                                <rect key="frame" x="678" y="5" width="84" height="91"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
-                                <state key="normal" backgroundImage="small_preview.jpeg">
+                                <state key="normal" backgroundImage="preview_button.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -362,11 +389,14 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="menu.png" width="206" height="208"/>
+        <image name="mirror_button.png" width="115" height="144"/>
+        <image name="preview_button.png" width="160" height="172"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="roundedrect.png" width="192" height="215"/>
         <image name="send.jpeg" width="400" height="345"/>
+        <image name="slider_button.png" width="105" height="144"/>
         <image name="small_2d.jpeg" width="426" height="461"/>
-        <image name="small_preview.jpeg" width="498" height="473"/>
         <image name="tab.png" width="128" height="173"/>
+        <image name="track_button.png" width="105" height="141"/>
     </resources>
 </document>

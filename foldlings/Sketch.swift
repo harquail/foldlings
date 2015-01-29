@@ -218,6 +218,7 @@ class Sketch : NSObject  {
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
+            
             self.visited = []
             
             for (i, start) in enumerate(self.edges)//traverse edges

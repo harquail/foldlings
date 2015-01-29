@@ -12,6 +12,9 @@ func square(a: CGFloat) -> CGFloat{
 /// get the angle between two edges
 func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     
+//returns random angle instead of real one
+//    return CGFloat(arc4random_uniform(UInt32.max))/CGFloat(UInt32.max) * CGFloat(M_PI) * 2.0
+    
     let a = CGPointNormalize(CGPointSubtract(edgeA.end, edgeA.start) )// CGPoint - CGPoint
     let b = CGPointNormalize(CGPointSubtract(edgeB.end, edgeB.start) )
     
