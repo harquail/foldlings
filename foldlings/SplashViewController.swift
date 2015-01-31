@@ -26,7 +26,12 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         alert.show()
     }
     
- 
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+
 
     func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
         if (alertView.tag == 1) {

@@ -418,5 +418,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return CGFloat((a + b)/2.0)
     }
     
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    
     
 }

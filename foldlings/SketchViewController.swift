@@ -78,8 +78,6 @@ class SketchViewController: UIViewController{
         sketchView.sketchMode = SketchView.Mode.Slider
     }
     
-    
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
@@ -96,6 +94,10 @@ class SketchViewController: UIViewController{
             viewController.parentButton = sketchView.previewButton
             // pass data to next view
         }
+    }
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     
