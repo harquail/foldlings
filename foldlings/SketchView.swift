@@ -363,9 +363,24 @@ class SketchView: UIView {
         // only use first y-value
         // or
         // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        if sketchMode == .Fold || sketchMode == .Tab {
+        if sketchMode == .Tab {
             tempEnd = CGPointMake(endpoint.x,  tempStart.y)
-        } else {
+        }
+        // allow non-horizontal folds, snapping to horizonal & vertical
+        else if sketchMode == .Fold {
+            let snapThreshold = 10
+            if(abs(Int(tempStart.x) - Int(endpoint.x)) < snapThreshold){
+                tempEnd = CGPointMake(tempStart.x, endpoint.y)
+            }
+            else if(abs(Int(tempStart.y) - Int(endpoint.y)) < snapThreshold){
+                tempEnd = CGPointMake(endpoint.x, tempStart.y)
+            }
+            else{
+            tempEnd = endpoint
+            }
+        
+        }
+        else {
             tempEnd = endpoint
         }
         
