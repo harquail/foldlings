@@ -24,6 +24,7 @@ class SketchViewController: UIViewController{
         
     }
 
+
     
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
@@ -70,6 +71,8 @@ class SketchViewController: UIViewController{
     
     @IBAction func MirrorButtonClicked(sender: UIButton) {
         Flurry.logEvent("mirror button clicked")
+        sketchView.statusLabel.text = "Select a fold to mirror across"
+        sketchView.showXCheck()
         
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Mirror
@@ -77,6 +80,8 @@ class SketchViewController: UIViewController{
 
     @IBAction func TrackButtonClicked(sender: UIButton) {
         Flurry.logEvent("track button clicked")
+        sketchView.statusLabel.text = "Select a cut"
+        sketchView.showXCheck()
         
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Track
@@ -84,6 +89,8 @@ class SketchViewController: UIViewController{
     
     @IBAction func SliderButtonClicked(sender: UIButton) {
         Flurry.logEvent("slider button clicked")
+        sketchView.statusLabel.text = "Drag a cut"
+        sketchView.showXCheck()
         
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Slider

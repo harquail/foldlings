@@ -71,10 +71,10 @@ class SketchView: UIView {
         path = UIBezierPath()
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-        
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
+
     }
     
     override func drawRect(rect: CGRect)
@@ -684,6 +684,21 @@ class SketchView: UIView {
             return Edge.Kind.Cut
         }
 
+    }
+   
+    
+    func hideXCheck(){
+        checkButton.userInteractionEnabled = false
+        checkButton.alpha = 0
+        xButton.userInteractionEnabled = false
+        xButton.alpha = 0
+    }
+    
+    func showXCheck(){
+        checkButton.userInteractionEnabled = true
+        checkButton.alpha = 1
+        xButton.userInteractionEnabled = true
+        xButton.alpha = 1
     }
     
 }

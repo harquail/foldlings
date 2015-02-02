@@ -186,6 +186,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="MirrorButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="20J-KR-pSX"/>
                                     <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Vl5-m5-WId"/>
                                 </connections>
                             </button>
@@ -196,6 +197,7 @@
                                 </state>
                                 <connections>
                                     <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="CEe-Rm-5YI"/>
+                                    <action selector="TrackButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="TjI-eG-zER"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pd-ES-zXc" userLabel="slider">
@@ -204,6 +206,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="SliderButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="XQO-vo-N5r"/>
                                     <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="bLi-eH-CU5"/>
                                 </connections>
                             </button>
@@ -236,14 +239,14 @@
                                     <segue destination="BV1-FR-VrT" kind="presentation" identifier="PreviewSegue" id="nen-Mt-An5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hW-xp-FEz" userLabel="check">
+                            <button opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hW-xp-FEz" userLabel="check">
                                 <rect key="frame" x="604" y="4" width="45" height="45"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="0.5"/>
                                 <state key="normal" backgroundImage="check_green.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCL-z3-lIr" userLabel="x">
+                            <button opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCL-z3-lIr" userLabel="x">
                                 <rect key="frame" x="116" y="4" width="45" height="45"/>
                                 <state key="normal" backgroundImage="x_red.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
