@@ -236,8 +236,21 @@
                                     <segue destination="BV1-FR-VrT" kind="presentation" identifier="PreviewSegue" id="nen-Mt-An5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hW-xp-FEz">
+                                <rect key="frame" x="604" y="4" width="45" height="45"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="0.5"/>
+                                <state key="normal" backgroundImage="check_green.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCL-z3-lIr">
+                                <rect key="frame" x="116" y="4" width="45" height="45"/>
+                                <state key="normal" backgroundImage="x_red.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHC-sF-4RD">
-                                <rect key="frame" x="88" y="20" width="582" height="21"/>
+                                <rect key="frame" x="88" y="16" width="582" height="21"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -389,6 +402,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         </scene>
     </scenes>
     <resources>
+        <image name="check_green.png" width="49" height="49"/>
         <image name="cut.png" width="206" height="208"/>
         <image name="erase.png" width="208" height="208"/>
         <image name="fold.png" width="206" height="208"/>
@@ -404,5 +418,6 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="small_2d.jpeg" width="426" height="461"/>
         <image name="tab.png" width="128" height="173"/>
         <image name="track_button.png" width="105" height="141"/>
+        <image name="x_red.png" width="49" height="49"/>
     </resources>
 </document>
