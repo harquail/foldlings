@@ -14,6 +14,17 @@ class SketchViewController: UIViewController{
     
     @IBOutlet var selected: UIImageView!
     
+    
+    @IBAction func checkButtonClicked(sender:UIButton){
+    
+    }
+
+    
+    @IBAction func xButtonClicked(sender:UIButton){
+        
+    }
+
+    
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
         Flurry.logEvent("moved to 3d land")

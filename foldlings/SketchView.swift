@@ -14,6 +14,13 @@ class SketchView: UIView {
     
     @IBOutlet var previewButton: UIButton!
     
+    @IBOutlet var statusLabel: UILabel!
+    
+    
+    @IBOutlet var checkButton: UIButton!
+    
+    @IBOutlet var xButton: UIButton!
+    
     enum Mode {
         case Erase
         case Cut
@@ -83,9 +90,9 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
-        //disallow preview button while drawing
-        previewButton.alpha = 0.3
-        previewButton.userInteractionEnabled = false
+//        //disallow preview button while drawing
+//        previewButton.alpha = 0.3
+//        previewButton.userInteractionEnabled = false
 //        canPreview = false
         
         var touch = touches.anyObject() as UITouch
@@ -162,9 +169,9 @@ class SketchView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
-        //enable preview again
-        previewButton.alpha = 1
-        previewButton.userInteractionEnabled = true
+//        //enable preview again
+//        previewButton.alpha = 1
+//        previewButton.userInteractionEnabled = true
 
         var endPoint = tempEnd
         let startPoint = tempStart
@@ -505,8 +512,8 @@ class SketchView: UIView {
         gameView.laserImage = bitmap(grayscale: true)
         gameView.planes = sketch.planes
         gameView.makeScene()
-        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
-    }       
+//        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+    }
     
     func simpleSketch(dex:Int, name:String)->Sketch
     {
@@ -645,7 +652,7 @@ class SketchView: UIView {
     
     
     func setButtonBG(image:UIImage){
-        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+//        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
     ///MARK: simplemode functions
