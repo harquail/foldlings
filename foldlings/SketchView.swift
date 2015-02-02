@@ -692,6 +692,7 @@ class SketchView: UIView {
         checkButton.alpha = 0
         xButton.userInteractionEnabled = false
         xButton.alpha = 0
+        print("shown")
     }
     
     func showXCheck(){
@@ -699,6 +700,8 @@ class SketchView: UIView {
         checkButton.alpha = 1
         xButton.userInteractionEnabled = true
         xButton.alpha = 1
+        print("hidden")
+
     }
     
 }

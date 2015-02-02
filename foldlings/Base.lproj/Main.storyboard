@@ -187,7 +187,6 @@
                                 </state>
                                 <connections>
                                     <action selector="MirrorButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="20J-KR-pSX"/>
-                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="Vl5-m5-WId"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7E3-Hw-k3U" userLabel="track">
@@ -196,7 +195,6 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="CEe-Rm-5YI"/>
                                     <action selector="TrackButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="TjI-eG-zER"/>
                                 </connections>
                             </button>
@@ -207,7 +205,6 @@
                                 </state>
                                 <connections>
                                     <action selector="SliderButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="XQO-vo-N5r"/>
-                                    <action selector="TabButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="bLi-eH-CU5"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgE-ai-VvN" userLabel="cut">

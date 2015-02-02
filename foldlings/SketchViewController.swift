@@ -33,7 +33,7 @@ class SketchViewController: UIViewController{
         let arch = ArchivedEdges(sketch:sketchView.sketch)
         ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
         arch.save()
-        
+        sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
@@ -41,8 +41,9 @@ class SketchViewController: UIViewController{
 
         //TODO: Animate frame movement
         selected.frame = CGRectMake(sender.frame.origin.x + 12, 885, selected.frame.width, selected.frame.height)
-        
         sketchView.sketchMode = SketchView.Mode.Erase
+        sketchView.statusLabel.text = "Erase"
+        sketchView.hideXCheck()
     }
     
     @IBAction func CutButtonClicked(sender: UIButton)
@@ -52,6 +53,8 @@ class SketchViewController: UIViewController{
         
         selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Cut
+        sketchView.statusLabel.text = "Cut"
+        sketchView.hideXCheck()
     }
     
     @IBAction func FoldButtonClicked(sender: UIButton)
@@ -60,6 +63,8 @@ class SketchViewController: UIViewController{
         
         selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Fold
+        sketchView.statusLabel.text = "Fold"
+        sketchView.hideXCheck()
     }
     
     @IBAction func TabButtonClicked(sender: UIButton) {
@@ -67,6 +72,9 @@ class SketchViewController: UIViewController{
 
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Tab
+        sketchView.statusLabel.text = "Tab"
+        sketchView.hideXCheck()
+
     }
     
     @IBAction func MirrorButtonClicked(sender: UIButton) {
@@ -91,7 +99,6 @@ class SketchViewController: UIViewController{
         Flurry.logEvent("slider button clicked")
         sketchView.statusLabel.text = "Drag a cut"
         sketchView.showXCheck()
-        
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Slider
     }
