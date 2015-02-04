@@ -100,6 +100,8 @@
 		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
 		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
 		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
+		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
+		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +301,8 @@
 		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
 		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
+		F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_grey@2x.png"; sourceTree = "<group>"; };
+		F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_grey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -364,6 +368,8 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */,
+				F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */,
 				F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */,
 				F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */,
 				F1824ECC1A19E525008B0F66 /* last.png */,
@@ -746,6 +752,8 @@
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
+				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
+				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,

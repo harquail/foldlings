@@ -50,7 +50,6 @@ class SketchViewController: UIViewController{
     {
         Flurry.logEvent("cut button clicked")
 
-        
         selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Cut
         sketchView.statusLabel.text = "Cut"

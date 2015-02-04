@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         Flurry.setCrashReportingEnabled(true)
+        Flurry.setDebugLogEnabled(true)
         Flurry.startSession(KEY_FLURRY)
         Armchair.appID(APP_STORE_ID)
 //        Armchair.debugEnabled(true)

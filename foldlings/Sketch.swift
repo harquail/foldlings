@@ -32,7 +32,7 @@ class Sketch : NSObject  {
     var borderEdges: [Edge] = []
 
     var index:Int
-    var name: String
+    var name:String
     var origin:Origin
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
@@ -218,7 +218,7 @@ class Sketch : NSObject  {
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
-            
+        
             self.visited = []
             
             for (i, start) in enumerate(self.edges)//traverse edges
