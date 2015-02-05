@@ -14,6 +14,18 @@ class SketchViewController: UIViewController{
     
     @IBOutlet var selected: UIImageView!
     
+    
+    @IBAction func checkButtonClicked(sender:UIButton){
+    
+    }
+
+    
+    @IBAction func xButtonClicked(sender:UIButton){
+        
+    }
+
+
+    
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
         Flurry.logEvent("moved to 3d land")
@@ -21,7 +33,7 @@ class SketchViewController: UIViewController{
         let arch = ArchivedEdges(sketch:sketchView.sketch)
         ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
         arch.save()
-        
+        sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func EraseButtonClicked(sender: UIButton) {
@@ -29,17 +41,19 @@ class SketchViewController: UIViewController{
 
         //TODO: Animate frame movement
         selected.frame = CGRectMake(sender.frame.origin.x + 12, 885, selected.frame.width, selected.frame.height)
-        
         sketchView.sketchMode = SketchView.Mode.Erase
+        sketchView.statusLabel.text = "Erase"
+        sketchView.hideXCheck()
     }
     
     @IBAction func CutButtonClicked(sender: UIButton)
     {
         Flurry.logEvent("cut button clicked")
 
-        
         selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Cut
+        sketchView.statusLabel.text = "Cut"
+        sketchView.hideXCheck()
     }
     
     @IBAction func FoldButtonClicked(sender: UIButton)
@@ -48,6 +62,8 @@ class SketchViewController: UIViewController{
         
         selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Fold
+        sketchView.statusLabel.text = "Fold"
+        sketchView.hideXCheck()
     }
     
     @IBAction func TabButtonClicked(sender: UIButton) {
@@ -55,10 +71,15 @@ class SketchViewController: UIViewController{
 
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Tab
+        sketchView.statusLabel.text = "Tab"
+        sketchView.hideXCheck()
+
     }
     
     @IBAction func MirrorButtonClicked(sender: UIButton) {
         Flurry.logEvent("mirror button clicked")
+        sketchView.statusLabel.text = "Select a fold to mirror across"
+        sketchView.showXCheck()
         
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Mirror
@@ -66,6 +87,8 @@ class SketchViewController: UIViewController{
 
     @IBAction func TrackButtonClicked(sender: UIButton) {
         Flurry.logEvent("track button clicked")
+        sketchView.statusLabel.text = "Select a cut"
+        sketchView.showXCheck()
         
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Track
@@ -73,12 +96,11 @@ class SketchViewController: UIViewController{
     
     @IBAction func SliderButtonClicked(sender: UIButton) {
         Flurry.logEvent("slider button clicked")
-        
+        sketchView.statusLabel.text = "Drag a cut"
+        sketchView.showXCheck()
         selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
         sketchView.sketchMode = SketchView.Mode.Slider
     }
-    
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
@@ -96,6 +118,10 @@ class SketchViewController: UIViewController{
             viewController.parentButton = sketchView.previewButton
             // pass data to next view
         }
+    }
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     

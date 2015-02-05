@@ -14,6 +14,13 @@ class SketchView: UIView {
     
     @IBOutlet var previewButton: UIButton!
     
+    @IBOutlet var statusLabel: UILabel!
+    
+    
+    @IBOutlet var checkButton: UIButton!
+    
+    @IBOutlet var xButton: UIButton!
+    
     enum Mode {
         case Erase
         case Cut
@@ -64,10 +71,10 @@ class SketchView: UIView {
         path = UIBezierPath()
         path.lineWidth = kLineWidth
         pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
-        
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
+
     }
     
     override func drawRect(rect: CGRect)
@@ -83,9 +90,9 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
-        //disallow preview button while drawing
-        previewButton.alpha = 0.3
-        previewButton.userInteractionEnabled = false
+//        //disallow preview button while drawing
+//        previewButton.alpha = 0.3
+//        previewButton.userInteractionEnabled = false
 //        canPreview = false
         
         var touch = touches.anyObject() as UITouch
@@ -162,9 +169,9 @@ class SketchView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
-        //enable preview again
-        previewButton.alpha = 1
-        previewButton.userInteractionEnabled = true
+//        //enable preview again
+//        previewButton.alpha = 1
+//        previewButton.userInteractionEnabled = true
 
         var endPoint = tempEnd
         let startPoint = tempStart
@@ -364,9 +371,24 @@ class SketchView: UIView {
         // only use first y-value
         // or
         // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        if sketchMode == .Fold || sketchMode == .Tab {
+        if sketchMode == .Tab {
             tempEnd = CGPointMake(endpoint.x,  tempStart.y)
-        } else {
+        }
+        // allow non-horizontal folds, snapping to horizonal & vertical
+        else if sketchMode == .Fold {
+            let snapThreshold = 10
+            if(abs(Int(tempStart.x) - Int(endpoint.x)) < snapThreshold){
+                tempEnd = CGPointMake(tempStart.x, endpoint.y)
+            }
+            else if(abs(Int(tempStart.y) - Int(endpoint.y)) < snapThreshold){
+                tempEnd = CGPointMake(endpoint.x, tempStart.y)
+            }
+            else{
+            tempEnd = endpoint
+            }
+        
+        }
+        else {
             tempEnd = endpoint
         }
         
@@ -491,8 +513,8 @@ class SketchView: UIView {
         gameView.laserImage = bitmap(grayscale: true)
         gameView.planes = sketch.planes
         gameView.makeScene()
-        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
-    }       
+//        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+    }
     
     func simpleSketch(dex:Int, name:String)->Sketch
     {
@@ -631,7 +653,7 @@ class SketchView: UIView {
     
     
     func setButtonBG(image:UIImage){
-        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+//        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
     ///MARK: simplemode functions
@@ -662,6 +684,24 @@ class SketchView: UIView {
         default:
             return Edge.Kind.Cut
         }
+
+    }
+   
+    
+    func hideXCheck(){
+        checkButton.userInteractionEnabled = false
+        checkButton.alpha = 0
+        xButton.userInteractionEnabled = false
+        xButton.alpha = 0
+        print("shown")
+    }
+    
+    func showXCheck(){
+        checkButton.userInteractionEnabled = true
+        checkButton.alpha = 1
+        xButton.userInteractionEnabled = true
+        xButton.alpha = 1
+        print("hidden")
 
     }
     
