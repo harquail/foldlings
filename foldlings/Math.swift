@@ -18,14 +18,24 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     let a = CGPointNormalize(CGPointSubtract(edgeA.end, edgeA.start) )// CGPoint - CGPoint
     let b = CGPointNormalize(CGPointSubtract(edgeB.end, edgeB.start) )
     
-    let x1 = a.x
-    let x2 = b.x
-    let y1 = a.y
-    let y2 = b.y
+//    let x1 = a.x
+//    let x2 = b.x
+//    let y1 = a.y
+//    let y2 = b.y
     
-    let dot = x1*x2 + y1*y2 //  dot product
-    let det = x1*y2 - y1*x2 // determinant
+    let dot = a.x*b.x + a.y*b.y //  dot product
+    let det = a.x*b.y - a.y*b.x // determinant
     
+    //solution #1
     return atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
+
+    //solution #2 -bad
+//    let angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
+//    return angleRad * CGFloat(180/M_PI);
+    
+    //solution #3 - compare y-values
+    
+
+    
 }
 

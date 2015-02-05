@@ -291,8 +291,11 @@ class Sketch : NSObject  {
                     var next_ang = getAngle(current, next)
                     
                     if next_ang == curr_ang {
-                        let curr_centroid = findCentroid(closest.path)
+                        let curr_centroid = findCentroid(closest.path)//get centroid of edge
                         let next_centroid = findCentroid(next.path)
+//                        let curr_centroid = findControlPoint(closest.path)//get nearest control point
+//                        let next_centroid = findControlPoint(next.path)
+                        
                         curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
                         next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
 //                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
