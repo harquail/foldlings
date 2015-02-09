@@ -85,14 +85,20 @@ class Sketch : NSObject  {
                 self.edges.append(twin)
             }
 
-            
+            //create ordered adjacency list before appending 
             if self.adjacency[start] != nil{
-                self.adjacency[start]!.append(edge)
+                //self.adjacency[start]!.append(edge)
+                
+                let index = self.adjacency[start]!.insertionIndexOf(edge, isOrderedBefore: isLeftmost($1, $0, start))
+                self.adjacency[start]!.insert(edge, atIndex: index)
+
             } else {
                 self.adjacency[start] = [edge]
             }
             if self.adjacency[end] != nil {
-                self.adjacency[end]!.append(twin)
+                //self.adjacency[end]!.append(twin)
+                let index = self.adjacency[end]!.insertionIndexOf(edge, isOrderedBefore: isLeftmost($1, $0, end))
+                self.adjacency[end]!.insert(edge, atIndex: index)
             } else {
                 self.adjacency[end] = [twin]
             }
@@ -110,6 +116,7 @@ class Sketch : NSObject  {
             }
 
         }
+        
         
         if kind == .Tab
         {
@@ -236,6 +243,8 @@ class Sketch : NSObject  {
                         self.visited.append(start)
                         
                         var closest = self.getClosest(start)// get closest adjacent edge
+                        // closest edge is now the first in the adjacency list
+                        // so just add it to planes
 
                         // check if twin has not been crossed and not in plane
                         while !CGPointEqualToPoint(closest.end, start.start) && !closest.crossed
@@ -286,23 +295,27 @@ class Sketch : NSObject  {
                         continue
                     }
 
-                    // compare for greater angle for closest and next
-                    var curr_ang = getAngle(current, closest)
-                    var next_ang = getAngle(current, next)
-                    
-                    if next_ang == curr_ang {
-                        let curr_centroid = findCentroid(closest.path)//get centroid of edge
-                        let next_centroid = findCentroid(next.path)
+//                    // compare for greater angle for closest and next
+//                    var curr_ang = getAngle(current, closest)
+//                    var next_ang = getAngle(current, next)
+//                    
+//                    if next_ang == curr_ang {
+////                        let curr_centroid = findCentroid(closest.path)//get centroid of edge
+////                        let next_centroid = findCentroid(next.path)
 //                        let curr_centroid = findControlPoint(closest.path)//get nearest control point
 //                        let next_centroid = findControlPoint(next.path)
-                        
-                        curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
-                        next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
-//                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
-                    }
+//                        
+//                        curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
+//                        next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
+////                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
+//                    }
+//                    
+//
+//                    if  next_ang < curr_ang  { // if the current angle is bigger than the next edge
+//                        closest = next
+//                    }
                     
-
-                    if  next_ang < curr_ang  { // if the current angle is bigger than the next edge
+                    if isLeftmost(next, closest, current){
                         closest = next
                     }
                 }

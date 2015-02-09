@@ -241,6 +241,8 @@ class SketchView: UIView {
     /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
         
+        let startTime = CFAbsoluteTimeGetCurrent()/// taking time
+        
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
@@ -305,6 +307,10 @@ class SketchView: UIView {
         path.stroke()
         tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
+        //taking time
+        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+        println("Time elapsed for bitmap: \(timeElapsed) s")
         
         return tempIncremental
     }
