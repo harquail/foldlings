@@ -61,8 +61,7 @@ func isLeftmost(next: Edge, closest: Edge, current: Edge)->Bool{
     let a1 = getAngle(closest, current)
     let a2 = getAngle(next, current)
 
-    if ( a1 > a2)
-        return true
+
     
     return false
 }
