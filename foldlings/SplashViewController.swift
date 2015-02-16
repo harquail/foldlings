@@ -7,15 +7,26 @@ import Armchair
 class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     @IBOutlet var slider:UISwitch!
+    @IBOutlet var slider2:UISwitch!
     
     @IBOutlet var collectionOfFoldlings: CollectionOfFoldlings!
     
     @IBAction func proButtonTouched(sender: AnyObject) {
-        toggleProMode()
+        toggleMode(slider,key: "proMode")
     }
     
     @IBAction func sliderSlid(sender: AnyObject) {
-        toggleProMode()
+        toggleMode(slider,key: "proMode")
+
+    }
+    
+    @IBAction func templatingButtonTouched(sender: AnyObject) {
+        toggleMode(slider2,key: "templateMode")
+    }
+    
+    @IBAction func templatingSliderSlid(sender: AnyObject) {
+        toggleMode(slider2,key: "templateMode")
+        
     }
     
     @IBAction func newButtonPressed(sender: AnyObject) {
@@ -64,12 +75,12 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
 
     }
     
-    func toggleProMode(){
-        var isOn = slider.on
+    func toggleMode(switcher:UISwitch,key:String){
+        var isOn = switcher.on
         isOn = !isOn
-             Flurry.logEvent("pro mode toggled", withParameters: NSDictionary(dictionary: ["on":isOn]))
-        slider.setOn(isOn, animated: true)
-        NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: "proMode")
+             Flurry.logEvent("\(key) toggled", withParameters: NSDictionary(dictionary: ["on":isOn]))
+        switcher.setOn(isOn, animated: true)
+        NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: key)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
@@ -78,12 +89,15 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         Armchair.showPromptIfNecessary()
         let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
         slider?.setOn(on, animated: true)
+        
+        let on2:Bool = NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
+        slider?.setOn(on2, animated: true)
+        
         super.viewDidLoad()
         
         let names = ArchivedEdges.archivedSketchNames()
-        if(true){
-            //names == nil || names!.count < 5
-            createTestSketches()
+        if(names == nil || names!.count < 5){
+                        createTestSketches()
         }
         
     }

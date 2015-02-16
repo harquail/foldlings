@@ -34,6 +34,9 @@ class SketchView: UIView {
     // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
     var simpleMode = !NSUserDefaults.standardUserDefaults().boolForKey("proMode")
 
+    // this sets templating mode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
+    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
+
     
     
     var path: UIBezierPath! //currently drawing path

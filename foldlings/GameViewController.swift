@@ -304,8 +304,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         anim.duration = 14;
         anim.cumulative = false;
         anim.repeatCount = .infinity;
-        
-        
         anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
             NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
             NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
