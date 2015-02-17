@@ -100,15 +100,15 @@
                                     <action selector="newButtonPressed:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Dhe-69-pgG"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="cdu-oJ-phN">
-                                <rect key="frame" x="250" y="906" width="51" height="31"/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="IRJ-u4-IRh">
+                                <rect key="frame" x="251" y="890" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="sliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="8Qt-TC-frV"/>
+                                    <action selector="sliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="E3o-fn-H9b"/>
                                 </connections>
                             </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Anb-QR-y6T">
-                                <rect key="frame" x="316" y="891" width="201" height="62"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="E4k-dw-9fn">
+                                <rect key="frame" x="317" y="875" width="201" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="PRO MODE">
@@ -116,11 +116,30 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="proButtonTouched:" destination="xNl-vj-y2i" eventType="touchUpInside" id="sBQ-D1-nvG"/>
+                                    <action selector="proButtonTouched:" destination="xNl-vj-y2i" eventType="touchUpInside" id="dLf-tl-08h"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="cdu-oJ-phN">
+                                <rect key="frame" x="235" y="971" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="templatingButtonTouched:" destination="xNl-vj-y2i" eventType="valueChanged" id="VRU-JI-6jK"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Anb-QR-y6T">
+                                <rect key="frame" x="302" y="956" width="232" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="TEMPLATING">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="templatingButtonTouched:" destination="xNl-vj-y2i" eventType="touchUpInside" id="SPa-41-wNf"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="enables folds above the center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ush-r7-pTz">
-                                <rect key="frame" x="250" y="950" width="290" height="28"/>
+                                <rect key="frame" x="245" y="929" width="290" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="20"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -133,7 +152,8 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="collectionOfFoldlings" destination="STP-FZ-aLb" id="Fn2-3b-4Oo"/>
-                        <outlet property="slider" destination="cdu-oJ-phN" id="xlL-4f-h79"/>
+                        <outlet property="slider" destination="IRJ-u4-IRh" id="xyr-AL-Rbh"/>
+                        <outlet property="slider2" destination="cdu-oJ-phN" id="JdP-yD-VKn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>
