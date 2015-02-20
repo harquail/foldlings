@@ -286,6 +286,13 @@
                                 <rect key="frame" x="236" y="884" width="108" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="b5a-fM-kIq" userLabel="placeholder">
+                                <rect key="frame" x="70" y="874" width="136" height="135"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" backgroundImage="placeholder_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -304,7 +311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-928" y="-1351.6800000000001"/>
+            <point key="canvasLocation" x="-928" y="-1352"/>
         </scene>
         <!--About View Controller-->
         <scene sceneID="ICt-1G-R6w">
@@ -440,6 +447,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="menu.png" width="206" height="208"/>
         <image name="mirror_button.png" width="115" height="144"/>
+        <image name="placeholder_button.png" width="208" height="208"/>
         <image name="preview_button.png" width="160" height="172"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="roundedrect.png" width="192" height="215"/>

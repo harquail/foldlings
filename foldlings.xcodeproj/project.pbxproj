@@ -74,6 +74,8 @@
 		F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB961A1EAED50029FDF2 /* GHControlFactory.m */; };
 		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
 		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
+		F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15472D31A97AA74009E36A6 /* FoldFeature.swift */; };
+		F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F15472DB1A97AFD3009E36A6 /* placeholder_button.png */; };
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
@@ -270,6 +272,8 @@
 		F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGDocumentView.m; sourceTree = "<group>"; };
 		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
 		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
+		F15472D31A97AA74009E36A6 /* FoldFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldFeature.swift; sourceTree = "<group>"; };
+		F15472DB1A97AFD3009E36A6 /* placeholder_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_button.png; sourceTree = "<group>"; };
 		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -368,6 +372,7 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F15472DB1A97AFD3009E36A6 /* placeholder_button.png */,
 				F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */,
 				F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */,
 				F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */,
@@ -563,6 +568,7 @@
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
+				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
@@ -755,6 +761,7 @@
 				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
 				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
+				F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
 				F1E309621A15839300C09792 /* tab.png in Resources */,
@@ -827,6 +834,7 @@
 				22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
+				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
