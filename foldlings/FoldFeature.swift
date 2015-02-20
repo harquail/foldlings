@@ -25,9 +25,12 @@ class FoldFeature{
         Valid
     }
     
-    var Planes:[Plane] = [];
-    var HorizontalFolds:[Edge] = [];
-    var Parent:FoldFeature?;
+    var planes:[Plane] = [];
+    var horizontalFolds:[Edge] = [];
+    var parent:FoldFeature?;
     var boundingBox:CGRect?;
-    
+//    
+//    func a{
+//    
+//    }
 }
