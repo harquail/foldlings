@@ -55,7 +55,7 @@ class SketchView: UIView {
     var redrawing:Bool = false
     var canPreview:Bool = true
     
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,6 +116,10 @@ class SketchView: UIView {
         
         
         if(templateMode){
+            var touch = touches.anyObject() as UITouch
+            var touchPoint: CGPoint = touch.locationInView(self)
+            currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+//            currentFeature?.drivingFold = sketch.drivingEdge
             
         }
         else{
@@ -168,100 +172,116 @@ class SketchView: UIView {
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
-        var touch = touches.anyObject() as UITouch
-        var touchPoint: CGPoint = touch.locationInView(self)
         
-        // ignore cancelledTouch
-        if cancelledTouch == nil || cancelledTouch! != touch {
-            switch sketchMode
-            {
-            case .Erase: // if in erase mode
-                erase(touchPoint);
-            case .Cut, .Fold, .Tab:
-                // check if we've snapped or aborted
-                var abort:Bool = checkCurrentEnd(touchPoint)
-                ctr=ctr+1
-                pts[ctr] = tempEnd
-                
-                if (ctr == 4)
+        if(templateMode){
+            var touch = touches.anyObject() as UITouch
+            var touchPoint: CGPoint = touch.locationInView(self)
+            currentFeature?.endPoint = touchPoint
+            forceRedraw()
+            
+        }
+        else{
+            var touch = touches.anyObject() as UITouch
+            var touchPoint: CGPoint = touch.locationInView(self)
+            
+            // ignore cancelledTouch
+            if cancelledTouch == nil || cancelledTouch! != touch {
+                switch sketchMode
                 {
-                    makeBezier() //create bezier curves
+                case .Erase: // if in erase mode
+                    erase(touchPoint);
+                case .Cut, .Fold, .Tab:
+                    // check if we've snapped or aborted
+                    var abort:Bool = checkCurrentEnd(touchPoint)
+                    ctr=ctr+1
+                    pts[ctr] = tempEnd
+                    
+                    if (ctr == 4)
+                    {
+                        makeBezier() //create bezier curves
+                    }
+                    
+                    if abort {
+                        cancelledTouch = touch
+                    }
+                    
+                default:
+                    break
                 }
-                
-                if abort {
-                    cancelledTouch = touch
-                }
-                
-            default:
-                break
             }
         }
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
-        //        //enable preview again
-        //        previewButton.alpha = 1
-        //        previewButton.userInteractionEnabled = true
-        
-        var endPoint = tempEnd
-        let startPoint = tempStart
-        switch sketchMode
-        {
-        case .Erase:
-            break
-        case .Cut, .Fold, .Tab:
-            if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
+        if(templateMode){
+            var touch = touches.anyObject() as UITouch
+            var touchPoint: CGPoint = touch.locationInView(self)
+            features?.append(currentFeature!)
+            currentFeature = nil
+            forceRedraw()
+        }
+        else{
+            
+            var endPoint = tempEnd
+            let startPoint = tempStart
+            switch sketchMode
             {
-                var se1:Edge?
-                var se2:Edge?
-                //splits edges on collision
-                if let startColEdge = startEdgeCollision {
-                    // if there are problems with circles might be ehre
-                    var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                    se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                    se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                    self.sketch.removeEdge(startColEdge)
-                }
-                if var endColEdge = endEdgeCollision {
-                    // check if we've already split this particular object this is problem so we need to make sure
-                    // look at the new edges
-                    var cut = false
-                    if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
-                        endColEdge = se1!
-                        cut = true
-                    } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
-                        endColEdge = se2!
-                        cut = true
+            case .Erase:
+                break
+            case .Cut, .Fold, .Tab:
+                if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
+                {
+                    var se1:Edge?
+                    var se2:Edge?
+                    //splits edges on collision
+                    if let startColEdge = startEdgeCollision {
+                        // if there are problems with circles might be here
+                        var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
+                        se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
+                        se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
+                        self.sketch.removeEdge(startColEdge)
                     }
-                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
-                    if cut {
-                        // this checks for cutting off the tops above tabs
-                        if !(sketchMode == .Tab && endColEdge.start == startPoint) {
-                            self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                    if var endColEdge = endEdgeCollision {
+                        // check if we've already split this particular object this is problem so we need to make sure
+                        // look at the new edges
+                        var cut = false
+                        if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
+                            endColEdge = se1!
+                            cut = true
+                        } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
+                            endColEdge = se2!
+                            cut = true
                         }
-                        // this checks for cutting off the tops above tabs
-                        if !(sketchMode == .Tab && endColEdge.end == startPoint) {
+                        var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
+                        if cut {
+                            // this checks for cutting off the tops above tabs
+                            if !(sketchMode == .Tab && endColEdge.start == startPoint) {
+                                self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                            }
+                            // this checks for cutting off the tops above tabs
+                            if !(sketchMode == .Tab && endColEdge.end == startPoint) {
+                                self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                            }
+                        } else {
+                            self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
                             self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
                         }
-                    } else {
-                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        self.sketch.removeEdge(endColEdge)
                     }
-                    self.sketch.removeEdge(endColEdge)
+                    makeBezier(aborted: true)  //do another call to makeBezier to finish the line
+                    var newPath = UIBezierPath(CGPath: path.CGPath)
+                    newPath = smoothPath(newPath)
+                    setPathStyle(newPath, edge:nil, grayscale:false)
+                    self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
+                    self.setNeedsDisplay()
                 }
-                makeBezier(aborted: true)  //do another call to makeBezier to finish the line
-                var newPath = UIBezierPath(CGPath: path.CGPath)
-                newPath = smoothPath(newPath)
-                setPathStyle(newPath, edge:nil, grayscale:false)
-                self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
-                self.setNeedsDisplay()
+                path.removeAllPoints()
+                ctr = 0
+                forceRedraw()
+            default:
+                break
             }
-            path.removeAllPoints()
-            ctr = 0
-            forceRedraw()
-        default:
-            break
         }
     }
     
@@ -300,11 +320,45 @@ class SketchView: UIView {
                 }
                 
                 var twinsOfVisited = [Edge]()
+                
+                if(templateMode){
+                    if var currentFeatures = features{
+                        
+                        if(currentFeature != nil){
+                            currentFeatures.append(currentFeature!)
+                        }
+                        
+                        for feature in currentFeatures{
+                            //                    if let feature = currentFeature{
+                            if(feature.startPoint != nil && feature.endPoint != nil){
+                                let edges = feature.getEdges()
+                                
+                                for e in edges
+                                {
+                                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                                    e.path.stroke()
+                                    //                                //don't draw twin edges
+                                    //                                if(!twinsOfVisited.contains(e)){
+                                    //                                    e.path.stroke()
+                                    //                                    twinsOfVisited.append(e.twin)
+                                    //                                }
+                                    
+                                    // just draw that point to indicate it...
+                                    if circles && (!e.path.empty) && (e.start != e.end) {
+                                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
+                                    }
+                                    
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+                
                 //print all edges
                 for e in sketch.edges
                 {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                    
                     
                     //don't draw twin edges
                     if(!twinsOfVisited.contains(e)){
@@ -326,6 +380,7 @@ class SketchView: UIView {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                 }
+                
             }
             tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         }
