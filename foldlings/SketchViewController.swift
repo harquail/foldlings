@@ -102,6 +102,15 @@ class SketchViewController: UIViewController{
         sketchView.sketchMode = SketchView.Mode.Slider
     }
     
+    @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
+        Flurry.logEvent("slider button clicked")
+        sketchView.statusLabel.text = "Drag the shape"
+        sketchView.showXCheck()
+        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
+        sketchView.sketchMode = SketchView.Mode.BoxFold
+
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
@@ -122,6 +131,10 @@ class SketchViewController: UIViewController{
     // hide status bar
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        sketchView.viewWillAppear()
     }
     
     

@@ -124,6 +124,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="templatingButtonTouched:" destination="xNl-vj-y2i" eventType="valueChanged" id="VRU-JI-6jK"/>
+                                    <action selector="templatingSliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="BP5-JM-FOy"/>
                                 </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Anb-QR-y6T">
@@ -292,6 +293,9 @@
                                 <state key="normal" backgroundImage="placeholder_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="PlaceholderFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="nKQ-fY-Bp2"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -300,6 +304,14 @@
                             <outlet property="previewButton" destination="GAq-0O-Knm" id="ENZ-SI-2CE"/>
                             <outlet property="statusLabel" destination="CHC-sF-4RD" id="hbd-bV-6vH"/>
                             <outlet property="xButton" destination="rCL-z3-lIr" id="bPy-NV-Sks"/>
+                            <outletCollection property="normalButtons" destination="7E3-Hw-k3U" collectionClass="NSMutableArray" id="6px-5i-Zcl"/>
+                            <outletCollection property="templatingButtons" destination="b5a-fM-kIq" collectionClass="NSMutableArray" id="bZE-KX-RF4"/>
+                            <outletCollection property="normalButtons" destination="55H-lU-gbh" collectionClass="NSMutableArray" id="zdJ-hj-hmR"/>
+                            <outletCollection property="normalButtons" destination="bR3-V2-jgy" collectionClass="NSMutableArray" id="Q9U-0c-M7y"/>
+                            <outletCollection property="normalButtons" destination="wtr-Cq-XFj" collectionClass="NSMutableArray" id="clT-Nm-XKg"/>
+                            <outletCollection property="normalButtons" destination="dlB-l8-afd" collectionClass="NSMutableArray" id="C1f-lf-Uf3"/>
+                            <outletCollection property="normalButtons" destination="OgE-ai-VvN" collectionClass="NSMutableArray" id="8qT-Xl-Jgs"/>
+                            <outletCollection property="normalButtons" destination="0pd-ES-zXc" collectionClass="NSMutableArray" id="5Ef-1m-5M2"/>
                         </connections>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

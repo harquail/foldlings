@@ -9,16 +9,9 @@ import UIKit
 
 class SketchView: UIView {
     
-    
-    
-    
     @IBOutlet var previewButton: UIButton!
-    
     @IBOutlet var statusLabel: UILabel!
-    
-    
     @IBOutlet var checkButton: UIButton!
-    
     @IBOutlet var xButton: UIButton!
     
     enum Mode {
@@ -29,15 +22,19 @@ class SketchView: UIView {
         case Mirror
         case Track
         case Slider
+        case BoxFold
     }
+    
+    @IBOutlet var normalButtons: [UIButton]!
+    @IBOutlet var templatingButtons: [UIButton]!
     
     // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
     var simpleMode = !NSUserDefaults.standardUserDefaults().boolForKey("proMode")
-
-    // this sets templating mode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
-    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
-
     
+    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
+    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
+    var features:[FoldFeature]? = [] //listOfCurrentFeatures
+    var currentFeature:FoldFeature? //feature currently being drawn
     
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
@@ -57,8 +54,8 @@ class SketchView: UIView {
     let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
     var redrawing:Bool = false
     var canPreview:Bool = true
-
     
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -77,7 +74,30 @@ class SketchView: UIView {
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
-
+        
+    }
+    
+    func viewWillAppear(){
+        hideButtonsWeDontNeed()
+    }
+    
+    func hideButtonsWeDontNeed(){
+        
+        var buttonsToHide:[UIButton]!
+        
+        if(templateMode){
+            buttonsToHide = self.normalButtons
+            self.sketchMode = Mode.BoxFold
+        }
+        else{
+            buttonsToHide = self.templatingButtons
+        }
+        
+        for button in buttonsToHide{
+            button.userInteractionEnabled = false
+            button.alpha = 0
+        }
+        
     }
     
     override func drawRect(rect: CGRect)
@@ -93,48 +113,56 @@ class SketchView: UIView {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
-//        //disallow preview button while drawing
-//        previewButton.alpha = 0.3
-//        previewButton.userInteractionEnabled = false
-//        canPreview = false
         
-        var touch = touches.anyObject() as UITouch
-        var touchPoint: CGPoint = touch.locationInView(self)
-        startEdgeCollision = nil //reset edge collisions to nil
-        endEdgeCollision = nil
         
-        // ignore touch if outside of bounds
-        if !sketch.checkInBounds(touchPoint) {
-            cancelledTouch = touch
-            return
+        if(templateMode){
+            
         }
-        
-        switch sketchMode
-        {
-        case .Erase:
-            erase(touchPoint)
-        case .Cut, .Fold, .Tab:
-            // simplemode check for fold drawing
-            if simpleMode && !simpleModeFoldInBounds(touchPoint, sketchMode: sketchMode)  {
+        else{
+            
+            //        //disallow preview button while drawing
+            //        previewButton.alpha = 0.3
+            //        previewButton.userInteractionEnabled = false
+            //        canPreview = false
+            
+            var touch = touches.anyObject() as UITouch
+            var touchPoint: CGPoint = touch.locationInView(self)
+            startEdgeCollision = nil //reset edge collisions to nil
+            endEdgeCollision = nil
+            
+            // ignore touch if outside of bounds
+            if !sketch.checkInBounds(touchPoint) {
                 cancelledTouch = touch
                 return
             }
             
-            // snap to vertex
-            if let np = sketch.vertexHitTest(touchPoint) {
-                touchPoint = np
-            } // snap to edge
-            else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
-                touchPoint = np
-                startEdgeCollision = edge
+            switch sketchMode
+            {
+            case .Erase:
+                erase(touchPoint)
+            case .Cut, .Fold, .Tab:
+                // simplemode check for fold drawing
+                if simpleMode && !simpleModeFoldInBounds(touchPoint, sketchMode: sketchMode)  {
+                    cancelledTouch = touch
+                    return
+                }
+                
+                // snap to vertex
+                if let np = sketch.vertexHitTest(touchPoint) {
+                    touchPoint = np
+                } // snap to edge
+                else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+                    touchPoint = np
+                    startEdgeCollision = edge
+                }
+                ctr = 0
+                pts[0] = touchPoint
+                tempStart = touchPoint
+                tempEnd = touchPoint //set end to same point at start
+                setPathStyle(path, edge:nil, grayscale:false)
+            default:
+                break
             }
-            ctr = 0
-            pts[0] = touchPoint
-            tempStart = touchPoint
-            tempEnd = touchPoint //set end to same point at start
-            setPathStyle(path, edge:nil, grayscale:false)
-        default:
-            break
         }
     }
     
@@ -172,10 +200,10 @@ class SketchView: UIView {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
-//        //enable preview again
-//        previewButton.alpha = 1
-//        previewButton.userInteractionEnabled = true
-
+        //        //enable preview again
+        //        previewButton.alpha = 1
+        //        previewButton.userInteractionEnabled = true
+        
         var endPoint = tempEnd
         let startPoint = tempStart
         switch sketchMode
@@ -270,7 +298,7 @@ class SketchView: UIView {
                     plane.path.usesEvenOddFillRule = false
                     plane.path.fill()
                 }
-
+                
                 var twinsOfVisited = [Edge]()
                 //print all edges
                 for e in sketch.edges
@@ -280,8 +308,8 @@ class SketchView: UIView {
                     
                     //don't draw twin edges
                     if(!twinsOfVisited.contains(e)){
-                    e.path.stroke()
-                    twinsOfVisited.append(e.twin)
+                        e.path.stroke()
+                        twinsOfVisited.append(e.twin)
                     }
                     
                     // just draw that point to indicate it...
@@ -376,7 +404,7 @@ class SketchView: UIView {
         if sketchMode == .Tab {
             tempEnd = CGPointMake(endpoint.x,  tempStart.y)
         }
-        // allow non-horizontal folds, snapping to horizonal & vertical
+            // allow non-horizontal folds, snapping to horizonal & vertical
         else if sketchMode == .Fold {
             let snapThreshold = 10
             if(abs(Int(tempStart.x) - Int(endpoint.x)) < snapThreshold){
@@ -386,9 +414,9 @@ class SketchView: UIView {
                 tempEnd = CGPointMake(endpoint.x, tempStart.y)
             }
             else{
-            tempEnd = endpoint
+                tempEnd = endpoint
             }
-        
+            
         }
         else {
             tempEnd = endpoint
@@ -487,7 +515,7 @@ class SketchView: UIView {
                         if self.sketch.buildTabs() { self.sketch.getPlanes() }
                     }
                 }
-
+                
                 dispatch_async(dispatch_get_main_queue(), {
                     dispatch_sync(self.redrawLockQueue) {
                         self.incrementalImage = nil
@@ -505,17 +533,17 @@ class SketchView: UIView {
                 self.setNeedsDisplay() //draw to clear the deleted path
             }
         }
-
+        
     }
     
     
     func setGameView(){
         gameView = GameViewController()
-//        gameView.setButtonBG(previewImage())
+        //        gameView.setButtonBG(previewImage())
         gameView.laserImage = bitmap(grayscale: true)
         gameView.planes = sketch.planes
         gameView.makeScene()
-//        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+        //        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
     }
     
     func simpleSketch(dex:Int, name:String)->Sketch
@@ -632,9 +660,9 @@ class SketchView: UIView {
     }
     
     
-//    func previewImage() -> UIImage {
-//        return bitmap(grayscale: false, circles: false)
-//    }
+    //    func previewImage() -> UIImage {
+    //        return bitmap(grayscale: false, circles: false)
+    //    }
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
@@ -655,7 +683,7 @@ class SketchView: UIView {
     
     
     func setButtonBG(image:UIImage){
-//        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
     ///MARK: simplemode functions
@@ -671,7 +699,7 @@ class SketchView: UIView {
         default:
             return true
         }
-
+        
     }
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
@@ -686,9 +714,9 @@ class SketchView: UIView {
         default:
             return Edge.Kind.Cut
         }
-
+        
     }
-   
+    
     
     func hideXCheck(){
         checkButton.userInteractionEnabled = false
@@ -704,7 +732,7 @@ class SketchView: UIView {
         xButton.userInteractionEnabled = true
         xButton.alpha = 1
         print("hidden")
-
+        
     }
     
 }

@@ -10,7 +10,7 @@ import Foundation
 
 class FoldFeature{
     
-    enum Type {
+    enum Kind {
         case Box,
          Mirrored,
          FreeForm,
@@ -25,12 +25,42 @@ class FoldFeature{
         Valid
     }
     
-    var planes:[Plane] = [];
-    var horizontalFolds:[Edge] = [];
-    var parent:FoldFeature?;
-    var boundingBox:CGRect?;
-//    
-//    func a{
-//    
-//    }
+    var featurePlanes:[Plane] = []
+    var drawingPlanes:[Plane] = []
+    var horizontalFolds:[Edge] = []
+    var parent:FoldFeature?
+    var drivingFold:Edge?
+    var startPoint:CGPoint?
+    var endPoint:CGPoint?
+    var foldKind:Kind = .Box
+    
+    func getEdges()->[Edge]{
+        switch(foldKind){
+        case .Box:
+            
+//                  h0
+//            S---------
+//            |         | e0
+//         s0 |     h1  |
+//            -----------
+//         s1 |         | e1
+//     _______|         |__________
+//            |         |
+//         s2 |     h2  | e2
+//            ----------E
+            
+            var returnee:[Edge] = []
+            let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+            returnee.append(h0)
+            if let master = drivingFold{
+                
+            }
+            return [h0,];
+        default:
+                return []
+        }
+    }
+    
+    
+
 }
