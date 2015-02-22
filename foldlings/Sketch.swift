@@ -13,7 +13,10 @@ import UIKit
 class Sketch : NSObject  {
     
     @IBOutlet var previewButton:UIButton?
-    
+
+    var features:[FoldFeature]? = [] //listOfCurrentFeatures
+    var currentFeature:FoldFeature? //feature currently being drawn
+    var masterFeature:FoldFeature?
     
     //the folds that define a sketch
     //for now, cuts are in this array to
@@ -55,6 +58,7 @@ class Sketch : NSObject  {
         origin = userOriginated ? .UserCreated : .Sample
         let scaleFactor = CGFloat(0.9)
         super.init()
+        
         //insert master fold and make borders into cuts
         makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
         
@@ -148,70 +152,22 @@ class Sketch : NSObject  {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width;
         let screenHeight = screenSize.height;
-        
-        
-        let halfH = height/2.0
-        
         let downabit:CGFloat = -50.0
-        let midLeft = CGPointMake(screenWidth-width, halfH)
-        let midRight = CGPointMake(width, halfH)
-        
-        var path = UIBezierPath()
-        path.moveToPoint(midLeft)
-        path.addLineToPoint(midRight)
-        // this style stuff below is ugly but whatever
-        path.setLineDash([10,5], count: 2, phase:0)
-        path.lineWidth = kLineWidth
-        
-        drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
-        drivingEdge.fold = .Valley
-        
-        //border paths
-        var path1 = UIBezierPath()
-        var path2 = UIBezierPath()
-        var path2point5 = UIBezierPath()
-        var path3 = UIBezierPath()
-        var path4 = UIBezierPath()
-        var path4point5 = UIBezierPath()
-        
-        
         
         // border points
         let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
-        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
+//        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
         //between b2 and b3 should be a midRight
         let b3 = CGPointMake(width, height + downabit)   //bottomright
-        let b4 = CGPointMake(screenWidth-width, height + downabit)  //bottomleft
+        masterFeature = FoldFeature(start: b1, kind: .MasterCard)
+        masterFeature!.endPoint = b3
+        features?.append(masterFeature!)
         
-        //border edges
-        path1.moveToPoint(b1)
-        path1.addLineToPoint(b2)
-        bEdge1 = addEdge(b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)//top
-        
-        path2.moveToPoint(b2)
-        path2.addLineToPoint(midRight)
-        bEdge2 = addEdge(b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)//right
-        
-        path2point5.moveToPoint(midRight)
-        path2point5.addLineToPoint(b3)
-        bEdge2point5 = addEdge(midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)//right2
-        
-        path3.moveToPoint(b3)
-        path3.addLineToPoint(b4)
-        bEdge3 = addEdge(b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)//bottom
-        
-        path4.moveToPoint(b1)
-        path4.addLineToPoint(midLeft)
-        bEdge4 = addEdge(b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)//left
-        
-        path4point5.moveToPoint(midLeft)
-        path4point5.addLineToPoint(b4)
-        bEdge4point5 = addEdge(midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)//left2
-        
-        borderEdges = [bEdge1, bEdge1.twin, bEdge2, bEdge2.twin, bEdge2point5, bEdge2point5.twin,
-            bEdge3, bEdge3.twin, bEdge4, bEdge4.twin, bEdge4point5, bEdge4point5.twin]
-        // note width here has to subtract the border
-        drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
+        for edge in masterFeature!.getEdges(){
+            addEdge(edge)
+        }
+        drivingEdge = masterFeature!.horizontalFolds.first
+ 
     }
     
     /// does a traversal of all the edges to find all the planes
@@ -494,13 +450,21 @@ class Sketch : NSObject  {
     
     func isTopEdge(edge:Edge) -> Bool
     {
-        let b = edge == bEdge1 || edge == bEdge1.twin
-        return b
+        if let masterF = masterFeature{
+            return masterF.startPoint!.y == edge.start.y
+        }
+        return false
     }
+    
     func isBottomEdge(edge:Edge) -> Bool
     {
-        let b = edge == bEdge3 || edge == bEdge3.twin
-        return b
+        if let masterF = masterFeature{
+            if(masterF.endPoint != nil){
+            return masterF.endPoint!.y == edge.start.y
+            }
+        }
+        return false
+
     }
     
 }

@@ -17,7 +17,7 @@ class FoldFeature{
         VFold,
         Track,
         Slider,
-        MasterCard //some things are priceless, for everything else there's border edges and the driving fold
+        MasterCard//some things are priceless, for everything else there's border edges and the driving fold
     }
     
     enum ValidityState {
@@ -35,6 +35,16 @@ class FoldFeature{
     var endPoint:CGPoint?
     var foldKind:Kind = .Box
     
+    
+    func bounds()->CGRect?{
+        if self.foldKind == .MasterCard{
+            
+        }
+        return nil
+        
+    }
+    
+    //this should probably be caching or a singleton or something fancy
     func getEdges()->[Edge]{
         switch(foldKind){
         case .Box:
@@ -58,7 +68,6 @@ class FoldFeature{
             
             //if there's a master fold
             if let master = drivingFold{
-                //                set s0 =
                 let masterDist = endPoint!.y - master.start.y
                 
                 
@@ -96,6 +105,7 @@ class FoldFeature{
                 let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
                 let e0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
                 
+                
                 returnee.append(s0)
                 returnee.append(e0)
                 
@@ -103,11 +113,8 @@ class FoldFeature{
             
             
             return returnee
-        case .MasterCard:
-            return []
             //         top
-            //   ________________
-            //   |              |
+            //   S_______________
             //   |              |
             // l0|              |r0
             //   |              |
@@ -116,8 +123,31 @@ class FoldFeature{
             // l1|              |r1
             //   |              |
             //   |              |
-            //   ----------------
+            //   ---------------E
             //        bottom
+        case .MasterCard:
+            let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
+            let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+            let midPointDist = (endPoint!.y - startPoint!.y)/2
+            let l0 = Edge.straightEdgeBetween(startPoint!, end: CGPointMake(startPoint!.x, startPoint!.y + midPointDist), kind: .Cut)
+            let l1 = Edge.straightEdgeBetween(l0.end, end: CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+            let r1 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x,endPoint!.y-midPointDist), kind: .Cut)
+            let r0 = Edge.straightEdgeBetween(r1.end, end: CGPointMake(endPoint!.x,startPoint!.y), kind: .Cut)
+            
+            //for now, sort children by start point x and then draw master fold edges between them
+            
+            //maybe we don't want master here after all
+            let master = Edge.straightEdgeBetween(r1.end, end:l0.end, kind: .Fold)
+            
+            horizontalFolds = [master]
+            
+            let returnee = [top,bottom,l0,l1,r0,r1,master]
+            for edge in returnee{
+                edge.isMaster = true
+            }
+
+            return returnee
+
         default:
             return []
         }
