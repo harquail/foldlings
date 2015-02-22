@@ -28,7 +28,13 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     let det = a.x*b.y - a.y*b.x // determinant
     
     //solution #1
-    return atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
+    var angle = atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
+
+//    println("\(angle)")
+    if angle < 0{
+        angle = angle + 360
+    }
+    return angle
 
     //solution #2 -bad
 //    let angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
