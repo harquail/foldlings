@@ -170,6 +170,19 @@ class SketchView: UIView {
         }
     }
     
+    
+    
+
+//    - (IBAction)panGestureMoveAround:(UIPanGestureRecognizer *)gesture {
+//    if ([gesture state] == UIGestureRecognizerStateBegan) {
+//    myVarToStoreTheBeganPosition = [gesture locationInView:self.view];
+//    } else if ([gesture state] == UIGestureRecognizerStateEnded) {
+//    CGPoint myNewPositionAtTheEnd = [gesture locationInView:self.view];
+//    // and now handle it ;)
+//    }
+//    }
+//    
+
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         
@@ -177,6 +190,13 @@ class SketchView: UIView {
             var touch = touches.anyObject() as UITouch
             var touchPoint: CGPoint = touch.locationInView(self)
             currentFeature?.endPoint = touchPoint
+            
+            if(featureSpansFold(currentFeature?, fold:sketch.drivingEdge)){
+                currentFeature?.drivingFold = sketch.drivingEdge
+            }
+            else{
+                currentFeature?.drivingFold = nil
+            }
             forceRedraw()
             
         }
@@ -212,12 +232,28 @@ class SketchView: UIView {
         }
     }
     
+    func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+        
+        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
+            return (a.y < b.y) ? (a,b) : (b,a)
+        }
+        
+        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
+        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
+    
+    }
+    
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
         if(templateMode){
             var touch = touches.anyObject() as UITouch
             var touchPoint: CGPoint = touch.locationInView(self)
             features?.append(currentFeature!)
+            let edgesToAdd = currentFeature?.getEdges()
+            for edge in edgesToAdd!{
+            sketch.addEdge(edge)
+            }
+            
             currentFeature = nil
             forceRedraw()
         }

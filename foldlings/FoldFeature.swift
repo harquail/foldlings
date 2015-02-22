@@ -16,7 +16,8 @@ class FoldFeature{
         FreeForm,
         VFold,
         Track,
-        Slider
+        Slider,
+        MasterCard //some things are priceless, for everything else there's border edges and the driving fold
     }
     
     enum ValidityState {
@@ -28,7 +29,7 @@ class FoldFeature{
     var featurePlanes:[Plane] = []
     var drawingPlanes:[Plane] = []
     var horizontalFolds:[Edge] = []
-    var parent:FoldFeature?
+    var children:[FoldFeature]?
     var drivingFold:Edge?
     var startPoint:CGPoint?
     var endPoint:CGPoint?
@@ -57,19 +58,20 @@ class FoldFeature{
             
             //if there's a master fold
             if let master = drivingFold{
-//                set s0 = 
-                let masterDist = startPoint!.y - master.start.y
+                //                set s0 =
+                let masterDist = endPoint!.y - master.start.y
                 
-                let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Fold)
                 
-                let s0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, startPoint!.y + masterDist), kind: .Tab)
-                let s2 = Edge.straightEdgeBetween(h2.start, end:CGPointMake(startPoint!.x, master.start.y), kind: .Tab)
-                let s1 = Edge.straightEdgeBetween(s0.start, end:s2.end, kind: .Tab)
-
-                let e2 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x, endPoint!.y - masterDist),kind:.Tab)
-                let e1 = Edge.straightEdgeBetween(e2.end, end: CGPointMake(e2.end.x, h1.end.y), kind: .Tab)
-                let e0 = Edge.straightEdgeBetween(e1.end, end: h0.end, kind: .Tab)
-
+                let s0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, startPoint!.y + masterDist), kind: .Fold)
+                let h1 = Edge.straightEdgeBetween(s0.end, end:CGPointMake(endPoint!.x, s0.end.y), kind: .Fold)
+                
+                let s2 = Edge.straightEdgeBetween(h2.start, end:CGPointMake(startPoint!.x, master.start.y), kind: .Cut)
+                let s1 = Edge.straightEdgeBetween(s0.start, end:s2.end, kind: .Cut)
+                
+                let e2 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x, endPoint!.y - masterDist),kind:.Cut)
+                let e1 = Edge.straightEdgeBetween(e2.end, end: CGPointMake(e2.end.x, h1.end.y), kind: .Cut)
+                let e0 = Edge.straightEdgeBetween(e1.end, end: h0.end, kind: .Cut)
+                
                 returnee.append(h1)
                 returnee.append(s0)
                 returnee.append(s2)
@@ -77,7 +79,7 @@ class FoldFeature{
                 returnee.append(e0)
                 returnee.append(e1)
                 returnee.append(e2)
-
+                
                 
             }
                 // otherwise, we only have 4 edges
@@ -90,10 +92,10 @@ class FoldFeature{
                 //            -------E
                 //               h2
             else{
-    
+                
                 let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
                 let e0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
-
+                
                 returnee.append(s0)
                 returnee.append(e0)
                 
@@ -101,6 +103,21 @@ class FoldFeature{
             
             
             return returnee
+        case .MasterCard:
+            return []
+            //         top
+            //   ________________
+            //   |              |
+            //   |              |
+            // l0|              |r0
+            //   |              |
+            //   |_ _ master _ _|
+            //   |              |
+            // l1|              |r1
+            //   |              |
+            //   |              |
+            //   ----------------
+            //        bottom
         default:
             return []
         }
