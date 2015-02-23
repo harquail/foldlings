@@ -46,10 +46,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     }
     
     struct Color {
-        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 255.0)
-        static var Valley:UIColor = UIColor(red: 0.0, green: 255.0, blue: 0.0, alpha: 255.0)
-        static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 255.0)
-        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 255.0)
+        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 0.5)
+        static var Valley:UIColor = UIColor(red: 0.0, green: 255.0, blue: 0.0, alpha: 0.5)
+        static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 0.5)
+        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
+        static var Tab:UIColor = UIColor(red: 0.0, green: 150.0, blue: 150.0, alpha: 0.5)
+
     }
     
     /// color for printing with laser cutter
@@ -131,7 +133,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         var color: UIColor!
         switch kind
         {
-        case .Fold, .Tab:
+        case .Fold:
             switch fold {
                 case .Hill:
                     color = Color.Hill
@@ -140,6 +142,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
                 default:
                     color = Color.Fold
             }
+        case .Tab:
+            color = Color.Tab
         case .Cut:
             color = Color.Cut
         default:

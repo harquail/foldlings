@@ -112,20 +112,14 @@ class SketchView: UIView {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         
-        
         if(templateMode){
             var touch = touches.anyObject() as UITouch
             var touchPoint: CGPoint = touch.locationInView(self)
+            //start a new box-fold feature
             sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
-            //            currentFeature?.drivingFold = sketch.drivingEdge
             
         }
         else{
-            
-            //        //disallow preview button while drawing
-            //        previewButton.alpha = 0.3
-            //        previewButton.userInteractionEnabled = false
-            //        canPreview = false
             
             var touch = touches.anyObject() as UITouch
             var touchPoint: CGPoint = touch.locationInView(self)
@@ -189,6 +183,7 @@ class SketchView: UIView {
             var touchPoint: CGPoint = touch.locationInView(self)
             sketch.currentFeature?.endPoint = touchPoint
             
+            // box folds have different behaviors if they span the driving edge
             if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
                 sketch.currentFeature?.drivingFold = sketch.drivingEdge
             }
@@ -244,26 +239,55 @@ class SketchView: UIView {
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
         if(templateMode){
+            
             var touch = touches.anyObject() as UITouch
             var touchPoint: CGPoint = touch.locationInView(self)
+            
+            //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
-            let edgesToAdd = sketch.currentFeature?.getEdges()
-            for edge in edgesToAdd!{
-                sketch.addEdge(edge)
-            }
             
-            func master()-> FoldFeature?{
+            if(sketch.currentFeature!.drivingFold != nil){
+                
+                if (sketch.masterFeature?.children != nil){
+                    sketch.masterFeature?.children!.append(sketch.currentFeature!)
+                    
+                    print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
+
+                }
+                else{
+                    sketch.masterFeature!.children = []
+                    sketch.masterFeature!.children!.append(sketch.currentFeature!)
+                    
+                    print("~~~ADDED FIRST CHILD~~~\n\n")
+
+                }
                 
                 
-                return nil
-            }
-            
-            if let masterf = master(){
-            
             }
 
-           
             
+            //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
+            
+            for edge in sketch.edges{
+            
+                sketch.removeEdge(edge)
+            
+            }
+            
+            print("FEATURES: \(sketch.features?.count)\n")
+            for feature in sketch.features!{
+                print("FEATURE: \(feature.getEdges().count)\n")
+
+                let edgesToAdd = feature.getEdges()
+                for edge in edgesToAdd{
+                    sketch.addEdge(edge)
+                }
+                print("SKETCH: \(sketch.edges.count)\n")
+
+                
+            }
+            
+            //clear the current feature
             sketch.currentFeature = nil
             forceRedraw()
         }
