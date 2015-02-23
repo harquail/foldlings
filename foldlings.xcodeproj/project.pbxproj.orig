@@ -1,0 +1,1103 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22061CA21A1B18180030079D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA11A1B18180030079D /* Queue.swift */; };
+		22061CA41A1B182F0030079D /* QNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA31A1B182F0030079D /* QNode.swift */; };
+		220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */; };
+		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
+		223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */; };
+		224501141A0F334200E18F82 /* CollectionOfPlanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224501131A0F334200E18F82 /* CollectionOfPlanes.swift */; };
+		225094F21A0CA21000E754CA /* BezierSimple.m in Sources */ = {isa = PBXBuildFile; fileRef = 225094F11A0CA21000E754CA /* BezierSimple.m */; };
+		225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = 225094F61A0DBB5D00E754CA /* CGPoint+Vector.m */; };
+		227708D719EE016A0095CD9D /* SketchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227708D619EE016A0095CD9D /* SketchView.swift */; };
+		22C0D68A1A04965C00D521CA /* Bezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C0D6891A04965C00D521CA /* Bezier.swift */; };
+		22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */; };
+		22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */; };
+		22C3F4B319F33B3F00857C82 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4B219F33B3F00857C82 /* menu.png */; };
+		22C3F4B719F33B4900857C82 /* cut.png in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4B619F33B4900857C82 /* cut.png */; };
+		22C3F4B919F33B4F00857C82 /* fold.png in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4B819F33B4F00857C82 /* fold.png */; };
+		22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BA19F33D4E00857C82 /* small_preview.jpeg */; };
+		22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BC19F33EBA00857C82 /* small_2d.jpeg */; };
+		22C3F4C019F33FF200857C82 /* print.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BE19F33FF200857C82 /* print.jpeg */; };
+		22C3F4C119F33FF200857C82 /* send.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BF19F33FF200857C82 /* send.jpeg */; };
+		22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C3F4C419F35E9600857C82 /* AboutViewController.swift */; };
+<<<<<<< HEAD
+		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
+=======
+		22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7EF1A169F2400C9ECAA /* Array.swift */; };
+		22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F01A169F2400C9ECAA /* Dictionary.swift */; };
+		22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F11A169F2400C9ECAA /* Double.swift */; };
+		22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F31A169F2400C9ECAA /* ExSwift.swift */; };
+		22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F41A169F2400C9ECAA /* Float.swift */; };
+		22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F51A169F2400C9ECAA /* Int.swift */; };
+		22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F61A169F2400C9ECAA /* NSArray.swift */; };
+		22D0E8011A169F2400C9ECAA /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F71A169F2400C9ECAA /* Range.swift */; };
+		22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F81A169F2400C9ECAA /* Sequence.swift */; };
+		22D0E8031A169F2400C9ECAA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F91A169F2400C9ECAA /* String.swift */; };
+		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
+		8874A7121A05B61F00F78283 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874A7111A05B61F00F78283 /* Plane.swift */; };
+		F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */; };
+		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
+		F1174DD71A33EB4800FDEACF /* Armchair.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
+		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
+		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
+		F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */; };
+		F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */; };
+		F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6B1A1EAED50029FDF2 /* GHText.m */; };
+		F153BB9E1A1EAED50029FDF2 /* GHTextLine.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6D1A1EAED50029FDF2 /* GHTextLine.m */; };
+		F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6F1A1EAED50029FDF2 /* SVGAttributedObject.m */; };
+		F153BBA01A1EAED50029FDF2 /* SVGGradientUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB721A1EAED50029FDF2 /* SVGGradientUtilities.m */; };
+		F153BBA11A1EAED50029FDF2 /* SVGParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB741A1EAED50029FDF2 /* SVGParser.m */; };
+		F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB761A1EAED50029FDF2 /* SVGTextUtilities.m */; };
+		F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB781A1EAED50029FDF2 /* SVGUtilities.m */; };
+		F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB7B1A1EAED50029FDF2 /* SVGgh.m */; };
+		F153BBA51A1EAED50029FDF2 /* GHGlyph.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB7E1A1EAED50029FDF2 /* GHGlyph.m */; };
+		F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB801A1EAED50029FDF2 /* GHGradient.m */; };
+		F153BBA71A1EAED50029FDF2 /* SVGPathGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB831A1EAED50029FDF2 /* SVGPathGenerator.m */; };
+		F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB851A1EAED50029FDF2 /* SVGPrinter.m */; };
+		F153BBA91A1EAED50029FDF2 /* SVGRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB871A1EAED50029FDF2 /* SVGRenderer.m */; };
+		F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB891A1EAED50029FDF2 /* SVGtoPDFConverter.m */; };
+		F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB8C1A1EAED50029FDF2 /* Base64Transcoder.m */; };
+		F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB8E1A1EAED50029FDF2 /* NSData+Base64Additions.m */; };
+		F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB911A1EAED50029FDF2 /* GHImageCache.m */; };
+		F153BBAE1A1EAED50029FDF2 /* GHButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB941A1EAED50029FDF2 /* GHButton.m */; };
+		F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB961A1EAED50029FDF2 /* GHControlFactory.m */; };
+		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
+		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
+		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
+		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
+		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
+		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
+		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
+		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
+		F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
+		F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D619E24BEC00BB77F1 /* Images.xcassets */; };
+		F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
+		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
+		F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */; };
+		F1824ECF1A19E525008B0F66 /* last.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECC1A19E525008B0F66 /* last.png */; };
+		F1824ED01A19E525008B0F66 /* middle.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECD1A19E525008B0F66 /* middle.png */; };
+		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
+		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
+		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
+		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
+		F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B9AE771A06A64B00265AAE /* Archivist.swift */; };
+		F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1B9AE791A06B37D00265AAE /* data.plist */; };
+		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
+		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
+		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
+		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
+		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
+		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F1174DCD1A33EB3600FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6D8B8B519C7274F001AD043;
+			remoteInfo = Armchair;
+		};
+		F1174DCF1A33EB3600FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6D8B8F919C756A4001AD043;
+			remoteInfo = ArmchairMac;
+		};
+		F1174DD11A33EB3600FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6A0AF6519C9CFF400C3A7DC;
+			remoteInfo = ArmchairLocalizable;
+		};
+		F1174DD31A33EB3600FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6F6159419C9FFDA00C0B51C;
+			remoteInfo = ArmchairLocalizableMac;
+		};
+		F1174DD51A33EB3600FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6D8B92819C880A9001AD043;
+			remoteInfo = ArmchairTests;
+		};
+		F1174DD81A33EB5200FDEACF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
+			remoteInfo = Armchair;
+		};
+		F17C93E019E24BEC00BB77F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F17C93C019E24BEC00BB77F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F17C93C719E24BEC00BB77F1;
+			remoteInfo = foldlings;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F1174DBE1A33E8DC00FDEACF /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F1174DD71A33EB4800FDEACF /* Armchair.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		22061CA11A1B18180030079D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		22061CA31A1B182F0030079D /* QNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNode.swift; sourceTree = "<group>"; };
+		220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+InsertionIntoSorted.swift"; sourceTree = "<group>"; };
+		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
+		223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGPathElementObj.m; path = ../CGPathElementObj.m; sourceTree = "<group>"; };
+		224501131A0F334200E18F82 /* CollectionOfPlanes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfPlanes.swift; sourceTree = "<group>"; };
+		225094F01A0CA21000E754CA /* BezierSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierSimple.h; sourceTree = "<group>"; };
+		225094F11A0CA21000E754CA /* BezierSimple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BezierSimple.m; sourceTree = "<group>"; };
+		225094F51A0DBB5D00E754CA /* CGPoint+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGPoint+Vector.h"; sourceTree = "<group>"; };
+		225094F61A0DBB5D00E754CA /* CGPoint+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGPoint+Vector.m"; sourceTree = "<group>"; };
+		227708D619EE016A0095CD9D /* SketchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchView.swift; sourceTree = "<group>"; };
+		22C0D6891A04965C00D521CA /* Bezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bezier.swift; sourceTree = "<group>"; };
+		22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+OBAdditions.h"; sourceTree = "<group>"; };
+		22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "foldlings-Bridging-Header.h"; sourceTree = "<group>"; };
+		22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+OBAdditions.m"; sourceTree = "<group>"; };
+		22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlingslogo1.jpg; sourceTree = "<group>"; };
+		22C3F4B219F33B3F00857C82 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
+		22C3F4B619F33B4900857C82 /* cut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cut.png; sourceTree = "<group>"; };
+		22C3F4B819F33B4F00857C82 /* fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold.png; sourceTree = "<group>"; };
+		22C3F4BA19F33D4E00857C82 /* small_preview.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = small_preview.jpeg; sourceTree = "<group>"; };
+		22C3F4BC19F33EBA00857C82 /* small_2d.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = small_2d.jpeg; sourceTree = "<group>"; };
+		22C3F4BE19F33FF200857C82 /* print.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = print.jpeg; sourceTree = "<group>"; };
+		22C3F4BF19F33FF200857C82 /* send.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send.jpeg; sourceTree = "<group>"; };
+		22C3F4C419F35E9600857C82 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
+=======
+		22D0E7EF1A169F2400C9ECAA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		22D0E7F01A169F2400C9ECAA /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		22D0E7F11A169F2400C9ECAA /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		22D0E7F21A169F2400C9ECAA /* ExSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExSwift.h; sourceTree = "<group>"; };
+		22D0E7F31A169F2400C9ECAA /* ExSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExSwift.swift; sourceTree = "<group>"; };
+		22D0E7F41A169F2400C9ECAA /* Float.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
+		22D0E7F51A169F2400C9ECAA /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		22D0E7F61A169F2400C9ECAA /* NSArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArray.swift; sourceTree = "<group>"; };
+		22D0E7F71A169F2400C9ECAA /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
+		22D0E7F81A169F2400C9ECAA /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		22D0E7F91A169F2400C9ECAA /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
+		8874A7111A05B61F00F78283 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
+		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
+		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Armchair.xcodeproj; path = Armchair/Armchair.xcodeproj; sourceTree = "<group>"; };
+		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
+		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
+		F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAttributedObject.h; sourceTree = "<group>"; };
+		F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAttributedObject.m; sourceTree = "<group>"; };
+		F153BB671A1EAED50029FDF2 /* GHPathDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathDescription.h; sourceTree = "<group>"; };
+		F153BB681A1EAED50029FDF2 /* GHPathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathUtilities.h; sourceTree = "<group>"; };
+		F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHPathUtilities.m; sourceTree = "<group>"; };
+		F153BB6A1A1EAED50029FDF2 /* GHText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHText.h; sourceTree = "<group>"; };
+		F153BB6B1A1EAED50029FDF2 /* GHText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHText.m; sourceTree = "<group>"; };
+		F153BB6C1A1EAED50029FDF2 /* GHTextLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHTextLine.h; sourceTree = "<group>"; };
+		F153BB6D1A1EAED50029FDF2 /* GHTextLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHTextLine.m; sourceTree = "<group>"; };
+		F153BB6E1A1EAED50029FDF2 /* SVGAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGAttributedObject.h; sourceTree = "<group>"; };
+		F153BB6F1A1EAED50029FDF2 /* SVGAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGAttributedObject.m; sourceTree = "<group>"; };
+		F153BB701A1EAED50029FDF2 /* SVGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGContext.h; sourceTree = "<group>"; };
+		F153BB711A1EAED50029FDF2 /* SVGGradientUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGGradientUtilities.h; sourceTree = "<group>"; };
+		F153BB721A1EAED50029FDF2 /* SVGGradientUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGGradientUtilities.m; sourceTree = "<group>"; };
+		F153BB731A1EAED50029FDF2 /* SVGParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGParser.h; sourceTree = "<group>"; };
+		F153BB741A1EAED50029FDF2 /* SVGParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGParser.m; sourceTree = "<group>"; };
+		F153BB751A1EAED50029FDF2 /* SVGTextUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGTextUtilities.h; sourceTree = "<group>"; };
+		F153BB761A1EAED50029FDF2 /* SVGTextUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGTextUtilities.m; sourceTree = "<group>"; };
+		F153BB771A1EAED50029FDF2 /* SVGUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGUtilities.h; sourceTree = "<group>"; };
+		F153BB781A1EAED50029FDF2 /* SVGUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGUtilities.m; sourceTree = "<group>"; };
+		F153BB791A1EAED50029FDF2 /* SVGgh-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVGgh-Prefix.pch"; sourceTree = "<group>"; };
+		F153BB7A1A1EAED50029FDF2 /* SVGgh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGgh.h; sourceTree = "<group>"; };
+		F153BB7B1A1EAED50029FDF2 /* SVGgh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGgh.m; sourceTree = "<group>"; };
+		F153BB7D1A1EAED50029FDF2 /* GHGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHGlyph.h; sourceTree = "<group>"; };
+		F153BB7E1A1EAED50029FDF2 /* GHGlyph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHGlyph.m; sourceTree = "<group>"; };
+		F153BB7F1A1EAED50029FDF2 /* GHGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHGradient.h; sourceTree = "<group>"; };
+		F153BB801A1EAED50029FDF2 /* GHGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHGradient.m; sourceTree = "<group>"; };
+		F153BB811A1EAED50029FDF2 /* GHRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRenderable.h; sourceTree = "<group>"; };
+		F153BB821A1EAED50029FDF2 /* SVGPathGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPathGenerator.h; sourceTree = "<group>"; };
+		F153BB831A1EAED50029FDF2 /* SVGPathGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGPathGenerator.m; sourceTree = "<group>"; };
+		F153BB841A1EAED50029FDF2 /* SVGPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPrinter.h; sourceTree = "<group>"; };
+		F153BB851A1EAED50029FDF2 /* SVGPrinter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGPrinter.m; sourceTree = "<group>"; };
+		F153BB861A1EAED50029FDF2 /* SVGRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRenderer.h; sourceTree = "<group>"; };
+		F153BB871A1EAED50029FDF2 /* SVGRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRenderer.m; sourceTree = "<group>"; };
+		F153BB881A1EAED50029FDF2 /* SVGtoPDFConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGtoPDFConverter.h; sourceTree = "<group>"; };
+		F153BB891A1EAED50029FDF2 /* SVGtoPDFConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGtoPDFConverter.m; sourceTree = "<group>"; };
+		F153BB8B1A1EAED50029FDF2 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
+		F153BB8C1A1EAED50029FDF2 /* Base64Transcoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64Transcoder.m; sourceTree = "<group>"; };
+		F153BB8D1A1EAED50029FDF2 /* NSData+Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64Additions.h"; sourceTree = "<group>"; };
+		F153BB8E1A1EAED50029FDF2 /* NSData+Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64Additions.m"; sourceTree = "<group>"; };
+		F153BB901A1EAED50029FDF2 /* GHImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHImageCache.h; sourceTree = "<group>"; };
+		F153BB911A1EAED50029FDF2 /* GHImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHImageCache.m; sourceTree = "<group>"; };
+		F153BB931A1EAED50029FDF2 /* GHButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHButton.h; sourceTree = "<group>"; };
+		F153BB941A1EAED50029FDF2 /* GHButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHButton.m; sourceTree = "<group>"; };
+		F153BB951A1EAED50029FDF2 /* GHControlFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHControlFactory.h; sourceTree = "<group>"; };
+		F153BB961A1EAED50029FDF2 /* GHControlFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHControlFactory.m; sourceTree = "<group>"; };
+		F153BB971A1EAED50029FDF2 /* SVGDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGDocumentView.h; sourceTree = "<group>"; };
+		F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGDocumentView.m; sourceTree = "<group>"; };
+		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
+		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
+		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
+		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F17C93CF19E24BEC00BB77F1 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		F17C93D119E24BEC00BB77F1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		F17C93D419E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F17C93D619E24BEC00BB77F1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F17C93D919E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = foldlingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F17C93E419E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foldlingsTests.swift; sourceTree = "<group>"; };
+		F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingCell.swift; sourceTree = "<group>"; };
+		F1824ECC1A19E525008B0F66 /* last.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = last.png; path = ../last.png; sourceTree = "<group>"; };
+		F1824ECD1A19E525008B0F66 /* middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middle.png; path = ../middle.png; sourceTree = "<group>"; };
+		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
+		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
+		F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfFoldlings.swift; sourceTree = "<group>"; };
+		F1B9AE771A06A64B00265AAE /* Archivist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivist.swift; sourceTree = "<group>"; };
+		F1B9AE791A06B37D00265AAE /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
+		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
+		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
+		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
+		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F17C93C519E24BEC00BB77F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
+				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
+				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
+				F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F17C93DC19E24BEC00BB77F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		22061CA01A1B17530030079D /* SwiftStructures */ = {
+			isa = PBXGroup;
+			children = (
+				22061CA31A1B182F0030079D /* QNode.swift */,
+				22061CA11A1B18180030079D /* Queue.swift */,
+			);
+			name = SwiftStructures;
+			sourceTree = "<group>";
+		};
+		225094E31A0C5B8500E754CA /* External */ = {
+			isa = PBXGroup;
+			children = (
+				F160F3B81A31463900B469CA /* Flurry */,
+				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
+				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
+				F153BB631A1EAED50029FDF2 /* SVGgh */,
+				22061CA01A1B17530030079D /* SwiftStructures */,
+				22D0E8041A169F3200C9ECAA /* ExSwift */,
+				225094F01A0CA21000E754CA /* BezierSimple.h */,
+				225094F11A0CA21000E754CA /* BezierSimple.m */,
+				225094F51A0DBB5D00E754CA /* CGPoint+Vector.h */,
+				225094F61A0DBB5D00E754CA /* CGPoint+Vector.m */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		22AF485019EDE98000BCC1A4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+<<<<<<< HEAD
+				227708D619EE016A0095CD9D /* DrawView.swift */,
+=======
+				227708D619EE016A0095CD9D /* SketchView.swift */,
+				F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */,
+				F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
+				F18C864519FD9F4500211229 /* SplashViewController.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		22C3F4AF19F332C500857C82 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+<<<<<<< HEAD
+=======
+				F1824ECC1A19E525008B0F66 /* last.png */,
+				F1824ECD1A19E525008B0F66 /* middle.png */,
+				F1824ECE1A19E525008B0F66 /* first.png */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+				22ED9F0719F367AB001F8AAA /* erase.png */,
+				22C3F4BE19F33FF200857C82 /* print.jpeg */,
+				22C3F4BF19F33FF200857C82 /* send.jpeg */,
+				22C3F4BC19F33EBA00857C82 /* small_2d.jpeg */,
+				22C3F4BA19F33D4E00857C82 /* small_preview.jpeg */,
+				22C3F4B819F33B4F00857C82 /* fold.png */,
+				22C3F4B619F33B4900857C82 /* cut.png */,
+				22C3F4B219F33B3F00857C82 /* menu.png */,
+				22C3F4AD19F332B700857C82 /* foldlingslogo1.jpg */,
+				F11B551E19FDFCE200169A07 /* foldlings_background.jpg */,
+				F11B551F19FDFCE200169A07 /* fold_logo.png */,
+				F1E309611A15839300C09792 /* tab.png */,
+				F1E309631A15854C00C09792 /* roundedrect.png */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		22D0E8041A169F3200C9ECAA /* ExSwift */ = {
+			isa = PBXGroup;
+			children = (
+				22D0E7EF1A169F2400C9ECAA /* Array.swift */,
+				22D0E7F01A169F2400C9ECAA /* Dictionary.swift */,
+				22D0E7F11A169F2400C9ECAA /* Double.swift */,
+				22D0E7F21A169F2400C9ECAA /* ExSwift.h */,
+				22D0E7F31A169F2400C9ECAA /* ExSwift.swift */,
+				22D0E7F41A169F2400C9ECAA /* Float.swift */,
+				22D0E7F51A169F2400C9ECAA /* Int.swift */,
+				22D0E7F61A169F2400C9ECAA /* NSArray.swift */,
+				22D0E7F71A169F2400C9ECAA /* Range.swift */,
+				22D0E7F81A169F2400C9ECAA /* Sequence.swift */,
+				22D0E7F91A169F2400C9ECAA /* String.swift */,
+				F10FACC11A1D2E98006541BF /* CGPoint.swift */,
+			);
+			name = ExSwift;
+			sourceTree = "<group>";
+		};
+		F1174DC61A33EB3600FDEACF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F1174DCE1A33EB3600FDEACF /* Armchair.framework */,
+				F1174DD01A33EB3600FDEACF /* Armchair.framework */,
+				F1174DD21A33EB3600FDEACF /* Armchair.bundle */,
+				F1174DD41A33EB3600FDEACF /* Armchair.bundle */,
+				F1174DD61A33EB3600FDEACF /* ArmchairTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F153BB631A1EAED50029FDF2 /* SVGgh */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB641A1EAED50029FDF2 /* SVG */,
+				F153BB791A1EAED50029FDF2 /* SVGgh-Prefix.pch */,
+				F153BB7A1A1EAED50029FDF2 /* SVGgh.h */,
+				F153BB7B1A1EAED50029FDF2 /* SVGgh.m */,
+				F153BB7C1A1EAED50029FDF2 /* SVGRenderer */,
+				F153BB8A1A1EAED50029FDF2 /* Third Party */,
+				F153BB8F1A1EAED50029FDF2 /* Utilities */,
+				F153BB921A1EAED50029FDF2 /* Views and Layers */,
+			);
+			path = SVGgh;
+			sourceTree = "<group>";
+		};
+		F153BB641A1EAED50029FDF2 /* SVG */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */,
+				F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */,
+				F153BB671A1EAED50029FDF2 /* GHPathDescription.h */,
+				F153BB681A1EAED50029FDF2 /* GHPathUtilities.h */,
+				F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */,
+				F153BB6A1A1EAED50029FDF2 /* GHText.h */,
+				F153BB6B1A1EAED50029FDF2 /* GHText.m */,
+				F153BB6C1A1EAED50029FDF2 /* GHTextLine.h */,
+				F153BB6D1A1EAED50029FDF2 /* GHTextLine.m */,
+				F153BB6E1A1EAED50029FDF2 /* SVGAttributedObject.h */,
+				F153BB6F1A1EAED50029FDF2 /* SVGAttributedObject.m */,
+				F153BB701A1EAED50029FDF2 /* SVGContext.h */,
+				F153BB711A1EAED50029FDF2 /* SVGGradientUtilities.h */,
+				F153BB721A1EAED50029FDF2 /* SVGGradientUtilities.m */,
+				F153BB731A1EAED50029FDF2 /* SVGParser.h */,
+				F153BB741A1EAED50029FDF2 /* SVGParser.m */,
+				F153BB751A1EAED50029FDF2 /* SVGTextUtilities.h */,
+				F153BB761A1EAED50029FDF2 /* SVGTextUtilities.m */,
+				F153BB771A1EAED50029FDF2 /* SVGUtilities.h */,
+				F153BB781A1EAED50029FDF2 /* SVGUtilities.m */,
+			);
+			path = SVG;
+			sourceTree = "<group>";
+		};
+		F153BB7C1A1EAED50029FDF2 /* SVGRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB7D1A1EAED50029FDF2 /* GHGlyph.h */,
+				F153BB7E1A1EAED50029FDF2 /* GHGlyph.m */,
+				F153BB7F1A1EAED50029FDF2 /* GHGradient.h */,
+				F153BB801A1EAED50029FDF2 /* GHGradient.m */,
+				F153BB811A1EAED50029FDF2 /* GHRenderable.h */,
+				F153BB821A1EAED50029FDF2 /* SVGPathGenerator.h */,
+				F153BB831A1EAED50029FDF2 /* SVGPathGenerator.m */,
+				F153BB841A1EAED50029FDF2 /* SVGPrinter.h */,
+				F153BB851A1EAED50029FDF2 /* SVGPrinter.m */,
+				F153BB861A1EAED50029FDF2 /* SVGRenderer.h */,
+				F153BB871A1EAED50029FDF2 /* SVGRenderer.m */,
+				F153BB881A1EAED50029FDF2 /* SVGtoPDFConverter.h */,
+				F153BB891A1EAED50029FDF2 /* SVGtoPDFConverter.m */,
+			);
+			path = SVGRenderer;
+			sourceTree = "<group>";
+		};
+		F153BB8A1A1EAED50029FDF2 /* Third Party */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB8B1A1EAED50029FDF2 /* Base64Transcoder.h */,
+				F153BB8C1A1EAED50029FDF2 /* Base64Transcoder.m */,
+				F153BB8D1A1EAED50029FDF2 /* NSData+Base64Additions.h */,
+				F153BB8E1A1EAED50029FDF2 /* NSData+Base64Additions.m */,
+			);
+			path = "Third Party";
+			sourceTree = "<group>";
+		};
+		F153BB8F1A1EAED50029FDF2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB901A1EAED50029FDF2 /* GHImageCache.h */,
+				F153BB911A1EAED50029FDF2 /* GHImageCache.m */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F153BB921A1EAED50029FDF2 /* Views and Layers */ = {
+			isa = PBXGroup;
+			children = (
+				F153BB931A1EAED50029FDF2 /* GHButton.h */,
+				F153BB941A1EAED50029FDF2 /* GHButton.m */,
+				F153BB951A1EAED50029FDF2 /* GHControlFactory.h */,
+				F153BB961A1EAED50029FDF2 /* GHControlFactory.m */,
+				F153BB971A1EAED50029FDF2 /* SVGDocumentView.h */,
+				F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */,
+				F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */,
+				F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */,
+			);
+			path = "Views and Layers";
+			sourceTree = "<group>";
+		};
+		F160F3B81A31463900B469CA /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				F160F3B91A31463900B469CA /* Flurry.h */,
+				F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */,
+			);
+			path = Flurry;
+			sourceTree = "<group>";
+		};
+		F17C93BF19E24BEC00BB77F1 = {
+			isa = PBXGroup;
+			children = (
+				F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */,
+				F17C93CA19E24BEC00BB77F1 /* foldlings */,
+				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
+				F160F3BC1A31473800B469CA /* Security.framework */,
+				F17C93E219E24BEC00BB77F1 /* foldlingsTests */,
+				F17C93C919E24BEC00BB77F1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F17C93C919E24BEC00BB77F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F17C93C819E24BEC00BB77F1 /* foldlings.app */,
+				F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
+			isa = PBXGroup;
+			children = (
+				22C3F4AF19F332C500857C82 /* Assets */,
+				22AF485019EDE98000BCC1A4 /* Views */,
+				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
+				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
+				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
+				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
+				8874A7111A05B61F00F78283 /* Plane.swift */,
+				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
+				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
+				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
+				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
+				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
+				F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */,
+				F1B9AE791A06B37D00265AAE /* data.plist */,
+				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
+				22C0D6891A04965C00D521CA /* Bezier.swift */,
+				223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */,
+				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
+				F1E16E9019E460C700BC27C4 /* Math.swift */,
+				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
+<<<<<<< HEAD
+=======
+				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
+				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
+				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
+				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
+				225094E31A0C5B8500E754CA /* External */,
+				F17C93CB19E24BEC00BB77F1 /* Supporting Files */,
+			);
+			path = foldlings;
+			sourceTree = "<group>";
+		};
+		F17C93CB19E24BEC00BB77F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F17C93CC19E24BEC00BB77F1 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F17C93E219E24BEC00BB77F1 /* foldlingsTests */ = {
+			isa = PBXGroup;
+			children = (
+				F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */,
+				F17C93E319E24BEC00BB77F1 /* Supporting Files */,
+			);
+			path = foldlingsTests;
+			sourceTree = "<group>";
+		};
+		F17C93E319E24BEC00BB77F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F17C93E419E24BEC00BB77F1 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F17C93C719E24BEC00BB77F1 /* foldlings */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F17C93E919E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlings" */;
+			buildPhases = (
+				F17C93C419E24BEC00BB77F1 /* Sources */,
+				F17C93C519E24BEC00BB77F1 /* Frameworks */,
+				F17C93C619E24BEC00BB77F1 /* Resources */,
+<<<<<<< HEAD
+				F1B30A7A19FC3E1300FEAA96 /* ShellScript */,
+=======
+				22B4B72219FC498C00B00279 /* ShellScript */,
+				F1174DBE1A33E8DC00FDEACF /* Copy Frameworks */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F1174DD91A33EB5200FDEACF /* PBXTargetDependency */,
+			);
+			name = foldlings;
+			productName = foldlings;
+			productReference = F17C93C819E24BEC00BB77F1 /* foldlings.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F17C93DE19E24BEC00BB77F1 /* foldlingsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F17C93EC19E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlingsTests" */;
+			buildPhases = (
+				F17C93DB19E24BEC00BB77F1 /* Sources */,
+				F17C93DC19E24BEC00BB77F1 /* Frameworks */,
+				F17C93DD19E24BEC00BB77F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F17C93E119E24BEC00BB77F1 /* PBXTargetDependency */,
+			);
+			name = foldlingsTests;
+			productName = foldlingsTests;
+			productReference = F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F17C93C019E24BEC00BB77F1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = nook;
+				TargetAttributes = {
+					F17C93C719E24BEC00BB77F1 = {
+						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = ZYN62B4489;
+					};
+					F17C93DE19E24BEC00BB77F1 = {
+						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = ZYN62B4489;
+						TestTargetID = F17C93C719E24BEC00BB77F1;
+					};
+				};
+			};
+			buildConfigurationList = F17C93C319E24BEC00BB77F1 /* Build configuration list for PBXProject "foldlings" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F17C93BF19E24BEC00BB77F1;
+			productRefGroup = F17C93C919E24BEC00BB77F1 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F1174DC61A33EB3600FDEACF /* Products */;
+					ProjectRef = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				F17C93C719E24BEC00BB77F1 /* foldlings */,
+				F17C93DE19E24BEC00BB77F1 /* foldlingsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F1174DCE1A33EB3600FDEACF /* Armchair.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Armchair.framework;
+			remoteRef = F1174DCD1A33EB3600FDEACF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F1174DD01A33EB3600FDEACF /* Armchair.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Armchair.framework;
+			remoteRef = F1174DCF1A33EB3600FDEACF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F1174DD21A33EB3600FDEACF /* Armchair.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Armchair.bundle;
+			remoteRef = F1174DD11A33EB3600FDEACF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F1174DD41A33EB3600FDEACF /* Armchair.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Armchair.bundle;
+			remoteRef = F1174DD31A33EB3600FDEACF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F1174DD61A33EB3600FDEACF /* ArmchairTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ArmchairTests.xctest;
+			remoteRef = F1174DD51A33EB3600FDEACF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F17C93C619E24BEC00BB77F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
+				F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */,
+				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
+				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
+				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
+				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
+				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
+				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
+				F1E309621A15839300C09792 /* tab.png in Resources */,
+				F1824ED11A19E525008B0F66 /* first.png in Resources */,
+				F11B552119FDFCE200169A07 /* fold_logo.png in Resources */,
+				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
+				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+<<<<<<< HEAD
+=======
+				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
+				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
+				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
+				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
+				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
+				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
+				F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F17C93DD19E24BEC00BB77F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+<<<<<<< HEAD
+		F1B30A7A19FC3E1300FEAA96 /* ShellScript */ = {
+=======
+		22B4B72219FC498C00B00279 /* ShellScript */ = {
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+<<<<<<< HEAD
+			shellPath = /bin/bash;
+=======
+			shellPath = /bin/sh;
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+			shellScript = "TAGS=\"TODO:|FIXME:\"\nfind \"${SRCROOT}\" -name \\*.swift -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F17C93C419E24BEC00BB77F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */,
+				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
+				22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */,
+				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
+				22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */,
+				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
+				22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */,
+				F153BBA91A1EAED50029FDF2 /* SVGRenderer.m in Sources */,
+				F153BBA51A1EAED50029FDF2 /* GHGlyph.m in Sources */,
+				F153BBA11A1EAED50029FDF2 /* SVGParser.m in Sources */,
+				224501141A0F334200E18F82 /* CollectionOfPlanes.swift in Sources */,
+				F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */,
+				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
+				225094F21A0CA21000E754CA /* BezierSimple.m in Sources */,
+				F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */,
+				F153BBA71A1EAED50029FDF2 /* SVGPathGenerator.m in Sources */,
+				227708D719EE016A0095CD9D /* SketchView.swift in Sources */,
+				F153BBA01A1EAED50029FDF2 /* SVGGradientUtilities.m in Sources */,
+				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
+<<<<<<< HEAD
+				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+=======
+				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
+				22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */,
+				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
+				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
+				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
+				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
+				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
+				22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */,
+				F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */,
+				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
+				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
+				F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */,
+				F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */,
+				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
+				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
+				F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
+				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
+				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
+				22061CA21A1B18180030079D /* Queue.swift in Sources */,
+				F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */,
+				F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */,
+				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
+				F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */,
+				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
+				F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */,
+				F153BBAE1A1EAED50029FDF2 /* GHButton.m in Sources */,
+				8874A7121A05B61F00F78283 /* Plane.swift in Sources */,
+				22C0D68A1A04965C00D521CA /* Bezier.swift in Sources */,
+				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
+				F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */,
+				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
+				F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */,
+				22061CA41A1B182F0030079D /* QNode.swift in Sources */,
+				F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */,
+				F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */,
+				F153BB9E1A1EAED50029FDF2 /* GHTextLine.m in Sources */,
+				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
+				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
+				F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F17C93DB19E24BEC00BB77F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F1174DD91A33EB5200FDEACF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Armchair;
+			targetProxy = F1174DD81A33EB5200FDEACF /* PBXContainerItemProxy */;
+		};
+		F17C93E119E24BEC00BB77F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F17C93C719E24BEC00BB77F1 /* foldlings */;
+			targetProxy = F17C93E019E24BEC00BB77F1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F17C93D319E24BEC00BB77F1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F17C93D419E24BEC00BB77F1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F17C93D919E24BEC00BB77F1 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F17C93E719E24BEC00BB77F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		F17C93E819E24BEC00BB77F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F17C93EA19E24BEC00BB77F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = foldlings/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings/Flurry",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F17C93EB19E24BEC00BB77F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = foldlings/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings/Flurry",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		F17C93ED19E24BEC00BB77F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = foldlingsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
+			};
+			name = Debug;
+		};
+		F17C93EE19E24BEC00BB77F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = foldlingsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F17C93C319E24BEC00BB77F1 /* Build configuration list for PBXProject "foldlings" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F17C93E719E24BEC00BB77F1 /* Debug */,
+				F17C93E819E24BEC00BB77F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F17C93E919E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlings" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F17C93EA19E24BEC00BB77F1 /* Debug */,
+				F17C93EB19E24BEC00BB77F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F17C93EC19E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlingsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F17C93ED19E24BEC00BB77F1 /* Debug */,
+				F17C93EE19E24BEC00BB77F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F17C93C019E24BEC00BB77F1 /* Project object */;
+}
