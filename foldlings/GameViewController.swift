@@ -122,6 +122,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         scene.physicsWorld.gravity.y = 0.0
         
+        
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
         theOneSphere.position.y = theOneSphere.position.y + 4.0
@@ -179,12 +180,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
+        scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = false
         
         // configure the view
-        scnView.backgroundColor = UIColor.blackColor()
+        scnView.backgroundColor = UIColor.whiteColor()
 
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
