@@ -206,8 +206,26 @@ class SketchView: UIView {
     }
     
     func handleTap(sender: AnyObject) {
-        print("TIPPY TAP TAP TAP\n")
         
+        let gesture = sender as UITapGestureRecognizer
+
+        var touchPoint = gesture.locationInView(self)
+
+        if let fs = sketch.masterFeature?.children{
+        
+            for f in fs{
+                
+                if(f.boundingBox()!.contains(touchPoint)){
+                
+                    statusLabel.text = "TOUCHED FEATURE: \(f.startPoint!)"
+                    return
+                }
+            
+            }
+        
+        }
+        statusLabel.text = ""
+
         
     }
     
