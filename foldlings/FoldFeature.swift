@@ -157,8 +157,8 @@ class FoldFeature{
                 
                 if var childs = children{
                     
-                    //sort children by x distance
-                    childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.y})
+                    //sort children by x position
+                    childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
                     
                     //pieces of the master fold, which go inbetween child features
                     var masterPieces:[Edge] = []
