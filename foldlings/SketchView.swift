@@ -73,6 +73,15 @@ class SketchView: UIView {
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
         
+        
+        if(templateMode){
+            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
+            self.addGestureRecognizer(singleFingerTap)
+            
+            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
+            self.addGestureRecognizer(draggy)
+        }
+        
     }
     
     func viewWillAppear(){
@@ -110,15 +119,95 @@ class SketchView: UIView {
     }
     
     func handleLongPress(sender: AnyObject) {
+        print("\nLOOOONG PRESSS\n")
         
     }
     
     func handlePan(sender: AnyObject) {
         
+        let gesture = sender as UIPanGestureRecognizer
+        
+        if(gesture.state == UIGestureRecognizerState.Began){
+            
+            var touchPoint = gesture.locationInView(self)
+            //start a new box-fold feature
+            sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+        }
+        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            
+            
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            
+            //add edges from the feature to the sketch
+            sketch.features?.append(sketch.currentFeature!)
+            
+            if(sketch.currentFeature!.drivingFold != nil){
+                
+                if (sketch.masterFeature?.children != nil){
+                    sketch.masterFeature?.children!.append(sketch.currentFeature!)
+                    
+                    print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
+                    
+                }
+                else{
+                    sketch.masterFeature!.children = []
+                    sketch.masterFeature!.children!.append(sketch.currentFeature!)
+                    
+                    print("~~~ADDED FIRST CHILD~~~\n\n")
+                    
+                }
+                
+                
+            }
+            
+            
+            //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
+            
+            for edge in sketch.edges{
+                
+                sketch.removeEdge(edge)
+                
+            }
+            
+            print("FEATURES: \(sketch.features?.count)\n")
+            for feature in sketch.features!{
+                print("FEATURE: \(feature.getEdges().count)\n")
+                
+                let edgesToAdd = feature.getEdges()
+                for edge in edgesToAdd{
+                    sketch.addEdge(edge)
+                }
+                print("SKETCH: \(sketch.edges.count)\n")
+                
+                
+            }
+            
+            //clear the current feature
+            sketch.currentFeature = nil
+            forceRedraw()
+        
+        }
+        else if(gesture.state == UIGestureRecognizerState.Changed){
+            
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            sketch.currentFeature?.endPoint = touchPoint
+            
+            // box folds have different behaviors if they span the driving edge
+            if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
+                sketch.currentFeature?.drivingFold = sketch.drivingEdge
+            }
+            else{
+                sketch.currentFeature?.drivingFold = nil
+            }
+            forceRedraw()
+            
+        }
         
     }
     
     func handleTap(sender: AnyObject) {
+        print("TIPPY TAP TAP TAP\n")
+        
         
     }
     
@@ -126,10 +215,7 @@ class SketchView: UIView {
     {
         
         if(templateMode){
-            var touch = touches.anyObject() as UITouch
-            var touchPoint: CGPoint = touch.locationInView(self)
-            //start a new box-fold feature
-            sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+            
             
         }
         else{
@@ -178,32 +264,12 @@ class SketchView: UIView {
     
     
     
-    //    - (IBAction)panGestureMoveAround:(UIPanGestureRecognizer *)gesture {
-    //    if ([gesture state] == UIGestureRecognizerStateBegan) {
-    //    myVarToStoreTheBeganPosition = [gesture locationInView:self.view];
-    //    } else if ([gesture state] == UIGestureRecognizerStateEnded) {
-    //    CGPoint myNewPositionAtTheEnd = [gesture locationInView:self.view];
-    //    // and now handle it ;)
-    //    }
-    //    }
-    //
+   
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         
         if(templateMode){
-            var touch = touches.anyObject() as UITouch
-            var touchPoint: CGPoint = touch.locationInView(self)
-            sketch.currentFeature?.endPoint = touchPoint
-            
-            // box folds have different behaviors if they span the driving edge
-            if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
-                sketch.currentFeature?.drivingFold = sketch.drivingEdge
-            }
-            else{
-                sketch.currentFeature?.drivingFold = nil
-            }
-            forceRedraw()
             
         }
         else{
@@ -238,71 +304,12 @@ class SketchView: UIView {
         }
     }
     
-    func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
-        
-        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
-            return (a.y < b.y) ? (a,b) : (b,a)
-        }
-        
-        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
-        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
-        
-    }
+    
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
         if(templateMode){
-            
-            var touch = touches.anyObject() as UITouch
-            var touchPoint: CGPoint = touch.locationInView(self)
-            
-            //add edges from the feature to the sketch
-            sketch.features?.append(sketch.currentFeature!)
-            
-            if(sketch.currentFeature!.drivingFold != nil){
-                
-                if (sketch.masterFeature?.children != nil){
-                    sketch.masterFeature?.children!.append(sketch.currentFeature!)
-                    
-                    print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
 
-                }
-                else{
-                    sketch.masterFeature!.children = []
-                    sketch.masterFeature!.children!.append(sketch.currentFeature!)
-                    
-                    print("~~~ADDED FIRST CHILD~~~\n\n")
-
-                }
-                
-                
-            }
-
-            
-            //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-            
-            for edge in sketch.edges{
-            
-                sketch.removeEdge(edge)
-            
-            }
-            
-            print("FEATURES: \(sketch.features?.count)\n")
-            for feature in sketch.features!{
-                print("FEATURE: \(feature.getEdges().count)\n")
-
-                let edgesToAdd = feature.getEdges()
-                for edge in edgesToAdd{
-                    sketch.addEdge(edge)
-                }
-                print("SKETCH: \(sketch.edges.count)\n")
-
-                
-            }
-            
-            //clear the current feature
-            sketch.currentFeature = nil
-            forceRedraw()
         }
         else{
             
@@ -370,6 +377,18 @@ class SketchView: UIView {
     
     override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
+    }
+    
+    
+    func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+        
+        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
+            return (a.y < b.y) ? (a,b) : (b,a)
+        }
+        
+        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
+        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
+        
     }
     
     /// constructs a greyscale bitmap preview image of the sketch

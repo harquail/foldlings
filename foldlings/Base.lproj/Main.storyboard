@@ -323,21 +323,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="nUM-Jq-hE5">
-                    <connections>
-                        <action selector="handleTap:" destination="3LN-Qg-JOH" id="cVV-bR-214"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="v97-fT-Hg4">
-                    <connections>
-                        <action selector="handlePan:" destination="3LN-Qg-JOH" id="5NR-YB-OoJ"/>
-                    </connections>
-                </panGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="yG2-1v-OyG">
-                    <connections>
-                        <action selector="handleLongPress:" destination="3LN-Qg-JOH" id="8S9-Rg-ViF"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-928" y="-1352"/>
         </scene>
@@ -464,6 +449,19 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oNA-LZ-3BN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="360.95999999999998" y="433.49333333333334"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="iZi-yr-5A4">
+            <objects>
+                <viewController id="Jig-y1-xnh" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ppJ-Gf-Euh">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Il1-Bd-4H7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

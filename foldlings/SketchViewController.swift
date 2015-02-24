@@ -38,7 +38,7 @@ class SketchViewController: UIViewController{
 
 
     @IBAction func handleTap(sender: AnyObject) {
-        sketchView.handlePan(sender)
+        sketchView.handleTap(sender)
 
     }
     
