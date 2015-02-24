@@ -149,7 +149,6 @@ class FoldFeature{
                 horizontalFolds = [master]
                 returnee.append(master)
                 
-                print("NO CHILDREN\n")
             }
                 // for now, sort children by start point x and then draw master fold edges between them
                 // later, we'll have to do fancy intersection stuff
@@ -162,8 +161,6 @@ class FoldFeature{
                     
                     //pieces of the master fold, which go inbetween child features
                     var masterPieces:[Edge] = []
-                    
-                    print("CHILDREN: \(childs.count)")
                     
                     //create fold pieces between the children
                     var brushTip = l0.end
@@ -183,8 +180,6 @@ class FoldFeature{
                     
                 }
                 
-                print("!!! CHILDREN !!!\n")
-
             }
             
             
