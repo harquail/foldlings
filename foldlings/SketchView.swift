@@ -109,6 +109,19 @@ class SketchView: UIView {
         }
     }
     
+    func handleLongPress(sender: AnyObject) {
+        
+    }
+    
+    func handlePan(sender: AnyObject) {
+        
+        
+    }
+    
+    func handleTap(sender: AnyObject) {
+        
+    }
+    
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
         

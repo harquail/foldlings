@@ -299,6 +299,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <connections>
                             <outlet property="checkButton" destination="8hW-xp-FEz" id="oS5-gS-sPc"/>
                             <outlet property="previewButton" destination="GAq-0O-Knm" id="ENZ-SI-2CE"/>
@@ -322,6 +323,21 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="nUM-Jq-hE5">
+                    <connections>
+                        <action selector="handleTap:" destination="3LN-Qg-JOH" id="cVV-bR-214"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="v97-fT-Hg4">
+                    <connections>
+                        <action selector="handlePan:" destination="3LN-Qg-JOH" id="5NR-YB-OoJ"/>
+                    </connections>
+                </panGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="yG2-1v-OyG">
+                    <connections>
+                        <action selector="handleLongPress:" destination="3LN-Qg-JOH" id="8S9-Rg-ViF"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-928" y="-1352"/>
         </scene>

@@ -24,7 +24,23 @@ class SketchViewController: UIViewController{
         
     }
 
+    
+    
+    @IBAction func handleLongPress(sender: AnyObject) {
+        sketchView.handleLongPress(sender)
+    }
 
+    
+    @IBAction func handlePan(sender: AnyObject) {
+        sketchView.handlePan(sender)
+
+    }
+
+
+    @IBAction func handleTap(sender: AnyObject) {
+        sketchView.handlePan(sender)
+
+    }
     
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
