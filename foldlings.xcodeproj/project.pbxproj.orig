@@ -27,6 +27,9 @@
 		22C3F4C019F33FF200857C82 /* print.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BE19F33FF200857C82 /* print.jpeg */; };
 		22C3F4C119F33FF200857C82 /* send.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 22C3F4BF19F33FF200857C82 /* send.jpeg */; };
 		22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C3F4C419F35E9600857C82 /* AboutViewController.swift */; };
+<<<<<<< HEAD
+		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
+=======
 		22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7EF1A169F2400C9ECAA /* Array.swift */; };
 		22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F01A169F2400C9ECAA /* Dictionary.swift */; };
 		22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F11A169F2400C9ECAA /* Double.swift */; };
@@ -39,18 +42,12 @@
 		22D0E8031A169F2400C9ECAA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D0E7F91A169F2400C9ECAA /* String.swift */; };
 		22ED9F0819F367AB001F8AAA /* erase.png in Resources */ = {isa = PBXBuildFile; fileRef = 22ED9F0719F367AB001F8AAA /* erase.png */; };
 		8874A7121A05B61F00F78283 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874A7111A05B61F00F78283 /* Plane.swift */; };
-		F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */; };
-		F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */; };
 		F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */; };
 		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
 		F1174DD71A33EB4800FDEACF /* Armchair.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
-		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
-		F145829B1A79E89000760799 /* preview_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582971A79E89000760799 /* preview_button.png */; };
-		F145829C1A79E89000760799 /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582981A79E89000760799 /* slider_button.png */; };
-		F145829D1A79E89000760799 /* track_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582991A79E89000760799 /* track_button.png */; };
 		F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */; };
 		F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */; };
 		F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6B1A1EAED50029FDF2 /* GHText.m */; };
@@ -74,12 +71,11 @@
 		F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB961A1EAED50029FDF2 /* GHControlFactory.m */; };
 		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
 		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
-		F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15472D31A97AA74009E36A6 /* FoldFeature.swift */; };
-		F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F15472DB1A97AFD3009E36A6 /* placeholder_button.png */; };
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
 		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
@@ -102,8 +98,6 @@
 		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
 		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
 		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
-		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
-		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -198,6 +192,9 @@
 		22C3F4BE19F33FF200857C82 /* print.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = print.jpeg; sourceTree = "<group>"; };
 		22C3F4BF19F33FF200857C82 /* send.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send.jpeg; sourceTree = "<group>"; };
 		22C3F4C419F35E9600857C82 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
+=======
 		22D0E7EF1A169F2400C9ECAA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		22D0E7F01A169F2400C9ECAA /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		22D0E7F11A169F2400C9ECAA /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -211,17 +208,11 @@
 		22D0E7F91A169F2400C9ECAA /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		22ED9F0719F367AB001F8AAA /* erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = erase.png; sourceTree = "<group>"; };
 		8874A7111A05B61F00F78283 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
-		F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_red@2x.png"; sourceTree = "<group>"; };
-		F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_green@2x.png"; sourceTree = "<group>"; };
 		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
 		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Armchair.xcodeproj; path = Armchair/Armchair.xcodeproj; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
-		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
-		F14582971A79E89000760799 /* preview_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview_button.png; sourceTree = "<group>"; };
-		F14582981A79E89000760799 /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_button.png; sourceTree = "<group>"; };
-		F14582991A79E89000760799 /* track_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_button.png; sourceTree = "<group>"; };
 		F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAttributedObject.h; sourceTree = "<group>"; };
 		F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAttributedObject.m; sourceTree = "<group>"; };
 		F153BB671A1EAED50029FDF2 /* GHPathDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathDescription.h; sourceTree = "<group>"; };
@@ -272,13 +263,12 @@
 		F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGDocumentView.m; sourceTree = "<group>"; };
 		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
 		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
-		F15472D31A97AA74009E36A6 /* FoldFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldFeature.swift; sourceTree = "<group>"; };
-		F15472DB1A97AFD3009E36A6 /* placeholder_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_button.png; sourceTree = "<group>"; };
 		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -305,8 +295,6 @@
 		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
 		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
-		F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_grey@2x.png"; sourceTree = "<group>"; };
-		F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_grey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,9 +348,13 @@
 		22AF485019EDE98000BCC1A4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+				227708D619EE016A0095CD9D /* DrawView.swift */,
+=======
 				227708D619EE016A0095CD9D /* SketchView.swift */,
 				F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */,
 				F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
 				F18C864519FD9F4500211229 /* SplashViewController.swift */,
 			);
@@ -372,14 +364,12 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				F15472DB1A97AFD3009E36A6 /* placeholder_button.png */,
-				F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */,
-				F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */,
-				F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */,
-				F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */,
+<<<<<<< HEAD
+=======
 				F1824ECC1A19E525008B0F66 /* last.png */,
 				F1824ECD1A19E525008B0F66 /* middle.png */,
 				F1824ECE1A19E525008B0F66 /* first.png */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 				22ED9F0719F367AB001F8AAA /* erase.png */,
 				22C3F4BE19F33FF200857C82 /* print.jpeg */,
 				22C3F4BF19F33FF200857C82 /* send.jpeg */,
@@ -393,10 +383,6 @@
 				F11B551F19FDFCE200169A07 /* fold_logo.png */,
 				F1E309611A15839300C09792 /* tab.png */,
 				F1E309631A15854C00C09792 /* roundedrect.png */,
-				F14582961A79E89000760799 /* mirror_button.png */,
-				F14582971A79E89000760799 /* preview_button.png */,
-				F14582981A79E89000760799 /* slider_button.png */,
-				F14582991A79E89000760799 /* track_button.png */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -568,7 +554,6 @@
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
-				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
@@ -583,8 +568,11 @@
 				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
+<<<<<<< HEAD
+=======
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
 				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
@@ -629,8 +617,12 @@
 				F17C93C419E24BEC00BB77F1 /* Sources */,
 				F17C93C519E24BEC00BB77F1 /* Frameworks */,
 				F17C93C619E24BEC00BB77F1 /* Resources */,
+<<<<<<< HEAD
+				F1B30A7A19FC3E1300FEAA96 /* ShellScript */,
+=======
 				22B4B72219FC498C00B00279 /* ShellScript */,
 				F1174DBE1A33E8DC00FDEACF /* Copy Frameworks */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 			);
 			buildRules = (
 			);
@@ -671,11 +663,11 @@
 				TargetAttributes = {
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = 66J7R72XF5;
+						DevelopmentTeam = ZYN62B4489;
 					};
 					F17C93DE19E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = 66J7R72XF5;
+						DevelopmentTeam = ZYN62B4489;
 						TestTargetID = F17C93C719E24BEC00BB77F1;
 					};
 				};
@@ -750,18 +742,10 @@
 			files = (
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
 				F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */,
-				F145829C1A79E89000760799 /* slider_button.png in Resources */,
-				F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
-				F145829B1A79E89000760799 /* preview_button.png in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
-				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
-				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
-				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
-				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
-				F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
 				F1E309621A15839300C09792 /* tab.png in Resources */,
@@ -769,7 +753,10 @@
 				F11B552119FDFCE200169A07 /* fold_logo.png in Resources */,
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+<<<<<<< HEAD
+=======
 				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
@@ -777,7 +764,6 @@
 				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
 				F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */,
-				F145829D1A79E89000760799 /* track_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,7 +777,11 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+<<<<<<< HEAD
+		F1B30A7A19FC3E1300FEAA96 /* ShellScript */ = {
+=======
 		22B4B72219FC498C00B00279 /* ShellScript */ = {
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -801,7 +791,11 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+<<<<<<< HEAD
+			shellPath = /bin/bash;
+=======
 			shellPath = /bin/sh;
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 			shellScript = "TAGS=\"TODO:|FIXME:\"\nfind \"${SRCROOT}\" -name \\*.swift -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -830,11 +824,13 @@
 				227708D719EE016A0095CD9D /* SketchView.swift in Sources */,
 				F153BBA01A1EAED50029FDF2 /* SVGGradientUtilities.m in Sources */,
 				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
+<<<<<<< HEAD
+				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+=======
 				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
 				22D0E7FA1A169F2400C9ECAA /* Array.swift in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
-				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
@@ -848,6 +844,7 @@
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */,
+>>>>>>> ecaec65bd362e3ed6a31d169e233c8df9e0fc16c
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
@@ -935,8 +932,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -979,8 +975,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1004,8 +999,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1013,7 +1008,7 @@
 					"$(PROJECT_DIR)/foldlings/Flurry",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1024,8 +1019,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1033,7 +1028,7 @@
 					"$(PROJECT_DIR)/foldlings/Flurry",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
 			};
 			name = Release;
@@ -1042,8 +1037,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1055,7 +1048,6 @@
 				INFOPLIST_FILE = foldlingsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
 			};
 			name = Debug;
@@ -1064,8 +1056,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1073,7 +1063,6 @@
 				INFOPLIST_FILE = foldlingsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
 			};
 			name = Release;

@@ -14,6 +14,9 @@ class Sketch : NSObject  {
     
     @IBOutlet var previewButton:UIButton?
     
+    var features:[FoldFeature]? = [] //listOfCurrentFeatures
+    var currentFeature:FoldFeature? //feature currently being drawn
+    var masterFeature:FoldFeature?
     
     //the folds that define a sketch
     //for now, cuts are in this array to
@@ -36,8 +39,10 @@ class Sketch : NSObject  {
     var origin:Origin
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
-    var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
+    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
+    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
     
+    var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
     enum Origin: String {
         case UserCreated = "User"
         case Sample = "Sample"
@@ -55,9 +60,16 @@ class Sketch : NSObject  {
         origin = userOriginated ? .UserCreated : .Sample
         let scaleFactor = CGFloat(0.9)
         super.init()
-        //insert master fold and make borders into cuts
-        makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
         
+        //insert master fold and make borders into cuts
+        if(templateMode){
+            
+            makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+        }
+        else{
+            makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+            
+        }
     }
     
     
@@ -179,6 +191,30 @@ class Sketch : NSObject  {
     
     /// makes border edges
     /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
+    func makeBorderEdgesUsingFeatures(width: CGFloat, height: CGFloat){
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width;
+        let screenHeight = screenSize.height;
+        let downabit:CGFloat = -50.0
+        
+        // border points
+        let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
+        //        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
+        //between b2 and b3 should be a midRight
+        let b3 = CGPointMake(width, height + downabit)   //bottomright
+        masterFeature = FoldFeature(start: b1, kind: .MasterCard)
+        masterFeature!.endPoint = b3
+        features?.append(masterFeature!)
+        
+        for edge in masterFeature!.getEdges(){
+            addEdge(edge)
+        }
+        drivingEdge = masterFeature!.horizontalFolds.first
+        
+    }
+    
+    /// makes border edges
+    /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
     func makeBorderEdges(width: CGFloat, height: CGFloat){
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width;
@@ -264,7 +300,7 @@ class Sketch : NSObject  {
                     {   p.append(start)
                         self.visited.append(start)
                         var closest = self.getClosest(start)// get closest adjacent edge
-                        
+                                                
                         // check if twin has not been crossed and not in plane
                         while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
                         {   p.append(closest)
@@ -495,13 +531,34 @@ class Sketch : NSObject  {
     
     func isTopEdge(edge:Edge) -> Bool
     {
+        if(templateMode){
+        if let masterF = masterFeature{
+            return masterF.startPoint!.y == edge.start.y
+        }
+        return false
+        }
+        else{
         let b = edge == bEdge1 || edge == bEdge1.twin
         return b
+        }
+       
     }
+    
     func isBottomEdge(edge:Edge) -> Bool
     {
-        let b = edge == bEdge3 || edge == bEdge3.twin
+        if(templateMode){
+        if let masterF = masterFeature{
+            if(masterF.endPoint != nil){
+                return masterF.endPoint!.y == edge.start.y
+            }
+        }
+        return false
+        }
+        else{
+ let b = edge == bEdge3 || edge == bEdge3.twin
         return b
+        }
+
     }
     
 }
