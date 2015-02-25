@@ -120,6 +120,7 @@ class Sketch : NSObject  {
             // this fixes double planes
             // may be overkill in terms of number of planes cleared
             //
+            // look at adjacency here!!!!!!
             for e in self.adjacency[start]! {
                 e.dirty = true
                 if e.plane != nil { self.planes.removePlane(e.plane!) }
@@ -280,6 +281,7 @@ class Sketch : NSObject  {
                         {   var plane = Plane(edges: p)
                             self.planes.addPlane(plane, sketch: self)
                             println("\nplane complete\n")
+                            println(plane)
                         }
                         closest.crossed = false
                     }
@@ -296,8 +298,8 @@ class Sketch : NSObject  {
     {
         var closest: Edge!
         // check for twin here
-        println("adjacency count \(current.adjacency.count)")
-        printAdjList(current.adjacency, current)
+//        println("adjacency count \(current.adjacency.count)")
+//        printAdjList(current.adjacency, current)
         
         if current.adjacency.count < 2 {
             closest = current.adjacency[0]//

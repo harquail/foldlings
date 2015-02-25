@@ -370,6 +370,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         if(bottom){
             edge = plane.bottomFold()!
         }
+            //put check in for no top fold
         else{
             edge = plane.topFold()!
         }
