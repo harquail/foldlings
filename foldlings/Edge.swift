@@ -67,6 +67,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var path = UIBezierPath()
     var fold = Fold.Unknown
     var kind = Kind.Cut
+    var adjacency: [Edge] = []
     var isMaster = false
     var colorOverride:UIColor? = nil
     

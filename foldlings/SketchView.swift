@@ -421,6 +421,8 @@ class SketchView: UIView {
     /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
         
+        let startTime = CFAbsoluteTimeGetCurrent()/// taking time
+        
         
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         var color:UIColor = UIColor.blackColor()
@@ -443,6 +445,7 @@ class SketchView: UIView {
                 // print planes first if exist
                 for plane in sketch.planes.planes {
                     let c = plane.color
+                    //set pleasing colors here based on orientation
                     c.setFill()
                     plane.path.usesEvenOddFillRule = false
                     plane.path.fill()
@@ -519,6 +522,10 @@ class SketchView: UIView {
         path.stroke()
         tempIncremental = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
+        //taking time
+        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+        println("Time elapsed for bitmap: \(timeElapsed) s")
         
         return tempIncremental
     }

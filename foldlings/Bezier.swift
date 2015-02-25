@@ -333,6 +333,14 @@ func convertToCGPoints(path:NSArray) -> [CGPoint]
     return npath
 }
 
-
+// get first control point of a path
+func findControlPoint(path:UIBezierPath)-> CGPoint
+{
+    let elements = path.getPathElements()
+    let els = elements as [CGPathElementObj]
+    var CPoint:CGPoint = els[1].points[0].CGPointValue()
+    
+    return CPoint
+}
 
 
