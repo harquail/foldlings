@@ -135,8 +135,10 @@ class SketchView: UIView {
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
-            
+
             var touchPoint: CGPoint = gesture.locationInView(self)
+            sketch.currentFeature!.fixStartEndPoint()
+
             
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
@@ -171,7 +173,8 @@ class SketchView: UIView {
             
             print("FEATURES: \(sketch.features?.count)\n")
             for feature in sketch.features!{
-                print("FEATURE: \(feature.getEdges().count)\n")
+
+//                print("FEATURE: \(feature.getEdges().count)\n")
                 
                 let edgesToAdd = feature.getEdges()
                 for edge in edgesToAdd{
