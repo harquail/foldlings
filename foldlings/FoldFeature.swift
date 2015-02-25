@@ -77,6 +77,8 @@ class FoldFeature{
             var returnee:[Edge] = []
             let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
             let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold)
+            horizontalFolds = [h0,h2]
+
             returnee.append(h0)
             returnee.append(h2)
             
@@ -86,6 +88,7 @@ class FoldFeature{
                 let masterDist = endPoint!.y - master.start.y
                 let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
                 returnee.append(h1)
+                horizontalFolds.append(h1)
 
                 if(h1.start.y < master.start.y){
                     
@@ -197,7 +200,7 @@ class FoldFeature{
             if(children == nil){
                 // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
                 let master = Edge.straightEdgeBetween(r1.end, end:l0.end, kind: .Fold)
-                horizontalFolds = [master]
+                horizontalFolds = [master,top,bottom]
                 returnee.append(master)
                 
             }
