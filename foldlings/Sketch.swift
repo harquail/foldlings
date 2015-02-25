@@ -32,7 +32,7 @@ class Sketch : NSObject  {
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
     var bEdge4point5: Edge!  //left2
-    var borderEdges: [Edge] = []
+    var borderEdges: [Edge] = []// should be a dictionary?
     
     var index:Int
     var name:String
@@ -98,7 +98,6 @@ class Sketch : NSObject  {
             if !contains(self.edges, twin) {
                 self.edges.append(twin)
             }
-            
             
             //add twin and edge to each other's adjacency lists
             if !contains(twin.adjacency, edge) {
@@ -291,8 +290,6 @@ class Sketch : NSObject  {
         dispatch_sync(edgeAdjacencylockQueue) {
             
             self.visited = []
-            
-            self.visited = []
             for (i, start) in enumerate(self.edges)//traverse edges
             {
                 if start.dirty {
@@ -302,16 +299,16 @@ class Sketch : NSObject  {
                     {   p.append(start)
                         self.visited.append(start)
                         var closest = self.getClosest(start)// get closest adjacent edge
-                        
+                                                
                         // check if twin has not been crossed and not in plane
                         while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
                         {   p.append(closest)
                             self.visited.append(closest)
                             closest = self.getClosest(closest)
                         }
-                        
-                        if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
-                            p.append(closest)
+                        //if the edge is the last edge and the edge isn't start edge
+                        if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end)
+                        {   p.append(closest)
                             self.visited.append(closest)
                         }
                         //// if you didn't cross twin or if the edge is one point, make it a plane
@@ -334,51 +331,24 @@ class Sketch : NSObject  {
         func getClosest(current: Edge) -> Edge
     {
         var closest: Edge!
+        // check for twin here
+        println("adjacency count \(current.adjacency.count)")
+        printAdjList(current.adjacency, current)
         
-        if var currentAdjecency = self.adjacency[current.end] {
-            if currentAdjecency.count < 2 {
-                closest = currentAdjecency[0]
-                closest.crossed = true
-            } else {
-                for next in currentAdjecency
-                {
-                    if current.twin === next || contains(self.visited, next){//if the current closest is twin or it's already visited, the
-                        continue
-                    }
-                    
-                    if closest == nil  // make the first edge the closest
-                    {
-                        closest = next
-                        continue
-                    }
-                    
-                    // compare for greater angle for closest and next
-                    var curr_ang = getAngle(current, closest)
-                    var next_ang = getAngle(current, next)
-                    
-                    if next_ang == curr_ang {
-                        let curr_centroid = findCentroid(closest.path)
-                        let next_centroid = findCentroid(next.path)
-                        curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
-                        next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
-                        //                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
-                    }
-                    
-                    
-                    if  next_ang < curr_ang  { // if the current angle is bigger than the next edge
-                        closest = next
-                    }
-                }
-                
-                // if nil means only twin edge so return twin
-                if closest == nil {
-                    closest = current.twin
-                    closest.crossed = true
-                }
-                
+        if current.adjacency.count < 2 {
+            closest = current.adjacency[0]//
+            closest.crossed = true
+            return closest
+        }
+        // return the edge that hasn't been visited and isn't twin
+        for edge in current.adjacency{
+            if !contains(self.visited, edge) && edge != current.twin{
+                return edge
             }
         }
         
+        closest = current.twin
+        closest.crossed = true
         return closest
     }
     
