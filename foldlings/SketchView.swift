@@ -132,6 +132,8 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             //start a new box-fold feature
             sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+
+
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
@@ -193,7 +195,11 @@ class SketchView: UIView {
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
-            sketch.currentFeature?.endPoint = touchPoint
+            
+            //disallow features outside the master card
+            if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
+                sketch.currentFeature?.endPoint = touchPoint
+            }
             
             // box folds have different behaviors if they span the driving edge
             if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
