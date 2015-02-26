@@ -27,6 +27,14 @@ class FoldFeature{
         Valid // can be simulated in 3d/folded in real life
     }
     
+    enum Options{
+        case Delete //delete calls removeFeature
+        
+    }
+    
+    class func optiontoFunc(){
+        
+    }
     
     //not used yet
     var featurePlanes:[Plane] = []
@@ -264,9 +272,9 @@ class FoldFeature{
         }
         
     }
-    
+
+    /// makes the start point the top left point
     func fixStartEndPoint(){
-        
         
         let topLeft = CGPointMake(min(startPoint!.x,endPoint!.x), min(startPoint!.y,endPoint!.y))
         let bottomRight = CGPointMake(max(startPoint!.x,endPoint!.x), max(startPoint!.y,endPoint!.y))
