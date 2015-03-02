@@ -137,8 +137,13 @@ class SketchView: UIView {
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
-
+            
             var touchPoint: CGPoint = gesture.locationInView(self)
+            
+            //invalidate the current and master features
+            sketch.currentFeature!.invalidateEdges()
+            sketch.masterFeature!.invalidateEdges()
+            
             sketch.currentFeature!.fixStartEndPoint()
 
             
@@ -177,7 +182,6 @@ class SketchView: UIView {
             for feature in sketch.features!{
 
 //                print("FEATURE: \(feature.getEdges().count)\n")
-                
                 let edgesToAdd = feature.getEdges()
                 for edge in edgesToAdd{
                     sketch.addEdge(edge)
@@ -208,6 +212,7 @@ class SketchView: UIView {
             else{
                 sketch.currentFeature?.drivingFold = nil
             }
+            sketch.currentFeature!.invalidateEdges()
             forceRedraw()
             
         }

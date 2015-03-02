@@ -42,6 +42,10 @@ class FoldFeature{
     var drawingPlanes:[Plane] = []
     //not used yet
     var horizontalFolds:[Edge] = []
+
+    //used by getEdges
+    private var cachedEdges:[Edge]?
+
     // features that affect this feature's edges/validity
     var children:[FoldFeature]?
     var drivingFold:Edge?
@@ -61,6 +65,11 @@ class FoldFeature{
     
     //this should probably be caching or a singleton or something fancy
     func getEdges()->[Edge]{
+        
+        if let returnee = cachedEdges {
+            return returnee
+        }
+        
         switch(foldKind){
         case .Box:
             
@@ -77,10 +86,6 @@ class FoldFeature{
             //         s2 |     h2  | e2
             //            - - - - - E
             //
-            //
-            
- 
-            
             
             var returnee:[Edge] = []
             let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
@@ -180,7 +185,7 @@ class FoldFeature{
                 
             }
             
-            
+            cachedEdges = returnee
             return returnee
             //         top
             //   S_______________
@@ -194,6 +199,7 @@ class FoldFeature{
             //   |              |
             //   ---------------E
             //        bottom
+            
         case .MasterCard:
             let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
             let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
@@ -249,11 +255,16 @@ class FoldFeature{
                 edge.isMaster = true
             }
             
+            cachedEdges = returnee
             return returnee
             
         default:
             return []
         }
+    }
+    
+    func invalidateEdges(){
+        cachedEdges = nil
     }
     
     /// used for quickly testing whether features might overlap
