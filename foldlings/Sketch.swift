@@ -149,11 +149,11 @@ class Sketch : NSObject  {
         {
             if !contains(tabs, edge) { tabs.append(edge) }
         }
-        
+        println("\n all edges: \(edges)\n")
         return edge
     }
     
-    ///removes and edge from edges and both adjacency lists
+    ///removes and edge from edges and both adjacency lists**********
     func removeEdge(edge:Edge)
     {
         dispatch_sync(edgeAdjacencylockQueue) {
@@ -168,8 +168,17 @@ class Sketch : NSObject  {
                 
                 // Remove edge from all of the adjacency lists
                 var edgelist  : [Edge] = self.adjacency[edge.start]!
+                //edgelist.remove(edge)
                 for e in edgelist{
-                    e.adjacency.remove(edge)
+//                    println("\n before for this edge: \(e) \n")
+//                    printAdjList(e.adjacency, e)
+                    e.adjacency.remove(twin)
+//                    e.adjacency.remove(edge)
+//                    println("\n removed edge?: \(twin)\n")
+//                    //println("\n removed edge?: \(edge)\n")
+//                    println("after for this edge: \(e) \n")
+//                    printAdjList(e.adjacency, e)
+
                 }
                 //Remove edge from adjacency dictionary
                 self.adjacency[edge.start] = self.adjacency[edge.start]!.filter({ $0 != edge })
@@ -179,7 +188,7 @@ class Sketch : NSObject  {
                 // Remove edge from all of the adjacency lists
                 var edgelist  : [Edge] = self.adjacency[twin.start]!
                 for e in edgelist{
-                    e.adjacency.remove(twin)
+                    e.adjacency.remove(edge)
                 }
                 //Remove edge from adjacency dictionary
                 self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
@@ -289,7 +298,7 @@ class Sketch : NSObject  {
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
-            
+            println("\ngetPlanes\n")
             self.visited = []
             for (i, start) in enumerate(self.edges)//traverse edges
             {
@@ -344,7 +353,7 @@ class Sketch : NSObject  {
         }
         // return the edge that hasn't been visited and isn't twin
         for edge in current.adjacency{
-            if !contains(self.visited, edge) && edge != current.twin{
+            if !contains(self.visited, edge) && edge != current.twin && contains(edges, edge) {
                 return edge
             }
         }
