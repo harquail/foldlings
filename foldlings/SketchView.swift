@@ -130,91 +130,116 @@ class SketchView: UIView {
         if(gesture.state == UIGestureRecognizerState.Began){
             
             var touchPoint = gesture.locationInView(self)
-            //start a new box-fold feature
-            sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
-
-
+            
+            
+            
+            //if this is a good place to draw a new feature
+            
+            var goodPlaceToDraw = true
+            if let children = sketch.masterFeature?.children{
+                
+                for child in children{
+                    if(child.boundingBox()!.contains(touchPoint)){
+                        goodPlaceToDraw = false
+                        break
+                    }
+                }
+            }
+            
+            
+            if(goodPlaceToDraw){
+                //start a new box-fold feature
+                sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+            }
+            
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
             
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            
-            //invalidate the current and master features
-            sketch.currentFeature!.invalidateEdges()
-            sketch.masterFeature!.invalidateEdges()
-            
-            sketch.currentFeature!.fixStartEndPoint()
-
-            
-            //add edges from the feature to the sketch
-            sketch.features?.append(sketch.currentFeature!)
-            
-            if(sketch.currentFeature!.drivingFold != nil){
+            if let drawingFeature = sketch.currentFeature{
                 
-                if (sketch.masterFeature?.children != nil){
-                    sketch.masterFeature?.children!.append(sketch.currentFeature!)
+                var touchPoint: CGPoint = gesture.locationInView(self)
+                
+                //invalidate the current and master features
+                drawingFeature.invalidateEdges()
+                sketch.masterFeature!.invalidateEdges()
+                
+                drawingFeature.fixStartEndPoint()
+                
+                
+                //add edges from the feature to the sketch
+                sketch.features?.append(sketch.currentFeature!)
+                
+                if(drawingFeature.drivingFold != nil){
                     
-                    print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
+                    if (sketch.masterFeature?.children != nil){
+                        sketch.masterFeature?.children!.append(drawingFeature)
+                        
+                        print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
+                        
+                    }
+                    else{
+                        sketch.masterFeature!.children = []
+                        sketch.masterFeature!.children!.append(drawingFeature)
+                        
+                        print("~~~ADDED FIRST CHILD~~~\n\n")
+                        
+                    }
+                    
                     
                 }
-                else{
-                    sketch.masterFeature!.children = []
-                    sketch.masterFeature!.children!.append(sketch.currentFeature!)
+                
+                
+                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
+                
+                for edge in sketch.edges{
                     
-                    print("~~~ADDED FIRST CHILD~~~\n\n")
+                    sketch.removeEdge(edge)
                     
                 }
                 
+                print("FEATURES: \(sketch.features?.count)\n")
+                for feature in sketch.features!{
+                    
+                    //                print("FEATURE: \(feature.getEdges().count)\n")
+                    let edgesToAdd = feature.getEdges()
+                    for edge in edgesToAdd{
+                        sketch.addEdge(edge)
+                    }
+                    print("SKETCH: \(sketch.edges.count)\n")
+                    
+                    
+                }
                 
+                //clear the current feature
+                sketch.currentFeature = nil
+                forceRedraw()
             }
             
             
-            //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-            
-            for edge in sketch.edges{
-                
-                sketch.removeEdge(edge)
-                
-            }
-            
-            print("FEATURES: \(sketch.features?.count)\n")
-            for feature in sketch.features!{
-
-//                print("FEATURE: \(feature.getEdges().count)\n")
-                let edgesToAdd = feature.getEdges()
-                for edge in edgesToAdd{
-                    sketch.addEdge(edge)
-                }
-                print("SKETCH: \(sketch.edges.count)\n")
-                
-                
-            }
-            
-            //clear the current feature
-            sketch.currentFeature = nil
-            forceRedraw()
-        
         }
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            //disallow features outside the master card
-            if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
-                sketch.currentFeature?.endPoint = touchPoint
+            if let drawingFeature = sketch.currentFeature{
+                
+                //disallow features outside the master card
+                if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
+                    drawingFeature.endPoint = touchPoint
+                }
+                        
+                // box folds have different behaviors if they span the driving edge
+                if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
+                    drawingFeature.drivingFold = sketch.drivingEdge
+                }
+                else{
+                    drawingFeature.drivingFold = nil
+                }
+                drawingFeature.invalidateEdges()
+                forceRedraw()
+                
             }
-            
-            // box folds have different behaviors if they span the driving edge
-            if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
-                sketch.currentFeature?.drivingFold = sketch.drivingEdge
-            }
-            else{
-                sketch.currentFeature?.drivingFold = nil
-            }
-            sketch.currentFeature!.invalidateEdges()
-            forceRedraw()
-            
         }
         
     }
@@ -222,24 +247,24 @@ class SketchView: UIView {
     func handleTap(sender: AnyObject) {
         
         let gesture = sender as UITapGestureRecognizer
-
-        var touchPoint = gesture.locationInView(self)
-
-        if let fs = sketch.masterFeature?.children{
         
+        var touchPoint = gesture.locationInView(self)
+        
+        if let fs = sketch.masterFeature?.children{
+            
             for f in fs{
                 
                 if(f.boundingBox()!.contains(touchPoint)){
-                
+                    
                     statusLabel.text = "TOUCHED FEATURE: \(f.startPoint!)"
                     return
                 }
-            
+                
             }
-        
+            
         }
         statusLabel.text = ""
-
+        
         
     }
     
@@ -296,7 +321,7 @@ class SketchView: UIView {
     
     
     
-   
+    
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
@@ -341,7 +366,7 @@ class SketchView: UIView {
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         
         if(templateMode){
-
+            
         }
         else{
             
@@ -530,7 +555,7 @@ class SketchView: UIView {
         
         //taking time
         let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-        println("Time elapsed for bitmap: \(timeElapsed) s")
+        //        println("Time elapsed for bitmap: \(timeElapsed) s")
         
         return tempIncremental
     }

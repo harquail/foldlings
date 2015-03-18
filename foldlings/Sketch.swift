@@ -1,4 +1,4 @@
-//
+    //
 //  Sketch.swift
 //  foldlings
 //
@@ -39,7 +39,7 @@ class Sketch : NSObject  {
     var origin:Origin
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
-    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
+    // this sets templating mode, we could refactor and do a subclass for templating mode but might be quicker to do this
     var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
@@ -68,7 +68,7 @@ class Sketch : NSObject  {
         }
         else{
             makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            
+                
         }
     }
     

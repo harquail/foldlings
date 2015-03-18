@@ -18,7 +18,7 @@ class FoldFeature{
         VFold,
         Track,
         Slider,
-        MasterCard//some things are priceless, for everything else there's border edges and the driving fold
+        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
     }
     
     enum ValidityState {
@@ -29,11 +29,9 @@ class FoldFeature{
     
     enum Options{
         case Delete //delete calls removeFeature
-        
     }
     
     class func optiontoFunc(){
-        
     }
     
     //not used yet
@@ -42,19 +40,21 @@ class FoldFeature{
     var drawingPlanes:[Plane] = []
     //not used yet
     var horizontalFolds:[Edge] = []
-
+    
     //used by getEdges
     private var cachedEdges:[Edge]?
-
+    
     // features that affect this feature's edges/validity
     var children:[FoldFeature]?
     var drivingFold:Edge?
-    // start and end touch points for gradding a
+    // start and end touch points
     var startPoint:CGPoint?
     var endPoint:CGPoint?
+    
+    // what sort of feature is this?
     var foldKind:Kind = .Box
-    
-    
+    // is it valid?
+    var state:ValidityState = .Fixable
     
     init(start:CGPoint,kind:Kind){
         startPoint = start
@@ -91,7 +91,7 @@ class FoldFeature{
             let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
             let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold)
             horizontalFolds = [h0,h2]
-
+            
             returnee.append(h0)
             returnee.append(h2)
             
@@ -102,7 +102,7 @@ class FoldFeature{
                 let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
                 returnee.append(h1)
                 horizontalFolds.append(h1)
-
+                
                 if(h1.start.y < master.start.y){
                     
                     let s0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, startPoint!.y + masterDist), kind: .Cut)
@@ -124,7 +124,7 @@ class FoldFeature{
                     returnee.append(e1)
                     returnee.append(e2)
                 }
-                
+                    
                     //                  h0
                     //            S- - - - -
                     //            |         |
@@ -152,8 +152,8 @@ class FoldFeature{
                     let e0 = Edge.straightEdgeBetween(h0.end, end: CGPointMake(h0.end.x, master.end.y), kind: .Cut)//checked
                     let e1 = Edge.straightEdgeBetween(e0.end, end: CGPointMake(h1.end.x, s1.end.y), kind: .Cut)
                     let e2 = Edge.straightEdgeBetween(h1.end, end: endPoint!,kind:.Cut)
-
-
+                    
+                    
                     
                     returnee.append(s0)
                     returnee.append(s1)
@@ -263,6 +263,8 @@ class FoldFeature{
         }
     }
     
+    //we might need separate functions for invalidating cuts & folds?
+    //might also need a set of user-defined edges that we don't fuck with
     func invalidateEdges(){
         cachedEdges = nil
     }
@@ -270,6 +272,7 @@ class FoldFeature{
     /// used for quickly testing whether features might overlap
     func boundingBox()->CGRect?{
         
+        //this will be complicated for free-form shapes
         switch(foldKind){
         case .Box:
             if (startPoint == nil || endPoint == nil){
@@ -283,7 +286,7 @@ class FoldFeature{
         }
         
     }
-
+    
     /// makes the start point the top left point
     func fixStartEndPoint(){
         
@@ -293,9 +296,28 @@ class FoldFeature{
         startPoint = topLeft
         endPoint = bottomRight
         
+        horizontalFolds.sort(sortbyYHeight)
     }
     
+    func sortbyYHeight(a:Edge, b:Edge)->Bool{
+        return a.start.y > b.start.y;
+    }
     
+    /// returns the edge in a feature at a point
+    func featureEdgeAtPoint(touchPoint:CGPoint) -> Edge?{
+        
+        if let edges = cachedEdges{
+            for edge in edges{
+
+                if let hitPoint = Edge.hitTest(edge.path,point: touchPoint){
+                     return edge
+                }
+                
+            }
+        }
+        return nil;
+        
+    }
     
     
 }
