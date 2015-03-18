@@ -30,7 +30,6 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     //solution #1
     var angle = atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
 
-//    println("\(angle)")
     if angle < 0{
         angle = angle + 360
     }
