@@ -156,7 +156,7 @@ class Sketch : NSObject  {
     }
     
     
-    ///removes and edge from edges and both adjacency lists**********
+    ///removes and edge from edges and both adjacency lists
     func removeEdge(edge:Edge)
     {
         dispatch_sync(edgeAdjacencylockQueue) {

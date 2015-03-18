@@ -33,12 +33,19 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     if angle < 0{
         angle = angle + 360
     }
+    if angle == 0{
+        angle = angle + 180
+    }
     return angle
 
     //solution #2 -bad
-//    let angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
-//    return angleRad * CGFloat(180/M_PI);
-    
+//    var angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
+//    if (edgeA.end.y > edgeB.end.y){
+//        angleRad = -angleRad
+//    }
+//
+//    return angleRad * CGFloat(180/M_PI)
+//    
     
 }
 //solution #3 - compare y-values
