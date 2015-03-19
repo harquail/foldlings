@@ -309,11 +309,16 @@ class FoldFeature{
         if let edges = cachedEdges{
             for edge in edges{
 
-                if let hitPoint = Edge.hitTest(edge.path,point: touchPoint){
+                // #TODO: harcoding this to 35 is baaaad
+                if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:35){
+//                    println("HIT EDGE")
                      return edge
                 }
                 
             }
+        }
+        else{
+//         println("CACHED EDGES NULL")
         }
         return nil;
         

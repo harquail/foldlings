@@ -31,7 +31,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var crossed = false
     var plane:Plane?
     var dirty = true //if the edge is dirty it'll be reevaluated for planes
-    
+    var deltaY:Float? = nil  //distance moved from original y position during this drag, nil if not being dragged
     
     enum Kind: String {
         case Fold = "Fold"
@@ -117,7 +117,10 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     /// edge hit test
     class func hitTest(path: UIBezierPath, point:CGPoint, radius:CGFloat = kHitTestRadius) -> CGPoint? {
         var np:CGPoint? = nil
-        if Edge.tapTargetForPath(path, radius: radius).containsPoint(point) {
+        let tapTarget = Edge.tapTargetForPath(path, radius: radius).CGPath
+        if  CGPathContainsPoint(tapTarget, nil, point, false)
+        {
+            
             np = getNearestPointOnPath(point, path)
         }
         return np

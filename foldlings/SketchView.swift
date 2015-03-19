@@ -133,6 +133,8 @@ class SketchView: UIView {
             
             
             
+            
+            
             //if this is a good place to draw a new feature
             
             var goodPlaceToDraw = true
@@ -140,6 +142,18 @@ class SketchView: UIView {
                 
                 for child in children{
                     if(child.boundingBox()!.contains(touchPoint)){
+                        
+                        let edge = child.featureEdgeAtPoint(touchPoint)
+                        if(edge != nil){
+                        println("FOUND")
+                        }
+                        else{
+                        println("No Edge Here...")
+                        }
+                        
+//                        println("OUTSIDE LOOP")
+
+                
                         goodPlaceToDraw = false
                         break
                     }
@@ -228,7 +242,7 @@ class SketchView: UIView {
                 if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
                     drawingFeature.endPoint = touchPoint
                 }
-                        
+                
                 // box folds have different behaviors if they span the driving edge
                 if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
                     drawingFeature.drivingFold = sketch.drivingEdge
