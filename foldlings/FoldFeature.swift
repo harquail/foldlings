@@ -186,6 +186,7 @@ class FoldFeature{
             }
             
             cachedEdges = returnee
+            claimEdges()
             return returnee
             //         top
             //   S_______________
@@ -256,6 +257,7 @@ class FoldFeature{
             }
             
             cachedEdges = returnee
+            claimEdges()
             return returnee
             
         default:
@@ -304,24 +306,34 @@ class FoldFeature{
     }
     
     /// returns the edge in a feature at a point
+    /// and the nearest point on that edge to the hit
     func featureEdgeAtPoint(touchPoint:CGPoint) -> Edge?{
         
         if let edges = cachedEdges{
             for edge in edges{
-
+                
                 // #TODO: harcoding this to 35 is baaaad
                 if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:35){
-//                    println("HIT EDGE")
-                     return edge
+                    //                    println("HIT EDGE")
+                    return edge
                 }
                 
             }
         }
         else{
-//         println("CACHED EDGES NULL")
+            //         println("CACHED EDGES NULL")
         }
         return nil;
         
+    }
+    
+    func claimEdges(){
+        
+        if let edges = cachedEdges{
+            for edge in edges{
+                edge.feature = self
+            }
+        }
     }
     
     

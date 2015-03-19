@@ -131,29 +131,31 @@ class SketchView: UIView {
             
             var touchPoint = gesture.locationInView(self)
             
-            
-            
-            
+            //meow?
+//            gesture.translationInView(<#view: UIView#>)
             
             //if this is a good place to draw a new feature
-            
             var goodPlaceToDraw = true
             if let children = sketch.masterFeature?.children{
                 
                 for child in children{
                     if(child.boundingBox()!.contains(touchPoint)){
                         
+                        //get the edge & nearest point to hit
                         let edge = child.featureEdgeAtPoint(touchPoint)
-                        if(edge != nil){
-                        println("FOUND")
+                        if let e = edge{
+                            
+                        //this is really only right for horizontal folds, not cuts...
+                        //maybe limit to fold for now?
+                        sketch.draggedEdge = e
+                        e.deltaY = gesture.translationInView(self).y
+                        println("init deltaY: \(e.deltaY)")
                         }
                         else{
                         println("No Edge Here...")
                         }
                         
 //                        println("OUTSIDE LOOP")
-
-                
                         goodPlaceToDraw = false
                         break
                     }
@@ -168,11 +170,26 @@ class SketchView: UIView {
             
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+           
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            
+            if let e = sketch.draggedEdge{
+                
+                e.start.y += e.deltaY!
+                e.end.y += e.deltaY!
+                e.deltaY = 0
+                
+//                e.feature!.invalidateEdges()
+                sketch.masterFeature!.invalidateEdges()
+                
+                e.feature!.fixStartEndPoint()
+                forceRedraw()
+                
+//                println("delta: \(e.deltaY)")
+            }
             
             
             if let drawingFeature = sketch.currentFeature{
-                
-                var touchPoint: CGPoint = gesture.locationInView(self)
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
@@ -235,6 +252,11 @@ class SketchView: UIView {
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
+            
+            if let e = sketch.draggedEdge{
+                e.deltaY = gesture.translationInView(self).y
+                println("delta: \(e.deltaY)")            
+            }
             
             if let drawingFeature = sketch.currentFeature{
                 

@@ -31,7 +31,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var crossed = false
     var plane:Plane?
     var dirty = true //if the edge is dirty it'll be reevaluated for planes
-    var deltaY:Float? = nil  //distance moved from original y position during this drag, nil if not being dragged
+    var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
     
     enum Kind: String {
         case Fold = "Fold"
@@ -70,6 +70,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var adjacency: [Edge] = []
     var isMaster = false
     var colorOverride:UIColor? = nil
+    // the feature the edge is part of
+    var feature:FoldFeature?
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
         self.start = start

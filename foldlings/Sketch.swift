@@ -16,6 +16,8 @@ class Sketch : NSObject  {
     
     var features:[FoldFeature]? = [] //listOfCurrentFeatures
     var currentFeature:FoldFeature? //feature currently being drawn
+    var draggedEdge:Edge? //feature currently being drawn
+
     var masterFeature:FoldFeature?
     
     //the folds that define a sketch
