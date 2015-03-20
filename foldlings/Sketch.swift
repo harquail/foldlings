@@ -102,12 +102,12 @@ class Sketch : NSObject  {
             
             //add twin and edge to each other's adjacency lists
             if !contains(twin.adjacency, edge) {
-                let index = twin.adjacency.insertionIndexOf(edge, {getAngle($0, twin) < getAngle($1, twin)})
+                let index = twin.adjacency.insertionIndexOf(edge, {getAngle(twin, $0) < getAngle(twin, $1)})
                 twin.adjacency.insert(edge, atIndex: index)
                 
             }
             if !contains(edge.adjacency, twin) {
-                let index = edge.adjacency.insertionIndexOf(twin, {getAngle($0, edge) < getAngle($1, edge)})
+                let index = edge.adjacency.insertionIndexOf(twin, {getAngle(edge, $0) < getAngle(edge, $1)})
                 edge.adjacency.insert(twin, atIndex: index)
             }
             
@@ -565,7 +565,7 @@ class Sketch : NSObject  {
 }
 func printAdjList(edgelist: [Edge], edge: Edge){
     for e in edgelist{
-        let angle = getAngle (e, edge)
+        let angle = getAngle (edge, e)
         println("\(e.start), \(e.end), \(angle)")
     }
 }
@@ -573,14 +573,14 @@ func printAdjList(edgelist: [Edge], edge: Edge){
 func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
     for e in edgeList {
         // add all of these outgoing edges to the edge's adjacency in order
-        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle($0, edge) < getAngle($1, edge)})
+        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
         
         if !contains(edge.adjacency, e){
             edge.adjacency.insert(e, atIndex: ajindex)
         }
         
         // add to the adj of these e's
-        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle($0, e.twin) < getAngle($1, e.twin)})
+        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
         
         if !contains(e.twin.adjacency, edge.twin){
             e.twin.adjacency.insert(edge.twin, atIndex: index)
