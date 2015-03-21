@@ -115,7 +115,7 @@ class Sketch : NSObject  {
             if self.adjacency[end] != nil {
                 self.adjacency[end]!.append(twin)
                 var endlist  : [Edge] = self.adjacency[end]!
-                addEdgesToEdgeAdj(endlist, edge)
+                self.addEdgesToEdgeAdj(endlist, edge: edge)
             }
             else {
                 self.adjacency[end] = [twin]
@@ -125,7 +125,7 @@ class Sketch : NSObject  {
                 
                 self.adjacency[start]!.append(edge)
                 var startlist  : [Edge] = self.adjacency[start]!
-                addEdgesToEdgeAdj(startlist, twin)
+                self.addEdgesToEdgeAdj(startlist, edge: twin)
             }
             else {
                 self.adjacency[start] = [edge]
@@ -133,17 +133,14 @@ class Sketch : NSObject  {
             
             // this fixes double planes
             // may be overkill in terms of number of planes cleared
-            //
-            // look at adjacency here!!!!!!
-            //            for e in self.adjacency[start]! {
-            //               // e.dirty = true
-            //                if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
-            //            }
-            //            for e in self.adjacency[end]! {
-            //                //e.dirty = true
-            //                if e.plane != nil { self.planes.removePlane(e.plane!) }
-            //            }
-            
+            for e in self.adjacency[start]! {
+                // e.dirty = true
+                if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
+            }
+            for e in self.adjacency[end]! {
+                //e.dirty = true
+                if e.plane != nil { self.planes.removePlane(e.plane!) }
+            }
         }
         
         
@@ -171,7 +168,7 @@ class Sketch : NSObject  {
                 
                 // Remove edge from all of the adjacency lists
                 var edgelist  : [Edge] = self.adjacency[edge.start]!
-                removeEdgesFromEdgeAdj(edgelist, edge)
+                self.removeEdgesFromEdgeAdj(edgelist, edge: edge)
                 
                 
                 //Remove edge from adjacency dictionary
@@ -181,7 +178,7 @@ class Sketch : NSObject  {
             if self.adjacency[twin.start] != nil {
                 // Remove edge from all of the adjacency lists
                 var edgelist  : [Edge] = self.adjacency[twin.start]!
-                removeEdgesFromEdgeAdj(edgelist, twin)
+                self.removeEdgesFromEdgeAdj(edgelist, edge: twin)
                 
                 //Remove edge from adjacency dictionary
                 self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
@@ -189,7 +186,44 @@ class Sketch : NSObject  {
             }
         }
     }
-    
+    // prints the lists and the angles between them
+    func printAdjList(edgelist: [Edge], edge: Edge){
+        for e in edgelist{
+            let angle = getAngle (edge, e)
+            println("\(e.start), \(e.end), \(angle)")
+        }
+    }
+    //adds edges from the list to the given edge's adjacency list and 
+    // adds the edge's twin to the twins of the edges in the list
+    func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
+        for e in edgeList {
+            // add all of these outgoing edges to the edge's adjacency in order
+            let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
+            
+            if !contains(edge.adjacency, e){
+                edge.adjacency.insert(e, atIndex: ajindex)
+            }
+            // add to the adj of these e's twins
+            let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
+            
+            if !contains(e.twin.adjacency, edge.twin){
+                e.twin.adjacency.insert(edge.twin, atIndex: index)
+            }
+            // e.dirty = true
+//            if e.plane != nil {self.planes.removePlane(e.plane!) }
+            
+        }
+        
+    }
+    //remove the edge from the given list
+    func removeEdgesFromEdgeAdj(edgeList:[Edge], edge: Edge){
+        for e in edgeList {
+            // remove edge from the adj of these e.twin's
+            if contains(e.twin.adjacency, edge){
+                e.twin.adjacency.remove(edge)
+            }
+        }
+    }
     
     /// makes border edges
     /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
@@ -291,7 +325,7 @@ class Sketch : NSObject  {
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
-            println("\ngetPlanes\n")
+            //println("\ngetPlanes\n")
             self.visited = []
             for (i, start) in enumerate(self.edges)//traverse edges
             {
@@ -318,7 +352,7 @@ class Sketch : NSObject  {
                     if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                     {   var plane = Plane(edges: p)
                         self.planes.addPlane(plane, sketch: self)
-                        println("\nplane complete\n")
+                        //println("\nplane complete\n")
                         // println(plane)
                     }
                     closest.crossed = false
@@ -335,8 +369,8 @@ class Sketch : NSObject  {
     {
         var closest: Edge!
         //       println("adjacency count \(current.adjacency.count)")
-        println("\n current \(current.start) , \(current.end) \n")
-        printAdjList(current.adjacency, current)
+//        println("\n current \(current.start) , \(current.end) \n")
+//        printAdjList(current.adjacency, current)
         
         if current.adjacency.count < 2 {
             closest = current.adjacency[0]//
@@ -563,48 +597,42 @@ class Sketch : NSObject  {
     }
     
 }
-func printAdjList(edgelist: [Edge], edge: Edge){
-    for e in edgelist{
-        let angle = getAngle (edge, e)
-        println("\(e.start), \(e.end), \(angle)")
-    }
-}
-
-func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
-    for e in edgeList {
-        // add all of these outgoing edges to the edge's adjacency in order
-        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
-        
-        if !contains(edge.adjacency, e){
-            edge.adjacency.insert(e, atIndex: ajindex)
-        }
-        
-        // add to the adj of these e's
-        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
-        
-        if !contains(e.twin.adjacency, edge.twin){
-            e.twin.adjacency.insert(edge.twin, atIndex: index)
-        }
-        
-        // e.dirty = true
-        //if e.plane != nil {planes.removePlane(e.plane!) }
-        
-    }
-    
-}
-
-func removeEdgesFromEdgeAdj(edgeList:[Edge], edge: Edge){
-    for e in edgeList {
-        
-        // remove edge from the adj of these e.twin's
-        
-        if contains(e.twin.adjacency, edge){
-            e.twin.adjacency.remove(edge)
-        }
-        
-    }
-    
-}
+//func printAdjList(edgelist: [Edge], edge: Edge){
+//    for e in edgelist{
+//        let angle = getAngle (edge, e)
+//        println("\(e.start), \(e.end), \(angle)")
+//    }
+//}
+//
+//func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
+//    for e in edgeList {
+//        // add all of these outgoing edges to the edge's adjacency in order
+//        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
+//        
+//        if !contains(edge.adjacency, e){
+//            edge.adjacency.insert(e, atIndex: ajindex)
+//        }
+//        // add to the adj of these e's
+//        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
+//        
+//        if !contains(e.twin.adjacency, edge.twin){
+//            e.twin.adjacency.insert(edge.twin, atIndex: index)
+//        }
+//        // e.dirty = true
+//        if e.plane != nil {self.planes.removePlane(e.plane) }
+//        
+//    }
+//    
+//}
+//
+//func removeEdgesFromEdgeAdj(edgeList:[Edge], edge: Edge){
+//    for e in edgeList {
+//        // remove edge from the adj of these e.twin's
+//        if contains(e.twin.adjacency, edge){
+//            e.twin.adjacency.remove(edge)
+//        }
+//    }
+//}
 
 
 //func mgetPlanes()
