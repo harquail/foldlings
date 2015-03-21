@@ -12,33 +12,33 @@ func square(a: CGFloat) -> CGFloat{
 /// get the angle between two edges
 func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     
-//returns random angle instead of real one
-//    return CGFloat(arc4random_uniform(UInt32.max))/CGFloat(UInt32.max) * CGFloat(M_PI) * 2.0
     
-    // CGPoint - CGPoint
-    let a = CGPointNormalize(CGPointSubtract(edgeA.end, edgeA.start) )//this is current
-    let b = CGPointNormalize(CGPointSubtract(edgeB.end, edgeB.start) )// this one is being evaluated wrt edgeA
-    
-//    let x1 = a.x
-//    let x2 = b.x
-//    let y1 = a.y
-//    let y2 = b.y
-    
+    //    // CGPoint - CGPoint
+//        var a = CGPointNormalize(CGPointSubtract(edgeA.end, edgeA.start))//this is current
+//        var b = CGPointNormalize(CGPointSubtract(edgeB.end, edgeB.start))// this one is being evaluated wrt edgeA
+//    
+    // control point calculation only for same end
+    var a = CGPointNormalize(CGPointSubtract(findControlPoint(edgeA.path), edgeA.start))
+    var b = CGPointNormalize(CGPointSubtract(findControlPoint(edgeB.path), edgeB.start))
+
     let dot = a.x*b.x + a.y*b.y //  dot product
     let det = a.x*b.y - a.y*b.x // determinant
     
-
+    
     return atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
-
-
+    
+    
+    //returns random angle instead of real one
+    //    return CGFloat(arc4random_uniform(UInt32.max))/CGFloat(UInt32.max) * CGFloat(M_PI) * 2.0
+    
     //solution #2 -bad
-//    var angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
-//    if (edgeA.end.y > edgeB.end.y){
-//        angleRad = -angleRad
-//    }
-//
-//    return angleRad * CGFloat(180/M_PI)
-//    
+    //    var angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
+    //    if (edgeA.end.y > edgeB.end.y){
+    //        angleRad = -angleRad
+    //    }
+    //
+    //    return angleRad * CGFloat(180/M_PI)
+    //
     
 }
 //solution #3 - compare y-values
@@ -55,18 +55,18 @@ func isLeftmost(next: Edge, closest: Edge, current: Edge)->Bool{
     // dot them twice
     // get orthogonal from vector
     // switch x and y then make x negative
-    // let ortho = 
+    // let ortho =
     // let dot = a.x*b.x + a.y*b.y //  dot product
     
     // let dotortho = ortho.x*b.x + ortho.y*b.y //  dot product
     // add them together?
     
     
-    // call getAngle twice 
+    // call getAngle twice
     let a1 = getAngle(closest, current)
     let a2 = getAngle(next, current)
-
-
+    
+    
     
     return false
 }

@@ -98,7 +98,6 @@ class Sketch : NSObject  {
             if !contains(self.edges, twin) {
                 self.edges.append(twin)
             }
-            ///TODO add check for control point calculation only for same end
             
             //add twin and edge to each other's adjacency lists
             if !contains(twin.adjacency, edge) {
