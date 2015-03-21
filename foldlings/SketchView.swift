@@ -149,6 +149,7 @@ class SketchView: UIView {
                         //maybe limit to fold for now?
                         sketch.draggedEdge = e
                         e.deltaY = gesture.translationInView(self).y
+                           
                         println("init deltaY: \(e.deltaY)")
                         }
                         else{
@@ -173,16 +174,25 @@ class SketchView: UIView {
            
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            if let e = sketch.draggedEdge{
+            if var e = sketch.draggedEdge{
                 
                 e.start.y += e.deltaY!
                 e.end.y += e.deltaY!
-                e.deltaY = 0
+                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
+                eNew.deltaY = nil
+                
+//                sketch.removeEdge(e)
+                sketch.addEdge(eNew)
+                
+                sketch.draggedEdge = nil
+
+
+
                 
 //                e.feature!.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
                 
-                e.feature!.fixStartEndPoint()
+//                e.feature!.fixStartEndPoint()
                 forceRedraw()
                 
 //                println("delta: \(e.deltaY)")
