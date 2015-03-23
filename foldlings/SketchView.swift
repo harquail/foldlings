@@ -166,7 +166,7 @@ class SketchView: UIView {
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
-                sketch.currentFeature = FoldFeature(start: touchPoint, kind: .Box)
+                sketch.currentFeature = BoxFold(start: touchPoint)
             }
             
         }

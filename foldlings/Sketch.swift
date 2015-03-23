@@ -169,7 +169,7 @@ class Sketch : NSObject  {
         //        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
         //between b2 and b3 should be a midRight
         let b3 = CGPointMake(width, height + downabit)   //bottomright
-        masterFeature = FoldFeature(start: b1, kind: .MasterCard)
+        masterFeature = MasterCard(start: b1)
         masterFeature!.endPoint = b3
         features?.append(masterFeature!)
         
