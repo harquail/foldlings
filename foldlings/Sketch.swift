@@ -68,16 +68,12 @@ class Sketch : NSObject  {
         }
         else{
             makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            
         }
     }
     
-    
     /// add an already-constructed edge
     func addEdge(edge:Edge) -> Edge {
-        
         return addEdge(edge.start,end:edge.end, path:edge.path, kind: edge.kind)
-        
     }
     
     /// adds an edge to the adjacency graph
@@ -88,7 +84,6 @@ class Sketch : NSObject  {
         var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
         edge.twin = twin
         twin.twin = edge
-        
         
         dispatch_sync(edgeAdjacencylockQueue) {
             //add edges to edgelist
@@ -142,7 +137,6 @@ class Sketch : NSObject  {
             }
         }
         
-        
         if kind == .Tab
         {
             if !contains(tabs, edge) { tabs.append(edge) }
@@ -192,7 +186,7 @@ class Sketch : NSObject  {
             println("\(e.start), \(e.end), \(angle)")
         }
     }
-    //adds edges from the list to the given edge's adjacency list and 
+    //adds edges from the list to the given edge's adjacency list and
     // adds the edge's twin to the twins of the edges in the list
     func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
         for e in edgeList {
@@ -209,7 +203,7 @@ class Sketch : NSObject  {
                 e.twin.adjacency.insert(edge.twin, atIndex: index)
             }
             // e.dirty = true
-//            if e.plane != nil {self.planes.removePlane(e.plane!) }
+            //if e.plane != nil {self.planes.removePlane(e.plane!) }
             
         }
         
@@ -368,8 +362,8 @@ class Sketch : NSObject  {
     {
         var closest: Edge!
         //       println("adjacency count \(current.adjacency.count)")
-//        println("\n current \(current.start) , \(current.end) \n")
-//        printAdjList(current.adjacency, current)
+        //        println("\n current \(current.start) , \(current.end) \n")
+        //        printAdjList(current.adjacency, current)
         
         if current.adjacency.count < 2 {
             closest = current.adjacency[0]//
@@ -446,12 +440,9 @@ class Sketch : NSObject  {
                     retB = true
                 }
             }
-            
         }
         return retB
-        
     }
-    
     
     /// look through edges and return vertex in the hit distance if found
     func vertexHitTest(point:CGPoint) -> CGPoint?
@@ -561,8 +552,6 @@ class Sketch : NSObject  {
         
     }
     
-    
-    
     func isTopEdge(edge:Edge) -> Bool
     {
         if(templateMode){
@@ -607,21 +596,21 @@ class Sketch : NSObject  {
 //    for e in edgeList {
 //        // add all of these outgoing edges to the edge's adjacency in order
 //        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
-//        
+//
 //        if !contains(edge.adjacency, e){
 //            edge.adjacency.insert(e, atIndex: ajindex)
 //        }
 //        // add to the adj of these e's
 //        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
-//        
+//
 //        if !contains(e.twin.adjacency, edge.twin){
 //            e.twin.adjacency.insert(edge.twin, atIndex: index)
 //        }
 //        // e.dirty = true
 //        if e.plane != nil {self.planes.removePlane(e.plane) }
-//        
+//
 //    }
-//    
+//
 //}
 //
 //func removeEdgesFromEdgeAdj(edgeList:[Edge], edge: Edge){
@@ -731,10 +720,10 @@ class Sketch : NSObject  {
 //                closest = current.twin
 //                closest.crossed = true
 //            }
-//            
+//
 //        }
 //    }
-//    
+//
 //    return closest
 //}
 
