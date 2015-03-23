@@ -110,7 +110,6 @@ class BoxFold:FoldFeature{
             let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
             let e0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
             
-            
             returnee.append(s0)
             returnee.append(e0)
             
