@@ -82,6 +82,9 @@ class SketchView: UIView {
             self.addGestureRecognizer(draggy)
         }
         
+        //trying calling forceRedraw constantly
+        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
+
     }
     
     func viewWillAppear(){
