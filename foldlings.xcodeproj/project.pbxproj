@@ -47,6 +47,8 @@
 		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
+		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
+		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
 		F145829B1A79E89000760799 /* preview_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582971A79E89000760799 /* preview_button.png */; };
 		F145829C1A79E89000760799 /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582981A79E89000760799 /* slider_button.png */; };
@@ -218,6 +220,8 @@
 		F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Armchair.xcodeproj; path = Armchair/Armchair.xcodeproj; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
+		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
+		F13AD4E81ABF78D100372898 /* MasterCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCard.swift; sourceTree = "<group>"; };
 		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
 		F14582971A79E89000760799 /* preview_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview_button.png; sourceTree = "<group>"; };
 		F14582981A79E89000760799 /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_button.png; sourceTree = "<group>"; };
@@ -432,6 +436,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F13AD4E71ABF549F00372898 /* Fold Features */ = {
+			isa = PBXGroup;
+			children = (
+				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
+				F13AD4E11ABF549500372898 /* BoxFold.swift */,
+				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
+			);
+			name = "Fold Features";
+			sourceTree = "<group>";
+		};
 		F153BB631A1EAED50029FDF2 /* SVGgh */ = {
 			isa = PBXGroup;
 			children = (
@@ -568,7 +582,7 @@
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
-				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
+				F13AD4E71ABF549F00372898 /* Fold Features */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
@@ -816,6 +830,7 @@
 				22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */,
 				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
 				22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */,
+				F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */,
 				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
 				22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */,
 				F153BBA91A1EAED50029FDF2 /* SVGRenderer.m in Sources */,
@@ -865,6 +880,7 @@
 				F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */,
 				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
 				F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */,
+				F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */,
 				22061CA41A1B182F0030079D /* QNode.swift in Sources */,
 				F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */,
 				F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */,
@@ -1055,7 +1071,7 @@
 				INFOPLIST_FILE = foldlingsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "92d66082-a05e-48f3-8246-d0db0d602208";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
 			};
 			name = Debug;
@@ -1073,7 +1089,7 @@
 				INFOPLIST_FILE = foldlingsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "92d66082-a05e-48f3-8246-d0db0d602208";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
 			};
 			name = Release;

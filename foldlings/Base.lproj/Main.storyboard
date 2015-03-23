@@ -123,7 +123,6 @@
                                 <rect key="frame" x="235" y="971" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="templatingButtonTouched:" destination="xNl-vj-y2i" eventType="valueChanged" id="VRU-JI-6jK"/>
                                     <action selector="templatingSliderSlid:" destination="xNl-vj-y2i" eventType="valueChanged" id="BP5-JM-FOy"/>
                                 </connections>
                             </switch>

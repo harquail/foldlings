@@ -1,4 +1,4 @@
-//
+    //
 //  Sketch.swift
 //  foldlings
 //
@@ -16,6 +16,8 @@ class Sketch : NSObject  {
     
     var features:[FoldFeature]? = [] //listOfCurrentFeatures
     var currentFeature:FoldFeature? //feature currently being drawn
+    var draggedEdge:Edge? //feature currently being drawn
+
     var masterFeature:FoldFeature?
     
     //the folds that define a sketch
@@ -32,14 +34,14 @@ class Sketch : NSObject  {
     var bEdge3: Edge!  //bottom
     var bEdge4: Edge!  //left
     var bEdge4point5: Edge!  //left2
-    var borderEdges: [Edge] = []// should be a dictionary?
+    var borderEdges: [Edge] = []
     
     var index:Int
     var name:String
     var origin:Origin
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     
-    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
+    // this sets templating mode, we could refactor and do a subclass for templating mode but might be quicker to do this
     var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
     
     var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
@@ -68,7 +70,7 @@ class Sketch : NSObject  {
         }
         else{
             makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            
+                
         }
     }
     
@@ -89,9 +91,7 @@ class Sketch : NSObject  {
         edge.twin = twin
         twin.twin = edge
         
-        
         dispatch_sync(edgeAdjacencylockQueue) {
-            //add edges to edgelist
             if !contains(self.edges, edge) {
                 self.edges.append(edge)
             }
@@ -121,13 +121,17 @@ class Sketch : NSObject  {
             }
             
             if self.adjacency[start] != nil{
-                
                 self.adjacency[start]!.append(edge)
                 var startlist  : [Edge] = self.adjacency[start]!
                 self.addEdgesToEdgeAdj(startlist, edge: twin)
             }
             else {
                 self.adjacency[start] = [edge]
+            }
+            if self.adjacency[end] != nil {
+                self.adjacency[end]!.append(twin)
+            } else {
+                self.adjacency[end] = [twin]
             }
             
             // this fixes double planes
@@ -142,11 +146,11 @@ class Sketch : NSObject  {
             }
         }
         
-        
         if kind == .Tab
         {
             if !contains(tabs, edge) { tabs.append(edge) }
         }
+        
         
         return edge
     }
@@ -162,7 +166,6 @@ class Sketch : NSObject  {
             self.edges.remove(edge)
             self.edges.remove(twin)
             self.tabs.remove(edge)
-            
             if self.adjacency[edge.start] != nil {
                 
                 // Remove edge from all of the adjacency lists
@@ -237,7 +240,7 @@ class Sketch : NSObject  {
         //        let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
         //between b2 and b3 should be a midRight
         let b3 = CGPointMake(width, height + downabit)   //bottomright
-        masterFeature = FoldFeature(start: b1, kind: .MasterCard)
+        masterFeature = MasterCard(start: b1)
         masterFeature!.endPoint = b3
         features?.append(masterFeature!)
         
@@ -320,12 +323,12 @@ class Sketch : NSObject  {
     }
     
     /// does a traversal of all the edges to find all the planes
-    
     func getPlanes()
     {
         dispatch_sync(edgeAdjacencylockQueue) {
             //println("\ngetPlanes\n")
             self.visited = []
+            
             for (i, start) in enumerate(self.edges)//traverse edges
             {
                 //if start.dirty {
@@ -383,12 +386,11 @@ class Sketch : NSObject  {
             }
         }
         
-        closest = current.twin
-        closest.crossed = true
         return closest
     }
     
-    /// build tabs as necessary from the planes
+    
+    /// build tabs as necessary from te planes
     func buildTabs() -> Bool {
         var retB = false
         

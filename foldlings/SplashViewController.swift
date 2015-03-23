@@ -66,10 +66,17 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
             vc.sketchView.forceRedraw()
         })
         
-        vc.sketchView.sketch.index = ArchivedEdges.archivedSketchNames()!.count + 1
-        vc.sketchView.sketch.name = name
-        println(vc.sketchView.sketch.index)
-        Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]))
+       
+        if let archEdges = ArchivedEdges.archivedSketchNames(){
+        
+            let index = archEdges.count
+            vc.sketchView.sketch.index = index + 1
+            vc.sketchView.sketch.name = name
+            println(vc.sketchView.sketch.index)
+            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]))
+        }
+        
+       
         
 
 
@@ -96,7 +103,9 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         super.viewDidLoad()
         
         let names = ArchivedEdges.archivedSketchNames()
-        if(names == nil || names!.count < 5){
+        //create test sketches if we're not in template mode
+        if((names == nil || names!.count < 5)  && on2){
+            
                         createTestSketches()
         }
         
