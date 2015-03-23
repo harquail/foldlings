@@ -49,8 +49,11 @@ class FoldFeature{
     init(start:CGPoint){
         startPoint = start
     }
-    
-    //this should probably be caching or a singleton or something fancy
+
+    // return the edges of a feature
+    // maybe the right way to do this is to have getEdges return throwaway preview edges, 
+    // and then freeze edges into a feature after the feature is finalized when the drag ends
+    // invalidating edges during drags is one way, but it might not be the cleanest.
     func getEdges()->[Edge]{
         
         if let returnee = cachedEdges {
@@ -86,10 +89,16 @@ class FoldFeature{
     }
 
     
-    /// #TODO: things you can do to this feature (eg: Delete)
-    func currentOptions() -> [String]{
-        return []
+    /// #TODO: things you can do to this feature and the function that does them (eg: Delete)
+    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?  
+    // If so, delete should probably be added in at the sketch/sketchview level, and this should just feature-specific options
+    // or, we could keep a reference to the sketch in each feature so we can do the deletion from here...
+    // Some of these options will necessarily do some UI things also (for example, we might want to preview fold adding).
+    // That might mean we should keep a sketchView here (not just a sketch)
+    func options() -> [(String,())]{
+        return [("Claim Edges",claimEdges())]
     }
+
     
     /// returns the edge in a feature at a point
     /// and the nearest point on that edge to the hit
