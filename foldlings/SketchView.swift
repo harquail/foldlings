@@ -83,7 +83,7 @@ class SketchView: UIView {
         }
         
         //trying calling forceRedraw constantly
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
+//        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
 
     }
     
@@ -196,6 +196,7 @@ class SketchView: UIView {
                 sketch.masterFeature!.invalidateEdges()
                 
 //                e.feature!.fixStartEndPoint()
+                
                 forceRedraw()
                 
 //                println("delta: \(e.deltaY)")

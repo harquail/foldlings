@@ -364,11 +364,14 @@
 		22AF485019EDE98000BCC1A4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
+				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
 				227708D619EE016A0095CD9D /* SketchView.swift */,
 				F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */,
 				F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */,
 				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
 				F18C864519FD9F4500211229 /* SplashViewController.swift */,
+				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -580,25 +583,22 @@
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
+				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
+				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
+				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
-				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
 				F13AD4E71ABF549F00372898 /* Fold Features */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
-				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
-				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
 				F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */,
 				F1B9AE791A06B37D00265AAE /* data.plist */,
-				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				22C0D6891A04965C00D521CA /* Bezier.swift */,
 				223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */,
 				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
-				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
-				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
