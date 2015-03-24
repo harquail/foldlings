@@ -251,13 +251,12 @@ class SketchView: UIView {
                 print("FEATURES: \(sketch.features?.count)\n")
                 for feature in sketch.features!{
                     
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
                     let edgesToAdd = feature.getEdges()
                     for edge in edgesToAdd{
-                        
+
+                        //add edges that aren't already in the sketch
                         if(!sketch.edges.contains(edge)){
                             sketch.addEdge(edge)
-                            
                         }
                     }
                     

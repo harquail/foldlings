@@ -4,6 +4,13 @@ import Foundation
 class BoxFold:FoldFeature{
 
     override func getEdges() -> [Edge] {
+      
+        if let returnee = cachedEdges {
+            println("BOX: cache hit")
+            return returnee
+        }
+        println("   BOX: cache MISS")
+
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2
         //
