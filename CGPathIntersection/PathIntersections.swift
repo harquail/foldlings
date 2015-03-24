@@ -10,11 +10,12 @@ import Foundation
 
 class PathIntersections {
     
-    /// all the intersection points between paths
+    /// all the intersection points between two paths
     class func intersectionsBetweenCGPaths(p:CGPathRef,p2:CGPathRef) ->[CGPoint]? {
         
-        var returnee:[CGPoint]?
         
+        //ported objective c code from https://github.com/unixpickle/PathIntersection
+        var returnee:[CGPoint]?
         let bmp1 = ANPathBitmap(path: p)
         let bmp2 = ANPathBitmap(path: p2)
         
@@ -52,8 +53,8 @@ class PathIntersections {
             
         }
         
-        //the output of this is multiple clusters of very similar points...
-        //we want to
+        // the output of this is multiple clusters of very similar points...
+        // so, cluster similar points together for convenience
         if let points = returnee{
             returnee = clusterPoints(returnee!)
         }
@@ -62,6 +63,7 @@ class PathIntersections {
         
     }
     
+    //group points that are near each other into a single point
     class func clusterPoints(points:[CGPoint])->[CGPoint]{
         
         var pointBins = [[CGPoint]]()
@@ -72,39 +74,36 @@ class PathIntersections {
                 pointBins = [[point]]
             }
             else{
-            for var index = 0; index<pointBins.count; index++ {
-                
-                if nearEachOther(pointBins[index][0],p2:point){
-                    
-                    pointBins[index].append(point)
-                    println("old bin")
-                    break
+                for var index = 0; index<pointBins.count; index++ {
+                    // if near a bin point, add to existing bin
+                    if nearEachOther(pointBins[index][0],p2:point){
+                        pointBins[index].append(point)
+                        break
+                    }
+                    // if not near each other, make new bin
+                    else{
+                        pointBins.append([point])
+                    }
                 }
-                else{
-                    pointBins.append([point])
-                    println("new bin")
-                }
-            }
             }
         }
         
         var averagedPointBins:[CGPoint]=[]
-        
         for (i,bin) in enumerate(pointBins){
-            
             averagedPointBins.append(CGPointZero)
             for point in bin{
                 averagedPointBins[i] = CGPointAdd(averagedPointBins[i], point)
             }
+            //each point bin contains the average of points in pointBins
             averagedPointBins[i] = CGPointMultiply(averagedPointBins[i], 1.0/CGFloat(bin.count))
-            
         }
         return averagedPointBins
         
     }
     
+    //points are near each other if they are within kHitTestRadius
     class func nearEachOther(p:CGPoint,p2:CGPoint)->Bool{
-        let minDist = 3.0 as CGFloat
+        let minDist = kHitTestRadius as CGFloat
         if(CGPointGetDistance(p, p2) < minDist){
             return true
         }
