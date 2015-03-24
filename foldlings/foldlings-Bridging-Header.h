@@ -10,3 +10,5 @@
 #import "CGPoint+Vector.h"
 #import "SVGPathGenerator.h"
 #import "Flurry.h"
+#import "ANPathBitmap.h"
+#import "ANPathIntersection.h"

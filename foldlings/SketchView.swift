@@ -246,6 +246,9 @@ class SketchView: UIView {
                     if(!featureEdges.contains(edge)){
                         sketch.removeEdge(edge)
                     }
+                    else{
+                    println("EDGE: cache hit")
+                    }
                 }
                 
                 print("FEATURES: \(sketch.features?.count)\n")

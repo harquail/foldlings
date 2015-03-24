@@ -2,15 +2,15 @@
 import Foundation
 
 class BoxFold:FoldFeature{
-
+    
     override func getEdges() -> [Edge] {
-      
+        
         if let returnee = cachedEdges {
             println("BOX: cache hit")
             return returnee
         }
         println("   BOX: cache MISS")
-
+        
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2
         //
@@ -20,7 +20,7 @@ class BoxFold:FoldFeature{
         //            |     h1  |
         //            - - - - - -
         //         s1 |         | e1
-        //     _ _ _ _|         |_ _ _ _ _ master
+        //     _ _ _ _|         |_ _ _ _ _ driving
         //            |         |
         //         s2 |     h2  | e2
         //            - - - - - E
@@ -32,7 +32,6 @@ class BoxFold:FoldFeature{
         
         returnee.append(h0)
         returnee.append(h2)
-        
         
         //if there's a master fold
         if let master = drivingFold{
@@ -85,13 +84,9 @@ class BoxFold:FoldFeature{
                 
                 let s1 = Edge.straightEdgeBetween(s0.end, end:s2.end, kind: .Cut)//WRONG
                 
-                
-                
                 let e0 = Edge.straightEdgeBetween(h0.end, end: CGPointMake(h0.end.x, master.end.y), kind: .Cut)//checked
                 let e1 = Edge.straightEdgeBetween(e0.end, end: CGPointMake(h1.end.x, s1.end.y), kind: .Cut)
                 let e2 = Edge.straightEdgeBetween(h1.end, end: endPoint!,kind:.Cut)
-                
-                
                 
                 returnee.append(s0)
                 returnee.append(s1)
@@ -125,7 +120,7 @@ class BoxFold:FoldFeature{
         cachedEdges = returnee
         claimEdges()
         return returnee
-
+        
         
     }
     

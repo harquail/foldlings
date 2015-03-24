@@ -509,6 +509,13 @@ class Sketch : NSObject  {
         return r
     }
     
+    
+    func edgeIntersections(edge1:Edge,edge2:Edge) -> [CGPoint]?{
+    
+        
+        return nil
+    }
+    
     /// returns a list of edges if any of then intersect the given shape
     /// DO not call with an unclosed path
     func shapeHitTest(path: UIBezierPath) -> [Edge]?
