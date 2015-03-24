@@ -39,11 +39,27 @@ class MasterCard:FoldFeature{
         
         var returnee = [top,bottom,l0,l1,r0,r1]
         // if there are no children, then we just need to draw a single fold
-        if(children == nil){
+        // #TODO: temporarily short circuiting master edge splitting
+        if(true || children == nil){
             // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
             let master = Edge.straightEdgeBetween(r1.end, end:l0.end, kind: .Fold)
             horizontalFolds = [master,top,bottom]
             returnee.append(master)
+            
+            if var childs = children{
+                for child in childs{
+            
+                    let childEdges = child.getEdges()
+                    
+                    for edge in childEdges{
+                    
+                        if let intersections = PathIntersections.intersectionsBetweenCGPaths(edge.path.CGPath,p2: master.path.CGPath){
+                            println("intercepts: \(intersections)")
+                        }
+                        
+                    }
+                }
+            }
             
         }
             // for now, sort children by start point x and then draw master fold edges between them

@@ -111,6 +111,7 @@
 		F1BE6A8A1AC1EF4A00B99C8F /* ANPathIntersection.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */; };
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
+		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
@@ -344,6 +345,7 @@
 		F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPathIntersection.m; sourceTree = "<group>"; };
 		F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
 		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
@@ -740,6 +742,7 @@
 				F1BE6A7B1AC1EF4A00B99C8F /* ANPathBitmap.m */,
 				F1BE6A7C1AC1EF4A00B99C8F /* ANPathIntersection.h */,
 				F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */,
+				F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */,
 			);
 			name = CGPathIntersection;
 			path = ../CGPathIntersection;
@@ -990,6 +993,7 @@
 				F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
 				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,
 				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
 				22061CA21A1B18180030079D /* Queue.swift in Sources */,
