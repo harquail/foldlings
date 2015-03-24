@@ -329,7 +329,7 @@ class Sketch : NSObject  {
         // !!!! #TODO: remove this return before merging with master  !!!
         // !!!!                                                       !!!
         return;
-            
+        
         dispatch_sync(edgeAdjacencylockQueue) {
             self.visited = []
             

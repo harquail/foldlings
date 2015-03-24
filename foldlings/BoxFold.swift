@@ -6,13 +6,13 @@ class BoxFold:FoldFeature{
     override func getEdges() -> [Edge] {
         
         if let returnee = cachedEdges {
-            println("BOX: cache hit")
+//            println("BOX: cache hit")
             return returnee
         }
-        println("   BOX: cache MISS")
+//        println("   BOX: cache MISS")
         
         
-        // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2
+        // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
         //                  h0
         //            S- - - - -
@@ -33,69 +33,49 @@ class BoxFold:FoldFeature{
         returnee.append(h0)
         returnee.append(h2)
         
-        //if there's a master fold
+        //if there's a driving fold
         if let master = drivingFold{
+
+//            println(" has driving")
+
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
             returnee.append(h1)
             horizontalFolds.append(h1)
             
-            if(h1.start.y < master.start.y){
+//            
+            // this is fine because the box is a rectangle; in the future we'll have to get intersections
+            // getting intersections on every drag might be too expensive...
+            let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
+            let tempMasterEnd = CGPointMake(endPoint!.x, master.start.y)
+            let tempMaster = Edge.straightEdgeBetween(tempMasterStart, end: tempMasterEnd, kind: .Fold)
+            horizontalFolds.append(tempMaster)
+            
+            //sort horizontal folds by y height
+            horizontalFolds.sort({ (a:Edge, b:Edge) -> Bool in
+                return a.start.y < b.start.y
+            })
+            //all hfolds are "drawn" left to right
+            for (var i = 0; i < (horizontalFolds.count - 1); i++){
+            
+                println("count:  \(horizontalFolds.count)")
+                println(i)
+            
+                let leftPoint = horizontalFolds[i].start
+                let nextLeftPoint = horizontalFolds[i + 1].start
                 
-                let s0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, startPoint!.y + masterDist), kind: .Cut)
+                let rightPoint =  horizontalFolds[i].end
+                let nextRightPoint = horizontalFolds[i + 1].end
                 
-                let s2 = Edge.straightEdgeBetween(h2.start, end:CGPointMake(startPoint!.x, master.start.y), kind: .Cut)
+                let leftEdge = Edge.straightEdgeBetween(leftPoint,end:nextLeftPoint,kind: .Cut)
+                let rightEdge = Edge.straightEdgeBetween(rightPoint,end:nextRightPoint,kind: .Cut)
                 
-                let s1 = Edge.straightEdgeBetween(s0.end, end:s2.end, kind: .Cut)
+                returnee.append(leftEdge)
+                returnee.append(rightEdge)
                 
-                let e2 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x, endPoint!.y - masterDist),kind:.Cut)
-                
-                let e1 = Edge.straightEdgeBetween(e2.end, end: CGPointMake(e2.end.x, h1.end.y), kind: .Cut)
-                
-                let e0 = Edge.straightEdgeBetween(e1.end, end: h0.end, kind: .Cut)
-                
-                returnee.append(s0)
-                returnee.append(s2)
-                returnee.append(s1)
-                returnee.append(e0)
-                returnee.append(e1)
-                returnee.append(e2)
-            }
-                
-                //                  h0
-                //            S- - - - -
-                //            |         |
-                //         s0 |         | e0
-                //     _ _ _ _|         |_ _ _ _ _ master
-                //            |         |
-                //         s1 |    h1   | e1
-                //            - - - - - -
-                //            |         |
-                //         s2 |    h2   | e2
-                //            - - - - - E
-                //
-                // leftmost and topmost
-                // rightmost and bottommost
-            else{
-                
-                let s0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, master.start.y), kind: .Cut)//checked
-                
-                let s2 = Edge.straightEdgeBetween(h2.start, end:CGPointMake(startPoint!.x, h1.start.y), kind: .Cut)
-                
-                let s1 = Edge.straightEdgeBetween(s0.end, end:s2.end, kind: .Cut)//WRONG
-                
-                let e0 = Edge.straightEdgeBetween(h0.end, end: CGPointMake(h0.end.x, master.end.y), kind: .Cut)//checked
-                let e1 = Edge.straightEdgeBetween(e0.end, end: CGPointMake(h1.end.x, s1.end.y), kind: .Cut)
-                let e2 = Edge.straightEdgeBetween(h1.end, end: endPoint!,kind:.Cut)
-                
-                returnee.append(s0)
-                returnee.append(s1)
-                returnee.append(s2)
-                returnee.append(e0)
-                returnee.append(e1)
-                returnee.append(e2)
             }
             
+            horizontalFolds.remove(tempMaster)
             
         }
             // otherwise, we only have 4 edges
