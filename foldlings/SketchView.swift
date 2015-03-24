@@ -194,10 +194,11 @@ class SketchView: UIView {
                 
 //                e.feature!.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
-                
+
+
 //                e.feature!.fixStartEndPoint()
                 
-                forceRedraw()
+//                forceRedraw()
                 
 //                println("delta: \(e.deltaY)")
             }
@@ -258,10 +259,12 @@ class SketchView: UIView {
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                forceRedraw()
             }
             
+            self.sketch.getPlanes()
+            forceRedraw()
             
+
         }
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
@@ -287,6 +290,7 @@ class SketchView: UIView {
                     drawingFeature.drivingFold = nil
                 }
                 drawingFeature.invalidateEdges()
+                
                 forceRedraw()
                 
             }
@@ -772,14 +776,22 @@ class SketchView: UIView {
         return color
     }
     
-    
+
+//    var timeSinceRedraw = NSDate(timeIntervalSinceNow: -0.9)
+//    let krefreshTime = 0.1
     func forceRedraw()
     {
-        if !self.redrawing {
+//        timeSinceRedraw.timeIntervalSinceNow > -krefreshTime
+        if(!self.redrawing){
+//            timeSinceRedraw = NSDate(timeIntervalSinceNow: 0)
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
                 self.redrawing = true
                 dispatch_sync(self.redrawLockQueue) {
+                   
+                    //in template mode, only get planes when features end!
+                    if(!self.templateMode){
                     self.sketch.getPlanes() //evaluate into planes
+                    }
                     if self.sketch.buildTabs() {
                         // if buildtabs returns that it did any changes rerun buildplanes again
                         self.sketch.getPlanes()

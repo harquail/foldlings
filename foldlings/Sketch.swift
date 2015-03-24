@@ -325,6 +325,9 @@ class Sketch : NSObject  {
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
+        //#TODO: remove this return before merging with master
+//        println("\ngetPlanes\n")
+//        return;
         dispatch_sync(edgeAdjacencylockQueue) {
             //println("\ngetPlanes\n")
             self.visited = []
