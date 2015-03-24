@@ -83,8 +83,8 @@ class SketchView: UIView {
         }
         
         //trying calling forceRedraw constantly
-//        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
-
+        //        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
+        
     }
     
     func viewWillAppear(){
@@ -135,7 +135,7 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             
             //meow?
-//            gesture.translationInView(<#view: UIView#>)
+            //            gesture.translationInView(<#view: UIView#>)
             
             //if this is a good place to draw a new feature
             var goodPlaceToDraw = true
@@ -148,18 +148,18 @@ class SketchView: UIView {
                         let edge = child.featureEdgeAtPoint(touchPoint)
                         if let e = edge{
                             
-                        //this is really only right for horizontal folds, not cuts...
-                        //maybe limit to fold for now?
-                        sketch.draggedEdge = e
-                        e.deltaY = gesture.translationInView(self).y
-                           
-                        println("init deltaY: \(e.deltaY)")
+                            //this is really only right for horizontal folds, not cuts...
+                            //maybe limit to fold for now?
+                            sketch.draggedEdge = e
+                            e.deltaY = gesture.translationInView(self).y
+                            
+                            println("init deltaY: \(e.deltaY)")
                         }
                         else{
-                        println("No Edge Here...")
+                            println("No Edge Here...")
                         }
                         
-//                        println("OUTSIDE LOOP")
+                        //                        println("OUTSIDE LOOP")
                         goodPlaceToDraw = false
                         break
                     }
@@ -174,7 +174,7 @@ class SketchView: UIView {
             
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
-           
+            
             var touchPoint: CGPoint = gesture.locationInView(self)
             
             if var e = sketch.draggedEdge{
@@ -184,23 +184,23 @@ class SketchView: UIView {
                 let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
                 eNew.deltaY = nil
                 
-//                sketch.removeEdge(e)
+                //                sketch.removeEdge(e)
                 sketch.addEdge(eNew)
                 
                 sketch.draggedEdge = nil
-
-
-
                 
-//                e.feature!.invalidateEdges()
+                
+                
+                
+                //                e.feature!.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
-
-
-//                e.feature!.fixStartEndPoint()
                 
-//                forceRedraw()
                 
-//                println("delta: \(e.deltaY)")
+                //                e.feature!.fixStartEndPoint()
+                
+                //                forceRedraw()
+                
+                //                println("delta: \(e.deltaY)")
             }
             
             
@@ -209,7 +209,6 @@ class SketchView: UIView {
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
-                
                 drawingFeature.fixStartEndPoint()
                 
                 
@@ -238,10 +237,15 @@ class SketchView: UIView {
                 
                 //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
                 
+                var featureEdges:[Edge] = []
+                for feature in sketch.features!{
+                    featureEdges = feature.getEdges()
+                }
+                
                 for edge in sketch.edges{
-                    
-                    sketch.removeEdge(edge)
-                    
+                    if(!featureEdges.contains(edge)){
+                        sketch.removeEdge(edge)
+                    }
                 }
                 
                 print("FEATURES: \(sketch.features?.count)\n")
@@ -250,8 +254,13 @@ class SketchView: UIView {
                     //                print("FEATURE: \(feature.getEdges().count)\n")
                     let edgesToAdd = feature.getEdges()
                     for edge in edgesToAdd{
-                        sketch.addEdge(edge)
+                        
+                        if(!sketch.edges.contains(edge)){
+                            sketch.addEdge(edge)
+                            
+                        }
                     }
+                    
                     print("SKETCH: \(sketch.edges.count)\n")
                     
                     
@@ -264,7 +273,6 @@ class SketchView: UIView {
             self.sketch.getPlanes()
             forceRedraw()
             
-
         }
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
@@ -272,7 +280,7 @@ class SketchView: UIView {
             
             if let e = sketch.draggedEdge{
                 e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")            
+                println("delta: \(e.deltaY)")
             }
             
             if let drawingFeature = sketch.currentFeature{
@@ -776,21 +784,21 @@ class SketchView: UIView {
         return color
     }
     
-
-//    var timeSinceRedraw = NSDate(timeIntervalSinceNow: -0.9)
-//    let krefreshTime = 0.1
+    
+    //    var timeSinceRedraw = NSDate(timeIntervalSinceNow: -0.9)
+    //    let krefreshTime = 0.1
     func forceRedraw()
     {
-//        timeSinceRedraw.timeIntervalSinceNow > -krefreshTime
+        //        timeSinceRedraw.timeIntervalSinceNow > -krefreshTime
         if(!self.redrawing){
-//            timeSinceRedraw = NSDate(timeIntervalSinceNow: 0)
+            //            timeSinceRedraw = NSDate(timeIntervalSinceNow: 0)
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
                 self.redrawing = true
                 dispatch_sync(self.redrawLockQueue) {
-                   
+                    
                     //in template mode, only get planes when features end!
                     if(!self.templateMode){
-                    self.sketch.getPlanes() //evaluate into planes
+                        self.sketch.getPlanes() //evaluate into planes
                     }
                     if self.sketch.buildTabs() {
                         // if buildtabs returns that it did any changes rerun buildplanes again
