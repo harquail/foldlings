@@ -142,6 +142,7 @@ class FoldFeature{
             
             //sort children by x position
             childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
+            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
             
             //pieces of the edge, which go inbetween child features
             var masterPieces:[Edge] = []

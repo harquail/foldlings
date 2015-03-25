@@ -98,16 +98,20 @@ class BoxFold:FoldFeature{
         
         // split edge for children
         // #TODO: not just h0 -- actually find right edge(s) to split by children
+        for fold in horizontalFolds{
         if let childs = children{
         
+            
             println("children")
-            let fragments = edgeSplitByChildren(h0)
-            horizontalFolds.remove(h0)
-            returnee.remove(h0)
+            let fragments = edgeSplitByChildren(fold)
+            horizontalFolds.remove(fold)
+            returnee.remove(fold)
             horizontalFolds.extend(fragments)
             returnee.extend(fragments)
         
             
+            }
+        
         }
         
         
