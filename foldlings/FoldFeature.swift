@@ -39,6 +39,7 @@ class FoldFeature{
     // features that affect this feature's edges/validity
     var children:[FoldFeature]?
     var drivingFold:Edge?
+    var parent:FoldFeature?
     // start and end touch points
     var startPoint:CGPoint?
     var endPoint:CGPoint?
@@ -131,5 +132,44 @@ class FoldFeature{
         }
     }
     
+    func edgeSplitByChildren(edge:Edge) -> [Edge]{
+        
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
+        
+        if var childs = children{
+            
+            //sort children by x position
+            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
+            
+            //pieces of the edge, which go inbetween child features
+            var masterPieces:[Edge] = []
+            
+            //create fold pieces between the children
+            var brushTip = start
+            
+            for child in childs{
+                
+                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
+                
+                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
+                returnee.append(piece)
+                horizontalFolds.append(piece)
+                
+                brushTip = brushTipTranslated
+            }
+            
+            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
+            returnee.append(finalPiece)
+        }
+        
+        //if there are no split edges, give the edge back whole
+        if (returnee.count == 0){
+            return [edge]
+        }
+        return returnee
+        
+    }
     
 }

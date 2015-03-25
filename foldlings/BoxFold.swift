@@ -56,10 +56,10 @@ class BoxFold:FoldFeature{
                 return a.start.y < b.start.y
             })
             //all hfolds are "drawn" left to right
+            //this makes the vertical cuts
+            // #TODO: in the future, we'll have to skip some of these, which will be replaced with user-defined cuts
+            var foldsToAppend = [Edge]()
             for (var i = 0; i < (horizontalFolds.count - 1); i++){
-            
-                println("count:  \(horizontalFolds.count)")
-                println(i)
             
                 let leftPoint = horizontalFolds[i].start
                 let nextLeftPoint = horizontalFolds[i + 1].start
@@ -72,11 +72,9 @@ class BoxFold:FoldFeature{
                 
                 returnee.append(leftEdge)
                 returnee.append(rightEdge)
-                
+
             }
-            
             horizontalFolds.remove(tempMaster)
-            
         }
             // otherwise, we only have 4 edges
             //
@@ -96,6 +94,24 @@ class BoxFold:FoldFeature{
             returnee.append(e0)
             
         }
+       
+        
+        // split edge for children
+        // #TODO: not just h0 -- actually find right edge(s) to split by children
+        if let childs = children{
+        
+            println("children")
+            let fragments = edgeSplitByChildren(h0)
+            horizontalFolds.remove(h0)
+            returnee.remove(h0)
+            horizontalFolds.extend(fragments)
+            returnee.extend(fragments)
+        
+            
+        }
+        
+        
+        
         
         cachedEdges = returnee
         claimEdges()

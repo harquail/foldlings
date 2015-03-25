@@ -187,20 +187,9 @@ class SketchView: UIView {
                 //                sketch.removeEdge(e)
                 sketch.addEdge(eNew)
                 
-                sketch.draggedEdge = nil
-                
-                
-                
-                
-                //                e.feature!.invalidateEdges()
+
                 sketch.masterFeature!.invalidateEdges()
-                
-                
-                //                e.feature!.fixStartEndPoint()
-                
-                //                forceRedraw()
-                
-                //                println("delta: \(e.deltaY)")
+
             }
             
             
@@ -210,27 +199,24 @@ class SketchView: UIView {
                 drawingFeature.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
-                
-                
+                                
                 //add edges from the feature to the sketch
                 sketch.features?.append(sketch.currentFeature!)
                 
                 if(drawingFeature.drivingFold != nil){
                     
-                    if (sketch.masterFeature?.children != nil){
-                        sketch.masterFeature?.children!.append(drawingFeature)
+                    if (drawingFeature.parent!.children != nil){
                         
-                        print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
+                        drawingFeature.parent!.children!.append(drawingFeature)
                         
                     }
                     else{
-                        sketch.masterFeature!.children = []
-                        sketch.masterFeature!.children!.append(drawingFeature)
-                        
+                        drawingFeature.parent!.children = []
+                        drawingFeature.parent!.children!.append(drawingFeature)
                         print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
-                    
+                    drawingFeature.parent!.invalidateEdges()
                     
                 }
                 
@@ -240,6 +226,7 @@ class SketchView: UIView {
                 var featureEdges:[Edge] = []
                 for feature in sketch.features!{
                     featureEdges = feature.getEdges()
+                    
                 }
                 
                 for edge in sketch.edges{
@@ -247,7 +234,7 @@ class SketchView: UIView {
                         sketch.removeEdge(edge)
                     }
                     else{
-                    println("EDGE: cache hit")
+                        println("EDGE: cache hit")
                     }
                 }
                 
@@ -256,7 +243,7 @@ class SketchView: UIView {
                     
                     let edgesToAdd = feature.getEdges()
                     for edge in edgesToAdd{
-
+                        
                         //add edges that aren't already in the sketch
                         if(!sketch.edges.contains(edge)){
                             sketch.addEdge(edge)
@@ -292,13 +279,25 @@ class SketchView: UIView {
                     drawingFeature.endPoint = touchPoint
                 }
                 
+                
+                //for feature in features -- check folds for spanning
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    
+                    for fold in feature.horizontalFolds{
+                        if(featureSpansFold(sketch.currentFeature?, fold:fold)){
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            
+                            break;
+                        }
+                    }
+                    
+                }
+
                 // box folds have different behaviors if they span the driving edge
-                if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
-                    drawingFeature.drivingFold = sketch.drivingEdge
-                }
-                else{
-                    drawingFeature.drivingFold = nil
-                }
+                
                 drawingFeature.invalidateEdges()
                 
                 forceRedraw()
@@ -502,6 +501,11 @@ class SketchView: UIView {
     
     
     func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+        
+        //feature must be inside fold x bounds
+        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
+            return false
+        }
         
         func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
             return (a.y < b.y) ? (a,b) : (b,a)
