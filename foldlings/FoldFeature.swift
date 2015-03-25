@@ -109,15 +109,14 @@ class FoldFeature{
             for edge in edges{
                 
                 // #TODO: harcoding this to 35 is baaaad
-                if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:35){
-                    //                    println("HIT EDGE")
+                if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:kHitTestRadius*3.5){
                     return edge
                 }
                 
             }
         }
         else{
-            //         println("CACHED EDGES NULL")
+
         }
         return nil;
         
@@ -132,6 +131,7 @@ class FoldFeature{
         }
     }
     
+    /// splits an edge, making edges around its children
     func edgeSplitByChildren(edge:Edge) -> [Edge]{
         
         let start = edge.start

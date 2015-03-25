@@ -43,10 +43,8 @@ class MasterCard:FoldFeature{
         let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
         horizontalFolds = [top,bottom]
         
-        
-        
         let fragments = edgeSplitByChildren(master)
-        
+    
         for fragment in fragments{
             returnee.append(fragment)
             horizontalFolds.append(fragment)

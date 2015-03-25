@@ -6,11 +6,10 @@ class BoxFold:FoldFeature{
     override func getEdges() -> [Edge] {
         
         if let returnee = cachedEdges {
-//            println("BOX: cache hit")
+            //            println("BOX: cache hit")
             return returnee
         }
-//        println("   BOX: cache MISS")
-        
+        //        println("   BOX: cache MISS")
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
@@ -35,15 +34,15 @@ class BoxFold:FoldFeature{
         
         //if there's a driving fold
         if let master = drivingFold{
-
-//            println(" has driving")
-
+            
+            //            println(" has driving")
+            
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
             returnee.append(h1)
             horizontalFolds.append(h1)
             
-//            
+            //
             // this is fine because the box is a rectangle; in the future we'll have to get intersections
             // getting intersections on every drag might be too expensive...
             let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
@@ -60,7 +59,7 @@ class BoxFold:FoldFeature{
             // #TODO: in the future, we'll have to skip some of these, which will be replaced with user-defined cuts
             var foldsToAppend = [Edge]()
             for (var i = 0; i < (horizontalFolds.count - 1); i++){
-            
+                
                 let leftPoint = horizontalFolds[i].start
                 let nextLeftPoint = horizontalFolds[i + 1].start
                 
@@ -72,7 +71,7 @@ class BoxFold:FoldFeature{
                 
                 returnee.append(leftEdge)
                 returnee.append(rightEdge)
-
+                
             }
             horizontalFolds.remove(tempMaster)
         }
@@ -94,33 +93,25 @@ class BoxFold:FoldFeature{
             returnee.append(e0)
             
         }
-       
         
-        // split edge for children
-        // #TODO: not just h0 -- actually find right edge(s) to split by children
+        
+        // split edges for children
         for fold in horizontalFolds{
-        if let childs = children{
-        
-            
-            println("children")
-            let fragments = edgeSplitByChildren(fold)
-            horizontalFolds.remove(fold)
-            returnee.remove(fold)
-            horizontalFolds.extend(fragments)
-            returnee.extend(fragments)
-        
-            
+            if let childs = children{
+                
+                let fragments = edgeSplitByChildren(fold)
+                horizontalFolds.remove(fold)
+                returnee.remove(fold)
+                horizontalFolds.extend(fragments)
+                returnee.extend(fragments)
+                
             }
-        
+            
         }
-        
-        
-        
         
         cachedEdges = returnee
         claimEdges()
         return returnee
-        
         
     }
     
