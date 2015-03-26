@@ -313,13 +313,17 @@ class SketchView: UIView {
         
         var touchPoint = gesture.locationInView(self)
         
-        if let fs = sketch.masterFeature?.children{
+        if let fs = sketch.features{
             
-            for f in fs{
+            // evaluate newer features first
+            // but maybe what we should really do is do depth first search
+            let fsBackwards = fs.reverse()
+            
+            for f in fsBackwards{
                 
                 if(f.boundingBox()!.contains(touchPoint)){
                     
-                    statusLabel.text = "TOUCHED FEATURE: \(f.startPoint!)"
+                    statusLabel.text = "TOUCHED FEATURE: \(f)"
                     return
                 }
                 

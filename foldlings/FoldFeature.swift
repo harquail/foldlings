@@ -9,7 +9,7 @@
 import Foundation
 
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
-class FoldFeature{
+class FoldFeature: NSObject, Printable{
 //    
 //    enum Kind {
 //        case Box,
@@ -44,8 +44,15 @@ class FoldFeature{
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
-    // is it valid?
+  
+    /// is it valid?
     var state:ValidityState = .Fixable
+    
+    
+    /// printable description is the object class & startPoint
+    override var description: String {
+        return "\(reflect(self).summary) \(startPoint!)"
+    }
     
     init(start:CGPoint){
         startPoint = start
