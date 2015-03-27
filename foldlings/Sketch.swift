@@ -365,13 +365,13 @@ class Sketch : NSObject  {
     // *not* concurrency safe, only use if you have a lock
     func getClosest(current: Edge) -> Edge
     {
-        var closest: Edge!
-        //       println("adjacency count \(current.adjacency.count)")
+        var closest = current.twin
+              println("adjacency count \(current.adjacency.count)")
         //        println("\n current \(current.start) , \(current.end) \n")
         //        printAdjList(current.adjacency, current)
         
         if current.adjacency.count < 2 {
-            closest = current.adjacency[0]//
+            //closest = current.twin//
             closest.crossed = true
             return closest
         }
@@ -382,6 +382,7 @@ class Sketch : NSObject  {
             }
         }
         
+        closest.crossed = true
         return closest
     }
     
