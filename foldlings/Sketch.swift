@@ -3,12 +3,10 @@
     //  foldlings
     //
     //
-    
     //a sketch is a collection of cuts & folds
     import Foundation
     import CoreGraphics
     import UIKit
-    
     
     class Sketch : NSObject  {
         
@@ -53,7 +51,6 @@
         
         init(at:Int, named:String, userOriginated:Bool = true)
         {
-            
             index = at
             name = named
             let screenSize: CGRect = UIScreen.mainScreen().bounds
