@@ -51,7 +51,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 }
                 
                 for edge in plane.edges {
-                   // edge.dirty = false //mark it as clean
+                    edge.dirty = false //mark it as clean
                     if sketch.isTopEdge(edge) {
                         self.topPlane = plane
                     }
@@ -88,7 +88,7 @@ class CollectionOfPlanes: Printable, Hashable {
         dispatch_sync(planeAdjacencylockQueue) {
             
             for edge in plane.edges {
-                //edge.dirty = true
+                edge.dirty = true
                 edge.plane = nil
             }
             
