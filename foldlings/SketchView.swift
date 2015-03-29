@@ -323,9 +323,14 @@ class SketchView: UIView {
                 
                 if(f.boundingBox()!.contains(touchPoint)){
                     
-                    self.sketch.features?.remove(f)
-                    f.invalidateEdges()
                     
+                    f.removeFromSketch(sketch)
+//                    self.sketch.getPlanes()
+                    forceRedraw()
+                    
+//                    self.sketch.features?.remove(f)
+//                    f.invalidateEdges()
+//                    
                     statusLabel.text = "TOUCHED FEATURE: \(f)"
                     return
                 }

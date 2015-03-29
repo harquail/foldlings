@@ -10,16 +10,16 @@ import Foundation
 
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
 class FoldFeature: NSObject, Printable{
-//    
-//    enum Kind {
-//        case Box,
-//        Mirrored,
-//        FreeForm,
-//        VFold,
-//        Track,
-//        Slider,
-//        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
-//    }
+    //
+    //    enum Kind {
+    //        case Box,
+    //        Mirrored,
+    //        FreeForm,
+    //        VFold,
+    //        Track,
+    //        Slider,
+    //        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
+    //    }
     
     enum ValidityState {
         case Invalid, // we don't know how to make this feature valid
@@ -44,7 +44,7 @@ class FoldFeature: NSObject, Printable{
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
-  
+    
     /// is it valid?
     var state:ValidityState = .Fixable
     
@@ -57,9 +57,9 @@ class FoldFeature: NSObject, Printable{
     init(start:CGPoint){
         startPoint = start
     }
-
+    
     // return the edges of a feature
-    // maybe the right way to do this is to have getEdges return throwaway preview edges, 
+    // maybe the right way to do this is to have getEdges return throwaway preview edges,
     // and then freeze edges into a feature after the feature is finalized when the drag ends
     // invalidating edges during drags is one way, but it might not be the cleanest.
     func getEdges()->[Edge]{
@@ -93,12 +93,12 @@ class FoldFeature: NSObject, Printable{
         endPoint = bottomRight
         
         horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
-
+        
     }
-
+    
     
     /// #TODO: things you can do to this feature and the function that does them (eg: Delete)
-    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?  
+    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?
     // If so, delete should probably be added in at the sketch/sketchview level, and this should just feature-specific options
     // or, we could keep a reference to the sketch in each feature so we can do the deletion from here...
     // Some of these options will necessarily do some UI things also (for example, we might want to preview fold adding).
@@ -106,7 +106,7 @@ class FoldFeature: NSObject, Printable{
     func options() -> [(String,())]{
         return [("Claim Edges",claimEdges())]
     }
-
+    
     
     /// returns the edge in a feature at a point
     /// and the nearest point on that edge to the hit
@@ -123,7 +123,7 @@ class FoldFeature: NSObject, Printable{
             }
         }
         else{
-
+            
         }
         return nil;
         
@@ -179,5 +179,46 @@ class FoldFeature: NSObject, Printable{
         return returnee
         
     }
+    
+    //delete a feature from a sketch
+    func removeFromSketch(sketch:Sketch){
+        
+        if let childs = self.children{
+            for child in childs{
+                child.parent = nil
+            }
+        }
+        
+        if let fs = sketch.features{
+            for feature in fs{
+                if((feature.children?.contains(self)) != nil){
+                feature.children?.remove(self)
+                feature.invalidateEdges()
+                }
+            }
+        }
+        
+        //remove edges from master Edge
+        
+        for edge in sketch.edges{
+        
+            let fEdges = self.getEdges()
+                
+            for fEdge in fEdges{
+                
+                if fEdge ≈ edge {
+                    sketch.removeEdge(edge)
+                    break
+                }
+            
+            }
+            
+        
+        }
+        
+        self.invalidateEdges()
+        sketch.features?.remove(self)
+    }
+    
     
 }
