@@ -27,7 +27,7 @@ func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
     let startTime = CFAbsoluteTimeGetCurrent()
     operation()
     let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-    println("Time elapsed for \(title): \(timeElapsed) s")
+    println("Time ela psed for \(title): \(timeElapsed) s")
 }
 
 

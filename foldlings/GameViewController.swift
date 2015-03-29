@@ -138,7 +138,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             plane.clearNode()
             
             var parent = theOneSphere
-            // if plane is a hole, it's parent should be the plane that contains it
+            // if plane is a hole, its parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole) {
                 
                 let parentPlane = plane.containerPlane(planes.planes)
