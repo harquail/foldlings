@@ -220,40 +220,7 @@ class SketchView: UIView {
                     
                 }
                 
-                
-                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
-                var featureEdges:[Edge] = []
-                for feature in sketch.features!{
-                    featureEdges = feature.getEdges()
-                    
-                }
-                
-                for edge in sketch.edges{
-                    if(!featureEdges.contains(edge)){
-                        sketch.removeEdge(edge)
-                    }
-                    else{
-                        println("EDGE: cache hit")
-                    }
-                }
-                
-                print("FEATURES: \(sketch.features?.count)\n")
-                for feature in sketch.features!{
-                    
-                    let edgesToAdd = feature.getEdges()
-                    for edge in edgesToAdd{
-                        
-                        //add edges that aren't already in the sketch
-                        if(!sketch.edges.contains(edge)){
-                            sketch.addEdge(edge)
-                        }
-                    }
-                    
-                    print("SKETCH: \(sketch.edges.count)\n")
-                    
-                    
-                }
+                sketch.refreshFeatureEdges()
                 
                 //clear the current feature
                 sketch.currentFeature = nil
@@ -321,10 +288,14 @@ class SketchView: UIView {
             
             for f in fsBackwards{
                 
+                //delete tapped feature
                 if(f.boundingBox()!.contains(touchPoint)){
                     
-                    
+                 
+//                    println("started remove")
                     f.removeFromSketch(sketch)
+                    sketch.refreshFeatureEdges()
+//                    println("removed")
 //                    self.sketch.getPlanes()
                     forceRedraw()
                     

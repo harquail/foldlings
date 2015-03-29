@@ -182,41 +182,19 @@ class FoldFeature: NSObject, Printable{
     
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch){
-        
+
+        //remove parent relationship from children
         if let childs = self.children{
             for child in childs{
                 child.parent = nil
+                child.invalidateEdges()
             }
         }
         
-        if let fs = sketch.features{
-            for feature in fs{
-                if((feature.children?.contains(self)) != nil){
-                feature.children?.remove(self)
-                feature.invalidateEdges()
-                }
-            }
-        }
-        
-        //remove edges from master Edge
-        
-        for edge in sketch.edges{
-        
-            let fEdges = self.getEdges()
-                
-            for fEdge in fEdges{
-                
-                if fEdge ≈ edge {
-                    sketch.removeEdge(edge)
-                    break
-                }
-            
-            }
-            
-        
-        }
-        
-        self.invalidateEdges()
+        //remove child relationship from parents
+        self.parent?.children?.remove(self)
+        self.parent?.invalidateEdges()
+
         sketch.features?.remove(self)
     }
     
