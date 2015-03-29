@@ -206,14 +206,12 @@ class SketchView: UIView {
                 if(drawingFeature.drivingFold != nil){
                     
                     if (drawingFeature.parent!.children != nil){
-                        
                         drawingFeature.parent!.children!.append(drawingFeature)
-                        
                     }
                     else{
                         drawingFeature.parent!.children = []
                         drawingFeature.parent!.children!.append(drawingFeature)
-                        print("~~~ADDED FIRST CHILD~~~\n\n")
+//                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
                     drawingFeature.parent!.invalidateEdges()
@@ -290,18 +288,12 @@ class SketchView: UIView {
                 
                 //delete tapped feature
                 if(f.boundingBox()!.contains(touchPoint)){
-                    
-                 
-//                    println("started remove")
+
                     f.removeFromSketch(sketch)
                     sketch.refreshFeatureEdges()
-//                    println("removed")
-//                    self.sketch.getPlanes()
+
                     forceRedraw()
-                    
-//                    self.sketch.features?.remove(f)
-//                    f.invalidateEdges()
-//                    
+             
                     statusLabel.text = "TOUCHED FEATURE: \(f)"
                     return
                 }

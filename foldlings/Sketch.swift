@@ -328,7 +328,7 @@
             // !!!!                                                       !!!
             // !!!! #TODO: remove this return before merging with master  !!!
             // !!!!                                                       !!!
-            return;
+//            return;
             
             dispatch_sync(edgeAdjacencylockQueue) {
                 self.visited = []
@@ -626,7 +626,7 @@
                 }
             }
             
-            print("FEATURES: \(self.features?.count)\n")
+//            print("FEATURES: \(self.features?.count)\n")
             for feature in self.features!{
                 
                 let edgesToAdd = feature.getEdges()
@@ -638,7 +638,7 @@
                     }
                 }
                 
-                print("SKETCH: \(self.edges.count)\n")
+//                print("SKETCH: \(self.edges.count)\n")
                 
             }
         }
