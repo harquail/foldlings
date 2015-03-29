@@ -47,6 +47,7 @@
 		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
+		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
@@ -889,6 +890,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F12152771AC88DE400921BBE /* Main.storyboard in Resources */,
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
 				F145829C1A79E89000760799 /* slider_button.png in Resources */,
 				F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */,
