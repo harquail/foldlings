@@ -74,16 +74,8 @@ class SketchView: UIView {
         incrementalImage = bitmap(grayscale: false)
         
         
-        if(templateMode){
-            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
-            self.addGestureRecognizer(singleFingerTap)
-            
-            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
-            self.addGestureRecognizer(draggy)
-        }
         
-        //trying calling forceRedraw constantly
-        //        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("forceRedraw"), userInfo: nil, repeats: true)
+    
         
     }
     
@@ -136,7 +128,6 @@ class SketchView: UIView {
             
             //meow?
             //            gesture.translationInView(<#view: UIView#>)
-            
             //if this is a good place to draw a new feature
             var goodPlaceToDraw = true
             if let children = sketch.masterFeature?.children{
@@ -184,9 +175,7 @@ class SketchView: UIView {
                 let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
                 eNew.deltaY = nil
                 
-                //                sketch.removeEdge(e)
                 sketch.addEdge(eNew)
-                
 
                 sketch.masterFeature!.invalidateEdges()
 
@@ -272,39 +261,6 @@ class SketchView: UIView {
         
     }
     
-    func handleTap(sender: AnyObject) {
-        
-        let gesture = sender as UITapGestureRecognizer
-        
-        var touchPoint = gesture.locationInView(self)
-        
-        if let fs = sketch.features{
-            
-            // evaluate newer features first
-            // but maybe what we should really do is do depth first search
-            let fsBackwards = fs.reverse()
-            
-            for f in fsBackwards{
-                
-                //delete tapped feature
-                if(f.boundingBox()!.contains(touchPoint)){
-
-                    f.removeFromSketch(sketch)
-                    sketch.refreshFeatureEdges()
-
-                    forceRedraw()
-             
-                    statusLabel.text = "TOUCHED FEATURE: \(f)"
-                    return
-                }
-                
-            }
-            
-        }
-        statusLabel.text = ""
-        
-        
-    }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
