@@ -60,6 +60,13 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                         self.sketchView.sketch.refreshFeatureEdges()
                         self.sketchView.forceRedraw()
                     }))
+
+                    alertController.addAction(UIAlertAction(title: "Rawr", style: .Default, handler: { alertAction in
+//                        f.removeFromSketch(self.sketchView.sketch)
+//                        self.sketchView.sketch.refreshFeatureEdges()
+//                        self.sketchView.forceRedraw()
+                    }))
+
                     
                     // presents menu at touchPoint
                     alertController.popoverPresentationController?.sourceView = sketchView

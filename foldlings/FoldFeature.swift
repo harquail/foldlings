@@ -114,19 +114,16 @@ class FoldFeature: NSObject, Printable{
         
         if let edges = cachedEdges{
             for edge in edges{
-                
-                // #TODO: harcoding this to 35 is baaaad
+                // #TODO: hardcoding this is baaaad
                 if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:kHitTestRadius*3.5){
                     return edge
                 }
-                
             }
         }
         else{
             
         }
         return nil;
-        
     }
     
     func claimEdges(){
@@ -182,22 +179,18 @@ class FoldFeature: NSObject, Printable{
     
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch){
-
+        
         //remove parent relationship from children
         if let childs = self.children{
             for child in childs{
                 child.removeFromSketch(sketch)
                 child.invalidateEdges()
-//                child.parent = nil
-//                child.invalidateEdges()
             }
         }
         
         //remove child relationship from parents
         self.parent?.children?.remove(self)
         self.parent?.invalidateEdges()
-
-        sketch.features?.remove(self)
     }
     
     
