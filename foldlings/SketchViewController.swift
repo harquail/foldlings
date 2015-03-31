@@ -62,9 +62,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                     }))
 
                     alertController.addAction(UIAlertAction(title: "Rawr", style: .Default, handler: { alertAction in
-//                        f.removeFromSketch(self.sketchView.sketch)
-//                        self.sketchView.sketch.refreshFeatureEdges()
-//                        self.sketchView.forceRedraw()
+                        
                     }))
 
                     
