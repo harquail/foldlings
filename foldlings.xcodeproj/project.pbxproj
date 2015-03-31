@@ -120,6 +120,7 @@
 		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
 		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
 		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
+		F1E8A1741ACB19B90060E808 /* FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */; };
 		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
 		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 /* End PBXBuildFile section */
@@ -355,6 +356,7 @@
 		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
 		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
+		F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureOptions.swift; sourceTree = "<group>"; };
 		F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_grey@2x.png"; sourceTree = "<group>"; };
 		F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_grey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -495,6 +497,7 @@
 				F13AD4E11ABF549500372898 /* BoxFold.swift */,
 				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
 				F14D844D1AC26321004CCD67 /* FreeForm.swift */,
+				F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */,
 			);
 			name = "Fold Features";
 			sourceTree = "<group>";
@@ -1030,6 +1033,7 @@
 				F1BE6A841AC1EF4A00B99C8F /* CGImageContainer.m in Sources */,
 				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
 				F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */,
+				F1E8A1741ACB19B90060E808 /* FeatureOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

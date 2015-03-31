@@ -182,23 +182,34 @@ class FoldFeature: NSObject, Printable{
     
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch){
-
+        
         //remove parent relationship from children
         if let childs = self.children{
             for child in childs{
                 child.removeFromSketch(sketch)
                 child.invalidateEdges()
-//                child.parent = nil
-//                child.invalidateEdges()
+                //                child.parent = nil
+                //                child.invalidateEdges()
             }
         }
         
         //remove child relationship from parents
         self.parent?.children?.remove(self)
         self.parent?.invalidateEdges()
-
+        
         sketch.features?.remove(self)
     }
     
+    /// features are leaves if they don't have children
+    func isLeaf() -> Bool{
+        return children == nil
+    }
+    
+    /// modifications that can be made to the current feature
+    func tapOptions() -> [FeatureOption]?{
+        
+        return nil
+        
+    }
     
 }

@@ -42,7 +42,6 @@ class BoxFold:FoldFeature{
             returnee.append(h1)
             horizontalFolds.append(h1)
             
-            //
             // this is fine because the box is a rectangle; in the future we'll have to get intersections
             // getting intersections on every drag might be too expensive...
             let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
@@ -120,6 +119,20 @@ class BoxFold:FoldFeature{
             return nil;
         }
         return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
+    }
+    
+    
+    /// boxFolds can be deleted
+    /// folds can be added only to leaves
+    override func tapOptions() -> [FeatureOption]?{
+        var options:[FeatureOption] = []
+        options.append(.DeleteFeature)
+        if(self.isLeaf()){
+            options.append(.AddFolds)
+        }
+        
+        return options
+        
     }
     
 }

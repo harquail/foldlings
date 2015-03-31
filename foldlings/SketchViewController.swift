@@ -53,20 +53,30 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                 //delete tapped feature
                 if(f.boundingBox()!.contains(touchPoint)){
                     
-                    //creates the menu with options
-                    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-                    alertController.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { alertAction in
-                        f.removeFromSketch(self.sketchView.sketch)
-                        self.sketchView.sketch.refreshFeatureEdges()
-                        self.sketchView.forceRedraw()
-                    }))
                     
-                    // presents menu at touchPoint
-                    alertController.popoverPresentationController?.sourceView = sketchView
-                    alertController.popoverPresentationController?.delegate = self
-                    alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
-                    alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    if let options = f.tapOptions(){
+                        
+                        //creates the menu with options
+                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                        
+                        for option in options{
+                            
+                            // add a menu item with handler for each option
+                            alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
+                                self.handleTapOption(f, option: option)
+                            }))
+                            
+                        }
+                        
+                        // presents menu at touchPoint
+                        alertController.popoverPresentationController?.sourceView = sketchView
+                        alertController.popoverPresentationController?.delegate = self
+                        alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
+                        alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                        
+                    }
+                    
                     
                     sketchView.statusLabel.text = "TOUCHED FEATURE: \(f)"
                     return
@@ -76,6 +86,22 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             
         }
         sketchView.statusLabel.text = ""
+    }
+    
+    
+    /// do the thing specified by the option
+    func handleTapOption(feature:FoldFeature, option:FeatureOption){
+        
+        switch option{
+        case .AddFolds :
+            break
+        case .DeleteFeature :
+            feature.removeFromSketch(self.sketchView.sketch)
+            self.sketchView.sketch.refreshFeatureEdges()
+            self.sketchView.forceRedraw()
+            
+        }
+        
     }
     
     override func viewDidLoad() {
