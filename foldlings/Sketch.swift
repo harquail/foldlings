@@ -70,16 +70,12 @@
             }
             else{
                 makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-                
             }
         }
         
-        
         /// add an already-constructed edge
         func addEdge(edge:Edge) -> Edge {
-            
             return addEdge(edge.start,end:edge.end, path:edge.path, kind: edge.kind)
-            
         }
         
         /// adds an edge to the adjacency graph
@@ -136,8 +132,9 @@
                 
                 // this fixes double planes
                 // may be overkill in terms of number of planes cleared
+                // TODO: Move this to addEdgeToAdj
                 for e in self.adjacency[start]! {
-                    // e.dirty = true
+                    //e.dirty = true
                     if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
                 }
                 for e in self.adjacency[end]! {
@@ -211,8 +208,8 @@
                 if !contains(e.twin.adjacency, edge.twin){
                     e.twin.adjacency.insert(edge.twin, atIndex: index)
                 }
-                // e.dirty = true
-                //            if e.plane != nil {self.planes.removePlane(e.plane!) }
+                e.dirty = true
+                //if e.plane != nil {self.planes.removePlane(e.plane!) }
                 
             }
             
@@ -328,42 +325,43 @@
             // !!!!                                                       !!!
             // !!!! #TODO: remove this return before merging with master  !!!
             // !!!!                                                       !!!
-//            return;
+            //            return;
             
             dispatch_sync(edgeAdjacencylockQueue) {
+                //println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
                 {
-                    //if start.dirty {
-                    var p : [Edge] = []//plane
-                    var isContained = contains(self.visited, start)
-                    if !isContained// skipped over already visited edges
-                    {   p.append(start)
-                        self.visited.append(start)
-                        var closest = self.getClosest(start)// get closest adjacent edge
-                        
-                        // check if twin has not been crossed and not in plane
-                        while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
-                        {   p.append(closest)
-                            self.visited.append(closest)
-                            closest = self.getClosest(closest)
+                    if start.dirty {
+                        var p : [Edge] = []//plane
+                        var isContained = contains(self.visited, start)
+                        if !isContained// skipped over already visited edges
+                        {   p.append(start)
+                            self.visited.append(start)
+                            var closest = self.getClosest(start)// get closest adjacent edge
+                            
+                            // check if twin has not been crossed and not in plane
+                            while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
+                            {   p.append(closest)
+                                self.visited.append(closest)
+                                closest = self.getClosest(closest)
+                            }
+                            //if the edge is the last edge and the edge isn't start edge
+                            if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end)
+                            {   p.append(closest)
+                                self.visited.append(closest)
+                            }
+                            //// if you didn't cross twin or if the edge is one point, make it a plane
+                            if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
+                            {   var plane = Plane(edges: p)
+                                self.planes.addPlane(plane, sketch: self)
+                                //println("\nplane complete\n")
+                                // println(plane)
+                            }
+                            closest.crossed = false
                         }
-                        //if the edge is the last edge and the edge isn't start edge
-                        if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end)
-                        {   p.append(closest)
-                            self.visited.append(closest)
-                        }
-                        //// if you didn't cross twin or if the edge is one point, make it a plane
-                        if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
-                        {   var plane = Plane(edges: p)
-                            self.planes.addPlane(plane, sketch: self)
-                            //println("\nplane complete\n")
-                            // println(plane)
-                        }
-                        closest.crossed = false
                     }
-                    //}
                 }
             }
         }
@@ -373,13 +371,13 @@
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
         {
-            var closest: Edge!
-            //       println("adjacency count \(current.adjacency.count)")
+            var closest = current.twin
+            //      println("adjacency count \(current.adjacency.count)")
             //        println("\n current \(current.start) , \(current.end) \n")
             //        printAdjList(current.adjacency, current)
             
+            // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
-                closest = current.adjacency[0]//
                 closest.crossed = true
                 return closest
             }
@@ -390,6 +388,8 @@
                 }
             }
             
+            // if no other edges in adjacency, return twin
+            closest.crossed = true
             return closest
         }
         
@@ -452,12 +452,9 @@
                         retB = true
                     }
                 }
-                
             }
             return retB
-            
         }
-        
         
         /// look through edges and return vertex in the hit distance if found
         func vertexHitTest(point:CGPoint) -> CGPoint?
@@ -509,12 +506,12 @@
             return r
         }
         
-        
         func edgeIntersections(edge1:Edge,edge2:Edge) -> [CGPoint]?{
             
             
             return nil
         }
+    
         
         /// returns a list of edges if any of then intersect the given shape
         /// DO not call with an unclosed path
@@ -574,8 +571,6 @@
             
         }
         
-        
-        
         func isTopEdge(edge:Edge) -> Bool
         {
             if(templateMode){
@@ -626,7 +621,7 @@
                 }
             }
             
-//            print("FEATURES: \(self.features?.count)\n")
+            //            print("FEATURES: \(self.features?.count)\n")
             for feature in self.features!{
                 
                 let edgesToAdd = feature.getEdges()
@@ -638,154 +633,9 @@
                     }
                 }
                 
-//                print("SKETCH: \(self.edges.count)\n")
+                //                print("SKETCH: \(self.edges.count)\n")
                 
             }
         }
+        
     }
-    
-    
-    
-    //func printAdjList(edgelist: [Edge], edge: Edge){
-    //    for e in edgelist{
-    //        let angle = getAngle (edge, e)
-    //        println("\(e.start), \(e.end), \(angle)")
-    //    }
-    //}
-    //
-    //func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
-    //    for e in edgeList {
-    //        // add all of these outgoing edges to the edge's adjacency in order
-    //        let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
-    //
-    //        if !contains(edge.adjacency, e){
-    //            edge.adjacency.insert(e, atIndex: ajindex)
-    //        }
-    //        // add to the adj of these e's
-    //        let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
-    //
-    //        if !contains(e.twin.adjacency, edge.twin){
-    //            e.twin.adjacency.insert(edge.twin, atIndex: index)
-    //        }
-    //        // e.dirty = true
-    //        if e.plane != nil {self.planes.removePlane(e.plane) }
-    //
-    //    }
-    //
-    //}
-    //
-    //func removeEdgesFromEdgeAdj(edgeList:[Edge], edge: Edge){
-    //    for e in edgeList {
-    //        // remove edge from the adj of these e.twin's
-    //        if contains(e.twin.adjacency, edge){
-    //            e.twin.adjacency.remove(edge)
-    //        }
-    //    }
-    //}
-    
-    
-    //func mgetPlanes()
-    //{
-    //    dispatch_sync(edgeAdjacencylockQueue) {
-    //
-    //        self.visited = []
-    //
-    //        for (i, start) in enumerate(self.edges)//traverse edges
-    //        {
-    //            if start.dirty {
-    //
-    //                var p : [Edge] = []
-    //
-    //                var isContained = contains(self.visited, start)
-    //
-    //                if !isContained// skipped over already visited edges
-    //                {
-    //                    p.append(start)
-    //
-    //                    self.visited.append(start)
-    //
-    //                    var closest = self.getClosest(start)// get closest adjacent edge
-    //                    // closest edge is now the first in the adjacency list
-    //                    // so just add it to planes
-    //
-    //                    // check if twin has not been crossed and not in plane
-    //                    while !CGPointEqualToPoint(closest.end, start.start) && !closest.crossed
-    //                    {
-    //                        p.append(closest)
-    //                        self.visited.append(closest)
-    //                        closest = self.getClosest(closest)
-    //                    }
-    //                    if CGPointEqualToPoint(closest.end, start.start) && !CGPointEqualToPoint(start.start, start.end){
-    //                        p.append(closest)
-    //                        self.visited.append(closest)
-    //                    }
-    //
-    //                    if !closest.crossed || CGPointEqualToPoint(start.start, start.end) {// if you didn't cross twin, make it a plane
-    //                        var plane = Plane(edges: p)
-    //                        self.planes.addPlane(plane, sketch: self)
-    //
-    //                    }
-    //                    closest.crossed = false
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-    
-    //func mgetClosest(current: Edge) -> Edge
-    //{
-    //    var closest: Edge!
-    //
-    //    if var currentAdjecency = self.adjacency[current.end] {
-    //        if currentAdjecency.count < 2 {
-    //            closest = currentAdjecency[0]
-    //            closest.crossed = true
-    //        }
-    //        else {
-    //            for next in currentAdjecency
-    //            {
-    //                if current.twin === next || contains(self.visited, next){//if the current closest is twin or it's already visited, the
-    //                    continue
-    //                }
-    //
-    //                if closest == nil  // make the first edge the closest
-    //                {
-    //                    closest = next
-    //                    continue
-    //                }
-    //
-    //                //                    // compare for greater angle for closest and next
-    //                //                    var curr_ang = getAngle(current, closest)
-    //                //                    var next_ang = getAngle(current, next)
-    //                //
-    //                //                    if next_ang == curr_ang {
-    //                ////                        let curr_centroid = findCentroid(closest.path)//get centroid of edge
-    //                ////                        let next_centroid = findCentroid(next.path)
-    //                //                        let curr_centroid = findControlPoint(closest.path)//get nearest control point
-    //                //                        let next_centroid = findControlPoint(next.path)
-    //                //
-    //                //                        curr_ang = getAngle(current, Edge(start: closest.start, end: curr_centroid, path: closest.path))
-    //                //                        next_ang = getAngle(current, Edge(start: closest.start, end: next_centroid, path: closest.path))
-    //                ////                        println("curr_ang: \(curr_ang), next_ang: \(next_ang)")
-    //                //                    }
-    //                //
-    //                //
-    //                //                    if  next_ang < curr_ang  { // if the current angle is bigger than the next edge
-    //                //                        closest = next
-    //                //                    }
-    //                closest = next
-    //            }
-    //
-    //            // if nil means only twin edge so return twin
-    //            if closest == nil {
-    //                closest = current.twin
-    //                closest.crossed = true
-    //            }
-    //
-    //        }
-    //    }
-    //
-    //    return closest
-    //}
-    
-    
