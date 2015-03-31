@@ -198,7 +198,7 @@ class FoldFeature: NSObject, Printable{
     
     /// features are leaves if they don't have children
     func isLeaf() -> Bool{
-        return children == nil
+        return children == nil || children!.count == 0
     }
     
     /// modifications that can be made to the current feature
