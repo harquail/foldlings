@@ -74,13 +74,8 @@ class SketchView: UIView {
         incrementalImage = bitmap(grayscale: false)
         
         
-        if(templateMode){
-            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
-            self.addGestureRecognizer(singleFingerTap)
-            
-            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
-            self.addGestureRecognizer(draggy)
-        }
+        
+    
         
     }
     
@@ -132,8 +127,7 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             
             //meow?
-//            gesture.translationInView(<#view: UIView#>)
-            
+            //            gesture.translationInView(<#view: UIView#>)
             //if this is a good place to draw a new feature
             var goodPlaceToDraw = true
             if let children = sketch.masterFeature?.children{
@@ -145,18 +139,18 @@ class SketchView: UIView {
                         let edge = child.featureEdgeAtPoint(touchPoint)
                         if let e = edge{
                             
-                        //this is really only right for horizontal folds, not cuts...
-                        //maybe limit to fold for now?
-                        sketch.draggedEdge = e
-                        e.deltaY = gesture.translationInView(self).y
-                           
-                        println("init deltaY: \(e.deltaY)")
+                            //this is really only right for horizontal folds, not cuts...
+                            //maybe limit to fold for now?
+                            sketch.draggedEdge = e
+                            e.deltaY = gesture.translationInView(self).y
+                            
+                            println("init deltaY: \(e.deltaY)")
                         }
                         else{
-                        println("No Edge Here...")
+                            println("No Edge Here...")
                         }
                         
-//                        println("OUTSIDE LOOP")
+                        //                        println("OUTSIDE LOOP")
                         goodPlaceToDraw = false
                         break
                     }
@@ -171,7 +165,7 @@ class SketchView: UIView {
             
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
-           
+            
             var touchPoint: CGPoint = gesture.locationInView(self)
             
             if var e = sketch.draggedEdge{
@@ -181,21 +175,10 @@ class SketchView: UIView {
                 let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
                 eNew.deltaY = nil
                 
-//                sketch.removeEdge(e)
                 sketch.addEdge(eNew)
-                
-                sketch.draggedEdge = nil
 
-
-
-                
-//                e.feature!.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
-                
-//                e.feature!.fixStartEndPoint()
-                forceRedraw()
-                
-//                println("delta: \(e.deltaY)")
+
             }
             
             
@@ -204,59 +187,34 @@ class SketchView: UIView {
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
-                
                 drawingFeature.fixStartEndPoint()
-                
-                
+                                
                 //add edges from the feature to the sketch
                 sketch.features?.append(sketch.currentFeature!)
                 
                 if(drawingFeature.drivingFold != nil){
                     
-                    if (sketch.masterFeature?.children != nil){
-                        sketch.masterFeature?.children!.append(drawingFeature)
-                        
-                        print("ADDED CHILD: \(sketch.masterFeature?.children!.count)\n\n")
-                        
+                    if (drawingFeature.parent!.children != nil){
+                        drawingFeature.parent!.children!.append(drawingFeature)
                     }
                     else{
-                        sketch.masterFeature!.children = []
-                        sketch.masterFeature!.children!.append(drawingFeature)
-                        
-                        print("~~~ADDED FIRST CHILD~~~\n\n")
+                        drawingFeature.parent!.children = []
+                        drawingFeature.parent!.children!.append(drawingFeature)
+//                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
-                    
-                    
-                }
-                
-                
-                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
-                for edge in sketch.edges{
-                    
-                    sketch.removeEdge(edge)
+                    drawingFeature.parent!.invalidateEdges()
                     
                 }
                 
-                print("FEATURES: \(sketch.features?.count)\n")
-                for feature in sketch.features!{
-                    
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
-                    let edgesToAdd = feature.getEdges()
-                    for edge in edgesToAdd{
-                        sketch.addEdge(edge)
-                    }
-                    print("SKETCH: \(sketch.edges.count)\n")
-                    
-                    
-                }
+                sketch.refreshFeatureEdges()
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                forceRedraw()
             }
             
+            self.sketch.getPlanes()
+            forceRedraw()
             
         }
         else if(gesture.state == UIGestureRecognizerState.Changed){
@@ -265,7 +223,7 @@ class SketchView: UIView {
             
             if let e = sketch.draggedEdge{
                 e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")            
+                println("delta: \(e.deltaY)")
             }
             
             if let drawingFeature = sketch.currentFeature{
@@ -275,14 +233,27 @@ class SketchView: UIView {
                     drawingFeature.endPoint = touchPoint
                 }
                 
+                
+                //for feature in features -- check folds for spanning
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    
+                    for fold in feature.horizontalFolds{
+                        if(featureSpansFold(sketch.currentFeature?, fold:fold)){
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            
+                            break;
+                        }
+                    }
+                    
+                }
+
                 // box folds have different behaviors if they span the driving edge
-                if(featureSpansFold(sketch.currentFeature?, fold:sketch.drivingEdge)){
-                    drawingFeature.drivingFold = sketch.drivingEdge
-                }
-                else{
-                    drawingFeature.drivingFold = nil
-                }
+                
                 drawingFeature.invalidateEdges()
+                
                 forceRedraw()
                 
             }
@@ -290,29 +261,6 @@ class SketchView: UIView {
         
     }
     
-    func handleTap(sender: AnyObject) {
-        
-        let gesture = sender as UITapGestureRecognizer
-        
-        var touchPoint = gesture.locationInView(self)
-        
-        if let fs = sketch.masterFeature?.children{
-            
-            for f in fs{
-                
-                if(f.boundingBox()!.contains(touchPoint)){
-                    
-                    statusLabel.text = "TOUCHED FEATURE: \(f.startPoint!)"
-                    return
-                }
-                
-            }
-            
-        }
-        statusLabel.text = ""
-        
-        
-    }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
     {
@@ -484,6 +432,11 @@ class SketchView: UIView {
     
     
     func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+        
+        //feature must be inside fold x bounds
+        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
+            return false
+        }
         
         func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
             return (a.y < b.y) ? (a,b) : (b,a)
@@ -769,13 +722,21 @@ class SketchView: UIView {
     }
     
     
+    //    var timeSinceRedraw = NSDate(timeIntervalSinceNow: -0.9)
+    //    let krefreshTime = 0.1
     func forceRedraw()
     {
-        if !self.redrawing {
+        //        timeSinceRedraw.timeIntervalSinceNow > -krefreshTime
+        if(!self.redrawing){
+            //            timeSinceRedraw = NSDate(timeIntervalSinceNow: 0)
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
                 self.redrawing = true
                 dispatch_sync(self.redrawLockQueue) {
-                    self.sketch.getPlanes() //evaluate into planes
+                    
+                    //in template mode, only get planes when features end!
+                    if(!self.templateMode){
+                        self.sketch.getPlanes() //evaluate into planes
+                    }
                     if self.sketch.buildTabs() {
                         // if buildtabs returns that it did any changes rerun buildplanes again
                         self.sketch.getPlanes()

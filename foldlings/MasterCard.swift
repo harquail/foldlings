@@ -39,43 +39,17 @@ class MasterCard:FoldFeature{
         
         var returnee = [top,bottom,l0,l1,r0,r1]
         // if there are no children, then we just need to draw a single fold
-        if(children == nil){
-            // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
-            let master = Edge.straightEdgeBetween(r1.end, end:l0.end, kind: .Fold)
-            horizontalFolds = [master,top,bottom]
-            returnee.append(master)
-            
+        // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
+        let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
+        horizontalFolds = [top,bottom]
+        
+        let fragments = edgeSplitByChildren(master)
+    
+        for fragment in fragments{
+            returnee.append(fragment)
+            horizontalFolds.append(fragment)
         }
-            // for now, sort children by start point x and then draw master fold edges between them
-            // later, we'll have to do fancy intersection stuff
-        else{
-            
-            if var childs = children{
-                
-                //sort children by x position
-                childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
-                
-                //pieces of the master fold, which go inbetween child features
-                var masterPieces:[Edge] = []
-                
-                //create fold pieces between the children
-                var brushTip = l0.end
-                
-                for child in childs{
-                    
-                    let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
-                    
-                    let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
-                    returnee.append(piece)
-                    
-                    brushTip = brushTipTranslated
-                }
-                
-                let finalPiece = Edge.straightEdgeBetween(brushTip, end: r1.end, kind: .Fold)
-                returnee.append(finalPiece)
-                
-            }
-        }
+        
         
         for edge in returnee{
             edge.isMaster = true
@@ -87,7 +61,8 @@ class MasterCard:FoldFeature{
         
     }
     
-     override func boundingBox() -> CGRect? {
+    /// bounding box is start & end point
+    override func boundingBox() -> CGRect? {
         return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
     }
 }

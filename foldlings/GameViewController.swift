@@ -138,7 +138,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             plane.clearNode()
             
             var parent = theOneSphere
-            // if plane is a hole, it's parent should be the plane that contains it
+            // if plane is a hole, its parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole) {
                 
                 let parentPlane = plane.containerPlane(planes.planes)
@@ -213,17 +213,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // base case if bottom
         if plane == bottom {
-            println("bottomed out")
+//            println("bottomed out")
             return nil
         }
         // base case already visited or going back up
         if contains(visited, plane) {
-            println("already been here")
+//            println("already been here")
             return nil
         }
         // base case going back up
         if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
-            println("belongs to prev")
+//            println("belongs to prev")
             return nil
         }
 
@@ -271,7 +271,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 undoParentTranslate(masterSphere, child: childSphere)
             }
         }
-        println("recurse level: \(recurseCount)")
+//        println("recurse level: \(recurseCount)")
         return masterSphere
     }
     

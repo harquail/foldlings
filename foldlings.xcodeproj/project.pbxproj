@@ -47,12 +47,14 @@
 		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
+		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
 		F145829B1A79E89000760799 /* preview_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582971A79E89000760799 /* preview_button.png */; };
 		F145829C1A79E89000760799 /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582981A79E89000760799 /* slider_button.png */; };
 		F145829D1A79E89000760799 /* track_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582991A79E89000760799 /* track_button.png */; };
+		F14D844E1AC26321004CCD67 /* FreeForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D844D1AC26321004CCD67 /* FreeForm.swift */; };
 		F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */; };
 		F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB691A1EAED50029FDF2 /* GHPathUtilities.m */; };
 		F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB6B1A1EAED50029FDF2 /* GHText.m */; };
@@ -85,9 +87,7 @@
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
-		F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
 		F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D619E24BEC00BB77F1 /* Images.xcassets */; };
-		F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
 		F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */; };
 		F1824ECF1A19E525008B0F66 /* last.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECC1A19E525008B0F66 /* last.png */; };
@@ -98,12 +98,29 @@
 		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
 		F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B9AE771A06A64B00265AAE /* Archivist.swift */; };
 		F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1B9AE791A06B37D00265AAE /* data.plist */; };
+		F1BE6A7E1AC1EF4A00B99C8F /* ANImageBitmapRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A611AC1EF4900B99C8F /* ANImageBitmapRep.m */; };
+		F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A631AC1EF4900B99C8F /* BitmapContextRep.m */; };
+		F1BE6A801AC1EF4A00B99C8F /* NSImage+ANImageBitmapRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A661AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.m */; };
+		F1BE6A811AC1EF4A00B99C8F /* OSCommonImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A681AC1EF4900B99C8F /* OSCommonImage.m */; };
+		F1BE6A821AC1EF4A00B99C8F /* UIImage+ANImageBitmapRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A6A1AC1EF4900B99C8F /* UIImage+ANImageBitmapRep.m */; };
+		F1BE6A831AC1EF4A00B99C8F /* CGContextCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A6D1AC1EF4900B99C8F /* CGContextCreator.m */; };
+		F1BE6A841AC1EF4A00B99C8F /* CGImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A6F1AC1EF4900B99C8F /* CGImageContainer.m */; };
+		F1BE6A851AC1EF4A00B99C8F /* BitmapContextManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A721AC1EF4900B99C8F /* BitmapContextManipulator.m */; };
+		F1BE6A861AC1EF4A00B99C8F /* BitmapCropManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A741AC1EF4900B99C8F /* BitmapCropManipulator.m */; };
+		F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A761AC1EF4900B99C8F /* BitmapRotationManipulator.m */; };
+		F1BE6A881AC1EF4A00B99C8F /* BitmapScaleManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A781AC1EF4900B99C8F /* BitmapScaleManipulator.m */; };
+		F1BE6A891AC1EF4A00B99C8F /* ANPathBitmap.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A7B1AC1EF4A00B99C8F /* ANPathBitmap.m */; };
+		F1BE6A8A1AC1EF4A00B99C8F /* ANPathIntersection.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */; };
+		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
+		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
+		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
 		F1E16E9119E460C700BC27C4 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E9019E460C700BC27C4 /* Math.swift */; };
 		F1E309621A15839300C09792 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309611A15839300C09792 /* tab.png */; };
 		F1E309641A15854C00C09792 /* roundedrect.png in Resources */ = {isa = PBXBuildFile; fileRef = F1E309631A15854C00C09792 /* roundedrect.png */; };
+		F1E8A1741ACB19B90060E808 /* FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */; };
 		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
 		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 /* End PBXBuildFile section */
@@ -226,6 +243,7 @@
 		F14582971A79E89000760799 /* preview_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview_button.png; sourceTree = "<group>"; };
 		F14582981A79E89000760799 /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_button.png; sourceTree = "<group>"; };
 		F14582991A79E89000760799 /* track_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_button.png; sourceTree = "<group>"; };
+		F14D844D1AC26321004CCD67 /* FreeForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeForm.swift; sourceTree = "<group>"; };
 		F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAttributedObject.h; sourceTree = "<group>"; };
 		F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAttributedObject.m; sourceTree = "<group>"; };
 		F153BB671A1EAED50029FDF2 /* GHPathDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathDescription.h; sourceTree = "<group>"; };
@@ -303,12 +321,42 @@
 		F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfFoldlings.swift; sourceTree = "<group>"; };
 		F1B9AE771A06A64B00265AAE /* Archivist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivist.swift; sourceTree = "<group>"; };
 		F1B9AE791A06B37D00265AAE /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
+		F1BE6A601AC1EF4900B99C8F /* ANImageBitmapRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageBitmapRep.h; sourceTree = "<group>"; };
+		F1BE6A611AC1EF4900B99C8F /* ANImageBitmapRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANImageBitmapRep.m; sourceTree = "<group>"; };
+		F1BE6A621AC1EF4900B99C8F /* BitmapContextRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapContextRep.h; sourceTree = "<group>"; };
+		F1BE6A631AC1EF4900B99C8F /* BitmapContextRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitmapContextRep.m; sourceTree = "<group>"; };
+		F1BE6A651AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+ANImageBitmapRep.h"; sourceTree = "<group>"; };
+		F1BE6A661AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+ANImageBitmapRep.m"; sourceTree = "<group>"; };
+		F1BE6A671AC1EF4900B99C8F /* OSCommonImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCommonImage.h; sourceTree = "<group>"; };
+		F1BE6A681AC1EF4900B99C8F /* OSCommonImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSCommonImage.m; sourceTree = "<group>"; };
+		F1BE6A691AC1EF4900B99C8F /* UIImage+ANImageBitmapRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ANImageBitmapRep.h"; sourceTree = "<group>"; };
+		F1BE6A6A1AC1EF4900B99C8F /* UIImage+ANImageBitmapRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ANImageBitmapRep.m"; sourceTree = "<group>"; };
+		F1BE6A6C1AC1EF4900B99C8F /* CGContextCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGContextCreator.h; sourceTree = "<group>"; };
+		F1BE6A6D1AC1EF4900B99C8F /* CGContextCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGContextCreator.m; sourceTree = "<group>"; };
+		F1BE6A6E1AC1EF4900B99C8F /* CGImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageContainer.h; sourceTree = "<group>"; };
+		F1BE6A6F1AC1EF4900B99C8F /* CGImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageContainer.m; sourceTree = "<group>"; };
+		F1BE6A711AC1EF4900B99C8F /* BitmapContextManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapContextManipulator.h; sourceTree = "<group>"; };
+		F1BE6A721AC1EF4900B99C8F /* BitmapContextManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitmapContextManipulator.m; sourceTree = "<group>"; };
+		F1BE6A731AC1EF4900B99C8F /* BitmapCropManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapCropManipulator.h; sourceTree = "<group>"; };
+		F1BE6A741AC1EF4900B99C8F /* BitmapCropManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitmapCropManipulator.m; sourceTree = "<group>"; };
+		F1BE6A751AC1EF4900B99C8F /* BitmapRotationManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapRotationManipulator.h; sourceTree = "<group>"; };
+		F1BE6A761AC1EF4900B99C8F /* BitmapRotationManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitmapRotationManipulator.m; sourceTree = "<group>"; };
+		F1BE6A771AC1EF4900B99C8F /* BitmapScaleManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapScaleManipulator.h; sourceTree = "<group>"; };
+		F1BE6A781AC1EF4900B99C8F /* BitmapScaleManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitmapScaleManipulator.m; sourceTree = "<group>"; };
+		F1BE6A7A1AC1EF4A00B99C8F /* ANPathBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANPathBitmap.h; sourceTree = "<group>"; };
+		F1BE6A7B1AC1EF4A00B99C8F /* ANPathBitmap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPathBitmap.m; sourceTree = "<group>"; };
+		F1BE6A7C1AC1EF4A00B99C8F /* ANPathIntersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANPathIntersection.h; sourceTree = "<group>"; };
+		F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANPathIntersection.m; sourceTree = "<group>"; };
+		F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
 		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 		F1E16E9019E460C700BC27C4 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		F1E309611A15839300C09792 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
 		F1E309631A15854C00C09792 /* roundedrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roundedrect.png; sourceTree = "<group>"; };
+		F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureOptions.swift; sourceTree = "<group>"; };
 		F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_grey@2x.png"; sourceTree = "<group>"; };
 		F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_grey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,6 +366,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */,
+				F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */,
 				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
 				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
 				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
@@ -347,6 +397,7 @@
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				F1BE6A8F1AC1F12B00B99C8F /* pathIntersection */,
 				F160F3B81A31463900B469CA /* Flurry */,
 				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
 				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
@@ -364,11 +415,14 @@
 		22AF485019EDE98000BCC1A4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
+				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
 				227708D619EE016A0095CD9D /* SketchView.swift */,
 				F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */,
 				F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */,
 				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
 				F18C864519FD9F4500211229 /* SplashViewController.swift */,
+				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -442,6 +496,8 @@
 				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				F13AD4E11ABF549500372898 /* BoxFold.swift */,
 				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
+				F14D844D1AC26321004CCD67 /* FreeForm.swift */,
+				F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */,
 			);
 			name = "Fold Features";
 			sourceTree = "<group>";
@@ -558,6 +614,8 @@
 				F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */,
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
 				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
+				F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */,
+				F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */,
 				F160F3BC1A31473800B469CA /* Security.framework */,
 				F17C93E219E24BEC00BB77F1 /* foldlingsTests */,
 				F17C93C919E24BEC00BB77F1 /* Products */,
@@ -580,25 +638,22 @@
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
+				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
+				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
+				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
-				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
 				F13AD4E71ABF549F00372898 /* Fold Features */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
-				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
-				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
 				F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */,
 				F1B9AE791A06B37D00265AAE /* data.plist */,
-				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				22C0D6891A04965C00D521CA /* Bezier.swift */,
 				223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */,
 				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
-				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
-				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
@@ -631,6 +686,82 @@
 				F17C93E419E24BEC00BB77F1 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F1BE6A5F1AC1EF4900B99C8F /* ANImageBitmapRep */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A601AC1EF4900B99C8F /* ANImageBitmapRep.h */,
+				F1BE6A611AC1EF4900B99C8F /* ANImageBitmapRep.m */,
+				F1BE6A621AC1EF4900B99C8F /* BitmapContextRep.h */,
+				F1BE6A631AC1EF4900B99C8F /* BitmapContextRep.m */,
+				F1BE6A641AC1EF4900B99C8F /* Compatibility */,
+				F1BE6A6B1AC1EF4900B99C8F /* CoreGraphics */,
+				F1BE6A701AC1EF4900B99C8F /* Manipulators */,
+			);
+			name = ANImageBitmapRep;
+			path = ../ANImageBitmapRep;
+			sourceTree = "<group>";
+		};
+		F1BE6A641AC1EF4900B99C8F /* Compatibility */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A651AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.h */,
+				F1BE6A661AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.m */,
+				F1BE6A671AC1EF4900B99C8F /* OSCommonImage.h */,
+				F1BE6A681AC1EF4900B99C8F /* OSCommonImage.m */,
+				F1BE6A691AC1EF4900B99C8F /* UIImage+ANImageBitmapRep.h */,
+				F1BE6A6A1AC1EF4900B99C8F /* UIImage+ANImageBitmapRep.m */,
+			);
+			path = Compatibility;
+			sourceTree = "<group>";
+		};
+		F1BE6A6B1AC1EF4900B99C8F /* CoreGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A6C1AC1EF4900B99C8F /* CGContextCreator.h */,
+				F1BE6A6D1AC1EF4900B99C8F /* CGContextCreator.m */,
+				F1BE6A6E1AC1EF4900B99C8F /* CGImageContainer.h */,
+				F1BE6A6F1AC1EF4900B99C8F /* CGImageContainer.m */,
+			);
+			path = CoreGraphics;
+			sourceTree = "<group>";
+		};
+		F1BE6A701AC1EF4900B99C8F /* Manipulators */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A711AC1EF4900B99C8F /* BitmapContextManipulator.h */,
+				F1BE6A721AC1EF4900B99C8F /* BitmapContextManipulator.m */,
+				F1BE6A731AC1EF4900B99C8F /* BitmapCropManipulator.h */,
+				F1BE6A741AC1EF4900B99C8F /* BitmapCropManipulator.m */,
+				F1BE6A751AC1EF4900B99C8F /* BitmapRotationManipulator.h */,
+				F1BE6A761AC1EF4900B99C8F /* BitmapRotationManipulator.m */,
+				F1BE6A771AC1EF4900B99C8F /* BitmapScaleManipulator.h */,
+				F1BE6A781AC1EF4900B99C8F /* BitmapScaleManipulator.m */,
+			);
+			path = Manipulators;
+			sourceTree = "<group>";
+		};
+		F1BE6A791AC1EF4900B99C8F /* CGPathIntersection */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A7A1AC1EF4A00B99C8F /* ANPathBitmap.h */,
+				F1BE6A7B1AC1EF4A00B99C8F /* ANPathBitmap.m */,
+				F1BE6A7C1AC1EF4A00B99C8F /* ANPathIntersection.h */,
+				F1BE6A7D1AC1EF4A00B99C8F /* ANPathIntersection.m */,
+				F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */,
+			);
+			name = CGPathIntersection;
+			path = ../CGPathIntersection;
+			sourceTree = "<group>";
+		};
+		F1BE6A8F1AC1F12B00B99C8F /* pathIntersection */ = {
+			isa = PBXGroup;
+			children = (
+				F1BE6A5F1AC1EF4900B99C8F /* ANImageBitmapRep */,
+				F1BE6A791AC1EF4900B99C8F /* CGPathIntersection */,
+			);
+			name = pathIntersection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -762,8 +893,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F12152771AC88DE400921BBE /* Main.storyboard in Resources */,
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
-				F17C93DA19E24BEC00BB77F1 /* LaunchScreen.xib in Resources */,
 				F145829C1A79E89000760799 /* slider_button.png in Resources */,
 				F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
@@ -790,7 +921,6 @@
 				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
 				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
-				F17C93D519E24BEC00BB77F1 /* Main.storyboard in Resources */,
 				F145829D1A79E89000760799 /* track_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -828,10 +958,14 @@
 				F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */,
 				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
 				22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */,
+				F14D844E1AC26321004CCD67 /* FreeForm.swift in Sources */,
 				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
+				F1BE6A891AC1EF4A00B99C8F /* ANPathBitmap.m in Sources */,
 				22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */,
 				F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */,
 				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
+				F1BE6A861AC1EF4A00B99C8F /* BitmapCropManipulator.m in Sources */,
+				F1BE6A831AC1EF4A00B99C8F /* CGContextCreator.m in Sources */,
 				22C0D68E1A059C6D00D521CA /* UIBezierPath+OBAdditions.m in Sources */,
 				F153BBA91A1EAED50029FDF2 /* SVGRenderer.m in Sources */,
 				F153BBA51A1EAED50029FDF2 /* GHGlyph.m in Sources */,
@@ -852,26 +986,34 @@
 				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
+				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
 				22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */,
 				F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */,
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+				F1BE6A821AC1EF4A00B99C8F /* UIImage+ANImageBitmapRep.m in Sources */,
 				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
 				F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */,
 				F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */,
+				F1BE6A7E1AC1EF4A00B99C8F /* ANImageBitmapRep.m in Sources */,
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
+				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,
 				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
 				22061CA21A1B18180030079D /* Queue.swift in Sources */,
 				F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */,
+				F1BE6A8A1AC1EF4A00B99C8F /* ANPathIntersection.m in Sources */,
 				F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */,
 				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
 				F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */,
+				F1BE6A811AC1EF4A00B99C8F /* OSCommonImage.m in Sources */,
 				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
+				F1BE6A851AC1EF4A00B99C8F /* BitmapContextManipulator.m in Sources */,
 				F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */,
 				F153BBAE1A1EAED50029FDF2 /* GHButton.m in Sources */,
 				8874A7121A05B61F00F78283 /* Plane.swift in Sources */,
@@ -879,6 +1021,8 @@
 				F1E16E9119E460C700BC27C4 /* Math.swift in Sources */,
 				F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */,
 				225094F71A0DBB5D00E754CA /* CGPoint+Vector.m in Sources */,
+				F1BE6A881AC1EF4A00B99C8F /* BitmapScaleManipulator.m in Sources */,
+				F1BE6A801AC1EF4A00B99C8F /* NSImage+ANImageBitmapRep.m in Sources */,
 				F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */,
 				F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */,
 				22061CA41A1B182F0030079D /* QNode.swift in Sources */,
@@ -886,8 +1030,10 @@
 				F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */,
 				F153BB9E1A1EAED50029FDF2 /* GHTextLine.m in Sources */,
 				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
+				F1BE6A841AC1EF4A00B99C8F /* CGImageContainer.m in Sources */,
 				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
 				F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */,
+				F1E8A1741ACB19B90060E808 /* FeatureOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

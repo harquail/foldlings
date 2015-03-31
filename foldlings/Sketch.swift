@@ -322,6 +322,11 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
+            // !!!!                                                       !!!
+            // !!!! #TODO: remove this return before merging with master  !!!
+            // !!!!                                                       !!!
+            //            return;
+            
             dispatch_sync(edgeAdjacencylockQueue) {
                 //println("\ngetPlanes\n")
                 self.visited = []
@@ -501,6 +506,13 @@
             return r
         }
         
+        func edgeIntersections(edge1:Edge,edge2:Edge) -> [CGPoint]?{
+            
+            
+            return nil
+        }
+    
+        
         /// returns a list of edges if any of then intersect the given shape
         /// DO not call with an unclosed path
         func shapeHitTest(path: UIBezierPath) -> [Edge]?
@@ -589,6 +601,41 @@
                 return b
             }
             
+        }
+        
+        /// updates sketch edges to match those generated from features
+        func refreshFeatureEdges(){
+            
+            var featureEdges:[Edge] = []
+            for feature in self.features!{
+                featureEdges = feature.getEdges()
+                
+            }
+            
+            for edge in self.edges{
+                if(!featureEdges.contains(edge)){
+                    self.removeEdge(edge)
+                }
+                else{
+                    println("EDGE: cache hit")
+                }
+            }
+            
+            //            print("FEATURES: \(self.features?.count)\n")
+            for feature in self.features!{
+                
+                let edgesToAdd = feature.getEdges()
+                for edge in edgesToAdd{
+                    
+                    //add edges that aren't already in the sketch
+                    if(!self.edges.contains(edge)){
+                        self.addEdge(edge)
+                    }
+                }
+                
+                //                print("SKETCH: \(self.edges.count)\n")
+                
+            }
         }
         
     }

@@ -7,6 +7,8 @@ import Foundation
 import CoreGraphics
 import UIKit
 
+infix operator ≈ { associativity left precedence 160 }
+
 func == (lhs: Edge, rhs: Edge) -> Bool {
     return lhs === rhs
 }
@@ -15,6 +17,11 @@ func == (lhs: Edge, rhs: Edge) -> Bool {
 /// equality that considers twins
 func ~= (lhs: Edge, rhs: Edge) -> Bool {
     return lhs == rhs || lhs == rhs.twin
+}
+
+/// equality that only considers start & end points
+func ≈ (lhs: Edge, rhs: Edge) -> Bool {
+    return lhs.start == rhs.start && lhs.end == rhs.end
 }
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
