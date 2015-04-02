@@ -701,11 +701,7 @@ class SketchView: UIView {
         
         return asketch
     }
-    
-    
-    //    func previewImage() -> UIImage {
-    //        return bitmap(grayscale: false, circles: false)
-    //    }
+
     
     
     func drawEdgePoints(start: CGPoint, end:CGPoint?) {
