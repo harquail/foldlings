@@ -541,35 +541,6 @@
         
         
         
-        ///  sets up a grid and returns nearest point in grid
-        func nearestGridPoint(point: CGPoint) -> CGPoint
-        {
-            
-            let width = CGPointGetDistance(bEdge1.start, bEdge1.end)
-            let height = CGPointGetDistance(bEdge2.start, bEdge2.end)
-            let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 25
-            let gsh = gs / 2.0
-            var x:CGFloat = 0.0
-            var y:CGFloat = 0.0
-            
-            for var xi:CGFloat = 0.0; xi < width; xi=xi+gs
-            {
-                for var yi:CGFloat = 0.0; yi < height; yi=yi+gs
-                {
-                    if point.x < xi + gsh && point.x > xi - gsh {
-                        x = xi
-                    }
-                    if point.y < yi + gsh && point.y > yi - gsh {
-                        y = yi
-                    }
-                }
-            }
-            
-            
-            let newpoint = CGPointMake(x, y)
-            return newpoint
-            
-        }
         
         func isTopEdge(edge:Edge) -> Bool
         {
