@@ -42,7 +42,7 @@
         var planes:CollectionOfPlanes = CollectionOfPlanes()
         
         // this sets templating mode, we could refactor and do a subclass for templating mode but might be quicker to do this
-        var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
+//        var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
         
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
         enum Origin: String {
@@ -64,13 +64,8 @@
             super.init()
             
             //insert master fold and make borders into cuts
-            if(templateMode){
-                
                 makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            }
-            else{
-                makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            }
+
         }
         
         /// add an already-constructed edge
@@ -544,33 +539,23 @@
         
         func isTopEdge(edge:Edge) -> Bool
         {
-            if(templateMode){
                 if let masterF = masterFeature{
                     return masterF.startPoint!.y == edge.start.y
                 }
                 return false
-            }
-            else{
-                let b = edge == bEdge1 || edge == bEdge1.twin
-                return b
-            }
+           
             
         }
         
         func isBottomEdge(edge:Edge) -> Bool
         {
-            if(templateMode){
                 if let masterF = masterFeature{
                     if(masterF.endPoint != nil){
                         return masterF.endPoint!.y == edge.start.y
                     }
                 }
                 return false
-            }
-            else{
-                let b = edge == bEdge3 || edge == bEdge3.twin
-                return b
-            }
+           
             
         }
         

@@ -23,7 +23,6 @@ class FoldFeature: NSObject, Printable{
     
     enum ValidityState {
         case Invalid, // we don't know how to make this feature valid
-        Fixable, // we know how to make this feature valid
         Valid // can be simulated in 3d/folded in real life
     }
     
@@ -46,7 +45,7 @@ class FoldFeature: NSObject, Printable{
     
     
     /// is it valid?
-    var state:ValidityState = .Fixable
+    var state:ValidityState = .Valid
     
     
     /// printable description is the object class & startPoint
