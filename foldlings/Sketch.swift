@@ -130,14 +130,14 @@
                 // this fixes double planes
                 // may be overkill in terms of number of planes cleared
                 // TODO: Move this to addEdgeToAdj
-                for e in self.adjacency[start]! {
-                    //e.dirty = true
-                    if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
-                }
-                for e in self.adjacency[end]! {
-                    //e.dirty = true
-                    if e.plane != nil { self.planes.removePlane(e.plane!) }
-                }
+                //                for e in self.adjacency[start]! {
+                //                    e.dirty = true
+                //                    if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
+                //                }
+                //                for e in self.adjacency[end]! {
+                //                    e.dirty = true
+                //                    if e.plane != nil { self.planes.removePlane(e.plane!) }
+                //                }
             }
             
             if kind == .Tab
@@ -205,8 +205,10 @@
                 if !contains(e.twin.adjacency, edge.twin){
                     e.twin.adjacency.insert(edge.twin, atIndex: index)
                 }
+                //mark each of the edges in adj as dirty
                 e.dirty = true
-                //if e.plane != nil {self.planes.removePlane(e.plane!) }
+                //delete the plane that's associated with each edge
+                if e.plane != nil {self.planes.removePlane(e.plane!) }
                 
             }
             
@@ -320,7 +322,7 @@
         func getPlanes()
         {
             dispatch_sync(edgeAdjacencylockQueue) {
-                //println("\ngetPlanes\n")
+                println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -348,7 +350,7 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                //println("\nplane complete\n")
+                                println("\nplane complete\n")
                                 // println(plane)
                             }
                             closest.crossed = false
@@ -365,8 +367,8 @@
         {
             var closest = current.twin
             //      println("adjacency count \(current.adjacency.count)")
-            //        println("\n current \(current.start) , \(current.end) \n")
-            //        printAdjList(current.adjacency, current)
+            println("\n current \(current.start) , \(current.end) \n")
+            printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
@@ -587,5 +589,9 @@
             }
             
         }
-        
+       
+//    //Planes path to svg paths 
+//        func PathstoSVG (path: UIBezierPath){
+//        CGPathToCString(path, )
+//        }
     }
