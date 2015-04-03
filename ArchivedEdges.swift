@@ -66,9 +66,8 @@ class ArchivedEdges : NSObject, NSCoding {
             adj[key.CGPointValue()] = nsAdj[key]
         }
         
+        
         edges = aDecoder.decodeObjectForKey("edges") as [Edge]
-        folds = aDecoder.decodeObjectForKey("folds") as [Edge]
-        tabs = aDecoder.decodeObjectForKey("tabs") as [Edge]
         
         
     }
