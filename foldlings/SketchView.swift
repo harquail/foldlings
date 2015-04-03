@@ -37,7 +37,6 @@ class SketchView: UIView {
     var sketchMode:  Mode = Mode.Cut
     var cancelledTouch: UITouch?  //if interrrupted say on intersection
     var sketch: Sketch!
-    var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     var gameView = GameViewController()
@@ -314,10 +313,6 @@ class SketchView: UIView {
                                     //                                    twinsOfVisited.append(e.twin)
                                     //                                }
                                     
-                                    // just draw that point to indicate it...
-                                    if circles && (!e.path.empty) && (e.start != e.end) {
-                                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
-                                    }
                                     
                                 }
                                 
@@ -336,10 +331,6 @@ class SketchView: UIView {
                         twinsOfVisited.append(e.twin)
                     }
                     
-                    // just draw that point to indicate it...
-                    if circles && (!e.path.empty) && (e.start != e.end) {
-                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
-                    }
                     
                 }
             }
@@ -544,7 +535,6 @@ class SketchView: UIView {
             
             dispatch_sync(self.redrawLockQueue) {
                 self.incrementalImage = nil
-                self.endPaths.removeAll(keepCapacity: false)
                 self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
                 self.setNeedsDisplay() //draw to clear the deleted path
             }
@@ -677,12 +667,6 @@ class SketchView: UIView {
 
     
     
-    func drawEdgePoints(start: CGPoint, end:CGPoint?) {
-        endPaths[start]=drawCircle(start)
-        if let tempEnd = end? {
-            endPaths[tempEnd]=drawCircle(tempEnd)
-        }
-    }
     
     func drawCircle(point: CGPoint) ->UIBezierPath
     {
