@@ -25,7 +25,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         self.dataSource = self
         self.delegate = self
         //invalidate sketches once every second
-
+        
     }
     
     override func reloadData() {
@@ -55,15 +55,8 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             
             let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             
-            
-            //            let picture = UIImage()
-            //            let label = UILabel()
-            
             let index = indexPath.row
             let cellName = names![index]
-
-     
-
             
             if let archivedImage = ArchivedEdges.archivedImage(index){
                 cell.image?.image = archivedImage
@@ -77,9 +70,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             var view = cell.contentView
             
             view.backgroundColor = UIColor.whiteColor()
-            //            view.addSubview(label)
             view.sizeToFit()
-            
             
             cells[index] = cell
             return cell
@@ -91,13 +82,11 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             for (index, cell) in cells{
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
-
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
                     self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
                         vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-                        vc.sketchView.sketch.removeEdge(vc.sketchView.sketch.drivingEdge) //remove master fold
                         vc.sketchView.forceRedraw()
                     })
                     
@@ -108,7 +97,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             }
         }
     }
-
+    
     func handlePress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Ended {
             for (index, cell) in cells{
@@ -126,7 +115,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-
+    
     
     func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) -> Bool {
         
@@ -136,7 +125,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             return true
         }
         return false
-
+        
     }
     
     func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject!) {
@@ -154,14 +143,5 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         
     }
     
-    
-    
-    
-    ///invalidate cells when view loads
-    func invalidateCells() {
-        for cell in cells{
-        }
-    }
-
     
 }

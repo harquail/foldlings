@@ -28,12 +28,6 @@ class SketchView: UIView {
     @IBOutlet var normalButtons: [UIButton]!
     @IBOutlet var templatingButtons: [UIButton]!
     
-    // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
-    var simpleMode = !NSUserDefaults.standardUserDefaults().boolForKey("proMode")
-    
-    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
-    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
-    
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -297,8 +291,9 @@ class SketchView: UIView {
                 
                 var twinsOfVisited = [Edge]()
                 
-                if(templateMode){
-                    if var currentFeatures = sketch.features{
+
+                //iterrte trhough features and draw them
+                if var currentFeatures = sketch.features{
                         
                         if(sketch.currentFeature != nil){
                             currentFeatures.append(sketch.currentFeature!)
@@ -328,7 +323,6 @@ class SketchView: UIView {
                                 
                             }
                         }
-                    }
                 }
                 
                 //print all edges
@@ -375,19 +369,7 @@ class SketchView: UIView {
     }
     
     
-    /// erase hitpoint edge
-    func erase(touchPoint: CGPoint) {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (simpleMode && !edge!.isMaster) || !simpleMode ){
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        } else if var plane = sketch.planeHitTest(touchPoint) {
-            sketch.planes.removePlane(plane)
-        }
-    }
-    
+
     ///makes bezier by stringing segments together
     ///creatse segments from ctrl pts
     func makeBezier(aborted:Bool=false)
@@ -495,13 +477,11 @@ class SketchView: UIView {
     {
         
         var edgekind:Edge.Kind!
-        var fold:Edge.Fold!
         var color:UIColor!
         
         if let e = edge
         {
             edgekind = e.kind
-            fold = e.fold
             if(grayscale){
                 color = e.getLaserColor()
             }
@@ -510,16 +490,15 @@ class SketchView: UIView {
             }
         } else {
             edgekind = modeToEdgeKind(sketchMode)
-            fold = Edge.Fold.Unknown
             if(grayscale){
-                color = Edge.getLaserColor(edgekind, fold:fold)
+                color = Edge.getLaserColor(edgekind)
             }
             else{
-                color = Edge.getColor(edgekind, fold:fold)
+                color = Edge.getColor(edgekind)
             }
         }
         
-        if edgekind == Edge.Kind.Fold || edgekind == Edge.Kind.Tab {
+        if edgekind == Edge.Kind.Fold {
             if grayscale {
                 path.setLineDash([1,10], count: 2, phase:0)
             } else {
@@ -549,14 +528,8 @@ class SketchView: UIView {
                 dispatch_sync(self.redrawLockQueue) {
                     
                     //in template mode, only get planes when features end!
-                    if(!self.templateMode){
-                        self.sketch.getPlanes() //evaluate into planes
-                    }
-                    if self.sketch.buildTabs() {
-                        // if buildtabs returns that it did any changes rerun buildplanes again
-                        self.sketch.getPlanes()
-                        if self.sketch.buildTabs() { self.sketch.getPlanes() }
-                    }
+                    
+
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), {
@@ -725,21 +698,6 @@ class SketchView: UIView {
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
-    ///MARK: simplemode functions
-    
-    ///checks if can draw above fold for simple mode
-    func simpleModeFoldInBounds(point: CGPoint, sketchMode: Mode) -> Bool
-    {
-        switch sketchMode {
-        case .Fold:
-            return point.y >= sketch.drivingEdge.start.y
-        case .Tab:
-            return point.y <= sketch.drivingEdge.start.y
-        default:
-            return true
-        }
-        
-    }
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
     {
@@ -748,8 +706,6 @@ class SketchView: UIView {
             return Edge.Kind.Cut
         case .Fold:
             return Edge.Kind.Fold
-        case .Tab:
-            return Edge.Kind.Tab
         default:
             return Edge.Kind.Cut
         }

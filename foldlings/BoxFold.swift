@@ -31,7 +31,7 @@ class BoxFold:FoldFeature{
         
         returnee.append(h0)
         returnee.append(h2)
-        
+
         //if there's a driving fold
         if let master = drivingFold{
             
@@ -97,7 +97,6 @@ class BoxFold:FoldFeature{
         // split edges for children
         for fold in horizontalFolds{
             if let childs = children{
-                
                 let fragments = edgeSplitByChildren(fold)
                 horizontalFolds.remove(fold)
                 returnee.remove(fold)

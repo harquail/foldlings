@@ -11,8 +11,6 @@ class ArchivedEdges : NSObject, NSCoding {
     
     var adj : [CGPoint: [Edge]] = [CGPoint:[Edge]]()
     var edges: [Edge] = []
-    var folds: [Edge] = []
-    var tabs: [Edge] = []
     var names = [String]()
     var index = 0
     
@@ -37,7 +35,6 @@ class ArchivedEdges : NSObject, NSCoding {
         super.init()
         self.adj = adj
         self.edges = edges
-        self.tabs = tabs
         self.index = index
         if(index>=fetchNames().count){
             addName(name)
@@ -51,13 +48,10 @@ class ArchivedEdges : NSObject, NSCoding {
         super.init()
         self.adj = sketch.adjacency
         self.edges = sketch.edges
-        self.tabs = sketch.tabs
         self.index = sketch.index
         if(index>=fetchNames().count){
             addName(sketch.name)
         }
-        
-        
     }
     
     
@@ -101,10 +95,7 @@ class ArchivedEdges : NSObject, NSCoding {
             
         }
         aCoder.encodeObject(nsKeys, forKey: "adjs")
-        aCoder.encodeObject (foundEdges, forKey: "edges")
-        aCoder.encodeObject (folds, forKey: "folds")
-        aCoder.encodeObject (tabs, forKey: "tabs")
-        
+        aCoder.encodeObject (foundEdges, forKey: "edges")        
     }
     
     
@@ -162,11 +153,11 @@ class ArchivedEdges : NSObject, NSCoding {
         var names = archivedSketchNames()
         println("names\(names)")
         println("removing object at \(index)")
-
+        
         if(names != nil){
             for(i = index; i<names!.count-1; i++){
                 if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as NSData?{
-                NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
+                    NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
                 }
                 println("set object for achivedEdges\(i)")
                 if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as String?{
@@ -219,7 +210,7 @@ class ArchivedEdges : NSObject, NSCoding {
             for(var i = 0; i<names.count; i++){
                 NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(i)")
                 NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(i)")
-
+                
             }
         }
         NSUserDefaults.standardUserDefaults().removeObjectForKey("edgeNames")

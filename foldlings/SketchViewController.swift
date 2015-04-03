@@ -11,20 +11,14 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     
     @IBOutlet var sketchView: SketchView!
-    
     @IBOutlet var selected: UIImageView!
     
-    
     @IBAction func checkButtonClicked(sender:UIButton){
-        
     }
-    
     
     @IBAction func xButtonClicked(sender:UIButton){
         
     }
-    
-    
     
     @IBAction func handleLongPress(sender: AnyObject) {
         sketchView.handleLongPress(sender)
@@ -33,7 +27,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     @IBAction func handlePan(sender: AnyObject) {
         sketchView.handlePan(sender)
-        
     }
     
     
@@ -60,7 +53,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
                         
                         for option in options{
-                            
                             // add a menu item with handler for each option
                             alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
                                 self.handleTapOption(f, option: option)
@@ -99,21 +91,17 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             feature.removeFromSketch(self.sketchView.sketch)
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
-            
         }
         
     }
     
     override func viewDidLoad() {
         
-        if(sketchView.templateMode){
             let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
             sketchView.addGestureRecognizer(singleFingerTap)
             
             let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
             sketchView.addGestureRecognizer(draggy)
-        }
-        
         
     }
     
@@ -128,71 +116,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    @IBAction func EraseButtonClicked(sender: UIButton) {
-        Flurry.logEvent("erase button clicked")
-        
-        //TODO: Animate frame movement
-        selected.frame = CGRectMake(sender.frame.origin.x + 12, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Erase
-        sketchView.statusLabel.text = "Erase"
-        sketchView.hideXCheck()
-    }
-    
-    @IBAction func CutButtonClicked(sender: UIButton)
-    {
-        Flurry.logEvent("cut button clicked")
-        
-        selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Cut
-        sketchView.statusLabel.text = "Cut"
-        sketchView.hideXCheck()
-    }
-    
-    @IBAction func FoldButtonClicked(sender: UIButton)
-    {
-        Flurry.logEvent("fold button clicked")
-        
-        selected.frame = CGRectMake(sender.frame.origin.x, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Fold
-        sketchView.statusLabel.text = "Fold"
-        sketchView.hideXCheck()
-    }
-    
-    @IBAction func TabButtonClicked(sender: UIButton) {
-        Flurry.logEvent("tab button clicked")
-        
-        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Tab
-        sketchView.statusLabel.text = "Tab"
-        sketchView.hideXCheck()
-        
-    }
-    
-    @IBAction func MirrorButtonClicked(sender: UIButton) {
-        Flurry.logEvent("mirror button clicked")
-        sketchView.statusLabel.text = "Select a fold to mirror across"
-        sketchView.showXCheck()
-        
-        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Mirror
-    }
-    
-    @IBAction func TrackButtonClicked(sender: UIButton) {
-        Flurry.logEvent("track button clicked")
-        sketchView.statusLabel.text = "Select a cut"
-        sketchView.showXCheck()
-        
-        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Track
-    }
-    
-    @IBAction func SliderButtonClicked(sender: UIButton) {
-        Flurry.logEvent("slider button clicked")
-        sketchView.statusLabel.text = "Drag a cut"
-        sketchView.showXCheck()
-        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.Slider
-    }
+
     
     @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
         Flurry.logEvent("slider button clicked")
@@ -223,10 +147,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     // hide status bar
     override func prefersStatusBarHidden() -> Bool {
         return true
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        sketchView.viewWillAppear()
     }
     
     

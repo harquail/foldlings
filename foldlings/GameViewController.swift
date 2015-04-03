@@ -16,7 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
-
+    
     //constants
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
@@ -27,9 +27,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let thirtyDegreesNeg = Float(-M_PI/6.0)
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
-
+    
     var theOneSphere = SCNNode()
-
+    
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     var debugColor = false
@@ -46,27 +46,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         UIColor(hue: 0.5, saturation: 0.1, brightness: 1.0, alpha: 0.8),
         UIColor(hue: 0.5, saturation: 0.0, brightness: 1.0, alpha: 0.8)
     ]
-
+    
     
     @IBOutlet var backToSketchButton: UIButton!
     
     /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
         Flurry.logEvent("back to 2d land")
-
+        
         parentButton.setBackgroundImage(self.previewImage(), forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-        
+    
     @IBAction func printButton (sender: UIButton){
         Flurry.logEvent("shared print-out image")
-
+        
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
         Flurry.logEvent("shared laser image")
-
+        
         popupShare(laserImage, xposition:100)
     }
     
@@ -89,10 +89,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         makeScene()
         
     }
-
+    
     
     func makeScene(){
-    
+        
         // create a new scene
         
         // create and add a camera to the scene
@@ -111,8 +111,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         lightNode.light!.attenuationStartDistance = 100
         lightNode.light!.attenuationEndDistance = 1000
         lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        scene.rootNode.addChildNode(lightNode)
-//
+        //        scene.rootNode.addChildNode(lightNode)
+        //
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
@@ -126,11 +126,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
         theOneSphere.position.y = theOneSphere.position.y + 4.0
-
+        
         
         //theOneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
         theOneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
-
+        
         // main loop for defining plane things
         // add each plane to the scene
         for (i, plane) in enumerate(planes.planes) {
@@ -142,7 +142,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             if(plane.kind == Plane.Kind.Hole) {
                 
                 let parentPlane = plane.containerPlane(planes.planes)
-                    
+                
                 if parentPlane != nil{
                     let n = plane.lazyNode()
                     n.transform = SCNMatrix4Identity
@@ -152,14 +152,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 }
             }
         }
-
+        
         
         visited = []
         notMyChild = [Int: [Plane]]()
         if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
             theOneSphere.addChildNode(topPlaneSphere)
         }
-
+        
         
         // make bottomPlane manually
         if var bottomPlane = planes.bottomPlane {
@@ -187,7 +187,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // configure the view
         scnView.backgroundColor = UIColor.whiteColor()
-
+        
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
@@ -198,7 +198,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
         child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
-
+        
     }
     
     
@@ -213,26 +213,26 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // base case if bottom
         if plane == bottom {
-//            println("bottomed out")
+            //            println("bottomed out")
             return nil
         }
         // base case already visited or going back up
         if contains(visited, plane) {
-//            println("already been here")
+            //            println("already been here")
             return nil
         }
         // base case going back up
         if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
-//            println("belongs to prev")
+            //            println("belongs to prev")
             return nil
         }
-
+        
         
         // functionality here
         var node = plane.lazyNode()
         
         if(plane.kind != .Hole){
-        node.addAnimation(fadeIn(), forKey: "fade in")
+            node.addAnimation(fadeIn(), forKey: "fade in")
         }
         
         var useBottom = (recurseCount == 0)
@@ -271,7 +271,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 undoParentTranslate(masterSphere, child: childSphere)
             }
         }
-//        println("recurse level: \(recurseCount)")
+        //        println("recurse level: \(recurseCount)")
         return masterSphere
     }
     
@@ -324,7 +324,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
     
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -363,7 +363,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
         }
     }
-
+    
     
     private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
         
@@ -384,11 +384,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let m = SCNMaterial()
         m.diffuse.contents = UIColor.clearColor()
         masterSphere.geometry?.firstMaterial = m
-
+        
         return masterSphere
     }
-
-
+    
+    
     
     ///makes a little sphere at the given point in world space
     func makeSphere(#atPoint: SCNVector3) -> SCNNode {
@@ -397,7 +397,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         sphereNode.position = atPoint
         return sphereNode
     }
-
+    
     ///makes a little sphere at the given point in world space
     func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
         let sphereGeometry = SCNSphere(radius: 0.15)
