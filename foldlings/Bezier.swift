@@ -29,8 +29,8 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 
 
 /// is the path given drawn in counterclockwise winding order
-func isCounterClockwise(path:UIBezierPath) -> Bool
-{    
+ func isCounterClockwise(path:UIBezierPath) -> Bool
+{
     return !path.isClockwise()
 }
 
