@@ -28,12 +28,6 @@ class SketchView: UIView {
     @IBOutlet var normalButtons: [UIButton]!
     @IBOutlet var templatingButtons: [UIButton]!
     
-    // this sets simpleMode,  we could refactor and do a sublcass for simple mode but might be quicker to do this
-    var simpleMode = !NSUserDefaults.standardUserDefaults().boolForKey("proMode")
-    
-    // this sets templating mode,  we could refactor and do a sublcass for templating mode but might be quicker to do this
-    var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
-    
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
     var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
@@ -43,7 +37,6 @@ class SketchView: UIView {
     var sketchMode:  Mode = Mode.Cut
     var cancelledTouch: UITouch?  //if interrrupted say on intersection
     var sketch: Sketch!
-    var endPaths: [CGPoint: UIBezierPath] = [CGPoint: UIBezierPath]() //the circles on the ends of paths
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     var gameView = GameViewController()
@@ -79,28 +72,7 @@ class SketchView: UIView {
         
     }
     
-    func viewWillAppear(){
-        hideButtonsWeDontNeed()
-    }
     
-    func hideButtonsWeDontNeed(){
-        
-        var buttonsToHide:[UIButton]!
-        
-        if(templateMode){
-            buttonsToHide = self.normalButtons
-            self.sketchMode = Mode.BoxFold
-        }
-        else{
-            buttonsToHide = self.templatingButtons
-        }
-        
-        for button in buttonsToHide{
-            button.userInteractionEnabled = false
-            button.alpha = 0
-        }
-        
-    }
     
     override func drawRect(rect: CGRect)
     {
@@ -262,170 +234,6 @@ class SketchView: UIView {
     }
     
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent)
-    {
-        
-        if(templateMode){
-            
-            
-        }
-        else{
-            
-            var touch = touches.anyObject() as UITouch
-            var touchPoint: CGPoint = touch.locationInView(self)
-            startEdgeCollision = nil //reset edge collisions to nil
-            endEdgeCollision = nil
-            
-            // ignore touch if outside of bounds
-            if !sketch.checkInBounds(touchPoint) {
-                cancelledTouch = touch
-                return
-            }
-            
-            switch sketchMode
-            {
-            case .Erase:
-                erase(touchPoint)
-            case .Cut, .Fold, .Tab:
-                // simplemode check for fold drawing
-                if simpleMode && !simpleModeFoldInBounds(touchPoint, sketchMode: sketchMode)  {
-                    cancelledTouch = touch
-                    return
-                }
-                
-                // snap to vertex
-                if let np = sketch.vertexHitTest(touchPoint) {
-                    touchPoint = np
-                } // snap to edge
-                else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
-                    touchPoint = np
-                    startEdgeCollision = edge
-                }
-                ctr = 0
-                pts[0] = touchPoint
-                tempStart = touchPoint
-                tempEnd = touchPoint //set end to same point at start
-                setPathStyle(path, edge:nil, grayscale:false)
-            default:
-                break
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
-    {
-        
-        if(templateMode){
-            
-        }
-        else{
-            var touch = touches.anyObject() as UITouch
-            var touchPoint: CGPoint = touch.locationInView(self)
-            
-            // ignore cancelledTouch
-            if cancelledTouch == nil || cancelledTouch! != touch {
-                switch sketchMode
-                {
-                case .Erase: // if in erase mode
-                    erase(touchPoint);
-                case .Cut, .Fold, .Tab:
-                    // check if we've snapped or aborted
-                    var abort:Bool = checkCurrentEnd(touchPoint)
-                    ctr=ctr+1
-                    pts[ctr] = tempEnd
-                    
-                    if (ctr == 4)
-                    {
-                        makeBezier() //create bezier curves
-                    }
-                    
-                    if abort {
-                        cancelledTouch = touch
-                    }
-                    
-                default:
-                    break
-                }
-            }
-        }
-    }
-    
-    
-    
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        
-        if(templateMode){
-            
-        }
-        else{
-            
-            var endPoint = tempEnd
-            let startPoint = tempStart
-            switch sketchMode
-            {
-            case .Erase:
-                break
-            case .Cut, .Fold, .Tab:
-                if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
-                {
-                    var se1:Edge?
-                    var se2:Edge?
-                    //splits edges on collision
-                    if let startColEdge = startEdgeCollision {
-                        // if there are problems with circles might be here
-                        var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                        se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                        se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                        self.sketch.removeEdge(startColEdge)
-                    }
-                    if var endColEdge = endEdgeCollision {
-                        // check if we've already split this particular object this is problem so we need to make sure
-                        // look at the new edges
-                        var cut = false
-                        if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
-                            endColEdge = se1!
-                            cut = true
-                        } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
-                            endColEdge = se2!
-                            cut = true
-                        }
-                        var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
-                        if cut {
-                            // this checks for cutting off the tops above tabs
-                            if !(sketchMode == .Tab && endColEdge.start == startPoint) {
-                                self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                            }
-                            // this checks for cutting off the tops above tabs
-                            if !(sketchMode == .Tab && endColEdge.end == startPoint) {
-                                self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                            }
-                        } else {
-                            self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                            self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                        }
-                        self.sketch.removeEdge(endColEdge)
-                    }
-                    makeBezier(aborted: true)  //do another call to makeBezier to finish the line
-                    var newPath = UIBezierPath(CGPath: path.CGPath)
-                    newPath = smoothPath(newPath)
-                    setPathStyle(newPath, edge:nil, grayscale:false)
-                    self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
-                    self.setNeedsDisplay()
-                }
-                path.removeAllPoints()
-                ctr = 0
-                forceRedraw()
-            default:
-                break
-            }
-        }
-    }
-    
     override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
@@ -482,8 +290,9 @@ class SketchView: UIView {
                 
                 var twinsOfVisited = [Edge]()
                 
-                if(templateMode){
-                    if var currentFeatures = sketch.features{
+
+                //iterrte trhough features and draw them
+                if var currentFeatures = sketch.features{
                         
                         if(sketch.currentFeature != nil){
                             currentFeatures.append(sketch.currentFeature!)
@@ -504,16 +313,11 @@ class SketchView: UIView {
                                     //                                    twinsOfVisited.append(e.twin)
                                     //                                }
                                     
-                                    // just draw that point to indicate it...
-                                    if circles && (!e.path.empty) && (e.start != e.end) {
-                                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
-                                    }
                                     
                                 }
                                 
                             }
                         }
-                    }
                 }
                 
                 //print all edges
@@ -527,10 +331,6 @@ class SketchView: UIView {
                         twinsOfVisited.append(e.twin)
                     }
                     
-                    // just draw that point to indicate it...
-                    if circles && (!e.path.empty) && (e.start != e.end) {
-                        drawEdgePoints(e.start, end:e.end) //these only get drawn when lines are complete
-                    }
                     
                 }
             }
@@ -560,19 +360,7 @@ class SketchView: UIView {
     }
     
     
-    /// erase hitpoint edge
-    func erase(touchPoint: CGPoint) {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (simpleMode && !edge!.isMaster) || !simpleMode ){
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        } else if var plane = sketch.planeHitTest(touchPoint) {
-            sketch.planes.removePlane(plane)
-        }
-    }
-    
+
     ///makes bezier by stringing segments together
     ///creatse segments from ctrl pts
     func makeBezier(aborted:Bool=false)
@@ -680,13 +468,11 @@ class SketchView: UIView {
     {
         
         var edgekind:Edge.Kind!
-        var fold:Edge.Fold!
         var color:UIColor!
         
         if let e = edge
         {
             edgekind = e.kind
-            fold = e.fold
             if(grayscale){
                 color = e.getLaserColor()
             }
@@ -695,16 +481,15 @@ class SketchView: UIView {
             }
         } else {
             edgekind = modeToEdgeKind(sketchMode)
-            fold = Edge.Fold.Unknown
             if(grayscale){
-                color = Edge.getLaserColor(edgekind, fold:fold)
+                color = Edge.getLaserColor(edgekind)
             }
             else{
-                color = Edge.getColor(edgekind, fold:fold)
+                color = Edge.getColor(edgekind)
             }
         }
         
-        if edgekind == Edge.Kind.Fold || edgekind == Edge.Kind.Tab {
+        if edgekind == Edge.Kind.Fold {
             if grayscale {
                 path.setLineDash([1,10], count: 2, phase:0)
             } else {
@@ -734,14 +519,8 @@ class SketchView: UIView {
                 dispatch_sync(self.redrawLockQueue) {
                     
                     //in template mode, only get planes when features end!
-                    if(!self.templateMode){
-                        self.sketch.getPlanes() //evaluate into planes
-                    }
-                    if self.sketch.buildTabs() {
-                        // if buildtabs returns that it did any changes rerun buildplanes again
-                        self.sketch.getPlanes()
-                        if self.sketch.buildTabs() { self.sketch.getPlanes() }
-                    }
+                    
+
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), {
@@ -756,7 +535,6 @@ class SketchView: UIView {
             
             dispatch_sync(self.redrawLockQueue) {
                 self.incrementalImage = nil
-                self.endPaths.removeAll(keepCapacity: false)
                 self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
                 self.setNeedsDisplay() //draw to clear the deleted path
             }
@@ -886,19 +664,9 @@ class SketchView: UIView {
         
         return asketch
     }
+
     
     
-    //    func previewImage() -> UIImage {
-    //        return bitmap(grayscale: false, circles: false)
-    //    }
-    
-    
-    func drawEdgePoints(start: CGPoint, end:CGPoint?) {
-        endPaths[start]=drawCircle(start)
-        if let tempEnd = end? {
-            endPaths[tempEnd]=drawCircle(tempEnd)
-        }
-    }
     
     func drawCircle(point: CGPoint) ->UIBezierPath
     {
@@ -914,21 +682,6 @@ class SketchView: UIView {
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
-    ///MARK: simplemode functions
-    
-    ///checks if can draw above fold for simple mode
-    func simpleModeFoldInBounds(point: CGPoint, sketchMode: Mode) -> Bool
-    {
-        switch sketchMode {
-        case .Fold:
-            return point.y >= sketch.drivingEdge.start.y
-        case .Tab:
-            return point.y <= sketch.drivingEdge.start.y
-        default:
-            return true
-        }
-        
-    }
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
     {
@@ -937,8 +690,6 @@ class SketchView: UIView {
             return Edge.Kind.Cut
         case .Fold:
             return Edge.Kind.Fold
-        case .Tab:
-            return Edge.Kind.Tab
         default:
             return Edge.Kind.Cut
         }

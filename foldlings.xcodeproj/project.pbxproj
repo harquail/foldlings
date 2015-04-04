@@ -84,6 +84,18 @@
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
 		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
+		F16673BD1ACE3F5700243D70 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A41ACE3F5700243D70 /* Info.plist */; };
+		F16673BE1ACE3F5700243D70 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673A61ACE3F5700243D70 /* JRSwizzle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A71ACE3F5700243D70 /* PerformanceBezier-Info.plist */; };
+		F16673C01ACE3F5700243D70 /* UIBezierPath+Center.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673AA1ACE3F5700243D70 /* UIBezierPath+Center.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C11ACE3F5700243D70 /* UIBezierPath+Clockwise.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673AC1ACE3F5700243D70 /* UIBezierPath+Clockwise.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C21ACE3F5700243D70 /* UIBezierPath+Description.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673AE1ACE3F5700243D70 /* UIBezierPath+Description.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C31ACE3F5700243D70 /* UIBezierPath+Equals.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673B01ACE3F5700243D70 /* UIBezierPath+Equals.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C41ACE3F5700243D70 /* UIBezierPath+FirstLast.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673B21ACE3F5700243D70 /* UIBezierPath+FirstLast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C51ACE3F5700243D70 /* UIBezierPath+NSOSX.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673B41ACE3F5700243D70 /* UIBezierPath+NSOSX.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673B71ACE3F5700243D70 /* UIBezierPath+Performance.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C71ACE3F5700243D70 /* UIBezierPath+Uncached.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673BA1ACE3F5700243D70 /* UIBezierPath+Uncached.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F16673C81ACE3F5700243D70 /* UIBezierPathProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673BC1ACE3F5700243D70 /* UIBezierPathProperties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
@@ -301,6 +313,31 @@
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+		F16673A41ACE3F5700243D70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F16673A51ACE3F5700243D70 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
+		F16673A61ACE3F5700243D70 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
+		F16673A71ACE3F5700243D70 /* PerformanceBezier-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PerformanceBezier-Info.plist"; sourceTree = "<group>"; };
+		F16673A81ACE3F5700243D70 /* PerformanceBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceBezier.h; sourceTree = "<group>"; };
+		F16673A91ACE3F5700243D70 /* UIBezierPath+Center.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Center.h"; sourceTree = "<group>"; };
+		F16673AA1ACE3F5700243D70 /* UIBezierPath+Center.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Center.m"; sourceTree = "<group>"; };
+		F16673AB1ACE3F5700243D70 /* UIBezierPath+Clockwise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Clockwise.h"; sourceTree = "<group>"; };
+		F16673AC1ACE3F5700243D70 /* UIBezierPath+Clockwise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Clockwise.m"; sourceTree = "<group>"; };
+		F16673AD1ACE3F5700243D70 /* UIBezierPath+Description.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Description.h"; sourceTree = "<group>"; };
+		F16673AE1ACE3F5700243D70 /* UIBezierPath+Description.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Description.m"; sourceTree = "<group>"; };
+		F16673AF1ACE3F5700243D70 /* UIBezierPath+Equals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Equals.h"; sourceTree = "<group>"; };
+		F16673B01ACE3F5700243D70 /* UIBezierPath+Equals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Equals.m"; sourceTree = "<group>"; };
+		F16673B11ACE3F5700243D70 /* UIBezierPath+FirstLast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+FirstLast.h"; sourceTree = "<group>"; };
+		F16673B21ACE3F5700243D70 /* UIBezierPath+FirstLast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+FirstLast.m"; sourceTree = "<group>"; };
+		F16673B31ACE3F5700243D70 /* UIBezierPath+NSOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+NSOSX.h"; sourceTree = "<group>"; };
+		F16673B41ACE3F5700243D70 /* UIBezierPath+NSOSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+NSOSX.m"; sourceTree = "<group>"; };
+		F16673B51ACE3F5700243D70 /* UIBezierPath+NSOSX_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+NSOSX_Private.h"; sourceTree = "<group>"; };
+		F16673B61ACE3F5700243D70 /* UIBezierPath+Performance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance.h"; sourceTree = "<group>"; };
+		F16673B71ACE3F5700243D70 /* UIBezierPath+Performance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Performance.m"; sourceTree = "<group>"; };
+		F16673B81ACE3F5700243D70 /* UIBezierPath+Performance_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Performance_Private.h"; sourceTree = "<group>"; };
+		F16673B91ACE3F5700243D70 /* UIBezierPath+Uncached.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Uncached.h"; sourceTree = "<group>"; };
+		F16673BA1ACE3F5700243D70 /* UIBezierPath+Uncached.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Uncached.m"; sourceTree = "<group>"; };
+		F16673BB1ACE3F5700243D70 /* UIBezierPathProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBezierPathProperties.h; sourceTree = "<group>"; };
+		F16673BC1ACE3F5700243D70 /* UIBezierPathProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBezierPathProperties.m; sourceTree = "<group>"; };
 		F17C93C819E24BEC00BB77F1 /* foldlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foldlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -401,6 +438,7 @@
 				F160F3B81A31463900B469CA /* Flurry */,
 				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
 				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
+				F16673A31ACE3F5700243D70 /* PerformanceBezier */,
 				F153BB631A1EAED50029FDF2 /* SVGgh */,
 				22061CA01A1B17530030079D /* SwiftStructures */,
 				22D0E8041A169F3200C9ECAA /* ExSwift */,
@@ -606,6 +644,38 @@
 				F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */,
 			);
 			path = Flurry;
+			sourceTree = "<group>";
+		};
+		F16673A31ACE3F5700243D70 /* PerformanceBezier */ = {
+			isa = PBXGroup;
+			children = (
+				F16673A41ACE3F5700243D70 /* Info.plist */,
+				F16673A51ACE3F5700243D70 /* JRSwizzle.h */,
+				F16673A61ACE3F5700243D70 /* JRSwizzle.m */,
+				F16673A71ACE3F5700243D70 /* PerformanceBezier-Info.plist */,
+				F16673A81ACE3F5700243D70 /* PerformanceBezier.h */,
+				F16673A91ACE3F5700243D70 /* UIBezierPath+Center.h */,
+				F16673AA1ACE3F5700243D70 /* UIBezierPath+Center.m */,
+				F16673AB1ACE3F5700243D70 /* UIBezierPath+Clockwise.h */,
+				F16673AC1ACE3F5700243D70 /* UIBezierPath+Clockwise.m */,
+				F16673AD1ACE3F5700243D70 /* UIBezierPath+Description.h */,
+				F16673AE1ACE3F5700243D70 /* UIBezierPath+Description.m */,
+				F16673AF1ACE3F5700243D70 /* UIBezierPath+Equals.h */,
+				F16673B01ACE3F5700243D70 /* UIBezierPath+Equals.m */,
+				F16673B11ACE3F5700243D70 /* UIBezierPath+FirstLast.h */,
+				F16673B21ACE3F5700243D70 /* UIBezierPath+FirstLast.m */,
+				F16673B31ACE3F5700243D70 /* UIBezierPath+NSOSX.h */,
+				F16673B41ACE3F5700243D70 /* UIBezierPath+NSOSX.m */,
+				F16673B51ACE3F5700243D70 /* UIBezierPath+NSOSX_Private.h */,
+				F16673B61ACE3F5700243D70 /* UIBezierPath+Performance.h */,
+				F16673B71ACE3F5700243D70 /* UIBezierPath+Performance.m */,
+				F16673B81ACE3F5700243D70 /* UIBezierPath+Performance_Private.h */,
+				F16673B91ACE3F5700243D70 /* UIBezierPath+Uncached.h */,
+				F16673BA1ACE3F5700243D70 /* UIBezierPath+Uncached.m */,
+				F16673BB1ACE3F5700243D70 /* UIBezierPathProperties.h */,
+				F16673BC1ACE3F5700243D70 /* UIBezierPathProperties.m */,
+			);
+			path = PerformanceBezier;
 			sourceTree = "<group>";
 		};
 		F17C93BF19E24BEC00BB77F1 = {
@@ -900,7 +970,9 @@
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
 				F145829B1A79E89000760799 /* preview_button.png in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
+				F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
+				F16673BD1ACE3F5700243D70 /* Info.plist in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
 				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
@@ -960,7 +1032,9 @@
 				22D0E7FF1A169F2400C9ECAA /* Int.swift in Sources */,
 				F14D844E1AC26321004CCD67 /* FreeForm.swift in Sources */,
 				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
+				F16673C51ACE3F5700243D70 /* UIBezierPath+NSOSX.m in Sources */,
 				F1BE6A891AC1EF4A00B99C8F /* ANPathBitmap.m in Sources */,
+				F16673C31ACE3F5700243D70 /* UIBezierPath+Equals.m in Sources */,
 				22D0E7FD1A169F2400C9ECAA /* ExSwift.swift in Sources */,
 				F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */,
 				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
@@ -989,8 +1063,11 @@
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
 				22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */,
+				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,
 				F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */,
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
+				F16673C11ACE3F5700243D70 /* UIBezierPath+Clockwise.m in Sources */,
+				F16673C21ACE3F5700243D70 /* UIBezierPath+Description.m in Sources */,
 				F1BE6A821AC1EF4A00B99C8F /* UIImage+ANImageBitmapRep.m in Sources */,
 				22D0E7FC1A169F2400C9ECAA /* Double.swift in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
@@ -1000,14 +1077,18 @@
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
 				22D0E8001A169F2400C9ECAA /* NSArray.swift in Sources */,
 				F153BBA81A1EAED50029FDF2 /* SVGPrinter.m in Sources */,
+				F16673C01ACE3F5700243D70 /* UIBezierPath+Center.m in Sources */,
+				F16673C41ACE3F5700243D70 /* UIBezierPath+FirstLast.m in Sources */,
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
+				F16673C81ACE3F5700243D70 /* UIBezierPathProperties.m in Sources */,
 				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
 				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,
 				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
 				22061CA21A1B18180030079D /* Queue.swift in Sources */,
 				F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */,
 				F1BE6A8A1AC1EF4A00B99C8F /* ANPathIntersection.m in Sources */,
+				F16673C71ACE3F5700243D70 /* UIBezierPath+Uncached.m in Sources */,
 				F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */,
 				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
 				F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */,
@@ -1029,6 +1110,7 @@
 				F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */,
 				F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */,
 				F153BB9E1A1EAED50029FDF2 /* GHTextLine.m in Sources */,
+				F16673BE1ACE3F5700243D70 /* JRSwizzle.m in Sources */,
 				223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */,
 				F1BE6A841AC1EF4A00B99C8F /* CGImageContainer.m in Sources */,
 				22D0E8011A169F2400C9ECAA /* Range.swift in Sources */,
@@ -1168,16 +1250,29 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings",
+				);
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings/Flurry",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC++",
+					"-lstdc++",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC++",
+					"-lstdc++",
+				);
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};
@@ -1188,12 +1283,25 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/foldlings",
+				);
 				INFOPLIST_FILE = foldlings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings/Flurry",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC++",
+					"-lstdc++",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC++",
+					"-lstdc++",
+				);
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";

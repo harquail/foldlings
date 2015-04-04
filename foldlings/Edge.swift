@@ -26,11 +26,11 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-        return "Start: \(start), End: \(end), \n \(kind.rawValue),\(fold.rawValue), \(path)"
+        return "Start: \(start), End: \(end), \n \(kind.rawValue), \(path)"
     }
     
     override var hashValue: Int { get {
-            return description.hashValue
+        return description.hashValue
         }
     }
     
@@ -43,14 +43,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     enum Kind: String {
         case Fold = "Fold"
         case Cut = "Cut"
-        case Tab = "Tab"
     }
     
-    enum Fold: String {
-        case Hill = "Hill"
-        case Valley = "Valley"
-        case Unknown = "Unknown"
-    }
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 0.5)
@@ -58,7 +52,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 0.5)
         static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
         static var Tab:UIColor = UIColor(red: 0.0, green: 150.0, blue: 150.0, alpha: 0.5)
-
+        
     }
     
     /// color for printing with laser cutter
@@ -68,11 +62,10 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         static var Fold:UIColor = UIColor.blackColor()
         static var Cut:UIColor = UIColor.blackColor()
     }
-
+    
     var start: CGPoint
     var end: CGPoint
     var path = UIBezierPath()
-    var fold = Fold.Unknown
     var kind = Kind.Cut
     var adjacency: [Edge] = []
     var isMaster = false
@@ -86,19 +79,17 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = path
     }
     
-    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, fold: Fold = Fold.Unknown, isMaster:Bool = false) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
-        self.fold = fold
         self.isMaster = isMaster
     }
-
+    
     
     required init(coder aDecoder: NSCoder) {
         self.start = aDecoder.decodeCGPointForKey("start")
         self.end = aDecoder.decodeCGPointForKey("end")
         self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
-        self.fold = Fold(rawValue: (aDecoder.decodeObjectForKey("fold") as String))!
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
     }
@@ -106,14 +97,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     
     func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeCGPoint(start, forKey: "start")
-            aCoder.encodeCGPoint(end, forKey: "end")
-            aCoder.encodeObject(path, forKey: "path")
-            aCoder.encodeObject( self.fold.rawValue, forKey:"fold" )
-            aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
-            aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+        aCoder.encodeCGPoint(start, forKey: "start")
+        aCoder.encodeCGPoint(end, forKey: "end")
+        aCoder.encodeObject(path, forKey: "path")
+        aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
+        aCoder.encodeBool(self.isMaster, forKey: "isMaster")
     }
-
+    
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
         
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, radius, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
@@ -141,22 +131,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     
     /// get the color of the edge by type
-    class func getColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
+    class func getColor(kind: Edge.Kind) -> UIColor
     {
         var color: UIColor!
         switch kind
         {
         case .Fold:
-            switch fold {
-                case .Hill:
-                    color = Color.Hill
-                case .Valley:
-                    color = Color.Valley
-                default:
-                    color = Color.Fold
-            }
-        case .Tab:
-            color = Color.Tab
+            color = Color.Fold
         case .Cut:
             color = Color.Cut
         default:
@@ -166,20 +147,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     }
     
     
-    class func getLaserColor(kind: Edge.Kind, fold: Edge.Fold = Edge.Fold.Unknown) -> UIColor
+    class func getLaserColor(kind: Edge.Kind) -> UIColor
     {
         var color: UIColor!
         switch kind
         {
-        case .Fold, .Tab:
-            switch fold {
-            case .Hill:
-                color = LaserColor.Hill
-            case .Valley:
-                color = LaserColor.Valley
-            default:
-                color = LaserColor.Fold
-            }
+        case .Fold:
+            color = LaserColor.Fold
         case .Cut:
             color = LaserColor.Cut
         default:
@@ -190,7 +164,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     func getLaserColor() -> UIColor
     {
-        return Edge.getLaserColor(self.kind, fold:self.fold)
+        return Edge.getLaserColor(self.kind)
     }
     
     func getColor() -> UIColor
@@ -198,15 +172,15 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         if self.colorOverride != nil {
             return self.colorOverride!
         } else {
-            return Edge.getColor(self.kind, fold:self.fold)
+            return Edge.getColor(self.kind)
         }
     }
     
     /// this is completely unecessary, but convenient
     func yDistTo(e:Edge)-> CGFloat{
-
+        
         return abs(self.start.y - e.start.y)
-    
+        
     }
     
     /// makes a straight edge between two points, constructing the path as well

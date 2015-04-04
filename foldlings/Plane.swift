@@ -51,8 +51,6 @@ class Plane: Printable, Hashable
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
-
-    
     
     
     init()
@@ -122,7 +120,7 @@ class Plane: Printable, Hashable
         
         var minY:CGFloat = 0.0
         for edge in edges {
-            if(edge.kind ==  .Fold || (tab && edge.kind == .Tab) ) {
+            if(edge.kind ==  .Fold ) {
                 if(edge.start.y > minY) {
                     minEdge = edge
                     minY = edge.start.y
@@ -139,7 +137,7 @@ class Plane: Printable, Hashable
         
         var maxY:CGFloat = CGFloat.max
         for edge in edges {
-            if(edge.kind == .Fold  || (tab && edge.kind == .Tab) ) {
+            if(edge.kind == .Fold ) {
                 if(edge.start.y < maxY) {
                     maxEdge = edge
                     maxY = edge.start.y

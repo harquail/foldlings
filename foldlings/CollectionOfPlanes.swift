@@ -60,7 +60,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     }
                     edge.plane = plane
                     if kOverrideColor { edge.colorOverride = color }
-                    if edge.kind == .Fold || edge.kind == .Tab {
+                    if edge.kind == .Fold {
                         plane.kind = .Plane
                         
                         if let p = edge.twin.plane {
@@ -102,10 +102,8 @@ class CollectionOfPlanes: Printable, Hashable {
             }
             
             self.adjacency[plane] = nil
-            
-            
             self.planes.remove(plane)
-
+            
         }
     }
     
@@ -125,7 +123,7 @@ class CollectionOfPlanes: Printable, Hashable {
         return true
     }
     
-        
-
+    
+    
 }
 

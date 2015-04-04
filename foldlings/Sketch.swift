@@ -16,7 +16,8 @@
         
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
-        var draggedEdge:Edge? //feature currently being drawn
+        
+        var draggedEdge:Edge? //edge being dragged
         
         var masterFeature:FoldFeature?
         
@@ -24,25 +25,12 @@
         //for now, cuts are in this array to
         let edgeAdjacencylockQueue = dispatch_queue_create("com.Foldlings.LockEdgeAdjacencyQueue", nil)
         var edges : [Edge] = []
-        var tabs  : [Edge] = [] // tabbytabbbss
         var visited : [Edge]!
         var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
-        var drivingEdge: Edge!
-        var bEdge1: Edge!  //top
-        var bEdge2: Edge!  //right
-        var bEdge2point5: Edge!  //right2
-        var bEdge3: Edge!  //bottom
-        var bEdge4: Edge!  //left
-        var bEdge4point5: Edge!  //left2
-        var borderEdges: [Edge] = []
-        
         var index:Int
         var name:String
         var origin:Origin
         var planes:CollectionOfPlanes = CollectionOfPlanes()
-        
-        // this sets templating mode, we could refactor and do a subclass for templating mode but might be quicker to do this
-        var templateMode = !NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
         
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
         enum Origin: String {
@@ -64,13 +52,8 @@
             super.init()
             
             //insert master fold and make borders into cuts
-            if(templateMode){
-                
                 makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            }
-            else{
-                makeBorderEdges(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            }
+
         }
         
         /// add an already-constructed edge
@@ -143,11 +126,6 @@
                 }
             }
             
-            if kind == .Tab
-            {
-                if !contains(tabs, edge) { tabs.append(edge) }
-            }
-            
             
             return edge
         }
@@ -162,7 +140,6 @@
                 var twin = edge.twin
                 self.edges.remove(edge)
                 self.edges.remove(twin)
-                self.tabs.remove(edge)
                 if self.adjacency[edge.start] != nil {
                     
                     // Remove edge from all of the adjacency lists
@@ -244,80 +221,10 @@
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
             }
-            drivingEdge = masterFeature!.horizontalFolds.first
+//            drivingEdge = masterFeature!.horizontalFolds.first
             
         }
         
-        /// makes border edges
-        /// NOTE: width and height here are actually aboslute positions for the lines rather than the width/height
-        func makeBorderEdges(width: CGFloat, height: CGFloat){
-            let screenSize: CGRect = UIScreen.mainScreen().bounds
-            let screenWidth = screenSize.width;
-            let screenHeight = screenSize.height;
-            
-            
-            let halfH = height/2.0
-            
-            let downabit:CGFloat = -50.0
-            let midLeft = CGPointMake(screenWidth-width, halfH)
-            let midRight = CGPointMake(width, halfH)
-            
-            var path = UIBezierPath()
-            path.moveToPoint(midLeft)
-            path.addLineToPoint(midRight)
-            // this style stuff below is ugly but whatever
-            path.setLineDash([10,5], count: 2, phase:0)
-            path.lineWidth = kLineWidth
-            
-            drivingEdge = addEdge(midLeft, end: midRight, path: path, kind: Edge.Kind.Fold, isMaster:true)
-            drivingEdge.fold = .Valley
-            
-            //border paths
-            var path1 = UIBezierPath()
-            var path2 = UIBezierPath()
-            var path2point5 = UIBezierPath()
-            var path3 = UIBezierPath()
-            var path4 = UIBezierPath()
-            var path4point5 = UIBezierPath()
-            
-            
-            
-            // border points
-            let b1 = CGPointMake(screenWidth-width, screenHeight-height + downabit) //topleft
-            let b2 = CGPointMake(width, screenHeight-height + downabit)  //topright
-            //between b2 and b3 should be a midRight
-            let b3 = CGPointMake(width, height + downabit)   //bottomright
-            let b4 = CGPointMake(screenWidth-width, height + downabit)  //bottomleft
-            
-            //border edges
-            path1.moveToPoint(b1)
-            path1.addLineToPoint(b2)
-            bEdge1 = addEdge(b1, end: b2, path: path1, kind: Edge.Kind.Cut, isMaster:true)//top
-            
-            path2.moveToPoint(b2)
-            path2.addLineToPoint(midRight)
-            bEdge2 = addEdge(b2, end: midRight, path: path2, kind: Edge.Kind.Cut, isMaster:true)//right
-            
-            path2point5.moveToPoint(midRight)
-            path2point5.addLineToPoint(b3)
-            bEdge2point5 = addEdge(midRight, end: b3, path: path2point5, kind: Edge.Kind.Cut, isMaster:true)//right2
-            
-            path3.moveToPoint(b3)
-            path3.addLineToPoint(b4)
-            bEdge3 = addEdge(b3, end: b4, path: path3, kind: Edge.Kind.Cut, isMaster:true)//bottom
-            
-            path4.moveToPoint(b1)
-            path4.addLineToPoint(midLeft)
-            bEdge4 = addEdge(b1, end: midLeft, path: path4, kind: Edge.Kind.Cut, isMaster:true)//left
-            
-            path4point5.moveToPoint(midLeft)
-            path4point5.addLineToPoint(b4)
-            bEdge4point5 = addEdge(midLeft, end: b4, path: path4point5, kind: Edge.Kind.Cut, isMaster:true)//left2
-            
-            borderEdges = [bEdge1, bEdge1.twin, bEdge2, bEdge2.twin, bEdge2point5, bEdge2point5.twin,            bEdge3, bEdge3.twin, bEdge4, bEdge4.twin, bEdge4point5, bEdge4point5.twin]
-            // note width here has to subtract the border
-            drawingBounds =  CGRectMake(b1.x, b1.y, width - ((screenWidth - width)), height - (screenHeight - height))
-        }
         
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
@@ -394,68 +301,6 @@
         }
         
         
-        /// build tabs as necessary from te planes
-        func buildTabs() -> Bool {
-            var retB = false
-            
-            for tab in tabs {
-                var bottomFold:Edge? = nil
-                
-                let plane1 = tab.plane
-                let plane2 = tab.twin.plane
-                var plane:Plane?
-                
-                for p in [plane1, plane2] {
-                    if p != nil {
-                        if !p!.hasEdge(bEdge1) {
-                            plane = p
-                            bottomFold = p!.bottomFold(tab: false)
-                        }
-                    }
-                }
-                if bottomFold != nil {
-                    
-                    if bottomFold!.start.y == drivingEdge.start.y &&
-                        (bottomFold!.start != drivingEdge.start) &&
-                        (bottomFold!.end != drivingEdge.start) &&
-                        (bottomFold!.start != drivingEdge.end) &&
-                        (bottomFold!.end != drivingEdge.end)
-                    {
-                        println("removing fold in middle of planes")
-                        removeEdge(bottomFold!)
-                        retB = true
-                    } else {
-                        let distance = abs(drivingEdge.start.y  - bottomFold!.start.y)
-                        let newfoldstart = CGPointMake(tab.start.x, tab.start.y-distance)
-                        let newfoldend = CGPointMake(tab.end.x, tab.end.y-distance)
-                        //new fold
-                        let newfold = UIBezierPath()
-                        newfold.moveToPoint(newfoldstart)
-                        newfold.addLineToPoint(newfoldend)
-                        var newFoldEdge = addEdge(newfoldstart, end: newfoldend, path: newfold, kind: Edge.Kind.Fold)
-                        //left edge
-                        let newleft = UIBezierPath()
-                        newleft.moveToPoint(tab.start)
-                        newleft.addLineToPoint(newfoldstart)
-                        var newLeftEdge = addEdge(tab.start, end: newfoldstart, path:newleft, kind:Edge.Kind.Cut)
-                        //right edge
-                        let newright = UIBezierPath()
-                        newright.moveToPoint(tab.end)
-                        newright.addLineToPoint(newfoldend)
-                        var newRightEdge = addEdge(tab.end, end: newfoldend, path:newright, kind:Edge.Kind.Cut)
-                        
-                        // move tab from tabs to edges so we don't redraw this again
-                        tab.kind = .Fold
-                        tab.twin.kind = .Fold
-                        tabs.remove(tab)
-                        tabs.remove(tab.twin)
-                        retB = true
-                    }
-                }
-            }
-            return retB
-        }
-        
         /// look through edges and return vertex in the hit distance if found
         func vertexHitTest(point:CGPoint) -> CGPoint?
         {
@@ -495,23 +340,13 @@
             for edge in self.edges
             {
                 if let np = edge.hitTest(point) {
-                    if !borderEdges.contains(edge) && !borderEdges.contains(edge.twin){
                         r = (edge, np)
-                    } else {
-                        r = (nil, point)
-                    }
                 }
             }
             
             return r
         }
         
-        func edgeIntersections(edge1:Edge,edge2:Edge) -> [CGPoint]?{
-            
-            
-            return nil
-        }
-    
         
         /// returns a list of edges if any of then intersect the given shape
         /// DO not call with an unclosed path
@@ -540,66 +375,25 @@
         }
         
         
-        
-        ///  sets up a grid and returns nearest point in grid
-        func nearestGridPoint(point: CGPoint) -> CGPoint
-        {
-            
-            let width = CGPointGetDistance(bEdge1.start, bEdge1.end)
-            let height = CGPointGetDistance(bEdge2.start, bEdge2.end)
-            let gs = CGPointGetDistance(bEdge1.start, bEdge1.end) / 25
-            let gsh = gs / 2.0
-            var x:CGFloat = 0.0
-            var y:CGFloat = 0.0
-            
-            for var xi:CGFloat = 0.0; xi < width; xi=xi+gs
-            {
-                for var yi:CGFloat = 0.0; yi < height; yi=yi+gs
-                {
-                    if point.x < xi + gsh && point.x > xi - gsh {
-                        x = xi
-                    }
-                    if point.y < yi + gsh && point.y > yi - gsh {
-                        y = yi
-                    }
-                }
-            }
-            
-            
-            let newpoint = CGPointMake(x, y)
-            return newpoint
-            
-        }
-        
         func isTopEdge(edge:Edge) -> Bool
         {
-            if(templateMode){
                 if let masterF = masterFeature{
                     return masterF.startPoint!.y == edge.start.y
                 }
                 return false
-            }
-            else{
-                let b = edge == bEdge1 || edge == bEdge1.twin
-                return b
-            }
+           
             
         }
         
         func isBottomEdge(edge:Edge) -> Bool
         {
-            if(templateMode){
                 if let masterF = masterFeature{
                     if(masterF.endPoint != nil){
                         return masterF.endPoint!.y == edge.start.y
                     }
                 }
                 return false
-            }
-            else{
-                let b = edge == bEdge3 || edge == bEdge3.twin
-                return b
-            }
+           
             
         }
         

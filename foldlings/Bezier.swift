@@ -11,7 +11,7 @@ import UIKit
 //how fine to make the subdivisions -- is divided by the length of the line
 let kBezierIncrements:CGFloat = 0.5
 
-///find the average point on a point
+///find the average point on a line
 func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
@@ -29,18 +29,9 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 
 
 /// is the path given drawn in counterclockwise winding order
-func isCounterClockwise(path:UIBezierPath) -> Bool
+ func isCounterClockwise(path:UIBezierPath) -> Bool
 {
-    let elements = path.getPathElements()
-    let points = getSubdivisions(elements, increments:25)
-    
-    var total:CGFloat = 0.0
-    for var i = 1; i < points.count; i++
-    {
-        total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
-    }
-    
-    return total > 0
+    return !path.isClockwise()
 }
 
 
@@ -85,7 +76,7 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
             break
         }
     }
-
+    
     return npath
 }
 
@@ -110,7 +101,7 @@ func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIB
             minI = i
         }
     }
-
+    
     for (var i = 0; i < points.count; i++)
     {
         if i < minI {
@@ -124,7 +115,7 @@ func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIB
     let uipathTwo = pathFromPoints(smoothPoints(pathTwoPoints))
     
     return (uipathOne, uipathTwo)
-   
+    
 }
 
 /// smooths a uibezierpath using douglas peucker method
@@ -159,7 +150,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
 {
     let cgpath:CGPath = path.CGPath
     var bezierPoints:NSMutableArray = []
-
+    
     let elements = path.getPathElements()
     
     // if only two elements then it must be a line so treat it that way
@@ -188,7 +179,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
         }
         return points[minI]
     }
-
+    
 }
 
 /// finds path elements and subdivides them
@@ -249,7 +240,7 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
             println("other: \(currPath.type)")
         }
     }
-
+    
     return subdivPoints
     
 }
@@ -308,7 +299,7 @@ func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
     let t = stp_dot_ste / ste2                         //normalized distance from a to closest point
     
     return CGPointMake(start.x + ste.0*t, start.y + ste.1*t )  //the the point distance t
-
+    
 }
 
 ///helper function to convert [CGPoint] -> NSArray of NSValue CGPoints
