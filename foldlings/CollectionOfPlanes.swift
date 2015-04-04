@@ -123,7 +123,7 @@ class CollectionOfPlanes: Printable, Hashable {
         return true
     }
     
-    
-    
+
+
 }
 
