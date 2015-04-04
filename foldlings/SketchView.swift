@@ -54,8 +54,6 @@ class SketchView: UIView {
     
     required init(coder aDecoder: NSCoder)
     {
-        
-        
         super.init(coder: aDecoder)
         self.multipleTouchEnabled = false;
         self.backgroundColor = UIColor.whiteColor()
@@ -65,14 +63,7 @@ class SketchView: UIView {
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
-        
-        
-        
-    
-        
     }
-    
-    
     
     override func drawRect(rect: CGRect)
     {
@@ -667,9 +658,6 @@ class SketchView: UIView {
         return asketch
     }
 
-    
-    
-    
     func drawCircle(point: CGPoint) ->UIBezierPath
     {
         UIColor.redColor().setStroke()
@@ -678,7 +666,6 @@ class SketchView: UIView {
         c.stroke()
         return c
     }
-    
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)

@@ -87,14 +87,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
-        
     }
     
-    
     func makeScene(){
-        
         // create a new scene
-        
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
