@@ -92,7 +92,7 @@ class SketchView: UIView {
     
     func handlePan(sender: AnyObject) {
         
-        let gesture = sender as UIPanGestureRecognizer
+        let gesture = sender as! UIPanGestureRecognizer
         
         if(gesture.state == UIGestureRecognizerState.Began){
             
@@ -212,7 +212,7 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds{
-                        if(featureSpansFold(sketch.currentFeature?, fold:fold)){
+                        if(featureSpansFold(sketch.currentFeature, fold:fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
@@ -234,7 +234,9 @@ class SketchView: UIView {
     }
     
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+
+    
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
     

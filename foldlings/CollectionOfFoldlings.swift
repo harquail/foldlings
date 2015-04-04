@@ -14,11 +14,11 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     var names = ArchivedEdges.archivedSketchNames()
     var cells = [Int:FoldlingCell]()
     
-    override init() {
-        super.init()
-        self.dataSource = self
-        self.delegate = self
-    }
+    
+//    override init() {
+//        super.init()
+//        
+//    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
@@ -51,7 +51,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
             
-            let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("foldlingsCell", forIndexPath: indexPath) as FoldlingCell
+            let cell =  collectionView.dequeueReusableCellWithReuseIdentifier("foldlingsCell", forIndexPath: indexPath) as! FoldlingCell
             
             let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             
@@ -84,13 +84,13 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+                    let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
                     self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
                         vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
                         vc.sketchView.forceRedraw()
                     })
                     
-                    Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
+                    Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]) as [NSObject : AnyObject])
                     println("Clicked: \(cell.label!.text)")
                     
                 }
@@ -104,7 +104,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     println("Clicked: \(cell.label!.text)")
-                    Flurry.logEvent("deleted foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]))
+                    Flurry.logEvent("deleted foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]) as [NSObject : AnyObject])
                 }
             }
             

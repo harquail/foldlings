@@ -89,8 +89,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     required init(coder aDecoder: NSCoder) {
         self.start = aDecoder.decodeCGPointForKey("start")
         self.end = aDecoder.decodeCGPointForKey("end")
-        self.path = aDecoder.decodeObjectForKey("path") as UIBezierPath
-        self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as String))!
+        self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
+        self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
     }
     

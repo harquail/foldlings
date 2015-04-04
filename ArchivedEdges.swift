@@ -18,13 +18,13 @@ class ArchivedEdges : NSObject, NSCoding {
     
     class func initFromFile() -> NSDictionary
     {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
         let path = paths.stringByAppendingPathComponent("data.plist")
         var fileManager = NSFileManager.defaultManager()
         if (!(fileManager.fileExistsAtPath(path)))
         {
             var bundle : NSString = NSBundle.mainBundle().pathForResource("data", ofType: "plist")!
-            fileManager.copyItemAtPath(bundle, toPath: path, error:nil)
+            fileManager.copyItemAtPath(bundle as String, toPath: path, error:nil)
         }
         
         return NSDictionary(contentsOfFile: path)!
@@ -57,7 +57,7 @@ class ArchivedEdges : NSObject, NSCoding {
     
     required init(coder aDecoder: NSCoder) {
         
-        var nsAdj  = aDecoder.decodeObjectForKey("adjs") as Dictionary<NSValue,[Edge]>
+        var nsAdj  = aDecoder.decodeObjectForKey("adjs") as! Dictionary<NSValue,[Edge]>
         var keys = nsAdj.keys.array
         
         adj.removeAll(keepCapacity: false)
@@ -67,7 +67,7 @@ class ArchivedEdges : NSObject, NSCoding {
         }
         
         
-        edges = aDecoder.decodeObjectForKey("edges") as [Edge]
+        edges = aDecoder.decodeObjectForKey("edges") as! [Edge]
         
         
     }
@@ -155,11 +155,11 @@ class ArchivedEdges : NSObject, NSCoding {
         
         if(names != nil){
             for(i = index; i<names!.count-1; i++){
-                if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as NSData?{
+                if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as! NSData?{
                     NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
                 }
                 println("set object for achivedEdges\(i)")
-                if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as String?{
+                if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as! String?{
                     NSUserDefaults.standardUserDefaults().setObject(nextImage, forKey: "archivedSketchImage\(i)")
                 }
             }
@@ -185,7 +185,7 @@ class ArchivedEdges : NSObject, NSCoding {
     }
     
     class func archivedImage(dex:Int) -> UIImage?{
-        let possibleOldImagePath = NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(dex)") as String?
+        let possibleOldImagePath = NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(dex)") as! String?
         if let oldImagePath = possibleOldImagePath {
             let oldFullPath = self.documentsPathForFileName(oldImagePath)
             let oldImageData = NSData(contentsOfFile: oldFullPath)
@@ -199,7 +199,7 @@ class ArchivedEdges : NSObject, NSCoding {
     
     private class func documentsPathForFileName(name: String) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
-        let path = paths[0] as String;
+        let path = paths[0] as! String;
         let fullPath = path.stringByAppendingPathComponent(name)
         return fullPath
     }

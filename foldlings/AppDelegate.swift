@@ -5,7 +5,7 @@
 //
 
 import UIKit
-import Armchair
+//import Armchair
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Flurry.setCrashReportingEnabled(true)
 //        Flurry.setDebugLogEnabled(true)
         Flurry.startSession(KEY_FLURRY)
-        Armchair.appID(APP_STORE_ID)
+//        Armchair.appID(APP_STORE_ID)
 //        Armchair.debugEnabled(true)
         return true
     }

@@ -131,7 +131,7 @@ func smoothPath(path:UIBezierPath) -> UIBezierPath
 func smoothPoints(points:[CGPoint]) -> [CGPoint]
 {
     let pArray = convertToNSArray(points)
-    var nArray = BezierSimple.douglasPeucker(pArray, epsilon:0.5)
+    var nArray = BezierSimple.douglasPeucker(pArray as [AnyObject], epsilon:0.5)
     // if it is a closed shape we want to smooth the first point also so run it twice choosing a different ordering of points
     // clever if confusing
     if CGPointEqualToPoint(points[0], points[points.count-1]) {
@@ -160,8 +160,8 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     }
     else if elements.count == 2
     {
-        let p1:CGPoint = (elements[0] as CGPathElementObj).points[0].CGPointValue()
-        let p2:CGPoint = (elements[1] as CGPathElementObj).points[0].CGPointValue()
+        let p1:CGPoint = (elements[0] as! CGPathElementObj).points[0].CGPointValue()
+        let p2:CGPoint = (elements[1] as! CGPathElementObj).points[0].CGPointValue()
         let np = nearestPointOnLine(point, p1, p2)
         return np
     } else {
@@ -191,7 +191,7 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
     var subdivPoints = [CGPoint]();
     
     var index:Int = 0
-    let els = elements as [CGPathElementObj]
+    let els = elements as! [CGPathElementObj]
     var priorPoint:CGPoint = els[0].points[0].CGPointValue()
     var nextPoint:CGPoint = els[0].points[0].CGPointValue()
     var priorPath:CGPathElementObj = els[0]
@@ -328,7 +328,7 @@ func convertToCGPoints(path:NSArray) -> [CGPoint]
 func findControlPoint(path:UIBezierPath)-> CGPoint
 {
     let elements = path.getPathElements()
-    let els = elements as [CGPathElementObj]
+    let els = elements as! [CGPathElementObj]
     var CPoint:CGPoint = els[1].points[0].CGPointValue()
     
     return CPoint

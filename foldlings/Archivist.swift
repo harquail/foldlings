@@ -13,7 +13,7 @@ class Archivist{
     var data = NSMutableDictionary()
     data.setObject(sketch, forKey: "sketches")
     
-    let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+    let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
     let path = paths.stringByAppendingPathComponent("data.plist")
     var fileManager = NSFileManager.defaultManager()
     
@@ -28,13 +28,13 @@ class Archivist{
 
 class func sketchesFromFile() -> NSDictionary
 {
-    let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+    let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
     let path = paths.stringByAppendingPathComponent("data.plist")
     var fileManager = NSFileManager.defaultManager()
     if (!(fileManager.fileExistsAtPath(path)))
     {
         var bundle : NSString = NSBundle.mainBundle().pathForResource("data", ofType: "plist")!
-        fileManager.copyItemAtPath(bundle, toPath: path, error:nil)
+        fileManager.copyItemAtPath(bundle as String, toPath: path, error:nil)
     }
     
     return NSDictionary(contentsOfFile: path)!
