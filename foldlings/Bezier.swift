@@ -383,7 +383,6 @@ func getFirstPoint(path:UIBezierPath)-> CGPoint
     default:
         break
     }
-    
     return point
 }
 
