@@ -253,6 +253,7 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
     
     switch points.count {
     case 4:
+        //TODO: Fix this not-super terrible, but still bad shit (pathFromPoints)
         let bounds = pathFromPoints(points).bounds
         let length = max(bounds.width, bounds.height)
         for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
@@ -330,8 +331,50 @@ func findControlPoint(path:UIBezierPath)-> CGPoint
     let elements = path.getPathElements()
     let els = elements as [CGPathElementObj]
     var CPoint:CGPoint = els[1].points[0].CGPointValue()
-    
     return CPoint
+}
+
+// find the max x and y of all the points and put it into a point
+func calculateBounds(points: [CGPoint]) ->CGPoint{
+    var newX:[CGFloat] = points.map({$0.x})
+    var newY:[CGFloat] = points.map({$0.y})
+    return CGPointMake(maxElement(newX), maxElement(newY))
+}
+// gets a point on the line close to the start point
+// to be used to calculate the vector for angles
+// look at cases whether els has 2 or 4 points
+// then run through bezierInterpolation with the point and
+// take min and max  x and y to figure out bounds
+// generate t from these values 
+// return the makeCGPoint 
+func getFirstPoint(path:UIBezierPath)-> CGPoint
+{
+    var increments: CGFloat = 25.0
+    let elements = path.getPathElements()
+    let els = elements as [CGPathElementObj]
+    var points : [CGPoint] = els[1].points.map({$0.CGPointValue()})
+    var point = CGPoint()
+    
+    switch points.count {
+    case 4:
+        let bounds:CGPoint = calculateBounds(points)
+        let length = max(bounds.x, bounds.y)
+        let t = increments / length
+        point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+        
+        
+    case 2:
+        let start = points[0]
+        let end = points[1]
+        let length = CGPointGetDistance(start, end)
+        let ste = (end.x - start.x, end.y - start.y)
+        let t = increments / length
+            point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
+        
+    default:
+        break
+    }
+    return point
 }
 
 

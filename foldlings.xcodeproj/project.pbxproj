@@ -422,6 +422,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		165FC34A891412DCA9DCF30F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		22061CA01A1B17530030079D /* SwiftStructures */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,6 +696,7 @@
 				F160F3BC1A31473800B469CA /* Security.framework */,
 				F17C93E219E24BEC00BB77F1 /* foldlingsTests */,
 				F17C93C919E24BEC00BB77F1 /* Products */,
+				165FC34A891412DCA9DCF30F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1259,6 +1267,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings/Flurry",
+					"$(PROJECT_DIR)/foldlings",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC++",
@@ -1292,6 +1301,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings/Flurry",
+					"$(PROJECT_DIR)/foldlings",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC++",
