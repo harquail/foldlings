@@ -590,8 +590,5 @@
             
         }
        
-//    //Planes path to svg paths 
-//        func PathstoSVG (path: UIBezierPath){
-//        CGPathToCString(path, )
-//        }
+
     }

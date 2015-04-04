@@ -10,4 +10,3 @@
 #import "CGPoint+Vector.h"
 #import "SVGPathGenerator.h"
 #import "Flurry.h"
-#import "CGPathWriter.h"

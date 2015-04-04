@@ -33,46 +33,4 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
     return atan2(det,dot) * CGFloat(180/M_PI) // atan2(y, x) or atan2(sin, cos)
     
     
-    //returns random angle instead of real one
-    //    return CGFloat(arc4random_uniform(UInt32.max))/CGFloat(UInt32.max) * CGFloat(M_PI) * 2.0
-    
-    //solution #2 -bad
-    //    var angleRad = acos( (a.x * b.x + a.y * b.y) / ( sqrt(a.x*a.x + a.y*a.y) * sqrt(b.x*b.x + b.y*b.y) ) )
-    //    if (edgeA.end.y > edgeB.end.y){
-    //        angleRad = -angleRad
-    //    }
-    //
-    //    return angleRad * CGFloat(180/M_PI)
-    //
-    
 }
-//solution #3 - compare y-values
-//finds the leftmost point between two points for and edge
-func isLeftmost(next: Edge, closest: Edge, current: Edge)->Bool{
-    let close_controlpt = findControlPoint(closest.path)//get nearest control point
-    let next_controlpt = findControlPoint(next.path)
-    
-    let a = CGPointNormalize(CGPointSubtract(close_controlpt, current.start) )//this is current
-    let b = CGPointNormalize(CGPointSubtract(next_controlpt, current.start) )// this one is being evaluated wrt edgeA
-    // check the x-values and then compare y-values
-    // abs values for x-values and check y-values
-    
-    // dot them twice
-    // get orthogonal from vector
-    // switch x and y then make x negative
-    // let ortho =
-    // let dot = a.x*b.x + a.y*b.y //  dot product
-    
-    // let dotortho = ortho.x*b.x + ortho.y*b.y //  dot product
-    // add them together?
-    
-    
-    // call getAngle twice
-    let a1 = getAngle(closest, current)
-    let a2 = getAngle(next, current)
-    
-    
-    
-    return false
-}
-
