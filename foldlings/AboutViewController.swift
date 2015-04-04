@@ -31,7 +31,7 @@ class AboutViewController: UIViewController {
     }
     */
     @IBAction func CloseButton(sender: UIButton) {
-       self.dismissViewControllerAnimated(true, nil)
+       self.dismissViewControllerAnimated(true, completion: nil)
     }
 
 }

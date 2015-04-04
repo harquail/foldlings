@@ -9,8 +9,8 @@ class CollectionViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    let textLabel: UILabel!
-    let imageView: UIImageView!
+    var textLabel: UILabel!
+    var imageView: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

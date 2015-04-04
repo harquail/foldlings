@@ -43,8 +43,6 @@
 		F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */; };
 		F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */; };
 		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
-		F1174DD71A33EB4800FDEACF /* Armchair.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1174DCE1A33EB3600FDEACF /* Armchair.framework */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
@@ -138,48 +136,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F1174DCD1A33EB3600FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6D8B8B519C7274F001AD043;
-			remoteInfo = Armchair;
-		};
-		F1174DCF1A33EB3600FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6D8B8F919C756A4001AD043;
-			remoteInfo = ArmchairMac;
-		};
-		F1174DD11A33EB3600FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6A0AF6519C9CFF400C3A7DC;
-			remoteInfo = ArmchairLocalizable;
-		};
-		F1174DD31A33EB3600FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6F6159419C9FFDA00C0B51C;
-			remoteInfo = ArmchairLocalizableMac;
-		};
-		F1174DD51A33EB3600FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6D8B92819C880A9001AD043;
-			remoteInfo = ArmchairTests;
-		};
-		F1174DD81A33EB5200FDEACF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
-			remoteInfo = Armchair;
-		};
 		F17C93E019E24BEC00BB77F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F17C93C019E24BEC00BB77F1 /* Project object */;
@@ -196,7 +152,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F1174DD71A33EB4800FDEACF /* Armchair.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,7 +201,6 @@
 		F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_green@2x.png"; sourceTree = "<group>"; };
 		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
 		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
-		F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Armchair.xcodeproj; path = Armchair/Armchair.xcodeproj; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
 		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
@@ -408,7 +362,6 @@
 				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
 				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
 				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
-				F1174DDA1A33EB5700FDEACF /* Armchair.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,18 +474,6 @@
 				F10FACC11A1D2E98006541BF /* CGPoint.swift */,
 			);
 			name = ExSwift;
-			sourceTree = "<group>";
-		};
-		F1174DC61A33EB3600FDEACF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F1174DCE1A33EB3600FDEACF /* Armchair.framework */,
-				F1174DD01A33EB3600FDEACF /* Armchair.framework */,
-				F1174DD21A33EB3600FDEACF /* Armchair.bundle */,
-				F1174DD41A33EB3600FDEACF /* Armchair.bundle */,
-				F1174DD61A33EB3600FDEACF /* ArmchairTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F13AD4E71ABF549F00372898 /* Fold Features */ = {
@@ -688,7 +629,6 @@
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
-				F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */,
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
 				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
 				F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */,
@@ -858,7 +798,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F1174DD91A33EB5200FDEACF /* PBXTargetDependency */,
 			);
 			name = foldlings;
 			productName = foldlings;
@@ -914,12 +853,6 @@
 			mainGroup = F17C93BF19E24BEC00BB77F1;
 			productRefGroup = F17C93C919E24BEC00BB77F1 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F1174DC61A33EB3600FDEACF /* Products */;
-					ProjectRef = F1174DC51A33EB3600FDEACF /* Armchair.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F17C93C719E24BEC00BB77F1 /* foldlings */,
@@ -927,44 +860,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		F1174DCE1A33EB3600FDEACF /* Armchair.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Armchair.framework;
-			remoteRef = F1174DCD1A33EB3600FDEACF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F1174DD01A33EB3600FDEACF /* Armchair.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Armchair.framework;
-			remoteRef = F1174DCF1A33EB3600FDEACF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F1174DD21A33EB3600FDEACF /* Armchair.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Armchair.bundle;
-			remoteRef = F1174DD11A33EB3600FDEACF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F1174DD41A33EB3600FDEACF /* Armchair.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Armchair.bundle;
-			remoteRef = F1174DD31A33EB3600FDEACF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F1174DD61A33EB3600FDEACF /* ArmchairTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ArmchairTests.xctest;
-			remoteRef = F1174DD51A33EB3600FDEACF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F17C93C619E24BEC00BB77F1 /* Resources */ = {
@@ -1138,11 +1033,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F1174DD91A33EB5200FDEACF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Armchair;
-			targetProxy = F1174DD81A33EB5200FDEACF /* PBXContainerItemProxy */;
-		};
 		F17C93E119E24BEC00BB77F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F17C93C719E24BEC00BB77F1 /* foldlings */;
@@ -1205,7 +1095,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1243,7 +1133,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;

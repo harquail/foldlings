@@ -87,14 +87,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
-        
     }
     
-    
     func makeScene(){
-        
         // create a new scene
-        
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -172,7 +168,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         
         // retrieve the SCNView
-        let scnView = self.view as SCNView
+        let scnView = self.view as! SCNView
         scnView.delegate = self
         
         // set the scene to the view
@@ -409,7 +405,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "backtoSketchSegue") {
             
-            let viewController:SketchViewController = segue.destinationViewController as SketchViewController
+            let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
             viewController.sketchView.setButtonBG(previewImage())
             
         }

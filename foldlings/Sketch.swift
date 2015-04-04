@@ -10,6 +10,7 @@
     
     class Sketch : NSObject  {
         
+        
         @IBOutlet var previewButton:UIButton?
         
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
@@ -77,12 +78,12 @@
                 
                 //add twin and edge to each other's adjacency lists
                 if !contains(twin.adjacency, edge) {
-                    let index = twin.adjacency.insertionIndexOf(edge, {getAngle(twin, $0) < getAngle(twin, $1)})
+                    let index = twin.adjacency.insertionIndexOf(edge, isOrderedBefore: {getAngle(twin, $0) < getAngle(twin, $1)})
                     twin.adjacency.insert(edge, atIndex: index)
                     
                 }
                 if !contains(edge.adjacency, twin) {
-                    let index = edge.adjacency.insertionIndexOf(twin, {getAngle(edge, $0) < getAngle(edge, $1)})
+                    let index = edge.adjacency.insertionIndexOf(twin, isOrderedBefore: {getAngle(edge, $0) < getAngle(edge, $1)})
                     edge.adjacency.insert(twin, atIndex: index)
                 }
                 
@@ -171,13 +172,13 @@
         func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
             for e in edgeList {
                 // add all of these outgoing edges to the edge's adjacency in order
-                let ajindex = edge.adjacency.insertionIndexOf(e, {getAngle(edge, $0) < getAngle(edge, $1)})
+                let ajindex = edge.adjacency.insertionIndexOf(e, isOrderedBefore: {getAngle(edge, $0) < getAngle(edge, $1)})
                 
                 if !contains(edge.adjacency, e){
                     edge.adjacency.insert(e, atIndex: ajindex)
                 }
                 // add to the adj of these e's twins
-                let index = e.twin.adjacency.insertionIndexOf(edge.twin, {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
+                let index = e.twin.adjacency.insertionIndexOf(edge.twin, isOrderedBefore: {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
                 
                 if !contains(e.twin.adjacency, edge.twin){
                     e.twin.adjacency.insert(edge.twin, atIndex: index)

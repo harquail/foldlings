@@ -9,7 +9,6 @@ import SceneKit
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
-    
     @IBOutlet var sketchView: SketchView!
     @IBOutlet var selected: UIImageView!
     
@@ -31,7 +30,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     
     @IBAction func handleTap(sender: AnyObject) {
-        let gesture = sender as UITapGestureRecognizer
+        let gesture = sender as! UITapGestureRecognizer
         
         var touchPoint = gesture.locationInView(sketchView)
         
@@ -130,10 +129,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
-            let viewController:GameViewController = segue.destinationViewController as GameViewController
+            let viewController:GameViewController = segue.destinationViewController as! GameViewController
             
             let img = sketchView.bitmap(grayscale: false, circles: false)
-            let imgNew = img.copy() as UIImage
+            let imgNew = img.copy() as! UIImage
             
             viewController.setButtonBG(imgNew)
             

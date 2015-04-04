@@ -54,8 +54,6 @@ class SketchView: UIView {
     
     required init(coder aDecoder: NSCoder)
     {
-        
-        
         super.init(coder: aDecoder)
         self.multipleTouchEnabled = false;
         self.backgroundColor = UIColor.whiteColor()
@@ -65,14 +63,7 @@ class SketchView: UIView {
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
-        
-        
-        
-    
-        
     }
-    
-    
     
     override func drawRect(rect: CGRect)
     {
@@ -92,7 +83,7 @@ class SketchView: UIView {
     
     func handlePan(sender: AnyObject) {
         
-        let gesture = sender as UIPanGestureRecognizer
+        let gesture = sender as! UIPanGestureRecognizer
         
         if(gesture.state == UIGestureRecognizerState.Began){
             
@@ -231,7 +222,7 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds{
-                        if(featureSpansFold(sketch.currentFeature?, fold:fold)){
+                        if(featureSpansFold(sketch.currentFeature, fold:fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
@@ -253,7 +244,9 @@ class SketchView: UIView {
     }
     
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+
+    
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
     
@@ -582,7 +575,6 @@ class SketchView: UIView {
         c.stroke()
         return c
     }
-    
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)

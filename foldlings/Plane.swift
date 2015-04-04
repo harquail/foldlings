@@ -24,7 +24,6 @@ class Plane: Printable, Hashable
         return description.hashValue
         }
     }
-
     
     enum Kind: String {
         case Hole = "Hole"
@@ -160,7 +159,7 @@ class Plane: Printable, Hashable
         
         let elements = path.getPathElements()
         
-        let els = elements as [CGPathElementObj]
+        let els = elements as! [CGPathElementObj]
         var outPath = UIBezierPath()
         
         var priorPoint:CGPoint = els[0].points[0].CGPointValue()

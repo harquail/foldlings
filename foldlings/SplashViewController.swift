@@ -2,7 +2,7 @@
 //
 import Foundation
 import UIKit
-import Armchair
+//import Armchair
 
 class SplashViewController: UIViewController, UIAlertViewDelegate {
     
@@ -43,7 +43,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         //        collectionOfFoldlings.r
         
         let story = UIStoryboard(name: "Main", bundle: nil)
-        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
         self.presentViewController(vc, animated: true, completion: {
             vc.sketchView.forceRedraw()
         })
@@ -55,7 +55,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
             vc.sketchView.sketch.index = index + 1
             vc.sketchView.sketch.name = name
             println(vc.sketchView.sketch.index)
-            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]))
+            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]) as [NSObject : AnyObject])
         }
         
         
@@ -67,7 +67,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     func toggleMode(switcher:UISwitch,key:String){
         var isOn = switcher.on
         isOn = !isOn
-        Flurry.logEvent("\(key) toggled", withParameters: NSDictionary(dictionary: ["on":isOn]))
+        Flurry.logEvent("\(key) toggled", withParameters: NSDictionary(dictionary: ["on":isOn]) as [NSObject : AnyObject])
         switcher.setOn(isOn, animated: true)
         NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: key)
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -75,7 +75,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     
     override func viewDidLoad() {
-        Armchair.showPromptIfNecessary()
+//        Armchair.showPromptIfNecessary()
         let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
         slider?.setOn(on, animated: true)
         
@@ -100,7 +100,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     func createTestSketches(){
         
         ArchivedEdges.removeAll()
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
         
         var localSketch:Sketch
         for (var i = 0; i < 10; i++){
@@ -113,10 +113,10 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     func makeSketch(num:Int){
         
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as SketchViewController
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
         self.presentViewController(vc, animated: true, completion: nil)
         
-        (vc.view as SketchView).forceRedraw()
+        (vc.view as! SketchView).forceRedraw()
     }
     
     
