@@ -23,6 +23,7 @@ class SketchView: UIView {
         case Track
         case Slider
         case BoxFold
+        case FreeForm
     }
     
     @IBOutlet var normalButtons: [UIButton]!
@@ -45,7 +46,6 @@ class SketchView: UIView {
     let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
     var redrawing:Bool = false
     var canPreview:Bool = true
-    
     
     
     override init(frame: CGRect) {
@@ -89,9 +89,6 @@ class SketchView: UIView {
             
             var touchPoint = gesture.locationInView(self)
             
-            //meow?
-            //            gesture.translationInView(<#view: UIView#>)
-            //if this is a good place to draw a new feature
             var goodPlaceToDraw = true
             if let children = sketch.masterFeature?.children{
                 
@@ -113,7 +110,6 @@ class SketchView: UIView {
                             println("No Edge Here...")
                         }
                         
-                        //                        println("OUTSIDE LOOP")
                         goodPlaceToDraw = false
                         break
                     }
@@ -121,7 +117,7 @@ class SketchView: UIView {
             }
             
             
-            if(goodPlaceToDraw){
+            if(goodPlaceToDraw && sketchMode == .BoxFold){
                 //start a new box-fold feature
                 sketch.currentFeature = BoxFold(start: touchPoint)
             }

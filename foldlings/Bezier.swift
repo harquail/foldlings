@@ -24,7 +24,7 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     npoint = CGPointMake(npoint.x / CGFloat(points.count), npoint.y / CGFloat(points.count))
     
     return npoint
-    
+
 }
 
 
@@ -351,7 +351,7 @@ func getFirstPoint(path:UIBezierPath)-> CGPoint
 {
     var increments: CGFloat = 25.0
     let elements = path.getPathElements()
-    let els = elements as [CGPathElementObj]
+    let els = elements as! [CGPathElementObj]
     var points : [CGPoint] = els[1].points.map({$0.CGPointValue()})
     var point = CGPoint()
     

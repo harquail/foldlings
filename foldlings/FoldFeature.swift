@@ -26,6 +26,11 @@ class FoldFeature: NSObject, Printable{
         Valid // can be simulated in 3d/folded in real life
     }
     
+    enum DefinitionState {
+        case Incomplete, //still drawing/dragging
+        Complete //finished drawing
+    }
+    
     //not used yet
     var featurePlanes:[Plane] = []
     //not used yet

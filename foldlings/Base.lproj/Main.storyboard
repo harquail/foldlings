@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="xNl-vj-y2i">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7528.3" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="xNl-vj-y2i">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7518.3"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -46,7 +46,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="foldlingsCell" id="ZcN-o7-kvu" customClass="FoldlingCell" customModule="foldlings" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="40" y="0.0" width="178" height="193"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="178" height="193"/>
@@ -175,10 +175,16 @@
                                     <action selector="PlaceholderFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="nKQ-fY-Bp2"/>
                                 </connections>
                             </button>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.29999999999999966" contentMode="scaleToFill" image="roundedrect.png" id="A1y-XT-r2k">
-                                <rect key="frame" x="84" y="889" width="108" height="120"/>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Gd1-nJ-Xr5" userLabel="placeholder">
+                                <rect key="frame" x="200" y="874" width="136" height="135"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <state key="normal" backgroundImage="placeholder_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FreeFormFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="qog-TG-bll"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -193,7 +199,6 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="SketchView" destination="n4X-WK-eFO" id="pXc-IO-3nu"/>
-                        <outlet property="selected" destination="A1y-XT-r2k" id="X4m-O6-ssT"/>
                         <outlet property="sketchView" destination="n4X-WK-eFO" id="ymI-xk-Njd"/>
                     </connections>
                 </viewController>
@@ -347,7 +352,6 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="placeholder_button.png" width="208" height="208"/>
         <image name="preview_button.png" width="160" height="172"/>
         <image name="print.jpeg" width="291" height="265"/>
-        <image name="roundedrect.png" width="192" height="215"/>
         <image name="send.jpeg" width="400" height="345"/>
         <image name="small_2d.jpeg" width="426" height="461"/>
         <image name="x_red.png" width="49" height="49"/>
