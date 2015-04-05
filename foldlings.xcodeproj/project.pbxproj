@@ -1258,7 +1258,7 @@
 				F17C93E819E24BEC00BB77F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		F17C93E919E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlings" */ = {
 			isa = XCConfigurationList;
@@ -1267,7 +1267,7 @@
 				F17C93EB19E24BEC00BB77F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		F17C93EC19E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlingsTests" */ = {
 			isa = XCConfigurationList;
@@ -1276,7 +1276,7 @@
 				F17C93EE19E24BEC00BB77F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

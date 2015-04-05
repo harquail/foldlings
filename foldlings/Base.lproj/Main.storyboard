@@ -193,7 +193,6 @@
                             <outlet property="previewButton" destination="GAq-0O-Knm" id="ENZ-SI-2CE"/>
                             <outlet property="statusLabel" destination="CHC-sF-4RD" id="hbd-bV-6vH"/>
                             <outlet property="xButton" destination="rCL-z3-lIr" id="bPy-NV-Sks"/>
-                            <outletCollection property="templatingButtons" destination="b5a-fM-kIq" collectionClass="NSMutableArray" id="bZE-KX-RF4"/>
                         </connections>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

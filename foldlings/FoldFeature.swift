@@ -21,6 +21,7 @@ class FoldFeature: NSObject, Printable{
     //        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
     //    }
     
+    
     enum ValidityState {
         case Invalid, // we don't know how to make this feature valid
         Valid // can be simulated in 3d/folded in real life
@@ -209,6 +210,22 @@ class FoldFeature: NSObject, Printable{
     func tapOptions() -> [FeatureOption]?{
         
         return nil
+        
+    }
+    
+    class func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+        
+        //feature must be inside fold x bounds
+        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
+            return false
+        }
+        
+        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
+            return (a.y < b.y) ? (a,b) : (b,a)
+        }
+        
+        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
+        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
         
     }
     
