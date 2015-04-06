@@ -235,7 +235,7 @@
             // !!!!                                                       !!!
             // !!!! #TODO: remove this return before merging with master  !!!
             // !!!!                                                       !!!
-                        return;
+//                        return;
             
             dispatch_sync(edgeAdjacencylockQueue) {
                 println("\ngetPlanes\n")

@@ -32,7 +32,6 @@ class SketchView: UIView {
     var tempStart:CGPoint = CGPointZero // these keep track of point while drawing
     var tempEnd:CGPoint = CGPointZero
     var sketchMode:  Mode = Mode.BoxFold
-    var cancelledTouch: UIPanGestureRecognizer?  //if interrrupted say on intersection
     var sketch: Sketch!
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
@@ -100,97 +99,87 @@ class SketchView: UIView {
             startEdgeCollision = nil //reset edge collisions to nil
             endEdgeCollision = nil
             
-//            // ignore touch if outside of bounds
-//            if !sketch.checkInBounds(touchPoint) {
-//                cancelledTouch = gesture
-//                return
-//            }
-                // snap to vertex
-                if let np = sketch.vertexHitTest(touchPoint) {
-                    touchPoint = np
-                } // snap to edge
-                else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
-                    touchPoint = np
-                    startEdgeCollision = edge
-                }
-                ctr = 0
-                pts[0] = touchPoint
-                tempStart = touchPoint
-                tempEnd = touchPoint //set end to same point at start
-                setPathStyle(path, edge:nil, grayscale:false)
-
+            
+            // snap to vertex
+            if let np = sketch.vertexHitTest(touchPoint) {
+                touchPoint = np
+            } // snap to edge
+            else if let (edge,np) = sketch.edgeHitTest(touchPoint) {
+                touchPoint = np
+                startEdgeCollision = edge
+            }
+            ctr = 0
+            pts[0] = touchPoint
+            tempStart = touchPoint
+            tempEnd = touchPoint //set end to same point at start
+            setPathStyle(path, edge:nil, grayscale:false)
+            
             
         }
         else if(gesture.state == UIGestureRecognizerState.Changed){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            // ignore cancelledTouch
-            if cancelledTouch == nil || cancelledTouch! != gesture {
-                    // check if we've snapped or aborted
-                    var abort:Bool = checkCurrentEnd(touchPoint)
-                    ctr=ctr+1
-                    pts[ctr] = tempEnd
-                    
-                    if (ctr == 4)
-                    {
-                        makeBezier() //create bezier curves
-                    }
-                    
-                    if abort {
-                        cancelledTouch = gesture
-                    }
+            // check if we've snapped or aborted
+            var abort:Bool = checkCurrentEnd(touchPoint)
+            ctr=ctr+1
+            pts[ctr] = tempEnd
+            
+            if (ctr == 4)
+            {
+                makeBezier() //create bezier curves
             }
-            else{
-                println("CANCELLED GESTURE")
+            
+            if abort {
+                gesture.enabled = false
             }
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
-            
+            gesture.enabled = true
             
             var endPoint = tempEnd
             let startPoint = tempStart
-                if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
-                {
-                    var se1:Edge?
-                    var se2:Edge?
-                    //splits edges on collision
-                    if let startColEdge = startEdgeCollision {
-                        // if there are problems with circles might be here
-                        var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
-                        se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                        se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
-                        self.sketch.removeEdge(startColEdge)
-                    }
-                    if var endColEdge = endEdgeCollision {
-                        // check if we've already split this particular object this is problem so we need to make sure
-                        // look at the new edges
-                        var cut = false
-                        if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
-                            endColEdge = se1!
-                            cut = true
-                        } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
-                            endColEdge = se2!
-                            cut = true
-                        }
-                        var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
-                        if cut {
-                        } else {
-                            self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                            self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
-                        }
-                        self.sketch.removeEdge(endColEdge)
-                    }
-                    makeBezier(aborted: true)  //do another call to makeBezier to finish the line
-                    var newPath = UIBezierPath(CGPath: path.CGPath)
-                    newPath = smoothPath(newPath)
-                    setPathStyle(newPath, edge:nil, grayscale:false)
-                    self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
-                    self.setNeedsDisplay()
+            if path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength
+            {
+                var se1:Edge?
+                var se2:Edge?
+                //splits edges on collision
+                if let startColEdge = startEdgeCollision {
+                    // if there are problems with circles might be here
+                    var (spathOne, spathTwo) = splitPath(startColEdge.path, withPoint:startPoint)
+                    se1 = self.sketch.addEdge(startColEdge.start, end: startPoint, path: spathOne, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
+                    se2 = self.sketch.addEdge(startPoint, end: startColEdge.end, path: spathTwo, kind: startColEdge.kind, isMaster: startColEdge.isMaster)
+                    self.sketch.removeEdge(startColEdge)
                 }
-                path.removeAllPoints()
-                ctr = 0
-                forceRedraw()
+                if var endColEdge = endEdgeCollision {
+                    // check if we've already split this particular object this is problem so we need to make sure
+                    // look at the new edges
+                    var cut = false
+                    if ((se1 != nil) && (se1!.hitTest(endPoint)) != nil) {
+                        endColEdge = se1!
+                        cut = true
+                    } else if ((se2 != nil) && (se2!.hitTest(endPoint)) != nil) {
+                        endColEdge = se2!
+                        cut = true
+                    }
+                    var (epathOne, epathTwo) = splitPath(endColEdge.path, withPoint:endPoint)
+                    if cut {
+                    } else {
+                        self.sketch.addEdge(endColEdge.start, end: endPoint, path: epathOne, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                        self.sketch.addEdge(endPoint, end: endColEdge.end, path: epathTwo, kind: endColEdge.kind, isMaster: endColEdge.isMaster)
+                    }
+                    self.sketch.removeEdge(endColEdge)
+                }
+                makeBezier(aborted: true)  //do another call to makeBezier to finish the line
+                var newPath = UIBezierPath(CGPath: path.CGPath)
+                newPath = smoothPath(newPath)
+                setPathStyle(newPath, edge:nil, grayscale:false)
+                self.sketch.addEdge(startPoint, end: endPoint, path: newPath, kind: modeToEdgeKind(sketchMode))
+                self.setNeedsDisplay()
+            }
+            path.removeAllPoints()
+            ctr = 0
+            forceRedraw()
         }
         
         
@@ -514,22 +503,22 @@ class SketchView: UIView {
     func checkCurrentEnd(endpoint: CGPoint) -> Bool {
         var closed:Bool = false
         
-       
-            tempEnd = endpoint
+        
+        tempEnd = endpoint
         
         //ignore intersections if we're just starting a line...
         if ( CGPointGetDistance(tempStart, tempEnd) > kMinLineLength)
         {
-                // test for intersections
-                if let np = sketch.vertexHitTest(tempEnd) {
-                    tempEnd = np
-                    closed = true
-                } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
-                {
-                    tempEnd = np
-                    closed = true
-                    endEdgeCollision = edge
-                }
+            // test for intersections
+            if let np = sketch.vertexHitTest(tempEnd) {
+                tempEnd = np
+                closed = true
+            } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
+            {
+                tempEnd = np
+                closed = true
+                endEdgeCollision = edge
+            }
         } else {
             // check that we're not closing a path
             //  needs to make sure that the path bounds are greater than minlinelength
