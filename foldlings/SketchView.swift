@@ -520,7 +520,6 @@ class SketchView: UIView {
         //ignore intersections if we're just starting a line...
         if ( CGPointGetDistance(tempStart, tempEnd) > kMinLineLength)
         {
-
                 // test for intersections
                 if let np = sketch.vertexHitTest(tempEnd) {
                     tempEnd = np
