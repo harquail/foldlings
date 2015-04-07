@@ -28,6 +28,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
+   // let svgStrokeWidth = .001 //mm
+    
     var theOneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
@@ -81,8 +83,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         popover.sourceView = self.view
         popover.sourceRect = CGRectMake(xposition,(self.view.bounds.height - 110),0,0)
         self.presentViewController(activityViewController, animated: true, completion: nil)
+        sendSvg(planes)
     }
     
+    //this creates a popup dialog box to send the SVG version
+    // this gets the path and SVG to print and then be sent to 
+    // a laser cutter by user.
+    func sendSvg(planes: CollectionOfPlanes){
+        var path = planes.planes[0].path.CGPath
+//        let elements = path.getPathElements()
+//        
+//        let els = elements as! [CGPathElementObj]
+        let svgString = SVGPathGenerator.svgPathFromCGPath(path)
+        //just gives you SVG path
+        //still have to construct SVG in xml and put in PDF
+        println("this is a test: \(svgString)")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

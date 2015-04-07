@@ -229,13 +229,9 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-            // !!!!                                                       !!!
-            // !!!! #TODO: remove this return before merging with master  !!!
-            // !!!!                                                       !!!
-            //            return;
             
             dispatch_sync(edgeAdjacencylockQueue) {
-                println("\ngetPlanes\n")
+               // println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -263,7 +259,7 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                println("\nplane complete\n")
+                                //println("\nplane complete\n")
                                 // println(plane)
                             }
                             closest.crossed = false
@@ -280,8 +276,8 @@
         {
             var closest = current.twin
             //      println("adjacency count \(current.adjacency.count)")
-            println("\n current \(current.start) , \(current.end) \n")
-            printAdjList(current.adjacency, edge: current)
+            //println("\n current \(current.start) , \(current.end) \n")
+           // printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
@@ -431,6 +427,5 @@
                 
             }
         }
-       
 
     }
