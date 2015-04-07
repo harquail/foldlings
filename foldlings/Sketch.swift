@@ -111,17 +111,7 @@
                     self.adjacency[end] = [twin]
                 }
                 
-                // this fixes double planes
-                // may be overkill in terms of number of planes cleared
-                // TODO: Move this to addEdgeToAdj
-                //                for e in self.adjacency[start]! {
-                //                    e.dirty = true
-                //                    if e.plane != nil { self.planes.removePlane(e.plane!) }//move to addEdgesTo
-                //                }
-                //                for e in self.adjacency[end]! {
-                //                    e.dirty = true
-                //                    if e.plane != nil { self.planes.removePlane(e.plane!) }
-                //                }
+
             }
             
             
@@ -183,6 +173,9 @@
                 if !contains(e.twin.adjacency, edge.twin){
                     e.twin.adjacency.insert(edge.twin, atIndex: index)
                 }
+                
+                // this fixes double planes
+                // may be overkill in terms of number of planes cleared
                 //mark each of the edges in adj as dirty
                 e.dirty = true
                 //delete the plane that's associated with each edge

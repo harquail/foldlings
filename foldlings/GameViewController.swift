@@ -89,15 +89,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     //this creates a popup dialog box to send the SVG version
     // this gets the path and SVG to print and then be sent to 
     // a laser cutter by user.
+    // TODO: account for twins, folds need to be dotted, and save this path to a file
     func sendSvg(planes: CollectionOfPlanes){
-        var path = planes.planes[0].path.CGPath
-//        let elements = path.getPathElements()
-//        
-//        let els = elements as! [CGPathElementObj]
-        let svgString = SVGPathGenerator.svgPathFromCGPath(path)
-        //just gives you SVG path
-        //still have to construct SVG in xml and put in PDF
-        println("this is a test: \(svgString)")
+        // get CGPaths from planes and map to string of svgs
+        var paths:[String] = planes.planes.map({SVGPathGenerator.svgPathFromCGPath($0.path.CGPath)})
+        let svgString = paths.reduce("") { $0 + $1 }// concatenate the string
+        println("\(svgString)")
     }
     
     override func viewDidLoad() {
