@@ -95,7 +95,6 @@ class SketchView: UIView {
         if(gesture.state == UIGestureRecognizerState.Began){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
-            sketch.currentFeature = FreeForm(start:touchPoint)
             startEdgeCollision = nil //reset edge collisions to nil
             endEdgeCollision = nil
             
@@ -231,7 +230,6 @@ class SketchView: UIView {
                     }
                 }
             }
-            
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
@@ -509,15 +507,24 @@ class SketchView: UIView {
         //ignore intersections if we're just starting a line...
         if ( CGPointGetDistance(tempStart, tempEnd) > kMinLineLength)
         {
-            // test for intersections
-            if let np = sketch.vertexHitTest(tempEnd) {
+            
+            
+            // test for self intersections
+            if let np = Edge.hitTest(path, point:tempEnd) {
                 tempEnd = np
                 closed = true
-            } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
-            {
-                tempEnd = np
-                closed = true
-                endEdgeCollision = edge
+            } else {
+                
+                // test for intersections
+                if let np = sketch.vertexHitTest(tempEnd) {
+                    tempEnd = np
+                    closed = true
+                } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
+                {
+                    tempEnd = np
+                    closed = true
+                    endEdgeCollision = edge
+                }
             }
         } else {
             // check that we're not closing a path
