@@ -97,28 +97,32 @@ class SketchView: UIView {
             return
         }
         let shape = sketch.currentFeature as! FreeForm
-         if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
             var touchPoint: CGPoint = gesture.locationInView(self)
+            
+            if Float(ccpDistance((shape.interpolationPoints.last! as! NSValue).CGPointValue(), touchPoint)) > 10{
             shape.lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
-           shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))            
-
+            shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))
+            
             var closed = false
             if shape.interpolationPoints.count > 7
-                &&
-               Float(ccpDistance((shape.interpolationPoints.first! as! NSValue).CGPointValue(), touchPoint)) < 30{
-                closed = true
+            &&
+            Float(ccpDistance((shape.interpolationPoints.first! as! NSValue).CGPointValue(), touchPoint)) < 30{
+            closed = true
             }
-
+            
             
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: closed, alpha: 1)
             shape.path = path
             
             if(shape.interpolationPoints.count > 3){
-                forceRedraw()
+            forceRedraw()
             }
             
-
+            }
+            
+            
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
@@ -373,7 +377,7 @@ class SketchView: UIView {
                 for e in sketch.edges
                 {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-
+                    
                     //don't draw twin edges
                     if(!twinsOfVisited.contains(e)){
                         e.path.stroke()
