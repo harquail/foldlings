@@ -105,7 +105,10 @@ class SketchView: UIView {
            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: false, alpha: 1)
            shape.path = path
 //           shape.path!.stroke()
-//           forceRedraw()
+            
+            if(shape.interpolationPoints.count > 3){
+           forceRedraw()
+            }
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)

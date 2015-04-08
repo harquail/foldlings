@@ -26,7 +26,7 @@ class FreeForm:FoldFeature{
             return [edge]
         }
         else{
-            return [Edge(start: CGPointZero, end: CGPointZero, path: UIBezierPath(), kind: .Cut, isMaster: false)]
+            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
         }
     }
 
