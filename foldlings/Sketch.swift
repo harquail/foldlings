@@ -31,6 +31,7 @@
         var origin:Origin
         var planes:CollectionOfPlanes = CollectionOfPlanes()
         
+        
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
         enum Origin: String {
             case UserCreated = "User"

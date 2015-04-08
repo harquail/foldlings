@@ -572,14 +572,15 @@ class SketchView: UIView {
     func svgImage(){
         // get CGPaths from edges and map to string of svgs
         var paths:[String] = sketch.edges.map({
+            // if it is a fold then create dash stroke
             if $0.kind == .Fold{
-                //let dashStyle = String(<path stroke-dasharray="5,15"d=")
                 return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
             }
+            // if not, normal stroke
             return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
         })
-
-        let svgString = paths.reduce("<svg height=\"1024\" width=\"900\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
+        
+        let svgString = paths.reduce("<svg height=\"\(self.bounds.height)\" width=\"\(self.bounds.width)\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
         println("\(svgString)\n</g>\n</svg>")
     }
     
