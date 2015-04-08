@@ -63,6 +63,7 @@ class SketchView: UIView {
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
+        
     }
     
     override func drawRect(rect: CGRect)
@@ -564,7 +565,23 @@ class SketchView: UIView {
         //        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
     }
     
+    //this creates a popup dialog box to send the SVG version
+    // this gets the path and SVG to print and then be sent to
+    // a laser cutter by user.
+    // TODO: account for twins and save this path to a file
+    func svgImage(){
+        // get CGPaths from edges and map to string of svgs
+        var paths:[String] = sketch.edges.map({
+            if $0.kind == .Fold{
+                //let dashStyle = String(<path stroke-dasharray="5,15"d=")
+                return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            }
+            return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+        })
 
+        let svgString = paths.reduce("<svg height=\"1024\" width=\"900\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
+        println("\(svgString)\n</g>\n</svg>")
+    }
     
     
     func drawCircle(point: CGPoint) ->UIBezierPath

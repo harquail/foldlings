@@ -83,19 +83,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         popover.sourceView = self.view
         popover.sourceRect = CGRectMake(xposition,(self.view.bounds.height - 110),0,0)
         self.presentViewController(activityViewController, animated: true, completion: nil)
-        sendSvg(planes)
     }
     
-    //this creates a popup dialog box to send the SVG version
-    // this gets the path and SVG to print and then be sent to 
-    // a laser cutter by user.
-    // TODO: account for twins, folds need to be dotted, and save this path to a file
-    func sendSvg(planes: CollectionOfPlanes){
-        // get CGPaths from planes and map to string of svgs
-        var paths:[String] = planes.planes.map({SVGPathGenerator.svgPathFromCGPath($0.path.CGPath)})
-        let svgString = paths.reduce("") { $0 + $1 }// concatenate the string
-        println("\(svgString)")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
