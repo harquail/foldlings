@@ -101,25 +101,37 @@ class SketchView: UIView {
             var touchPoint: CGPoint = gesture.locationInView(self)
             
             if Float(ccpDistance((shape.interpolationPoints.last! as! NSValue).CGPointValue(), touchPoint)) > 10{
-            shape.lastUpdated = NSDate(timeIntervalSinceNow: 0)
-            
-            shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))
-            
-            var closed = false
-            if shape.interpolationPoints.count > 7
-            &&
-            Float(ccpDistance((shape.interpolationPoints.first! as! NSValue).CGPointValue(), touchPoint)) < 30{
-            closed = true
-            }
-            
-            
-            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: closed, alpha: 1)
-            shape.path = path
-            
-            if(shape.interpolationPoints.count > 3){
-            forceRedraw()
-            }
-            
+                shape.lastUpdated = NSDate(timeIntervalSinceNow: 0)
+                
+                shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))
+                
+                var closed = false
+                if shape.interpolationPoints.count > 7
+                    &&
+                    ccpDistance((shape.interpolationPoints.first! as! NSValue).CGPointValue(), touchPoint) < kMinLineLength{
+                        closed = true
+                }
+                
+                
+                
+                
+                if(shape.interpolationPoints.count > 3){
+                    
+                    path = UIBezierPath()
+                    path.moveToPoint(shape.interpolationPoints[0].CGPointValue())
+                    path.addLineToPoint(shape.interpolationPoints[1].CGPointValue())
+                    //                    path.moveToPoint(CGPointZero)
+                    //                    path.addLineToPoint(CGPointMake(500, 500))
+                    
+                    println(shape.interpolationPoints[1])
+                    
+                    path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: closed, alpha: 1))
+                    path.addLineToPoint(touchPoint)
+                    shape.path = path
+                    
+                    forceRedraw()
+                }
+                
             }
             
             
