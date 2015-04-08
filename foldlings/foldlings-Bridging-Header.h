@@ -5,6 +5,7 @@
 
 
 #import "UIBezierPath+OBAdditions.h"
+#import "UIBezierPath+Interpolation.h"
 #import "CGPathElementObj.h"
 #import "BezierSimple.h"
 #import "CGPoint+Vector.h"
@@ -13,3 +14,4 @@
 #import "ANPathBitmap.h"
 #import "ANPathIntersection.h"
 #import "PerformanceBezier/PerformanceBezier.h"
+

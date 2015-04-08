@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22061CA21A1B18180030079D /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA11A1B18180030079D /* Queue.swift */; };
-		22061CA41A1B182F0030079D /* QNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22061CA31A1B182F0030079D /* QNode.swift */; };
 		220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */; };
 		22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22198BE91A007B9D00FCEDD1 /* Constants.swift */; };
 		223F8EF01A05C76A00DA4405 /* CGPathElementObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */; };
@@ -105,6 +103,8 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
+		F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */; };
+		F1AD3D3E1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D3C1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m */; };
 		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
 		F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B9AE771A06A64B00265AAE /* Archivist.swift */; };
 		F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1B9AE791A06B37D00265AAE /* data.plist */; };
@@ -159,8 +159,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22061CA11A1B18180030079D /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		22061CA31A1B182F0030079D /* QNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNode.swift; sourceTree = "<group>"; };
 		220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+InsertionIntoSorted.swift"; sourceTree = "<group>"; };
 		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
@@ -309,6 +307,11 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
+		F1AD3D381AD4BBEB00B55D2C /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
+		F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
+		F1AD3D3A1AD4BBEB00B55D2C /* Curve Interpolation-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Curve Interpolation-Prefix.pch"; sourceTree = "<group>"; };
+		F1AD3D3B1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Interpolation.h"; sourceTree = "<group>"; };
+		F1AD3D3C1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Interpolation.m"; sourceTree = "<group>"; };
 		F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfFoldlings.swift; sourceTree = "<group>"; };
 		F1B9AE771A06A64B00265AAE /* Archivist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivist.swift; sourceTree = "<group>"; };
 		F1B9AE791A06B37D00265AAE /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
@@ -382,15 +385,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		22061CA01A1B17530030079D /* SwiftStructures */ = {
-			isa = PBXGroup;
-			children = (
-				22061CA31A1B182F0030079D /* QNode.swift */,
-				22061CA11A1B18180030079D /* Queue.swift */,
-			);
-			name = SwiftStructures;
-			sourceTree = "<group>";
-		};
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,9 +392,13 @@
 				F160F3B81A31463900B469CA /* Flurry */,
 				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
 				22C0D68D1A059C6D00D521CA /* UIBezierPath+OBAdditions.m */,
+				F1AD3D381AD4BBEB00B55D2C /* CGPointExtension.h */,
+				F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */,
+				F1AD3D3A1AD4BBEB00B55D2C /* Curve Interpolation-Prefix.pch */,
+				F1AD3D3B1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.h */,
+				F1AD3D3C1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m */,
 				F16673A31ACE3F5700243D70 /* PerformanceBezier */,
 				F153BB631A1EAED50029FDF2 /* SVGgh */,
-				22061CA01A1B17530030079D /* SwiftStructures */,
 				22D0E8041A169F3200C9ECAA /* ExSwift */,
 				225094F01A0CA21000E754CA /* BezierSimple.h */,
 				225094F11A0CA21000E754CA /* BezierSimple.m */,
@@ -965,6 +963,7 @@
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
 				22D0E8031A169F2400C9ECAA /* String.swift in Sources */,
+				F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */,
 				22D0E8021A169F2400C9ECAA /* Sequence.swift in Sources */,
 				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,
 				F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */,
@@ -988,13 +987,13 @@
 				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
 				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,
 				F153BB9F1A1EAED50029FDF2 /* SVGAttributedObject.m in Sources */,
-				22061CA21A1B18180030079D /* Queue.swift in Sources */,
 				F153BBA61A1EAED50029FDF2 /* GHGradient.m in Sources */,
 				F1BE6A8A1AC1EF4A00B99C8F /* ANPathIntersection.m in Sources */,
 				F16673C71ACE3F5700243D70 /* UIBezierPath+Uncached.m in Sources */,
 				F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */,
 				22D0E7FE1A169F2400C9ECAA /* Float.swift in Sources */,
 				F153BBA31A1EAED50029FDF2 /* SVGUtilities.m in Sources */,
+				F1AD3D3E1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m in Sources */,
 				F1BE6A811AC1EF4A00B99C8F /* OSCommonImage.m in Sources */,
 				22D0E7FB1A169F2400C9ECAA /* Dictionary.swift in Sources */,
 				F1BE6A851AC1EF4A00B99C8F /* BitmapContextManipulator.m in Sources */,
@@ -1009,7 +1008,6 @@
 				F1BE6A801AC1EF4A00B99C8F /* NSImage+ANImageBitmapRep.m in Sources */,
 				F153BB9B1A1EAED50029FDF2 /* GHAttributedObject.m in Sources */,
 				F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */,
-				22061CA41A1B182F0030079D /* QNode.swift in Sources */,
 				F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */,
 				F153BBAD1A1EAED50029FDF2 /* GHImageCache.m in Sources */,
 				F153BB9E1A1EAED50029FDF2 /* GHTextLine.m in Sources */,
