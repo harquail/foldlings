@@ -13,6 +13,8 @@ class FreeForm:FoldFeature{
     var path: UIBezierPath?
     var interpolationPoints:[AnyObject] = []
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
+    var cachedPath:UIBezierPath = UIBezierPath()
+    var closed = false
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -28,6 +30,36 @@ class FreeForm:FoldFeature{
         else{
             return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
         }
+    }
+    
+    func pathThroughTouchPoints() -> UIBezierPath{
+    
+        if Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 10{
+            lastUpdated = NSDate(timeIntervalSinceNow: 0)
+            
+            interpolationPoints.append(NSValue(CGPoint: endPoint!))
+            
+            var closed = false
+            if interpolationPoints.count > 7
+                &&
+                ccpDistance((interpolationPoints.first! as! NSValue).CGPointValue(), endPoint!) < kMinLineLength/4{
+                    closed = true
+            }
+            
+            if(interpolationPoints.count > 3){
+                let path = UIBezierPath()
+                path.moveToPoint(interpolationPoints[0].CGPointValue())
+                path.addLineToPoint(interpolationPoints[1].CGPointValue())
+                println(interpolationPoints[1])
+                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed, alpha: 1))
+                path.addLineToPoint(endPoint!)
+                cachedPath = path
+                return path
+
+            }
+            
+        }
+        return cachedPath
     }
 
 }
