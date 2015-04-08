@@ -568,16 +568,22 @@ class SketchView: UIView {
     //this creates a popup dialog box to send the SVG version
     // this gets the path and SVG to print and then be sent to
     // a laser cutter by user.
-    // TODO: account for twins and save this path to a file
+    // TODO:save this path to a file
     func svgImage(){
         // get CGPaths from edges and map to string of svgs
+        var edgesVisited:[Edge] = []
         var paths:[String] = sketch.edges.map({
-            // if it is a fold then create dash stroke
-            if $0.kind == .Fold{
-                return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            if(!edgesVisited.contains($0)){
+                edgesVisited.append($0.twin)
+                edgesVisited.append($0)
+                // if it is a fold then create dash stroke
+                if $0.kind == .Fold{
+                    return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                }
+                // if not, normal stroke
+                return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
             }
-            // if not, normal stroke
-            return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            return ""
         })
         
         let svgString = paths.reduce("<svg height=\"\(self.bounds.height)\" width=\"\(self.bounds.width)\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
