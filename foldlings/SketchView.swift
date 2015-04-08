@@ -101,14 +101,24 @@ class SketchView: UIView {
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
-           shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))
-           path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: false, alpha: 1)
-           shape.path = path
-//           shape.path!.stroke()
+           shape.interpolationPoints.append(NSValue(CGPoint: touchPoint))            
+
+            var closed = false
+            if shape.interpolationPoints.count > 7
+                &&
+               Float(ccpDistance((shape.interpolationPoints.first! as! NSValue).CGPointValue(), touchPoint)) < 30{
+                closed = true
+            }
+
+            
+            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: closed, alpha: 1)
+            shape.path = path
             
             if(shape.interpolationPoints.count > 3){
-           forceRedraw()
+                forceRedraw()
             }
+            
+
         }
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
