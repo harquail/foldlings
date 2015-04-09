@@ -105,8 +105,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         presentViewController(mailView, animated: true, completion: nil)
     }
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
@@ -444,6 +442,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
     
     
     
