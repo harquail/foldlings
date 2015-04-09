@@ -58,7 +58,7 @@ class FreeForm:FoldFeature{
                 path.moveToPoint(interpolationPoints[0].CGPointValue())
                 path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
-                
+
                 path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed, alpha: 1))
                 
                 //the line to the currrent touch point from the end
@@ -80,6 +80,11 @@ class FreeForm:FoldFeature{
             
         }
         return cachedPath!
+    }
+    
+    
+    override func boundingBox() -> CGRect? {
+        return path?.bounds
     }
     
 }
