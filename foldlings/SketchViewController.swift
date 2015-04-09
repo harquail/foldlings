@@ -117,12 +117,17 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     
+    
+    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
+        println("free form")
+        sketchView.sketchMode = .FreeForm
+    }
+    
+    
     @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
-        Flurry.logEvent("slider button clicked")
-        sketchView.statusLabel.text = "Drag the shape"
-        sketchView.showXCheck()
-        selected.frame = CGRectMake(sender.frame.origin.x - 27, 885, selected.frame.width, selected.frame.height)
-        sketchView.sketchMode = SketchView.Mode.BoxFold
+
+        println("box fold")
+        sketchView.sketchMode = .BoxFold
         
     }
     

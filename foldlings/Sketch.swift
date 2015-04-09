@@ -20,6 +20,9 @@
         
         var masterFeature:FoldFeature?
         
+
+        
+        
         //the folds that define a sketch
         //for now, cuts are in this array to
         let edgeAdjacencylockQueue = dispatch_queue_create("com.Foldlings.LockEdgeAdjacencyQueue", nil)
@@ -383,10 +386,9 @@
                     }
                 }
                 return false
-           
-            
         }
         
+        // #TODO: this is bad and shouldn't exist...
         /// updates sketch edges to match those generated from features
         func refreshFeatureEdges(){
             

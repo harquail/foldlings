@@ -138,7 +138,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         scene.physicsWorld.gravity.y = 0.0
         
-        
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
         theOneSphere.position.y = theOneSphere.position.y + 4.0

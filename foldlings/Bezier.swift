@@ -24,7 +24,7 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     npoint = CGPointMake(npoint.x / CGFloat(points.count), npoint.y / CGFloat(points.count))
     
     return npoint
-    
+
 }
 
 
