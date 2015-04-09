@@ -87,4 +87,17 @@ class FreeForm:FoldFeature{
         return path?.bounds
     }
     
+    /// boxFolds can be deleted
+    /// folds can be added only to leaves
+    override func tapOptions() -> [FeatureOption]?{
+        var options:[FeatureOption] = []
+        options.append(.DeleteFeature)
+        if(self.isLeaf()){
+            options.append(.AddFolds)
+        }
+        
+        return options
+        
+    }
+    
 }
