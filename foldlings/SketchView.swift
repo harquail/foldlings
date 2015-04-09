@@ -17,25 +17,17 @@ class SketchView: UIView {
     enum Mode {
         case Erase
         case Cut
-        case Fold
-        case Tab
         case Mirror
         case Track
         case Slider
         case BoxFold
+        case FreeForm
     }
-    
-    @IBOutlet var normalButtons: [UIButton]!
-    @IBOutlet var templatingButtons: [UIButton]!
     
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
-    var pts: [CGPoint]! // we now need to keep track of the four points of a Bezier segment and the first control point of the next segment
-    var ctr: Int = 0
-    var tempStart:CGPoint = CGPointZero // these keep track of point while drawing
-    var tempEnd:CGPoint = CGPointZero
-    var sketchMode:  Mode = Mode.Cut
-    var cancelledTouch: UITouch?  //if interrrupted say on intersection
+    
+    var sketchMode:  Mode = Mode.BoxFold
     var sketch: Sketch!
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
@@ -45,7 +37,6 @@ class SketchView: UIView {
     let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
     var redrawing:Bool = false
     var canPreview:Bool = true
-    
     
     
     override init(frame: CGRect) {
@@ -59,7 +50,6 @@ class SketchView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = kLineWidth
-        pts = [CGPoint](count: 5, repeatedValue: CGPointZero)
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
@@ -70,7 +60,6 @@ class SketchView: UIView {
         if (incrementalImage != nil)
         {
             incrementalImage.drawInRect(rect)
-            
             setPathStyle(path, edge:nil, grayscale:false).setStroke()
             path.stroke()
         }
@@ -83,15 +72,80 @@ class SketchView: UIView {
     
     func handlePan(sender: AnyObject) {
         
+        switch (sketchMode) {
+        case .BoxFold:
+            handleBoxFoldPan(sender)
+        case .FreeForm:
+            handleFreeFormPan(sender)
+        default:
+            break
+        }
+        
+        
+    }
+    
+    func handleFreeFormPan(sender: AnyObject){
+        
+        let gesture = sender as! UIPanGestureRecognizer
+        if(gesture.state == UIGestureRecognizerState.Began){
+            
+            // make a shape with touchpoint
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            let shape = FreeForm(start:touchPoint)
+            sketch.currentFeature = shape
+            sketch.currentFeature?.startPoint = gesture.locationInView(self)
+            
+            shape.endPoint = touchPoint
+            return
+        }
+        let shape = sketch.currentFeature as! FreeForm
+        // if it's been a few microseconds since we tried to add a point
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            shape.endPoint = touchPoint
+            //set the path to a curve through the points
+            path = shape.pathThroughTouchPoints()
+            shape.path = path
+            forceRedraw()
+        }
+        //close the shape when the pan gesture ends
+        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
+            shape.path = path
+            gesture.enabled = true
+            
+            //add edges from the feature to the sketch
+            sketch.features?.append(sketch.currentFeature!)
+            sketch.currentFeature = nil
+            sketch.refreshFeatureEdges()
+            forceRedraw()
+        }
+        
+        
+    }
+    
+    /// erase hitpoint edge
+    /// needs to be refactored for features
+    func erase(touchPoint: CGPoint) {
+        if var (edge, np) = sketch.edgeHitTest(touchPoint)
+        {
+            if edge != nil && ( (!edge!.isMaster)){
+                sketch.removeEdge(edge!)
+                forceRedraw()
+            }
+        } else if var plane = sketch.planeHitTest(touchPoint) {
+            sketch.planes.removePlane(plane)
+        }
+    }
+    
+    func handleBoxFoldPan(sender: AnyObject){
+        
         let gesture = sender as! UIPanGestureRecognizer
         
         if(gesture.state == UIGestureRecognizerState.Began){
             
             var touchPoint = gesture.locationInView(self)
             
-            //meow?
-            //            gesture.translationInView(<#view: UIView#>)
-            //if this is a good place to draw a new feature
             var goodPlaceToDraw = true
             if let children = sketch.masterFeature?.children{
                 
@@ -106,20 +160,16 @@ class SketchView: UIView {
                             //maybe limit to fold for now?
                             sketch.draggedEdge = e
                             e.deltaY = gesture.translationInView(self).y
-                            
                             println("init deltaY: \(e.deltaY)")
                         }
                         else{
                             println("No Edge Here...")
                         }
-                        
-                        //                        println("OUTSIDE LOOP")
                         goodPlaceToDraw = false
                         break
                     }
                 }
             }
-            
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
@@ -139,9 +189,9 @@ class SketchView: UIView {
                 eNew.deltaY = nil
                 
                 sketch.addEdge(eNew)
-
+                
                 sketch.masterFeature!.invalidateEdges()
-
+                
             }
             
             
@@ -151,7 +201,7 @@ class SketchView: UIView {
                 drawingFeature.invalidateEdges()
                 sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
-                                
+                
                 //add edges from the feature to the sketch
                 sketch.features?.append(sketch.currentFeature!)
                 
@@ -163,7 +213,7 @@ class SketchView: UIView {
                     else{
                         drawingFeature.parent!.children = []
                         drawingFeature.parent!.children!.append(drawingFeature)
-//                        print("~~~ADDED FIRST CHILD~~~\n\n")
+                        //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
                     drawingFeature.parent!.invalidateEdges()
@@ -215,14 +265,13 @@ class SketchView: UIView {
                     drawingFeature.endPoint = touchPoint
                 }
                 
-                
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
                 for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds{
-                        if(featureSpansFold(sketch.currentFeature, fold:fold)){
+                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
@@ -231,7 +280,7 @@ class SketchView: UIView {
                     }
                     
                 }
-
+                
                 // box folds have different behaviors if they span the driving edge
                 
                 drawingFeature.invalidateEdges()
@@ -240,32 +289,16 @@ class SketchView: UIView {
                 
             }
         }
-        
     }
     
     
-
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
     
     
-    func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
-        
-        //feature must be inside fold x bounds
-        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
-            return false
-        }
-        
-        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
-            return (a.y < b.y) ? (a,b) : (b,a)
-        }
-        
-        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
-        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
-        
-    }
+    
     
     /// constructs a greyscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
@@ -302,34 +335,27 @@ class SketchView: UIView {
                 
                 var twinsOfVisited = [Edge]()
                 
-
+                
                 //iterrte trhough features and draw them
                 if var currentFeatures = sketch.features{
-                        
-                        if(sketch.currentFeature != nil){
-                            currentFeatures.append(sketch.currentFeature!)
-                        }
-                        
-                        for feature in currentFeatures{
-                            //                    if let feature = currentFeature{
-                            if(feature.startPoint != nil && feature.endPoint != nil){
-                                let edges = feature.getEdges()
-                                
-                                for e in edges
-                                {
-                                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                                    e.path.stroke()
-                                    //                                //don't draw twin edges
-                                    //                                if(!twinsOfVisited.contains(e)){
-                                    //                                    e.path.stroke()
-                                    //                                    twinsOfVisited.append(e.twin)
-                                    //                                }
-                                    
-                                    
-                                }
-                                
+                    
+                    if(sketch.currentFeature != nil){
+                        currentFeatures.append(sketch.currentFeature!)
+                    }
+                    
+                    for feature in currentFeatures{
+                        //                    if let feature = currentFeature{
+                        if(feature.startPoint != nil && feature.endPoint != nil){
+                            let edges = feature.getEdges()
+                            
+                            for e in edges
+                            {
+                                setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                                e.path.stroke()
                             }
+                            
                         }
+                    }
                 }
                 
                 //print all edges
@@ -369,109 +395,6 @@ class SketchView: UIView {
         //        println("Time elapsed for bitmap: \(timeElapsed) s")
         
         return tempIncremental
-    }
-    
-    
-
-    ///makes bezier by stringing segments together
-    ///creatse segments from ctrl pts
-    func makeBezier(aborted:Bool=false)
-    {
-        if !aborted
-        {
-            // only use first y-value
-            // or
-            // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-            var newEnd = (sketchMode == .Cut) ? CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0 ) : tempEnd
-            
-            if ( sketchMode == .Fold || sketchMode == .Tab)
-            {
-                // makes only straight horizontal fold lines
-                // basically make a completely new line every movement so its only 2 points ever
-                path = UIBezierPath()
-                path.moveToPoint(tempStart)
-                path.addLineToPoint(CGPointMake(newEnd.x,  newEnd.y))
-                setPathStyle(path, edge:nil, grayscale:false)
-            } else {
-                pts[3] = newEnd
-                if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
-                path.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
-            }
-            
-            // replace points and get ready to handle the next segment
-            pts[0] = pts[3]
-            pts[1] = pts[4]
-        } else {
-            if path.empty { path.moveToPoint(pts[0]) } //only do moveToPoint for 1st point
-            path.addLineToPoint(tempEnd)
-            if CGPointEqualToPoint(tempEnd, tempStart) {
-                path.closePath()
-            }
-        }
-        ctr = 1
-        self.setNeedsDisplay()
-        
-    }
-    
-    
-    /// checks and constrains current endpoint
-    func checkCurrentEnd(endpoint: CGPoint) -> Bool {
-        var closed:Bool = false
-        
-        // only use first y-value
-        // or
-        // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-        if sketchMode == .Tab {
-            tempEnd = CGPointMake(endpoint.x,  tempStart.y)
-        }
-            // allow non-horizontal folds, snapping to horizonal & vertical
-        else if sketchMode == .Fold {
-            let snapThreshold = 10
-            if(abs(Int(tempStart.x) - Int(endpoint.x)) < snapThreshold){
-                tempEnd = CGPointMake(tempStart.x, endpoint.y)
-            }
-            else if(abs(Int(tempStart.y) - Int(endpoint.y)) < snapThreshold){
-                tempEnd = CGPointMake(endpoint.x, tempStart.y)
-            }
-            else{
-                tempEnd = endpoint
-            }
-            
-        }
-        else {
-            tempEnd = endpoint
-        }
-        
-        //ignore intersections if we're just starting a line...
-        if ( CGPointGetDistance(tempStart, tempEnd) > kMinLineLength)
-        {
-            // test for self intersections
-            if let np = Edge.hitTest(path, point:tempEnd) {
-                if sketchMode != .Fold && sketchMode != .Tab {
-                    tempEnd = np
-                    closed = true
-                }
-            } else {
-                // test for intersections
-                if let np = sketch.vertexHitTest(tempEnd) {
-                    tempEnd = np
-                    closed = true
-                } else if let (edge,np) = sketch.edgeHitTest(tempEnd)
-                {
-                    tempEnd = np
-                    closed = true
-                    endEdgeCollision = edge
-                }
-            }
-        } else {
-            // check that we're not closing a path
-            //  needs to make sure that the path bounds are greater than minlinelength
-            if sketchMode == .Cut && (path.bounds.height > kMinLineLength || path.bounds.width > kMinLineLength){
-                tempEnd = tempStart
-                closed = true
-            }
-        }
-        return closed
     }
     
     
@@ -532,7 +455,7 @@ class SketchView: UIView {
                     
                     //in template mode, only get planes when features end!
                     
-
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), {
@@ -564,7 +487,7 @@ class SketchView: UIView {
         //        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
     }
     
-
+    
     
     
     func drawCircle(point: CGPoint) ->UIBezierPath
@@ -586,8 +509,6 @@ class SketchView: UIView {
         switch sketchMode {
         case .Cut:
             return Edge.Kind.Cut
-        case .Fold:
-            return Edge.Kind.Fold
         default:
             return Edge.Kind.Cut
         }
