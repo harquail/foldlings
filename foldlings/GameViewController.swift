@@ -8,11 +8,13 @@ import UIKit
 import QuartzCore
 import SceneKit
 import Foundation
+import MessageUI
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate {
+class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
+    var svgString: String!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
@@ -62,21 +64,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     @IBAction func printButton (sender: UIButton){
         Flurry.logEvent("shared print-out image")
-        
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
         Flurry.logEvent("shared laser image")
-        
-        popupShare(laserImage, xposition:100)
+        popupSVGShare(svgString, xposition:100)
     }
     
     
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
+        //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        
+        // creates thing with options
         activityViewController.popoverPresentationController!.sourceView = self.view
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
         let popover = activityViewController.popoverPresentationController!
@@ -85,6 +88,31 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
+    func popupSVGShare (svg: String, xposition: CGFloat){
+        //createFile(svg)
+        let svgData: NSData = svg.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+        sendMail(svgData)
+    }
+    
+    func createFile(contents: String){
+    let file = "file.svg"
+    let dir = "/Users/imac/Desktop/" //documents directory
+    let path = dir.stringByAppendingPathComponent(file)
+    //writing
+    contents.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
+
+    }
+    
+    func sendMail(svgData: NSData) {
+        var mailView = MFMailComposeViewController()
+        mailView.mailComposeDelegate = self
+        mailView.setSubject("Here is your Pop-up Card")
+        mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
+        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"file.svg")
+
+        
+        presentViewController(mailView, animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -422,6 +450,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return true
     }
     
-    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     
 }

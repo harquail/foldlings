@@ -556,20 +556,13 @@ class SketchView: UIView {
     }
     
     
-    func setGameView(){
-        gameView = GameViewController()
-        //        gameView.setButtonBG(previewImage())
-        gameView.laserImage = bitmap(grayscale: true)
-        gameView.planes = sketch.planes
-        gameView.makeScene()
-        //        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
-    }
+
     
     //this creates a popup dialog box to send the SVG version
     // this gets the path and SVG to print and then be sent to
     // a laser cutter by user.
     // TODO:save this path to a file
-    func svgImage(){
+    func svgImage() -> String{
         // get CGPaths from edges and map to string of svgs
         var edgesVisited:[Edge] = []
         var paths:[String] = sketch.edges.map({
@@ -586,8 +579,9 @@ class SketchView: UIView {
             return ""
         })
         paths.append("\n</g>\n</svg>")
-        let svgString = paths.reduce("<svg height=\"\(self.bounds.height)\" width=\"\(self.bounds.width)\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
-        println(svgString)
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
+        
+        return svgString
     }
     
     
