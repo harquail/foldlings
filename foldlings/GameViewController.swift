@@ -84,6 +84,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
     
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
