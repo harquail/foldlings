@@ -195,9 +195,7 @@ class Plane: Printable, Hashable
         }
         outPath.closePath()
         return outPath
-        
     }
-    
     
     func hasEdge(edge:Edge) -> Bool
     {
