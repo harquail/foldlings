@@ -149,8 +149,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             
             
             viewController.laserImage = sketchView.bitmap(grayscale: true)
+            viewController.svgString = sketchView.svgImage()
             viewController.planes = sketchView.sketch.planes
             viewController.parentButton = sketchView.previewButton
+        
             // pass data to next view
         }
     }

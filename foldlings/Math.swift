@@ -28,6 +28,7 @@ func getAngle(edgeA: Edge, edgeB: Edge) ->CGFloat{
 //    println("new pointa: \(getFirstPoint(edgeA.path)) \n")
 //    println("new pointb: \(getFirstPoint(edgeB.path)) \n")
 
+
     let dot = a.x*b.x + a.y*b.y //  dot product
     let det = a.x*b.y - a.y*b.x // determinant
     

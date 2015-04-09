@@ -53,6 +53,7 @@ class SketchView: UIView {
         // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
+        
     }
     
     override func drawRect(rect: CGRect)
@@ -479,16 +480,33 @@ class SketchView: UIView {
     }
     
     
-    func setGameView(){
-        gameView = GameViewController()
-        //        gameView.setButtonBG(previewImage())
-        gameView.laserImage = bitmap(grayscale: true)
-        gameView.planes = sketch.planes
-        gameView.makeScene()
-        //        previewButton.setBackgroundImage(gameView.previewImage(), forState: UIControlState.Normal)
+
+    
+    //this creates a popup dialog box to send the SVG version
+    // this gets the path and SVG to print and then be sent to
+    // a laser cutter by user.
+    // TODO:save this path to a file
+    func svgImage() -> String{
+        // get CGPaths from edges and map to string of svgs
+        var edgesVisited:[Edge] = []
+        var paths:[String] = sketch.edges.map({
+            if(!edgesVisited.contains($0)){
+                edgesVisited.append($0.twin)
+                edgesVisited.append($0)
+                // if it is a fold then create dash stroke
+                if $0.kind == .Fold{
+                    return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                }
+                // if not, normal stroke
+                return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            }
+            return ""
+        })
+        paths.append("\n</g>\n</svg>")
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
+        
+        return svgString
     }
-    
-    
     
     
     func drawCircle(point: CGPoint) ->UIBezierPath

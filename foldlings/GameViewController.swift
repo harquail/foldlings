@@ -8,11 +8,13 @@ import UIKit
 import QuartzCore
 import SceneKit
 import Foundation
+import MessageUI
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate {
+class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
     
     var bgImage:UIImage!
     var laserImage:UIImage!
+    var svgString: String!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
@@ -27,6 +29,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     let thirtyDegreesNeg = Float(-M_PI/6.0)
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
+    
+   // let svgStrokeWidth = .001 //mm
     
     var theOneSphere = SCNNode()
     
@@ -60,21 +64,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     @IBAction func printButton (sender: UIButton){
         Flurry.logEvent("shared print-out image")
-        
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
         Flurry.logEvent("shared laser image")
-        
-        popupShare(laserImage, xposition:100)
+        popupSVGShare(svgString, xposition:100)
     }
     
     
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
+        //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        
+        // creates thing with options
         activityViewController.popoverPresentationController!.sourceView = self.view
         activityViewController.excludedActivityTypes = [UIActivityTypeAssignToContact]
         let popover = activityViewController.popoverPresentationController!
@@ -83,6 +88,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
+    //creates svg pop-up dialog and sends it to user
+    func popupSVGShare (svg: String, xposition: CGFloat){
+        let svgData: NSData = svg.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+        sendMail(svgData)
+    }
+    
+    // creates mailView controller to send svg to user as attechment
+    func sendMail(svgData: NSData) {
+        var mailView = MFMailComposeViewController()
+        mailView.mailComposeDelegate = self
+        mailView.setSubject("Here is your Pop-up Card")
+        mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
+        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"file.svg")
+        
+        presentViewController(mailView, animated: true, completion: nil)
+    }
     
 
     
@@ -109,8 +130,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         lightNode.light!.attenuationStartDistance = 100
         lightNode.light!.attenuationEndDistance = 1000
         lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //        scene.rootNode.addChildNode(lightNode)
-        //
+        //scene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
@@ -421,7 +441,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return true
     }
     
-    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     
     
     
