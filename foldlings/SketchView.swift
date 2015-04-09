@@ -585,9 +585,9 @@ class SketchView: UIView {
             }
             return ""
         })
-        
+        paths.append("\n</g>\n</svg>")
         let svgString = paths.reduce("<svg height=\"\(self.bounds.height)\" width=\"\(self.bounds.width)\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
-        println("\(svgString)\n</g>\n</svg>")
+        println(svgString)
     }
     
     
