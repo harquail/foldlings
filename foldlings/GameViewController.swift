@@ -88,28 +88,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
+    //creates svg pop-up dialog and sends it to user
     func popupSVGShare (svg: String, xposition: CGFloat){
-        //createFile(svg)
         let svgData: NSData = svg.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
         sendMail(svgData)
     }
     
-    func createFile(contents: String){
-    let file = "file.svg"
-    let dir = "/Users/imac/Desktop/" //documents directory
-    let path = dir.stringByAppendingPathComponent(file)
-    //writing
-    contents.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
-
-    }
-    
+    // creates mailView controller to send svg to user as attechment
     func sendMail(svgData: NSData) {
         var mailView = MFMailComposeViewController()
         mailView.mailComposeDelegate = self
         mailView.setSubject("Here is your Pop-up Card")
         mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
         mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"file.svg")
-
         
         presentViewController(mailView, animated: true, completion: nil)
     }
