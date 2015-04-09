@@ -128,8 +128,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         lightNode.light!.attenuationStartDistance = 100
         lightNode.light!.attenuationEndDistance = 1000
         lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //        scene.rootNode.addChildNode(lightNode)
-        //
+        //scene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
