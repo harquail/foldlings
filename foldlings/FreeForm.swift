@@ -49,18 +49,19 @@ class FreeForm:FoldFeature{
                     closed = true
             }
             
-            //if ther are enough point, draw a full curve
+            //if ther are enough points, draw a full curve
             if(interpolationPoints.count > 3){
                 let path = UIBezierPath()
                 
+                //the line between the first two points, which is not part of the catmull-rom curve
                 if(!closed){
                 path.moveToPoint(interpolationPoints[0].CGPointValue())
                 path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
                 
-                println(interpolationPoints[1])
                 path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed, alpha: 1))
                 
+                //the line to the currrent touch point from the end
                 if(!closed){
                 path.addLineToPoint(endPoint!)
                 }
