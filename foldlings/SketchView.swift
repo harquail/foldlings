@@ -89,7 +89,7 @@ class SketchView: UIView {
         let gesture = sender as! UIPanGestureRecognizer
         if(gesture.state == UIGestureRecognizerState.Began){
             
-            // make a shape
+            // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
             let shape = FreeForm(start:touchPoint)
             sketch.currentFeature = shape
@@ -99,13 +99,16 @@ class SketchView: UIView {
             return
         }
         let shape = sketch.currentFeature as! FreeForm
+        // if it's been a few microseconds since we tried to add a point
         if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
+            //set the path to a curve through the points
             path = shape.pathThroughTouchPoints()
             shape.path = path
             forceRedraw()
         }
+        //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
