@@ -23,10 +23,12 @@ class FreeForm:FoldFeature{
     
     
     override func getEdges() -> [Edge] {
+        // if path not cached
         if let p = path{
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
             return [edge]
         }
+        // else create a straight edge
         else{
             return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
         }
@@ -49,7 +51,7 @@ class FreeForm:FoldFeature{
                     closed = true
             }
             
-            //if ther are enough points, draw a full curve
+            //if there are enough points, draw a full curve
             if(interpolationPoints.count > 3){
                 let path = UIBezierPath()
                 

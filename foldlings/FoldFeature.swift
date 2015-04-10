@@ -131,6 +131,7 @@ class FoldFeature: NSObject, Printable{
         return nil;
     }
     
+    // assign edges to a features
     func claimEdges(){
         
         if let edges = cachedEdges{
