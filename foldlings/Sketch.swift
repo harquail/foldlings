@@ -15,12 +15,9 @@
         
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
-        
         var draggedEdge:Edge? //edge being dragged
-        
         var masterFeature:FoldFeature?
         
-
         
         
         //the folds that define a sketch
@@ -218,7 +215,6 @@
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
             }
-//            drivingEdge = masterFeature!.horizontalFolds.first
             
         }
         
@@ -272,9 +268,6 @@
         func getClosest(current: Edge) -> Edge
         {
             var closest = current.twin
-            //      println("adjacency count \(current.adjacency.count)")
-            //println("\n current \(current.start) , \(current.end) \n")
-           // printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
@@ -390,6 +383,7 @@
         
         // #TODO: this is bad and shouldn't exist...
         /// updates sketch edges to match those generated from features
+        // what exactly does this do??
         func refreshFeatureEdges(){
             
             var featureEdges:[Edge] = []
@@ -406,8 +400,6 @@
                     println("EDGE: cache hit")
                 }
             }
-            
-            //            print("FEATURES: \(self.features?.count)\n")
             for feature in self.features!{
                 
                 let edgesToAdd = feature.getEdges()
@@ -418,8 +410,6 @@
                         self.addEdge(edge)
                     }
                 }
-                
-                //                print("SKETCH: \(self.edges.count)\n")
                 
             }
         }

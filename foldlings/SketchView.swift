@@ -9,11 +9,13 @@ import UIKit
 
 class SketchView: UIView {
     
+    // Buttons
     @IBOutlet var previewButton: UIButton!
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var checkButton: UIButton!
     @IBOutlet var xButton: UIButton!
     
+    //Drawing Modes
     enum Mode {
         case Erase
         case Cut
@@ -24,15 +26,16 @@ class SketchView: UIView {
         case FreeForm
     }
     
+    //Initiated Global Variables
     var path: UIBezierPath! //currently drawing path
     var incrementalImage: UIImage!  //this is a bitmap version of everything
-    
     var sketchMode:  Mode = Mode.BoxFold
     var sketch: Sketch!
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
     var gameView = GameViewController()
     
+    // Threading
     let redrawPriority = DISPATCH_QUEUE_PRIORITY_DEFAULT
     let redrawLockQueue = dispatch_queue_create("com.foldlings.LockGetPlanesQueue", nil)
     var redrawing:Bool = false
@@ -71,6 +74,7 @@ class SketchView: UIView {
         
     }
     
+    //TODO: Comments
     func handlePan(sender: AnyObject) {
         
         switch (sketchMode) {
@@ -84,7 +88,7 @@ class SketchView: UIView {
         
         
     }
-    
+    // TODO: comments
     func handleFreeFormPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
@@ -139,6 +143,7 @@ class SketchView: UIView {
         }
     }
     
+    // TODO: comment
     func handleBoxFoldPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
@@ -190,7 +195,6 @@ class SketchView: UIView {
                 eNew.deltaY = nil
                 
                 sketch.addEdge(eNew)
-                
                 sketch.masterFeature!.invalidateEdges()
                 
             }
@@ -221,10 +225,11 @@ class SketchView: UIView {
                     
                 }
                 
+                //TODO: Look at this
                 sketch.refreshFeatureEdges()
                 
                 //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
+                // TODO: Look at this
                 for edge in sketch.edges{
                     sketch.removeEdge(edge)
                 }
@@ -233,6 +238,7 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     //                print("FEATURE: \(feature.getEdges().count)\n")
+                    //TODO: Look at this
                     let edgesToAdd = feature.getEdges()
                     for edge in edgesToAdd{
                         sketch.addEdge(edge)
@@ -283,22 +289,16 @@ class SketchView: UIView {
                 }
                 
                 // box folds have different behaviors if they span the driving edge
-                
                 drawingFeature.invalidateEdges()
-                
                 forceRedraw()
                 
             }
         }
     }
-    
-    
-    
+
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
-    
-    
     
     
     /// constructs a greyscale bitmap preview image of the sketch
@@ -322,8 +322,6 @@ class SketchView: UIView {
             rectpath.fill()
             
             // this will draw all possibly set paths
-            
-            
             if(!grayscale){
                 // print planes first if exist
                 for plane in sketch.planes.planes {
@@ -336,7 +334,6 @@ class SketchView: UIView {
                 
                 var twinsOfVisited = [Edge]()
                 
-                
                 //iterrte trhough features and draw them
                 if var currentFeatures = sketch.features{
                     
@@ -345,7 +342,7 @@ class SketchView: UIView {
                     }
                     
                     for feature in currentFeatures{
-                        //                    if let feature = currentFeature{
+                        //if let feature = currentFeature{
                         if(feature.startPoint != nil && feature.endPoint != nil){
                             let edges = feature.getEdges()
                             
@@ -400,6 +397,7 @@ class SketchView: UIView {
     
     
     /// this will set the path style as well as return the color of the path to be stroked
+    //TODO: comment
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
         
@@ -436,7 +434,6 @@ class SketchView: UIView {
             path.setLineDash(nil, count: 0, phase:0)
         }
         
-        
         path.lineWidth=kLineWidth
         
         return color
@@ -453,10 +450,7 @@ class SketchView: UIView {
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
                 self.redrawing = true
                 dispatch_sync(self.redrawLockQueue) {
-                    
                     //in template mode, only get planes when features end!
-                    
-                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), {
@@ -478,13 +472,9 @@ class SketchView: UIView {
         
     }
     
-    
-
-    
-    //this creates a popup dialog box to send the SVG version
-    // this gets the path and SVG to print and then be sent to
-    // a laser cutter by user.
-    // TODO:save this path to a file
+    // this gets the sketch edges
+    // and tranforms each edge from a CGpath into SVG paths
+    // and writes the formatted contents of the svg file
     func svgImage() -> String{
         // get CGPaths from edges and map to string of svgs
         var edgesVisited:[Edge] = []
