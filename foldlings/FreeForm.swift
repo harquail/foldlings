@@ -23,7 +23,7 @@ class FreeForm:FoldFeature{
     
     
     override func getEdges() -> [Edge] {
-        // if path not cached
+        // if path exists
         if let p = path{
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
             return [edge]

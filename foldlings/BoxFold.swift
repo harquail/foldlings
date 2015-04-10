@@ -36,7 +36,7 @@ class BoxFold:FoldFeature{
         returnee.append(h0)
         returnee.append(h2)
 
-        //if there's a master driving fold, create the centerfold for a boxfold
+        //if there's a driving fold, create the centerfold for a boxfold
         if let master = drivingFold{
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
