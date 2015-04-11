@@ -263,7 +263,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             m.diffuse.contents = plane.color
         }
         node.geometry?.firstMaterial = m
-        masterSphere.geometry?.firstMaterial = m
+        
+        //make sphere invisible
+        let transparentMaterial = SCNMaterial()
+        transparentMaterial.diffuse.contents = UIColor.clearColor()
+        masterSphere.geometry?.firstMaterial = transparentMaterial
         
         // different based on orientation
         if hill {
