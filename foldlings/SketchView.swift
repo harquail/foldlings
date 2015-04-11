@@ -149,29 +149,29 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             
             var goodPlaceToDraw = true
-            if let children = sketch.masterFeature?.children{
-                
-                for child in children{
-                    if(child.boundingBox()!.contains(touchPoint)){
-                        
-                        //get the edge & nearest point to hit
-                        let edge = child.featureEdgeAtPoint(touchPoint)
-                        if let e = edge{
-                            
-                            //this is really only right for horizontal folds, not cuts...
-                            //maybe limit to fold for now?
-                            sketch.draggedEdge = e
-                            e.deltaY = gesture.translationInView(self).y
-                            println("init deltaY: \(e.deltaY)")
-                        }
-                        else{
-                            println("No Edge Here...")
-                        }
-                        goodPlaceToDraw = false
-                        break
-                    }
-                }
-            }
+//            if let children = sketch.masterFeature?.children{
+            
+//                for child in children{
+//                    if(child.boundingBox()!.contains(touchPoint)){
+//                        
+//                        //get the edge & nearest point to hit
+//                        let edge = child.featureEdgeAtPoint(touchPoint)
+//                        if let e = edge{
+//                            
+//                            //this is really only right for horizontal folds, not cuts...
+//                            //maybe limit to fold for now?
+//                            sketch.draggedEdge = e
+//                            e.deltaY = gesture.translationInView(self).y
+//                            println("init deltaY: \(e.deltaY)")
+//                        }
+//                        else{
+//                            println("No Edge Here...")
+//                        }
+//                        goodPlaceToDraw = false
+//                        break
+//                    }
+//                }
+//            }
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
