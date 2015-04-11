@@ -36,7 +36,7 @@ class FreeForm:FoldFeature{
     func pathThroughTouchPoints() -> UIBezierPath{
         
         //if the points are far enough apart, make a new path
-        if (cachedPath == nil) || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 5){
+        if (cachedPath == nil) || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2    ){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
@@ -84,7 +84,8 @@ class FreeForm:FoldFeature{
     
     
     override func boundingBox() -> CGRect? {
-        return path?.bounds
+        println(path?.boundsForPath());
+        return path?.boundsForPath()
     }
     
     /// boxFolds can be deleted
