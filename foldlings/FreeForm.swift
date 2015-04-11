@@ -37,7 +37,7 @@ class FreeForm:FoldFeature{
         
         //if the points are far enough apart, make a new path
         //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
-        if (cachedPath == nil){
+        if (true){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
@@ -60,7 +60,7 @@ class FreeForm:FoldFeature{
                 path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
 
-                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed, alpha: 1))
+                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
                 
                 //the line to the currrent touch point from the end
                 if(!closed){
