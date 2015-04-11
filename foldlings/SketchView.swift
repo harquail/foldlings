@@ -221,6 +221,10 @@ class SketchView: UIView {
 //                    drawingFeature.parent!.invalidateEdges()
                     
                 }
+                else{
+                
+                    drawingFeature.removeFromSketch(sketch)
+                }
                 
                 sketch.refreshFeatureEdges()
                 
