@@ -22,6 +22,11 @@ func getRandomColor(alpha:CGFloat) -> UIColor{
     return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: alpha)
 }
 
+func getRandomGray(alpha:CGFloat) -> UIColor{
+    var randomHue:CGFloat = CGFloat(drand48())
+    return UIColor(red: randomHue, green: randomHue, blue: randomHue, alpha: alpha)
+}
+
 //benchmark
 func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
     let startTime = CFAbsoluteTimeGetCurrent()
