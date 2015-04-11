@@ -183,18 +183,18 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            if var e = sketch.draggedEdge{
-                
-                e.start.y += e.deltaY!
-                e.end.y += e.deltaY!
-                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-                eNew.deltaY = nil
-                
-                sketch.addEdge(eNew)
-                
-//                sketch.masterFeature!.invalidateEdges()
-                
-            }
+//            if var e = sketch.draggedEdge{
+//                
+//                e.start.y += e.deltaY!
+//                e.end.y += e.deltaY!
+//                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
+//                eNew.deltaY = nil
+//                
+//                sketch.addEdge(eNew)
+//                
+////                sketch.masterFeature!.invalidateEdges()
+//                
+//            }
             
             
             if let drawingFeature = sketch.currentFeature{
@@ -209,15 +209,20 @@ class SketchView: UIView {
                 
                 if(drawingFeature.drivingFold != nil){
                     
-                    if (drawingFeature.parent!.children != nil){
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                    let drawParent = drawingFeature.parent!
+                    
+                    if (drawParent.children != nil){
+                        drawParent.children!.append(drawingFeature)
                     }
                     else{
-                        drawingFeature.parent!.children = []
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                        drawParent.children = []
+                        drawParent.children!.append(drawingFeature)
                         //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
+                    
+                    drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
+                    
 //                    drawingFeature.parent!.invalidateEdges()
                     
                 }

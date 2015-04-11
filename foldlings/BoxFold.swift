@@ -10,7 +10,7 @@ class BoxFold:FoldFeature{
             return returnee
         }
         
-                println("  BOX: cache MISS")
+        println("  BOX: cache MISS")
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
@@ -114,67 +114,47 @@ class BoxFold:FoldFeature{
         
     }
     
-    override func foldSplitByFeature(edge: Edge) -> [Edge] {
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
         let start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
-        if var childs = children{
-            
-            //sort children by x position
-            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
-            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
-            
-            //pieces of the edge, which go inbetween child features
-            var masterPieces:[Edge] = []
-            
-            //create fold pieces between the children
-            var brushTip = start
-            
-            for child in childs{
-                
-                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
-                
-                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
-                returnee.append(piece)
-                horizontalFolds.append(piece)
-                
-                brushTip = brushTipTranslated
-            }
-            
-            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
-            returnee.append(finalPiece)
-        }
+//        //if there are no split edges, give the edge back whole
+//        if (returnee.count == 0){
+//            return [edge]
+//        }
         
-        //if there are no split edges, give the edge back whole
-        if (returnee.count == 0){
-            return [edge]
-        }
-        return returnee
+        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold)
         
+        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold)
         
+        returnee = [piece,piece2]
+        
+    return returnee
+    
+    
+}
+
+override func boundingBox() -> CGRect? {
+    if (startPoint == nil || endPoint == nil){
+        return nil;
+    }
+    return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
+}
+
+
+/// boxFolds can be deleted
+/// folds can be added only to leaves
+override func tapOptions() -> [FeatureOption]?{
+    var options:[FeatureOption] = []
+    options.append(.DeleteFeature)
+    if(self.isLeaf()){
+        options.append(.AddFolds)
     }
     
-    override func boundingBox() -> CGRect? {
-        if (startPoint == nil || endPoint == nil){
-            return nil;
-        }
-        return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
-    }
+    return options
     
-    
-    /// boxFolds can be deleted
-    /// folds can be added only to leaves
-    override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
-        options.append(.DeleteFeature)
-        if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
-        
-        return options
-        
-    }
-    
+}
+
 }

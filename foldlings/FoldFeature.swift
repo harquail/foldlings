@@ -141,7 +141,7 @@ class FoldFeature: NSObject, Printable{
     }
     
     /// splits an edge around the current feature
-    func foldSplitByFeature(edge:Edge) -> [Edge]{
+    func splitFoldByOcclusion(edge:Edge) -> [Edge]{
         //by default, return edge whole
         return [edge]
     }
@@ -236,6 +236,13 @@ class FoldFeature: NSObject, Printable{
         let sorted = pointsByY(self.startPoint!, self.endPoint!)
         return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
         
+    }
+    
+    func replaceFold(fold:Edge, folds:[Edge]){
+        horizontalFolds.remove(fold)
+        cachedEdges?.remove(fold)
+        horizontalFolds.extend(folds)
+        cachedEdges?.extend(folds)
     }
     
 }
