@@ -228,25 +228,6 @@ class SketchView: UIView {
                 
                 sketch.refreshFeatureEdges()
                 
-                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
-                for edge in sketch.edges{
-                    sketch.removeEdge(edge)
-                }
-                
-                print("FEATURES: \(sketch.features?.count)\n")
-                for feature in sketch.features!{
-                    
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
-                    let edgesToAdd = feature.getEdges()
-                    for edge in edgesToAdd{
-                        sketch.addEdge(edge)
-                    }
-                    print("SKETCH: \(sketch.edges.count)\n")
-                    
-                    
-                }
-                
                 //clear the current feature
                 sketch.currentFeature = nil
             }
