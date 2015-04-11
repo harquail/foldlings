@@ -36,7 +36,8 @@ class FreeForm:FoldFeature{
     func pathThroughTouchPoints() -> UIBezierPath{
         
         //if the points are far enough apart, make a new path
-        if (cachedPath == nil) || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2    ){
+        //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
+        if (cachedPath == nil){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
