@@ -109,12 +109,31 @@ class SketchView: UIView {
             shape.path = path
             forceRedraw()
         }
-        //close the shape when the pan gesture ends
+            //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
             //reset path
             path = UIBezierPath()
+            
+            if let drawingFeature = sketch.currentFeature{
+                //for feature in features -- check folds for spanning
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    
+                    for fold in feature.horizontalFolds{
+                        if(drawingFeature.featureSpansFold(fold)){
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            let fragments = drawingFeature.splitFoldByOcclusion(fold)
+                            drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                            break;
+                        }
+                    }
+                    
+                }
+            }
             
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
@@ -149,29 +168,29 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             
             var goodPlaceToDraw = true
-//            if let children = sketch.masterFeature?.children{
+            //            if let children = sketch.masterFeature?.children{
             
-//                for child in children{
-//                    if(child.boundingBox()!.contains(touchPoint)){
-//                        
-//                        //get the edge & nearest point to hit
-//                        let edge = child.featureEdgeAtPoint(touchPoint)
-//                        if let e = edge{
-//                            
-//                            //this is really only right for horizontal folds, not cuts...
-//                            //maybe limit to fold for now?
-//                            sketch.draggedEdge = e
-//                            e.deltaY = gesture.translationInView(self).y
-//                            println("init deltaY: \(e.deltaY)")
-//                        }
-//                        else{
-//                            println("No Edge Here...")
-//                        }
-//                        goodPlaceToDraw = false
-//                        break
-//                    }
-//                }
-//            }
+            //                for child in children{
+            //                    if(child.boundingBox()!.contains(touchPoint)){
+            //
+            //                        //get the edge & nearest point to hit
+            //                        let edge = child.featureEdgeAtPoint(touchPoint)
+            //                        if let e = edge{
+            //
+            //                            //this is really only right for horizontal folds, not cuts...
+            //                            //maybe limit to fold for now?
+            //                            sketch.draggedEdge = e
+            //                            e.deltaY = gesture.translationInView(self).y
+            //                            println("init deltaY: \(e.deltaY)")
+            //                        }
+            //                        else{
+            //                            println("No Edge Here...")
+            //                        }
+            //                        goodPlaceToDraw = false
+            //                        break
+            //                    }
+            //                }
+            //            }
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
@@ -183,25 +202,25 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-//            if var e = sketch.draggedEdge{
-//                
-//                e.start.y += e.deltaY!
-//                e.end.y += e.deltaY!
-//                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-//                eNew.deltaY = nil
-//                
-//                sketch.addEdge(eNew)
-//                
-////                sketch.masterFeature!.invalidateEdges()
-//                
-//            }
+            //            if var e = sketch.draggedEdge{
+            //
+            //                e.start.y += e.deltaY!
+            //                e.end.y += e.deltaY!
+            //                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
+            //                eNew.deltaY = nil
+            //
+            //                sketch.addEdge(eNew)
+            //
+            ////                sketch.masterFeature!.invalidateEdges()
+            //
+            //            }
             
             
             if let drawingFeature = sketch.currentFeature{
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
-//                sketch.masterFeature!.invalidateEdges()
+                //                sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
                 //add edges from the feature to the sketch
@@ -223,11 +242,11 @@ class SketchView: UIView {
                     
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
                     
-//                    drawingFeature.parent!.invalidateEdges()
+                    //                    drawingFeature.parent!.invalidateEdges()
                     
                 }
                 else{
-                
+                    
                     drawingFeature.removeFromSketch(sketch)
                 }
                 
@@ -470,7 +489,7 @@ class SketchView: UIView {
     }
     
     
-
+    
     
     //this creates a popup dialog box to send the SVG version
     // this gets the path and SVG to print and then be sent to

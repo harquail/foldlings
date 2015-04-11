@@ -15,6 +15,8 @@ class FreeForm:FoldFeature{
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
     var cachedPath:UIBezierPath? = UIBezierPath()
     var closed = false
+    //the intrsection points calculated by featureSpansFold & used for occlusion
+    var intersectionsWithDrivingFold:[CGPoint] = []
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -83,9 +85,33 @@ class FreeForm:FoldFeature{
         return cachedPath!
     }
     
+    override func featureSpansFold(fold: Edge) -> Bool {
+        
+        //first, test if y value is within cgrect ys
+        
+        
+        let lineRect = CGRectMake(fold.start.x,fold.start.y,fold.end.x - fold.start.x,1)
+        
+        
+        
+        if(!CGRectIntersectsRect(self.boundingBox()!,lineRect)){
+        return false
+        }
+        else{
+            return true
+        }
+        
+        
+        
+        let start = fold.start
+        
+        
+        //cgrect also has to contain some of line, but not sure what a cheap test for that is
+        
+        return false
+    }
     
     override func boundingBox() -> CGRect? {
-        println(path?.boundsForPath());
         return path?.boundsForPath()
     }
     
@@ -99,6 +125,15 @@ class FreeForm:FoldFeature{
         }
         
         return options
+        
+    }
+
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+        
+        
+        println(PathIntersections.intersectionsBetweenCGPaths(edge.path.CGPath,p2: self.path!.CGPath))
+        return [edge]
+        
         
     }
     

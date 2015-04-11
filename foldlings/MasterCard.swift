@@ -26,10 +26,10 @@ class MasterCard:FoldFeature{
     override func getEdges()->[Edge]{
         
         if let returnee = cachedEdges {
-            println("MASTER: cache hit")
+//            println("MASTER: cache hit")
             return returnee
         }
-        println("MASTER: cache miss")
+//        println("MASTER: cache miss")
 
         
         let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
