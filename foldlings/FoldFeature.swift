@@ -213,10 +213,10 @@ class FoldFeature: NSObject, Printable{
         
     }
     
-    class func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+    func featureSpansFold(fold:Edge)->Bool{
         
         //feature must be inside fold x bounds
-        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
+        if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   )){
             return false
         }
         
@@ -224,7 +224,7 @@ class FoldFeature: NSObject, Printable{
             return (a.y < b.y) ? (a,b) : (b,a)
         }
         
-        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
+        let sorted = pointsByY(self.startPoint!, self.endPoint!)
         return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
         
     }

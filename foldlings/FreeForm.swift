@@ -37,7 +37,7 @@ class FreeForm:FoldFeature{
         
         //if the points are far enough apart, make a new path
         //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
-        if (true){
+        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 5)){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))

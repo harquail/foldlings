@@ -273,10 +273,10 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds{
-                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
+                        if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            
+                            println(feature)
                             break;
                         }
                     }
