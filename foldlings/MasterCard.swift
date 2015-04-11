@@ -26,8 +26,11 @@ class MasterCard:FoldFeature{
     override func getEdges()->[Edge]{
         
         if let returnee = cachedEdges {
+            println("MASTER: cache hit")
             return returnee
         }
+        println("MASTER: cache miss")
+
         
         let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
         let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
@@ -43,13 +46,16 @@ class MasterCard:FoldFeature{
         let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
         horizontalFolds = [top,bottom]
         
-        let fragments = edgeSplitByChildren(master)
+//        let fragments = edgeSplitByChildren(master)
     
-        for fragment in fragments{
-            returnee.append(fragment)
-            horizontalFolds.append(fragment)
-        }
+//        for fragment in fragments{
+//            returnee.append(fragment)
+//            horizontalFolds.append(fragment)
+//        }
         
+        returnee.append(master)
+        horizontalFolds.append(master)
+//        
         
         for edge in returnee{
             edge.isMaster = true

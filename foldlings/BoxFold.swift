@@ -6,10 +6,11 @@ class BoxFold:FoldFeature{
     override func getEdges() -> [Edge] {
         
         if let returnee = cachedEdges {
-            //            println("BOX: cache hit")
+            println("BOX: cache hit")
             return returnee
         }
-        //        println("   BOX: cache MISS")
+        
+                println("  BOX: cache MISS")
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
@@ -31,7 +32,7 @@ class BoxFold:FoldFeature{
         
         returnee.append(h0)
         returnee.append(h2)
-
+        
         //if there's a driving fold
         if let master = drivingFold{
             
@@ -94,22 +95,64 @@ class BoxFold:FoldFeature{
         }
         
         
-        // split edges for children
-        for fold in horizontalFolds{
-            if let childs = children{
-                let fragments = edgeSplitByChildren(fold)
-                horizontalFolds.remove(fold)
-                returnee.remove(fold)
-                horizontalFolds.extend(fragments)
-                returnee.extend(fragments)
-                
-            }
-            
-        }
+        //        // split edges for children
+        //        for fold in horizontalFolds{
+        //            if let childs = children{
+        //                let fragments = edgeSplitByChildren(fold)
+        //                horizontalFolds.remove(fold)
+        //                returnee.remove(fold)
+        //                horizontalFolds.extend(fragments)
+        //                returnee.extend(fragments)
+        //
+        //            }
+        //
+        //        }
         
         cachedEdges = returnee
         claimEdges()
         return returnee
+        
+    }
+    
+    override func foldSplitByFeature(edge: Edge) -> [Edge] {
+        
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
+        
+        if var childs = children{
+            
+            //sort children by x position
+            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
+            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
+            
+            //pieces of the edge, which go inbetween child features
+            var masterPieces:[Edge] = []
+            
+            //create fold pieces between the children
+            var brushTip = start
+            
+            for child in childs{
+                
+                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
+                
+                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
+                returnee.append(piece)
+                horizontalFolds.append(piece)
+                
+                brushTip = brushTipTranslated
+            }
+            
+            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
+            returnee.append(finalPiece)
+        }
+        
+        //if there are no split edges, give the edge back whole
+        if (returnee.count == 0){
+            return [edge]
+        }
+        return returnee
+        
         
     }
     

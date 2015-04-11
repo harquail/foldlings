@@ -192,7 +192,7 @@ class SketchView: UIView {
                 
                 sketch.addEdge(eNew)
                 
-                sketch.masterFeature!.invalidateEdges()
+//                sketch.masterFeature!.invalidateEdges()
                 
             }
             
@@ -201,7 +201,7 @@ class SketchView: UIView {
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
-                sketch.masterFeature!.invalidateEdges()
+//                sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
                 //add edges from the feature to the sketch
@@ -218,7 +218,7 @@ class SketchView: UIView {
                         //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
-                    drawingFeature.parent!.invalidateEdges()
+//                    drawingFeature.parent!.invalidateEdges()
                     
                 }
                 

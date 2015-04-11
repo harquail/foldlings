@@ -140,48 +140,54 @@ class FoldFeature: NSObject, Printable{
         }
     }
     
-    /// splits an edge, making edges around its children
-    func edgeSplitByChildren(edge:Edge) -> [Edge]{
-        
-        let start = edge.start
-        let end = edge.end
-        var returnee = [Edge]()
-        
-        if var childs = children{
-            
-            //sort children by x position
-            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
-            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
-            
-            //pieces of the edge, which go inbetween child features
-            var masterPieces:[Edge] = []
-            
-            //create fold pieces between the children
-            var brushTip = start
-            
-            for child in childs{
-                
-                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
-                
-                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
-                returnee.append(piece)
-                horizontalFolds.append(piece)
-                
-                brushTip = brushTipTranslated
-            }
-            
-            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
-            returnee.append(finalPiece)
-        }
-        
-        //if there are no split edges, give the edge back whole
-        if (returnee.count == 0){
-            return [edge]
-        }
-        return returnee
-        
+    /// splits an edge around the current feature
+    func foldSplitByFeature(edge:Edge) -> [Edge]{
+        //by default, return edge whole
+        return [edge]
     }
-    
+//    
+//    /// splits an edge, making edges around its children
+//    func edgeSplitByChildren(edge:Edge) -> [Edge]{
+//        
+//        let start = edge.start
+//        let end = edge.end
+//        var returnee = [Edge]()
+//        
+//        if var childs = children{
+//            
+//            //sort children by x position
+//            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
+//            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
+//            
+//            //pieces of the edge, which go inbetween child features
+//            var masterPieces:[Edge] = []
+//            
+//            //create fold pieces between the children
+//            var brushTip = start
+//            
+//            for child in childs{
+//                
+//                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
+//                
+//                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
+//                returnee.append(piece)
+//                horizontalFolds.append(piece)
+//                
+//                brushTip = brushTipTranslated
+//            }
+//            
+//            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
+//            returnee.append(finalPiece)
+//        }
+//        
+//        //if there are no split edges, give the edge back whole
+//        if (returnee.count == 0){
+//            return [edge]
+//        }
+//        return returnee
+//        
+//    }
+//    
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch){
         
@@ -189,15 +195,16 @@ class FoldFeature: NSObject, Printable{
         if let childs = self.children{
             for child in childs{
                 child.removeFromSketch(sketch)
-                child.invalidateEdges()
+//                child.invalidateEdges()
 
             }
         }
         
         //remove child relationship from parents
         self.parent?.children?.remove(self)
-        self.parent?.invalidateEdges()
+//        self.parent?.invalidateEdges()
         sketch.features?.remove(self)
+        
 
     }
     
@@ -212,6 +219,8 @@ class FoldFeature: NSObject, Printable{
         return nil
         
     }
+    
+    
     
     func featureSpansFold(fold:Edge)->Bool{
         
