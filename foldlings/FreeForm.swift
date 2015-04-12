@@ -58,15 +58,15 @@ class FreeForm:FoldFeature{
                 
                 //the line between the first two points, which is not part of the catmull-rom curve
                 if(!closed){
-                path.moveToPoint(interpolationPoints[0].CGPointValue())
-                path.addLineToPoint(interpolationPoints[1].CGPointValue())
+                    path.moveToPoint(interpolationPoints[0].CGPointValue())
+                    path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
-
+                
                 path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
                 
                 //the line to the currrent touch point from the end
                 if(!closed){
-                path.addLineToPoint(endPoint!)
+                    path.addLineToPoint(endPoint!)
                 }
                 cachedPath = path
                 return path
@@ -93,22 +93,21 @@ class FreeForm:FoldFeature{
         let lineRect = CGRectMake(fold.start.x,fold.start.y,fold.end.x - fold.start.x,1)
         
         
-        
+        //if the line does not intersect the bezier's bounding box, the fold can't span it
         if(!CGRectIntersectsRect(self.boundingBox()!,lineRect)){
-        return false
+            return false
         }
         else{
-            return true
+            
+            if let intersects = PathIntersections.intersectionsBetweenCGPaths(fold.path.CGPath,p2: self.path!.CGPath){
+                
+                intersectionsWithDrivingFold = intersects
+                return true
+                
+            }
+            return false
         }
         
-        
-        
-        let start = fold.start
-        
-        
-        //cgrect also has to contain some of line, but not sure what a cheap test for that is
-        
-        return false
     }
     
     override func boundingBox() -> CGRect? {
@@ -127,32 +126,39 @@ class FreeForm:FoldFeature{
         return options
         
     }
-
+    
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
-        
         
         
         let start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
-        let intersections = PathIntersections.intersectionsBetweenCGPaths(edge.path.CGPath,p2: self.path!.CGPath)
         
-        if let sects = intersections {
-        let point1 = sects[0]
-        let point2 = sects[1]
-        
-            let piece = Edge.straightEdgeBetween(start, end: point1, kind: .Fold)
-            
-            let piece2 = Edge.straightEdgeBetween(CGPointMake(point2.x, start.y), end: end, kind: .Fold)
-            
-            return [piece, piece2]
-
-        }
-        else {
+        if intersectionsWithDrivingFold.count == 0{
+           
             return [edge]
         }
         
+        
+       
+        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
+        returnee.append(firstPiece)
+        
+         var brushTip = intersectionsWithDrivingFold[0]
+        
+        //skip every other point
+        for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2){
+            
+            brushTip = intersectionsWithDrivingFold[i]
+            let brushTipTranslated = CGPointMake(intersectionsWithDrivingFold[i+1].x,brushTip.y)
+            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold)
+            returnee.append(piece)
+        }
+        
+        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold)
+        returnee.append(finalPiece)
+        return returnee
     }
     
 }

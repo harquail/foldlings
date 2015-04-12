@@ -128,7 +128,7 @@ class SketchView: UIView {
                             drawingFeature.parent = feature
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
-                            break;
+//                            break;
                         }
                     }
                     
