@@ -101,16 +101,7 @@ class FoldFeature: NSObject, Printable{
         
     }
     
-    
-    /// #TODO: things you can do to this feature and the function that does them (eg: Delete)
-    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?
-    // If so, delete should probably be added in at the sketch/sketchview level, and this should just feature-specific options
-    // or, we could keep a reference to the sketch in each feature so we can do the deletion from here...
-    // Some of these options will necessarily do some UI things also (for example, we might want to preview fold adding).
-    // That might mean we should keep a sketchView here (not just a sketch)
-    func options() -> [(String,())]{
-        return [("Claim Edges",claimEdges())]
-    }
+
     
     
     /// returns the edge in a feature at a point
@@ -144,6 +135,25 @@ class FoldFeature: NSObject, Printable{
     func splitFoldByOcclusion(edge:Edge) -> [Edge]{
         //by default, return edge whole
         return [edge]
+    }
+    
+    func healFold(fold:Edge){
+        
+        var fragments:[Edge] = []
+        for h in horizontalFolds{
+        
+            if(h.start.y == fold.start.y){
+            fragments.append(h)
+            }
+        }
+        
+        for f in fragments{
+            horizontalFolds.remove(f)
+            cachedEdges?.remove(f)
+        }
+        horizontalFolds.append(fold)
+        cachedEdges?.append(fold)
+        
     }
 //    
 //    /// splits an edge, making edges around its children

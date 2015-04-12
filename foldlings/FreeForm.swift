@@ -75,7 +75,6 @@ class FreeForm:FoldFeature{
             }
         }
         
-        
         var paths:[UIBezierPath] = []
         for bin in pointBins{
             paths.append(pathFromPoints(bin))
