@@ -104,7 +104,8 @@ class PathIntersections {
     
     //points are near each other if they are within kHitTestRadius
     class func nearEachOther(p:CGPoint,p2:CGPoint)->Bool{
-        let minDist = kHitTestRadius as CGFloat
+        let minDist = kHitTestRadius
+            as CGFloat
         if(CGPointGetDistance(p, p2) < minDist){
             return true
         }

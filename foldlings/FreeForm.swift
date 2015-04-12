@@ -131,9 +131,27 @@ class FreeForm:FoldFeature{
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
         
-        println(PathIntersections.intersectionsBetweenCGPaths(edge.path.CGPath,p2: self.path!.CGPath))
-        return [edge]
         
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
+        
+        let intersections = PathIntersections.intersectionsBetweenCGPaths(edge.path.CGPath,p2: self.path!.CGPath)
+        
+        if let sects = intersections {
+        let point1 = sects[0]
+        let point2 = sects[1]
+        
+            let piece = Edge.straightEdgeBetween(start, end: point1, kind: .Fold)
+            
+            let piece2 = Edge.straightEdgeBetween(CGPointMake(point2.x, start.y), end: end, kind: .Fold)
+            
+            return [piece, piece2]
+
+        }
+        else {
+            return [edge]
+        }
         
     }
     
