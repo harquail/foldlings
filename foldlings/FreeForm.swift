@@ -23,16 +23,91 @@ class FreeForm:FoldFeature{
         interpolationPoints.append(NSValue(CGPoint: start))
     }
     
-    
     override func getEdges() -> [Edge] {
+        
+        //if there are cached edges, return them
+        if let cache = cachedEdges {
+            println("freeform cache HIT!!")
+            return cache
+        }
+        
         if let p = path{
+            
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
+            
             return [edge]
         }
         else{
             return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
         }
     }
+    
+    
+    /// splits a path at each of the points, which are already known to be on it
+    class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
+        
+        
+        var breaks = breakers
+        let elements = path.getPathElements()
+        let points = getSubdivisions(elements)
+        var pointBins: [[CGPoint]] = [[]]
+        
+        // find the nearest point
+        // this is necessary because the subdivisions are not guaranteed equal all the time
+        // but will usually be pretty exact
+        var minDist = CGFloat(1)
+        
+        for (i, point) in enumerate(points)
+        {
+            
+            pointBins[pointBins.count-1].append(point)
+
+            for (var i = 0; i<breaks.count; i++){
+                if(ccpDistance(point,breaks[i]) < minDist){
+                    pointBins.append([point])
+                    breaks.remove(breaks[i])
+                }
+            }
+        }
+
+        
+        var paths:[UIBezierPath] = []
+        for bin in pointBins{
+            paths.append(pathFromPoints(bin))
+        }
+        
+        println(paths.count)
+        return paths
+        
+    }
+    
+    /// this function should be called exactly once, when the feature is created at the end of a pan gesture
+    func freeFormEdgesSplitByIntersections() ->[Edge]{
+        
+        // if there are no interercepts to split on, return the path whole
+        if intersectionsWithDrivingFold.count == 0{
+            return [Edge(start: path!.firstPoint(), end: path!.lastPoint(), path: path!, kind: .Cut, isMaster: false)]
+        }
+        else{
+            
+//            var cgpoints:[CGPoint] = []
+//            for cgpoint in interpolationPoints{
+//                cgpoints.append((cgpoint as! NSValue).CGPointValue())
+//            }
+            
+            let paths = FreeForm.pathSplitByPoints(path!,breakers: intersectionsWithDrivingFold)
+            
+            var edges:[Edge] = []
+            
+            for p in paths{
+                edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
+            }
+            
+            return edges
+        }
+    }
+    
+    
     
     //the bezier path through a set of points
     func pathThroughTouchPoints() -> UIBezierPath{
@@ -62,7 +137,9 @@ class FreeForm:FoldFeature{
                     path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
                 
-                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
+                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed,alpha: 1.0))
+                
+                //                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
                 
                 //the line to the currrent touch point from the end
                 if(!closed){
@@ -136,16 +213,16 @@ class FreeForm:FoldFeature{
         
         
         if intersectionsWithDrivingFold.count == 0{
-           
+            
             return [edge]
         }
         
         
-       
+        
         let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
         returnee.append(firstPiece)
         
-         var brushTip = intersectionsWithDrivingFold[0]
+        var brushTip = intersectionsWithDrivingFold[0]
         
         //skip every other point
         for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2){

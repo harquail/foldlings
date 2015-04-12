@@ -128,12 +128,14 @@ class SketchView: UIView {
                             drawingFeature.parent = feature
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
-//                            break;
+                            //                            break;
                         }
                     }
-                    
                 }
             }
+            
+            //set cached edges
+            shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
             
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
@@ -239,14 +241,11 @@ class SketchView: UIView {
                         //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
-                    
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
                     
                     //                    drawingFeature.parent!.invalidateEdges()
-                    
                 }
                 else{
-                    
                     drawingFeature.removeFromSketch(sketch)
                 }
                 
