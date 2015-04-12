@@ -49,7 +49,7 @@ class FreeForm:FoldFeature{
         
         var breaks = breakers
         let elements = path.getPathElements()
-        let points = getSubdivisions(elements)
+        var points = getSubdivisions(elements)
         var pointBins: [[CGPoint]] = [[]]
         
         // find the nearest point
@@ -60,8 +60,13 @@ class FreeForm:FoldFeature{
         for (i, point) in enumerate(points)
         {
             
-            pointBins[pointBins.count-1].append(point)
-
+            if(pointBins.count == 0){
+                points.append(point)
+            }
+            else{
+                pointBins[pointBins.count-1].append(point);
+            }
+            
             for (var i = 0; i<breaks.count; i++){
                 if(ccpDistance(point,breaks[i]) < minDist){
                     pointBins.append([point])
@@ -69,7 +74,7 @@ class FreeForm:FoldFeature{
                 }
             }
         }
-
+        
         
         var paths:[UIBezierPath] = []
         for bin in pointBins{
@@ -77,6 +82,8 @@ class FreeForm:FoldFeature{
         }
         
         println(paths.count)
+        paths.first!.appendPath(paths.last!)
+        paths.removeLast()
         return paths
         
     }
@@ -90,10 +97,10 @@ class FreeForm:FoldFeature{
         }
         else{
             
-//            var cgpoints:[CGPoint] = []
-//            for cgpoint in interpolationPoints{
-//                cgpoints.append((cgpoint as! NSValue).CGPointValue())
-//            }
+            //            var cgpoints:[CGPoint] = []
+            //            for cgpoint in interpolationPoints{
+            //                cgpoints.append((cgpoint as! NSValue).CGPointValue())
+            //            }
             
             let paths = FreeForm.pathSplitByPoints(path!,breakers: intersectionsWithDrivingFold)
             
