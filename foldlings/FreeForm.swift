@@ -219,43 +219,55 @@ class FreeForm:FoldFeature{
             
             var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
-            //move scanline down until the length is equal to the ege length
+            //move scanline down until the length is > than the minimum edge length
             let maxY:CGFloat = box!.origin.y + box!.height
             
-            while(scanLine.path.firstPoint().y < driver.start.y){
-                
-                var moveDown = CGAffineTransformMakeTranslation(0, 5);
-                scanLine.path.applyTransform(moveDown)
+            
+            func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
                 
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
                 
                 if let ps = points{
-                if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength){
-                    let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
-                    self.horizontalFolds.append(edge)
-                    self.cachedEdges!.append(edge)
-                    break;
+                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*2){
+                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
+                        self.horizontalFolds.append(edge)
+                        self.cachedEdges!.append(edge)
+                        return true
+                    }
                 }
+                return false
+            }
+            
+            
+            while(scanLine.path.firstPoint().y < driver.start.y){
+                
+                var moveDown = CGAffineTransformMakeTranslation(0, 1);
+                scanLine.path.applyTransform(moveDown)
+                
+                var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
+                
+                if(truncated){
+                break
                 }
                 
+                
+                
             }
+            
+            
             
             scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             
             while(scanLine.path.firstPoint().y > driver.start.y){
                 
-                var moveDown = CGAffineTransformMakeTranslation(0, -5);
+                var moveDown = CGAffineTransformMakeTranslation(0, -1);
                 scanLine.path.applyTransform(moveDown)
+               
                 
-                var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+                var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
                 
-                if let ps = points{
-                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength){
-                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
-                        self.horizontalFolds.append(edge)
-                        self.cachedEdges!.append(edge)
-                        break;
-                    }
+                if(truncated){
+                    break
                 }
                 
             }
