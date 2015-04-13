@@ -141,12 +141,13 @@ class SketchView: UIView {
     }
     
     //draws boxfolds and adds them to features if valid
+    // TODO: May be better as a switch statement
     func handleBoxFoldPan(sender: AnyObject){
         
-        let gesture = sender as! UIPanGestureRecognizer
-        
-        // if the gesture just began
-        if(gesture.state == UIGestureRecognizerState.Began){
+        var gesture = sender as! UIPanGestureRecognizer
+        switch gesture.state {
+            
+        case UIGestureRecognizerState.Began:
             
             var touchPoint = gesture.locationInView(self)
             var goodPlaceToDraw = true
@@ -159,30 +160,22 @@ class SketchView: UIView {
                         
                         //get the edge & nearest point to hit
                         //TODO: testing planes here might be better than edges
-                        let e = child.featureEdgeAtPoint(touchPoint)
-                        if let edge = e{
-                            
+                        if let edge = child.featureEdgeAtPoint(touchPoint){
                             sketch.draggedEdge = edge
                             edge.deltaY = gesture.translationInView(self).y
                             println("init deltaY: \(edge.deltaY)")
-                        }
-                        else{
-                            println("No Edge Here...")
                         }
                         goodPlaceToDraw = false
                         break
                     }
                 }
             }
-            
+            //start a new box-fold feature
             if(goodPlaceToDraw){
-                //start a new box-fold feature
                 sketch.currentFeature = BoxFold(start: touchPoint)
             }
             
-        }
-        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
-            
+        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             var touchPoint: CGPoint = gesture.locationInView(self)
             
             if var e = sketch.draggedEdge{
@@ -193,11 +186,10 @@ class SketchView: UIView {
                 eNew.deltaY = nil
                 
                 sketch.addEdge(eNew)
-                
+                //clear all edges
                 sketch.masterFeature!.invalidateEdges()
                 
             }
-            
             
             if let drawingFeature = sketch.currentFeature{
                 
@@ -218,7 +210,6 @@ class SketchView: UIView {
                         drawingFeature.parent!.children = []
                         drawingFeature.parent!.children!.append(drawingFeature)
                         //                        print("~~~ADDED FIRST CHILD~~~\n\n")
-                        
                     }
                     drawingFeature.parent!.invalidateEdges()
                     
@@ -227,24 +218,17 @@ class SketchView: UIView {
                 sketch.refreshFeatureEdges()
                 
                 //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
                 for edge in sketch.edges{
                     sketch.removeEdge(edge)
                 }
-                
-                print("FEATURES: \(sketch.features?.count)\n")
+                //                print("FEATURES: \(sketch.features?.count)\n")
                 for feature in sketch.features!{
-                    
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
                     let edgesToAdd = feature.getEdges()
                     for edge in edgesToAdd{
                         sketch.addEdge(edge)
                     }
-                    print("SKETCH: \(sketch.edges.count)\n")
-                    
-                    
+                    //                    print("SKETCH: \(sketch.edges.count)\n")
                 }
-                
                 //clear the current feature
                 sketch.currentFeature = nil
             }
@@ -252,9 +236,7 @@ class SketchView: UIView {
             self.sketch.getPlanes()
             forceRedraw()
             
-        }
-        else if(gesture.state == UIGestureRecognizerState.Changed){
-            
+        case UIGestureRecognizerState.Changed:
             var touchPoint: CGPoint = gesture.locationInView(self)
             
             if let e = sketch.draggedEdge{
@@ -286,16 +268,15 @@ class SketchView: UIView {
                 }
                 
                 // box folds have different behaviors if they span the driving edge
-                
                 drawingFeature.invalidateEdges()
-                
                 forceRedraw()
                 
             }
+            
+        default:
+            println("Gesture not recognized")
         }
     }
-    
-    
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
@@ -446,19 +427,13 @@ class SketchView: UIView {
     }
     
     
-    //    var timeSinceRedraw = NSDate(timeIntervalSinceNow: -0.9)
-    //    let krefreshTime = 0.1
+
     func forceRedraw()
     {
-        //        timeSinceRedraw.timeIntervalSinceNow > -krefreshTime
         if(!self.redrawing){
-            //            timeSinceRedraw = NSDate(timeIntervalSinceNow: 0)
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
                 self.redrawing = true
                 dispatch_sync(self.redrawLockQueue) {
-                    
-                    //in template mode, only get planes when features end!
-                    
                     
                 }
                 
@@ -484,10 +459,9 @@ class SketchView: UIView {
     
 
     
-    //this creates a popup dialog box to send the SVG version
-    // this gets the path and SVG to print and then be sent to
-    // a laser cutter by user.
-    // TODO:save this path to a file
+    //this creates the contents of the SVG file
+    // converts CGPaths into SVG path and organizes
+    // it in correct xml format
     func svgImage() -> String{
         // get CGPaths from edges and map to string of svgs
         var edgesVisited:[Edge] = []
@@ -504,8 +478,13 @@ class SketchView: UIView {
             }
             return ""
         })
+        
+        //add closing tags
         paths.append("\n</g>\n</svg>")
-        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }// concatenate the string
+        
+        // concatenate all the paths into one string and 
+        // insert beginning tags for svg file
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }
         
         return svgString
     }

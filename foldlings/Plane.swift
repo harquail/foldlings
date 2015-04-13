@@ -60,11 +60,7 @@ class Plane: Printable, Hashable
     init(edges : [Edge])
     {
         self.edges = edges
-        
-        for (i,e) in enumerate(edges){
-            path.appendPath(e.path)
-        }
-        
+        edges.map({self.path.appendPath($0.path)})// create one path for all edges
         self.sanitizePath()
     }
     
@@ -84,7 +80,7 @@ class Plane: Printable, Hashable
             
             let material = SCNMaterial()
             
-            // holes are black, and extruded to prevent z-fighting
+            // holes are white, and extruded to prevent z-fighting
             if(self.kind == .Hole){
                 shape = SCNShape(path: path, extrusionDepth: 5.5)
                 material.diffuse.contents = UIColor.whiteColor()
@@ -92,7 +88,7 @@ class Plane: Printable, Hashable
                 
             }
             else{
-                // planes are white (for now, random color)
+                // planes are for now, random color
                 material.diffuse.contents = self.color
                 material.shininess = 0
 
@@ -204,6 +200,7 @@ class Plane: Printable, Hashable
         return self.edges.contains(edge)
     }
     
+    /// TODO: better to use math instead of contains point??
     func containerPlane(planes:[Plane]) -> Plane? {
         
         for (i,potentialParent) in enumerate(planes){
@@ -212,7 +209,7 @@ class Plane: Printable, Hashable
             if potentialParent == self {
                 continue
             }
-            
+            //TODO: use filter here
             for edge in self.edges{
                 if(potentialParent.path.containsPoint(edge.start)){
                     return potentialParent

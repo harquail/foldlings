@@ -269,9 +269,6 @@
         func getClosest(current: Edge) -> Edge
         {
             var closest = current.twin
-            //      println("adjacency count \(current.adjacency.count)")
-            //println("\n current \(current.start) , \(current.end) \n")
-           // printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
