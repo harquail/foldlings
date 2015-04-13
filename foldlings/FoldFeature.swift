@@ -116,7 +116,7 @@ class FoldFeature: NSObject, Printable{
     /// returns the edge in a feature at a point
     /// and the nearest point on that edge to the hit
     func featureEdgeAtPoint(touchPoint:CGPoint) -> Edge?{
-        
+        // go through edges in feature 
         if let edges = cachedEdges{
             for edge in edges{
                 // #TODO: hardcoding this is baaaad

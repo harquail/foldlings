@@ -50,12 +50,12 @@ class SketchView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = kLineWidth
-        // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
         
     }
     
+
     override func drawRect(rect: CGRect)
     {
         if (incrementalImage != nil)
@@ -99,6 +99,7 @@ class SketchView: UIView {
             shape.endPoint = touchPoint
             return
         }
+        
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
         if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
@@ -139,29 +140,31 @@ class SketchView: UIView {
         }
     }
     
+    //draws boxfolds and adds them to features if valid
     func handleBoxFoldPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
         
+        // if the gesture just began
         if(gesture.state == UIGestureRecognizerState.Began){
             
             var touchPoint = gesture.locationInView(self)
-            
             var goodPlaceToDraw = true
+            
+            // check if user is in a child feature
+            // TODO: check if feature spans multiple children here?
             if let children = sketch.masterFeature?.children{
-                
                 for child in children{
                     if(child.boundingBox()!.contains(touchPoint)){
                         
                         //get the edge & nearest point to hit
-                        let edge = child.featureEdgeAtPoint(touchPoint)
-                        if let e = edge{
+                        //TODO: testing planes here might be better than edges
+                        let e = child.featureEdgeAtPoint(touchPoint)
+                        if let edge = e{
                             
-                            //this is really only right for horizontal folds, not cuts...
-                            //maybe limit to fold for now?
-                            sketch.draggedEdge = e
-                            e.deltaY = gesture.translationInView(self).y
-                            println("init deltaY: \(e.deltaY)")
+                            sketch.draggedEdge = edge
+                            edge.deltaY = gesture.translationInView(self).y
+                            println("init deltaY: \(edge.deltaY)")
                         }
                         else{
                             println("No Edge Here...")
