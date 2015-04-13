@@ -214,21 +214,19 @@ class FreeForm:FoldFeature{
     func truncateWithFolds(){
         
         if let driver = drivingFold{
-            
             let box = self.boundingBox()
-            
             var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
+            var yTop:CGFloat = 0;
+            var yBottom:CGFloat = 0;
+            
             //move scanline down until the length is > than the minimum edge length
-            let maxY:CGFloat = box!.origin.y + box!.height
-            
-            
             func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
                 
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
                 
                 if let ps = points{
-                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*2){
+                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
                         let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
                         self.horizontalFolds.append(edge)
                         self.cachedEdges!.append(edge)
@@ -238,79 +236,54 @@ class FreeForm:FoldFeature{
                 return false
             }
             
-            
+            // move line down successively to find intersection point
             while(scanLine.path.firstPoint().y < driver.start.y){
-                
-                var moveDown = CGAffineTransformMakeTranslation(0, 1);
+                var moveDown = CGAffineTransformMakeTranslation(0, 3);
                 scanLine.path.applyTransform(moveDown)
-                
                 var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
-                
                 if(truncated){
-                break
+                    yTop = scanLine.path.firstPoint().y
+                    break
                 }
-                
-                
-                
             }
-            
-            
             
             scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             
+            //move scanline up to find bottom intersection point
             while(scanLine.path.firstPoint().y > driver.start.y){
-                
-                var moveDown = CGAffineTransformMakeTranslation(0, -1);
+                var moveDown = CGAffineTransformMakeTranslation(0, -3);
                 scanLine.path.applyTransform(moveDown)
-               
-                
                 var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
-                
                 if(truncated){
+                    yBottom = scanLine.path.firstPoint().y
                     break
                 }
-                
             }
             
+//            
+            let masterdist = yTop - driver.start.y
+            let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
+            scanLine.path.applyTransform(moveToCenter)
             
+//
+            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+            println(points)
+//
+            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+
+            self.horizontalFolds.append(midLine)
+            self.cachedEdges!.append(midLine)
             
-            
-            //            let driverDist =
             
         }
-        else{
-            return
-        }
-        
-        //        var returnee:[Edge] = []
-        //        let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
-        //        let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold)
-        //        horizontalFolds = [h0,h2]
-        //
-        //        returnee.append(h0)
-        //        returnee.append(h2)
-        //
-        //        //if there's a driving fold
-        //        if let master = drivingFold{
-        //
-        //            //            println(" has driving")
-        //
-        //            let masterDist = endPoint!.y - master.start.y
-        //            let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
-        //            returnee.append(h1)
-        //            horizontalFolds.append(h1)
         
     }
     
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
-        
         let start = edge.start
         let end = edge.end
         var returnee = [Edge]()
-        
-        //        //reject intersections outside the fold we're splitting
-        //        let intersects = intersectionsWithDrivingFold.filter({$0.x > start.x && $0.x < end.x &&  abs($0.y - start.y) < 1})
         
         if intersectionsWithDrivingFold.count == 0{
             
