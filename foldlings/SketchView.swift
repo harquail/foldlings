@@ -124,11 +124,22 @@ class SketchView: UIView {
                     
                     for fold in feature.horizontalFolds{
                         if(drawingFeature.featureSpansFold(fold)){
+                            
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
+                            
+                            
+                            if (drawingFeature.parent!.children != nil){
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+                            else{
+                                drawingFeature.parent!.children = []
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
-                            //                            break;
+//                                                        break;
                         }
                     }
                 }

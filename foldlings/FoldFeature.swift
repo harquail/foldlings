@@ -142,7 +142,9 @@ class FoldFeature: NSObject, Printable{
         var fragments:[Edge] = []
         for h in horizontalFolds{
         
-            if(h.start.y == fold.start.y){
+            //also need to test xs
+            //search for horizontalfolds with x values in intersectionpoints, repleace with fold that spans minx
+            if(abs(h.start.y - fold.start.y) < 1){
             fragments.append(h)
             }
         }
@@ -203,6 +205,8 @@ class FoldFeature: NSObject, Printable{
         
         //remove parent relationship from children
         if let childs = self.children{
+            println(childs);
+
             for child in childs{
                 child.removeFromSketch(sketch)
 //                child.invalidateEdges()

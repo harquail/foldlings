@@ -210,6 +210,51 @@ class FreeForm:FoldFeature{
         
     }
     
+    
+    func truncateWithFolds(){
+        
+        if let driver = drivingFold{
+            
+            let box = self.boundingBox()
+            
+            let scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            
+            //move scanline down until the length is equal to the ege length
+            let maxY:CGFloat = box!.origin.y + box!.height
+            
+            while(scanLine.start.y < maxY){
+            
+                
+            
+            }
+            
+            //            let driverDist =
+            
+        }
+        else{
+            return
+        }
+        
+        //        var returnee:[Edge] = []
+        //        let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
+        //        let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold)
+        //        horizontalFolds = [h0,h2]
+        //
+        //        returnee.append(h0)
+        //        returnee.append(h2)
+        //
+        //        //if there's a driving fold
+        //        if let master = drivingFold{
+        //
+        //            //            println(" has driving")
+        //
+        //            let masterDist = endPoint!.y - master.start.y
+        //            let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
+        //            returnee.append(h1)
+        //            horizontalFolds.append(h1)
+        
+    }
+    
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
         
@@ -217,12 +262,13 @@ class FreeForm:FoldFeature{
         let end = edge.end
         var returnee = [Edge]()
         
+        //        //reject intersections outside the fold we're splitting
+        //        let intersects = intersectionsWithDrivingFold.filter({$0.x > start.x && $0.x < end.x &&  abs($0.y - start.y) < 1})
         
         if intersectionsWithDrivingFold.count == 0{
             
             return [edge]
         }
-        
         
         
         let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
