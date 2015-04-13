@@ -217,14 +217,14 @@ class FreeForm:FoldFeature{
             
             let box = self.boundingBox()
             
-            let scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
             //move scanline down until the length is equal to the ege length
             let maxY:CGFloat = box!.origin.y + box!.height
             
-            while(scanLine.path.firstPoint().y < maxY){
+            while(scanLine.path.firstPoint().y < driver.start.y){
                 
-                var moveDown = CGAffineTransformMakeTranslation(0, 10);
+                var moveDown = CGAffineTransformMakeTranslation(0, 5);
                 scanLine.path.applyTransform(moveDown)
                 
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
@@ -239,6 +239,27 @@ class FreeForm:FoldFeature{
                 }
                 
             }
+            
+            scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
+            
+            while(scanLine.path.firstPoint().y > driver.start.y){
+                
+                var moveDown = CGAffineTransformMakeTranslation(0, -5);
+                scanLine.path.applyTransform(moveDown)
+                
+                var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+                
+                if let ps = points{
+                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength){
+                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
+                        self.horizontalFolds.append(edge)
+                        self.cachedEdges!.append(edge)
+                        break;
+                    }
+                }
+                
+            }
+            
             
             
             
