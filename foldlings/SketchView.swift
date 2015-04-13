@@ -136,6 +136,7 @@ class SketchView: UIView {
                                 drawingFeature.parent!.children = []
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
+                            
 
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
@@ -145,9 +146,12 @@ class SketchView: UIView {
                 }
             }
             
+            
             //set cached edges
             shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
-            
+
+            shape.truncateWithFolds()
+
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil

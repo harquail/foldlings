@@ -222,11 +222,25 @@ class FreeForm:FoldFeature{
             //move scanline down until the length is equal to the ege length
             let maxY:CGFloat = box!.origin.y + box!.height
             
-            while(scanLine.start.y < maxY){
-            
+            while(scanLine.path.firstPoint().y < maxY){
                 
-            
+                var moveDown = CGAffineTransformMakeTranslation(0, 10);
+                scanLine.path.applyTransform(moveDown)
+                
+                var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+                
+                if let ps = points{
+                if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength){
+                    let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
+                    self.horizontalFolds.append(edge)
+                    self.cachedEdges!.append(edge)
+                    break;
+                }
+                }
+                
             }
+            
+            
             
             //            let driverDist =
             
