@@ -155,7 +155,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             var parent = theOneSphere
             // if plane is a hole, its parent should be the plane that contains it
             if(plane.kind == Plane.Kind.Hole) {
-                
+                //TODO: should depend on parent feature 
                 let parentPlane = plane.containerPlane(planes.planes)
                 
                 if parentPlane != nil{
@@ -219,6 +219,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
+    //TODO: Use feature's parenting schema and planes to create the tree faster
     func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
     {
         if notMyChild[recurseCount] == nil {

@@ -46,6 +46,7 @@ class Plane: Printable, Hashable
 //        }
     var edges : [Edge]!
     var path = UIBezierPath()
+    var feature:FoldFeature!
     private var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
@@ -198,7 +199,7 @@ class Plane: Printable, Hashable
         return self.edges.contains(edge)
     }
     
-    /// TODO: better to use math instead of contains point?? might be too complex math
+    //check if edge is in the plane
     func containerPlane(planes:[Plane]) -> Plane? {
         
         for (i,potentialParent) in enumerate(planes){

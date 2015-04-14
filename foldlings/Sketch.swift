@@ -399,9 +399,6 @@
                 if(!featureEdges.contains(edge)){
                     self.removeEdge(edge)
                 }
-                else{
-                    println("EDGE: cache hit")
-                }
             }
             
             //            print("FEATURES: \(self.features?.count)\n")

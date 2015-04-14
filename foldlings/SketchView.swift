@@ -88,6 +88,8 @@ class SketchView: UIView {
     func handleFreeFormPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
+        
+        
         if(gesture.state == UIGestureRecognizerState.Began){
             
             // make a shape with touchpoint
@@ -101,6 +103,8 @@ class SketchView: UIView {
         }
         
         let shape = sketch.currentFeature as! FreeForm
+        
+        
         // if it's been a few microseconds since we tried to add a point
         if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
             var touchPoint: CGPoint = gesture.locationInView(self)
@@ -110,6 +114,7 @@ class SketchView: UIView {
             shape.path = path
             forceRedraw()
         }
+            
         //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
@@ -126,19 +131,6 @@ class SketchView: UIView {
         
     }
     
-    /// erase hitpoint edge
-    /// needs to be refactored for features
-    func erase(touchPoint: CGPoint) {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (!edge!.isMaster)){
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        } else if var plane = sketch.planeHitTest(touchPoint) {
-            sketch.planes.removePlane(plane)
-        }
-    }
     
     //draws boxfolds and adds them to features if valid
     func handleBoxFoldPan(sender: AnyObject){
@@ -147,53 +139,76 @@ class SketchView: UIView {
         
         switch gesture.state {
         
-        // gesture is just starting
+        // gesture is just starting create a boxfold where the touch began
         case UIGestureRecognizerState.Began:
             
             var touchPoint = gesture.locationInView(self)
-            var goodPlaceToDraw = true
+            sketch.currentFeature = BoxFold(start: touchPoint)
             
-            // check if user is in a child feature
-            // TODO: check if feature spans multiple children here?
-            if let children = sketch.masterFeature?.children{
-                for child in children{
-                    //if feature begins in a child, then 
-                    if(child.boundingBox()!.contains(touchPoint)){
-                        
-                        //get the edge & nearest point to hit
-                        //TODO: testing planes here might be better than edges
-                        if let edge = child.featureEdgeAtPoint(touchPoint){
-                            sketch.draggedEdge = edge
-                            edge.deltaY = gesture.translationInView(self).y
-                            println("init deltaY: \(edge.deltaY)")
-                        }
-                        goodPlaceToDraw = false
-                        break
-                    }
-                }
+         // while user is dragging
+        case UIGestureRecognizerState.Changed:
+            
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            if let e = sketch.draggedEdge{
+                e.deltaY = gesture.translationInView(self).y
+                println("delta: \(e.deltaY)")
             }
-            //start a new box-fold feature
-            if(goodPlaceToDraw){
-                sketch.currentFeature = BoxFold(start: touchPoint)
+            if let drawingFeature = sketch.currentFeature{
+                //disallow features outside the master card
+                if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
+                    drawingFeature.endPoint = touchPoint
+                }
+                
+                //for feature in features -- check folds for spanning
+                // feature validity depends on if it spans a fold 
+                // then find the parent of the fold 
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    for fold in feature.horizontalFolds{
+                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            break;
+                        }
+                    }
+                    
+                }
+                //This might be better here to determine the feature parent, 
+                // by detecting the plane and the edges
+//                var goodPlaceToDraw = true
+                
+//                // check if user is in a child feature
+//                // TODO: check if feature spans multiple children here?
+//                if let children = sketch.masterFeature?.children{
+//                    for child in children{
+//                        //if feature begins in a child, then
+//                        if(child.boundingBox()!.contains(touchPoint)){
+//                            
+//                            //get the edge & nearest point to hit
+//                            //TODO: testing planes here might be better than edges
+//                            if let edge = child.featureEdgeAtPoint(touchPoint){
+//                                sketch.draggedEdge = edge
+//                                edge.deltaY = gesture.translationInView(self).y
+//                                println("init deltaY: \(edge.deltaY)")
+//                            }
+//                            goodPlaceToDraw = false
+//                            break
+//                        }
+//                    }
+//                }
+
+                
+                // box folds have different behaviors if they span the driving edge
+                drawingFeature.invalidateEdges()
+                forceRedraw()
+                
             }
          
-            // gesture is just starting
+            // gesture is ended
         case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            if var e = sketch.draggedEdge{
-                
-                e.start.y += e.deltaY!
-                e.end.y += e.deltaY!
-                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-                eNew.deltaY = nil
-                
-                sketch.addEdge(eNew)
-                //the current feature's edges have been changed, need to be re-evaluated
-                // TODO: clean and dirty would be better here 
-                sketch.masterFeature!.invalidateEdges()
-                
-            }
             // if you completed a feature
             if let drawingFeature = sketch.currentFeature{
                 
@@ -217,7 +232,7 @@ class SketchView: UIView {
                     }
                     drawingFeature.parent!.invalidateEdges()
                 }
-                
+                // add feature edges to sketch
                 sketch.refreshFeatureEdges()
                 
                 //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
@@ -236,46 +251,25 @@ class SketchView: UIView {
             
             self.sketch.getPlanes()
             forceRedraw()
-            
-        case UIGestureRecognizerState.Changed:
-            
-            
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            if let e = sketch.draggedEdge{
-                e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")
-            }
-            if let drawingFeature = sketch.currentFeature{
-                //disallow features outside the master card
-                if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
-                    drawingFeature.endPoint = touchPoint
-                }
-                
-                //for feature in features -- check folds for spanning
-                drawingFeature.drivingFold = nil
-                drawingFeature.parent = nil
-                for feature in sketch.features!{
-                    for fold in feature.horizontalFolds{
-                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
-                            drawingFeature.drivingFold = fold
-                            drawingFeature.parent = feature
-                            break;
-                        }
-                    }
-                    
-                }
-                
-                // box folds have different behaviors if they span the driving edge
-                drawingFeature.invalidateEdges()
-                forceRedraw()
-                
-            }
-            
+
         default:
             println("Gesture not recognized")
         }
     }
     
+    /// erase hitpoint edge
+    /// needs to be refactored for features
+    func erase(touchPoint: CGPoint) {
+        if var (edge, np) = sketch.edgeHitTest(touchPoint)
+        {
+            if edge != nil && ( (!edge!.isMaster)){
+                sketch.removeEdge(edge!)
+                forceRedraw()
+            }
+        } else if var plane = sketch.planeHitTest(touchPoint) {
+            sketch.planes.removePlane(plane)
+        }
+    }
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }

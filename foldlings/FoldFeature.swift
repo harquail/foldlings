@@ -126,7 +126,7 @@ class FoldFeature: NSObject, Printable{
     /// splits an edge, making edges around its children
     func edgeSplitByChildren(edge:Edge) -> [Edge]{
         
-        let start = edge.start
+        var start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
@@ -139,7 +139,7 @@ class FoldFeature: NSObject, Printable{
             //create fold pieces between the children
             //needs explanation
             for child in childs{
-                let newStart = CGPointMake(child.endPoint!.x,start.y)
+                var newStart = CGPointMake(child.endPoint!.x,start.y)
                 let piece = Edge.straightEdgeBetween(start, end: CGPointMake(child.startPoint!.x, start.y), kind: .Fold)
                 returnee.append(piece)
                 horizontalFolds.append(piece)
