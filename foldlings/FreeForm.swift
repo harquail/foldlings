@@ -17,6 +17,8 @@ class FreeForm:FoldFeature{
     var closed = false
     //the intrsection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
+    var intersections:[CGPoint] = []
+
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -70,6 +72,8 @@ class FreeForm:FoldFeature{
             for (var i = 0; i<breaks.count; i++){
                 if(ccpDistance(point,breaks[i]) < minDist){
                     pointBins.append([point])
+                    
+                    // #TODO: should add the break point here...
                     breaks.remove(breaks[i])
                 }
             }
@@ -91,15 +95,11 @@ class FreeForm:FoldFeature{
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
         // if there are no interercepts to split on, return the path whole
-        if intersectionsWithDrivingFold.count == 0{
+        if true || intersectionsWithDrivingFold.count == 0{
             return [Edge(start: path!.firstPoint(), end: path!.lastPoint(), path: path!, kind: .Cut, isMaster: false)]
         }
         else{
             
-            //            var cgpoints:[CGPoint] = []
-            //            for cgpoint in interpolationPoints{
-            //                cgpoints.append((cgpoint as! NSValue).CGPointValue())
-            //            }
             
             let paths = FreeForm.pathSplitByPoints(path!,breakers: intersectionsWithDrivingFold)
             
@@ -185,6 +185,7 @@ class FreeForm:FoldFeature{
             if let intersects = PathIntersections.intersectionsBetweenCGPaths(fold.path.CGPath,p2: self.path!.CGPath){
                 
                 intersectionsWithDrivingFold = intersects
+                intersections += intersects
                 return true
                 
             }
@@ -220,7 +221,7 @@ class FreeForm:FoldFeature{
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
             
-            //move scanline down until the length is > than the minimum edge length
+            //move scanline, testing intersections until the length of the intersecting segment is > than the minimum edge length
             func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
                 
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
@@ -260,23 +261,22 @@ class FreeForm:FoldFeature{
                 }
             }
             
-//            
+            //move can line to position that will make the shape fold to 90º
             let masterdist = yTop - driver.start.y
             let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
             scanLine.path.applyTransform(moveToCenter)
             
-//
+            //get the intersections
             let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
-            println(points)
-//
+            
+            // add a fold between those intersection points
             let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+            
+//            func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIBezierPath)
 
             self.horizontalFolds.append(midLine)
             self.cachedEdges!.append(midLine)
-            
-            
         }
-        
     }
     
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
@@ -286,7 +286,6 @@ class FreeForm:FoldFeature{
         var returnee = [Edge]()
         
         if intersectionsWithDrivingFold.count == 0{
-            
             return [edge]
         }
         
