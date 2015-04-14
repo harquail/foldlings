@@ -101,7 +101,7 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -140,18 +140,20 @@ class SketchView: UIView {
 
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                            
+                            //set cached edges
+                            shape.cachedEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
 //                                                        break;
                         }
                     }
                 }
             }
             
-            //set cached edges
-            shape.cachedEdges = []
-            //create truncated folds
-            shape.truncateWithFolds()
-            //split paths at intersections
-            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+          
 
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)

@@ -62,15 +62,12 @@ class FreeForm:FoldFeature{
         for (i, point) in enumerate(points)
         {
             
-            
-           
-            
-            if(pointBins.count == 0){
-                points.append(point)
-            }
-            else{
+//            if(pointBins.count == 0){
+//                points.append(point)
+//            }
+//            else{
                 pointBins[pointBins.count-1].append(point);
-            }
+//            }
             
             for (var i = 0; i<breaks.count; i++){
                 if(ccpDistance(point,breaks[i]) < minDist){
@@ -96,9 +93,9 @@ class FreeForm:FoldFeature{
             paths.append(p)
         }
         
-        println(paths.count)
-        paths.first!.appendPath(paths.last!)
-        paths.removeLast()
+//        println(paths.count)
+//        paths.first!.appendPath(paths.last!)
+//        paths.removeLast()
         return paths
         
     }
@@ -106,11 +103,14 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-            
-            let paths = pathSplitByPoints(path!,breakers: intersections)
+            var paths = pathSplitByPoints(path!,breakers: intersections)
             var edges:[Edge] = []
-            for p in paths{
+        
+//        paths.removeAtIndex(0)
+             for p in paths{
                 edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
+            println("points: \(p.firstPoint()), \(p.lastPoint())")
+//                return edges
             }
             
             return edges

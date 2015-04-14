@@ -205,7 +205,7 @@ class FoldFeature: NSObject, Printable{
         
         //remove parent relationship from children
         if let childs = self.children{
-            println(childs);
+//            println(childs);
 
             for child in childs{
                 child.removeFromSketch(sketch)
