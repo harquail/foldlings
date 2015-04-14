@@ -281,10 +281,10 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            if let e = sketch.draggedEdge{
-                e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")
-            }
+//            if let e = sketch.draggedEdge{
+//                e.deltaY = gesture.translationInView(self).y
+//                println("delta: \(e.deltaY)")
+//            }
             
             if let drawingFeature = sketch.currentFeature{
                 
@@ -302,7 +302,6 @@ class SketchView: UIView {
                         if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            println(feature)
                             break;
                         }
                     }
