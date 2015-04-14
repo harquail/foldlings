@@ -10,18 +10,7 @@ import Foundation
 
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
 class FoldFeature: NSObject, Printable{
-    //
-    //    enum Kind {
-    //        case Box,
-    //        Mirrored,
-    //        FreeForm,
-    //        VFold,
-    //        Track,
-    //        Slider,
-    //        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
-    //    }
-    
-    
+
     enum ValidityState {
         case Invalid, // we don't know how to make this feature valid
         Valid // can be simulated in 3d/folded in real life
@@ -36,15 +25,14 @@ class FoldFeature: NSObject, Printable{
     var featurePlanes:[Plane] = []
     //not used yet
     var drawingPlanes:[Plane] = []
-    //not used yet
-    var horizontalFolds:[Edge] = []
     
-    //used by getEdges
-    var cachedEdges:[Edge]?
-    // features that affect this feature's edges/validity
-    var children:[FoldFeature]?
-    var drivingFold:Edge?
-    var parent:FoldFeature?
+    
+    var horizontalFolds:[Edge] = [] //list horizontal folds
+    var featureEdges:[Edge]?        //edges in a feature
+    var children:[FoldFeature]?// children of feature
+    var drivingFold:Edge?// driving fold of feature
+    var parent:FoldFeature?// parent of feature
+    
     // start and end touch points
     var startPoint:CGPoint?
     var endPoint:CGPoint?
@@ -52,8 +40,8 @@ class FoldFeature: NSObject, Printable{
     
     /// is it valid?
     var state:ValidityState = .Valid
-    
-    
+    var dirty: Bool = true
+
     /// printable description is the object class & startPoint
     override var description: String {
         return "\(reflect(self).summary) \(startPoint!)"
@@ -68,8 +56,7 @@ class FoldFeature: NSObject, Printable{
     // and then freeze edges into a feature after the feature is finalized when the drag ends
     // invalidating edges during drags is one way, but it might not be the cleanest.
     func getEdges()->[Edge]{
-        
-        if let returnee = cachedEdges {
+        if let returnee = featureEdges {
             return returnee
         }
         return []
@@ -79,14 +66,12 @@ class FoldFeature: NSObject, Printable{
     //might also need a set of user-defined edges that we don't fuck with
     // this removes cached edges, sets them all to nil
     func invalidateEdges(){
-        cachedEdges = nil
+        featureEdges = nil
     }
     
     /// used for quickly testing whether features might overlap
     func boundingBox()->CGRect?{
-        
         return nil
-        
     }
     
     /// makes the start point the top left point
@@ -117,8 +102,8 @@ class FoldFeature: NSObject, Printable{
     /// returns the edge in a feature at a point
     /// and the nearest point on that edge to the hit
     func featureEdgeAtPoint(touchPoint:CGPoint) -> Edge?{
-        
-        if let edges = cachedEdges{
+        // go through edges in feature 
+        if let edges = featureEdges{
             for edge in edges{
                 // #TODO: hardcoding this is baaaad
                 if let hitPoint = Edge.hitTest(edge.path,point: touchPoint,radius:kHitTestRadius*3.5){
@@ -126,16 +111,13 @@ class FoldFeature: NSObject, Printable{
                 }
             }
         }
-        else{
-            
-        }
-        return nil;
+        return nil
     }
     
     // assign edges to a features
+    // TODO: should do this when we make edges instead of looping through
     func claimEdges(){
-        
-        if let edges = cachedEdges{
+        if let edges = featureEdges{
             for edge in edges{
                 edge.feature = self
             }
@@ -145,7 +127,7 @@ class FoldFeature: NSObject, Printable{
     /// splits an edge, making edges around its children
     func edgeSplitByChildren(edge:Edge) -> [Edge]{
         
-        let start = edge.start
+        var start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
@@ -155,24 +137,17 @@ class FoldFeature: NSObject, Printable{
             childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
             childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
             
-            //pieces of the edge, which go inbetween child features
-            var masterPieces:[Edge] = []
-            
             //create fold pieces between the children
-            var brushTip = start
-            
+            //needs explanation
             for child in childs{
-                
-                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
-                
-                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
+                var newStart = CGPointMake(child.endPoint!.x,start.y)
+                let piece = Edge.straightEdgeBetween(start, end: CGPointMake(child.startPoint!.x, start.y), kind: .Fold)
                 returnee.append(piece)
                 horizontalFolds.append(piece)
-                
-                brushTip = brushTipTranslated
+                start = newStart
             }
             
-            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
+            let finalPiece = Edge.straightEdgeBetween(start, end: end, kind: .Fold)
             returnee.append(finalPiece)
         }
         
@@ -192,12 +167,12 @@ class FoldFeature: NSObject, Printable{
             for child in childs{
                 child.removeFromSketch(sketch)
                 child.invalidateEdges()
-
             }
         }
         
         //remove child relationship from parents
         self.parent?.children?.remove(self)
+        // TODO: Mark feature as dirty?
         self.parent?.invalidateEdges()
         sketch.features?.remove(self)
 
@@ -210,9 +185,7 @@ class FoldFeature: NSObject, Printable{
     
     /// modifications that can be made to the current feature
     func tapOptions() -> [FeatureOption]?{
-        
         return nil
-        
     }
     
     class func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{

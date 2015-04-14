@@ -13,11 +13,11 @@
         
         @IBOutlet var previewButton:UIButton?
         
+        // ************ Feature variables ****************
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
         var masterFeature:FoldFeature?
-        
         
         
         //the folds that define a sketch
@@ -30,9 +30,9 @@
         var name:String
         var origin:Origin
         var planes:CollectionOfPlanes = CollectionOfPlanes()
-        
-        
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
+        
+        //determines whether the sketch is created by a user or is a saved sketch
         enum Origin: String {
             case UserCreated = "User"
             case Sample = "Sample"
@@ -41,8 +41,8 @@
         
         init(at:Int, named:String, userOriginated:Bool = true)
         {
-            index = at
-            name = named
+            index = at //index of where sketch is stored
+            name = named // name of the sketch 
             let screenSize: CGRect = UIScreen.mainScreen().bounds
             let screenWidth = screenSize.width
             let screenHeight = screenSize.height
@@ -51,8 +51,8 @@
             super.init()
             
             //insert master fold and make borders into cuts
-                makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-
+            makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+            
         }
         
         /// add an already-constructed edge
@@ -360,7 +360,10 @@
             return self.drawingBounds.contains(point)
         }
         
-        
+        // use the master card feature to find top edge
+        // this is used to find top plane
+        // TODO: refactor so that it checks a plane instead of edges
+        // might be better living in plane
         func isTopEdge(edge:Edge) -> Bool
         {
                 if let masterF = masterFeature{
@@ -395,9 +398,6 @@
             for edge in self.edges{
                 if(!featureEdges.contains(edge)){
                     self.removeEdge(edge)
-                }
-                else{
-                    println("EDGE: cache hit")
                 }
             }
             for feature in self.features!{
