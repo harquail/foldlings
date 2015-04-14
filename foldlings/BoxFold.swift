@@ -92,18 +92,19 @@ class BoxFold:FoldFeature{
             
         }
         
-        // split edges for children
-        for fold in horizontalFolds{
-            if let childs = children{
-                let fragments = edgeSplitByChildren(fold)
-                horizontalFolds.remove(fold)
-                returnee.remove(fold)
-                horizontalFolds.extend(fragments)
-                returnee.extend(fragments)
-                
-            }
-            
-        }
+        
+        //        // split edges for children
+        //        for fold in horizontalFolds{
+        //            if let childs = children{
+        //                let fragments = edgeSplitByChildren(fold)
+        //                horizontalFolds.remove(fold)
+        //                returnee.remove(fold)
+        //                horizontalFolds.extend(fragments)
+        //                returnee.extend(fragments)
+        //
+        //            }
+        //
+        //        }
         
         cachedEdges = returnee
         claimEdges()
@@ -152,6 +153,5 @@ override func tapOptions() -> [FeatureOption]?{
     
     return options
     
-}
 
-}
+}}
