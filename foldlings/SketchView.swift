@@ -128,7 +128,6 @@ class SketchView: UIView {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
-                            
                             if (drawingFeature.parent!.children != nil){
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
@@ -136,7 +135,6 @@ class SketchView: UIView {
                                 drawingFeature.parent!.children = []
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
-                            
 
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
@@ -148,8 +146,6 @@ class SketchView: UIView {
                             //split paths at intersections
                             shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
                             
-                            println(shape.cachedEdges!)
-//                                                        break;
                         }
                     }
                 }
@@ -161,6 +157,7 @@ class SketchView: UIView {
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
             sketch.refreshFeatureEdges()
+            self.sketch.getPlanes()
             forceRedraw()
         }
         
