@@ -46,7 +46,7 @@ class FreeForm:FoldFeature{
     
     
     /// splits a path at each of the points, which are already known to be on it
-    class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
+    func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
         
         var breaks = breakers
@@ -62,6 +62,9 @@ class FreeForm:FoldFeature{
         for (i, point) in enumerate(points)
         {
             
+            
+           
+            
             if(pointBins.count == 0){
                 points.append(point)
             }
@@ -71,9 +74,11 @@ class FreeForm:FoldFeature{
             
             for (var i = 0; i<breaks.count; i++){
                 if(ccpDistance(point,breaks[i]) < minDist){
-                    pointBins.append([point])
-                    
-                    // #TODO: should add the break point here...
+                 
+                    //TODO:look at this more closely later
+                    //add break point instead of point
+                    pointBins[pointBins.count-1].append(breaks[i])
+                    pointBins.append([breaks[i]])
                     breaks.remove(breaks[i])
                 }
             }
@@ -81,7 +86,14 @@ class FreeForm:FoldFeature{
         
         var paths:[UIBezierPath] = []
         for bin in pointBins{
-            paths.append(pathFromPoints(bin))
+            
+            let p = pathFromPoints(bin)
+            
+            if(p.center().y < self.horizontalFolds[0].start.y || p.center().y > self.horizontalFolds[1].start.y ){
+                continue
+            }
+            
+            paths.append(p)
         }
         
         println(paths.count)
@@ -94,24 +106,14 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-        // if there are no interercepts to split on, return the path whole
-        if intersectionsWithDrivingFold.count == 0{
-            return [Edge(start: path!.firstPoint(), end: path!.lastPoint(), path: path!, kind: .Cut, isMaster: false)]
-        }
-        else{
             
-            println(intersections)
-            
-            let paths = FreeForm.pathSplitByPoints(path!,breakers: intersections)
-            
+            let paths = pathSplitByPoints(path!,breakers: intersections)
             var edges:[Edge] = []
-            
             for p in paths{
                 edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
             }
             
             return edges
-        }
     }
     
     
@@ -210,9 +212,9 @@ class FreeForm:FoldFeature{
     
     func truncateWithFolds(){
         
-       
-        
         if let driver = drivingFold{
+            
+            
             let box = self.boundingBox()
             var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
