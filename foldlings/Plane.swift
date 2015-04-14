@@ -106,8 +106,6 @@ class Plane: Printable, Hashable
     }
     
     
-    
-    
     /// the fold with minimum y height in a plane
     func bottomFold(tab:Bool = true) -> Edge? {
         
@@ -200,7 +198,7 @@ class Plane: Printable, Hashable
         return self.edges.contains(edge)
     }
     
-    /// TODO: better to use math instead of contains point??
+    /// TODO: better to use math instead of contains point?? might be too complex math
     func containerPlane(planes:[Plane]) -> Plane? {
         
         for (i,potentialParent) in enumerate(planes){

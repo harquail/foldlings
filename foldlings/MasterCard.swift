@@ -28,7 +28,7 @@ class MasterCard:FoldFeature{
     override func getEdges()->[Edge]{
         
         //if mastercard has already been created, return edges
-        if let returnee = cachedEdges {
+        if let returnee = featureEdges {
             return returnee
         }
         
@@ -58,8 +58,8 @@ class MasterCard:FoldFeature{
         for edge in returnee{
             edge.isMaster = true
         }
-        //cache the edges
-        cachedEdges = returnee
+        //set feature edges
+        featureEdges = returnee
         //assign edges to feature 
         claimEdges()
         return returnee

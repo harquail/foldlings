@@ -20,7 +20,7 @@ class BoxFold:FoldFeature{
         //
         
         //if boxfold has already been created, return its edges
-        if let returnee = cachedEdges {
+        if let returnee = featureEdges {
             return returnee
         }
         
@@ -100,7 +100,7 @@ class BoxFold:FoldFeature{
         }
         
         
-        // split folds by feature children
+        // split folds by feature's children
         for fold in horizontalFolds{
             if let childs = children{
                 let fragments = edgeSplitByChildren(fold)
@@ -112,8 +112,8 @@ class BoxFold:FoldFeature{
             }
             
         }
-        //cache the edges
-        cachedEdges = returnee
+        //set features edges
+        featureEdges = returnee
         //assign edges to feature
         claimEdges()
         return returnee

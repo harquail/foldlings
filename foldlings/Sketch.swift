@@ -361,7 +361,10 @@
             return self.drawingBounds.contains(point)
         }
         
-        
+        // use the master card feature to find top edge
+        // this is used to find top plane
+        // TODO: refactor so that it checks a plane instead of edges
+        // might be better living in plane
         func isTopEdge(edge:Edge) -> Bool
         {
                 if let masterF = masterFeature{
