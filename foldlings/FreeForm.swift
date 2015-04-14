@@ -109,10 +109,10 @@ class FreeForm:FoldFeature{
 //        paths.removeAtIndex(0)
              for p in paths{
                 edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
-            println("points: \(p.firstPoint()), \(p.lastPoint())")
+//            println("points: \(p.firstPoint()), \(p.lastPoint())")
 //                return edges
             }
-            
+        
             return edges
     }
     
