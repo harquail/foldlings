@@ -18,7 +18,7 @@
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
         var masterFeature:FoldFeature?
-        
+
         
         //the folds that define a sketch
         //for now, cuts are in this array to
