@@ -139,7 +139,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case .Fold:
             color = Color.Fold
         case .Cut:
-            color = Color.Cut
+            color = getRandomColor(0.8);
+//            color = Color.Cut
         default:
             color = Color.Cut
         }

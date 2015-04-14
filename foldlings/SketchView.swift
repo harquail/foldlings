@@ -146,12 +146,29 @@ class SketchView: UIView {
                 }
             }
             
-            
             //set cached edges
-            shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
+            shape.cachedEdges = [Edge(start: shape.path!.firstPoint(), end: shape.path!.lastPoint(), path: shape.path!, kind: .Cut, isMaster: false)]
+            
+//            shape.freeFormEdgesSplitByIntersections()
 
             shape.truncateWithFolds()
+            
+            println("HORIZONTAL FOLDS \(shape.horizontalFolds)");
+            
+            for edge in shape.cachedEdges!{
+                
+                if !shape.horizontalFolds.contains(edge){
+                    shape.cachedEdges!.remove(edge)
+                }
+                
+            }
+            
+            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
 
+            
+
+            
+            
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil

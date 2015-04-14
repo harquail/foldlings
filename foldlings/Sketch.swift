@@ -226,7 +226,6 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-//            return;
             dispatch_sync(edgeAdjacencylockQueue) {
                // println("\ngetPlanes\n")
                 self.visited = []
@@ -271,6 +270,7 @@
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
         {
+
             var closest = current.twin
             //      println("adjacency count \(current.adjacency.count)")
             //println("\n current \(current.start) , \(current.end) \n")
