@@ -11,7 +11,7 @@ import UIKit
 
 let kLineWidth:CGFloat = 2.0
 let kHitTestRadius = CGFloat(10.0)
-let kMinLineLength = kHitTestRadius * 2.0
+let kMinLineLength = kHitTestRadius/2
 
 
 
@@ -20,6 +20,11 @@ func getRandomColor(alpha:CGFloat) -> UIColor{
     var randomGreen:CGFloat = CGFloat(drand48())
     var randomBlue:CGFloat = CGFloat(drand48())
     return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: alpha)
+}
+
+func getRandomGray(alpha:CGFloat) -> UIColor{
+    var randomHue:CGFloat =  1 - CGFloat(drand48())/1.3
+    return UIColor(red: randomHue, green: randomHue, blue: randomHue, alpha: alpha)
 }
 
 //benchmark

@@ -6,10 +6,11 @@ class BoxFold:FoldFeature{
     override func getEdges() -> [Edge] {
         
         if let returnee = cachedEdges {
-            //            println("BOX: cache hit")
+//            println("BOX: cache hit")
             return returnee
         }
-        //        println("   BOX: cache MISS")
+        
+//        println("  BOX: cache MISS")
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
@@ -31,7 +32,7 @@ class BoxFold:FoldFeature{
         
         returnee.append(h0)
         returnee.append(h2)
-
+        
         //if there's a driving fold
         if let master = drivingFold{
             
@@ -110,25 +111,47 @@ class BoxFold:FoldFeature{
         
     }
     
-    override func boundingBox() -> CGRect? {
-        if (startPoint == nil || endPoint == nil){
-            return nil;
-        }
-        return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+        
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
+        
+//        //if there are no split edges, give the edge back whole
+//        if (returnee.count == 0){
+//            return [edge]
+//        }
+        
+        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold)
+        
+        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold)
+        
+        returnee = [piece,piece2]
+        
+    return returnee
+    
+    
+}
+
+override func boundingBox() -> CGRect? {
+    if (startPoint == nil || endPoint == nil){
+        return nil;
+    }
+    return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
+}
+
+
+/// boxFolds can be deleted
+/// folds can be added only to leaves
+override func tapOptions() -> [FeatureOption]?{
+    var options:[FeatureOption] = []
+    options.append(.DeleteFeature)
+    if(self.isLeaf()){
+        options.append(.AddFolds)
     }
     
+    return options
     
-    /// boxFolds can be deleted
-    /// folds can be added only to leaves
-    override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
-        options.append(.DeleteFeature)
-        if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
-        
-        return options
-        
-    }
-    
+}
+
 }

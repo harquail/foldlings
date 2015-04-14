@@ -226,7 +226,6 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-            
             dispatch_sync(edgeAdjacencylockQueue) {
                // println("\ngetPlanes\n")
                 self.visited = []
@@ -271,6 +270,7 @@
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
         {
+
             var closest = current.twin
             //      println("adjacency count \(current.adjacency.count)")
             //println("\n current \(current.start) , \(current.end) \n")
@@ -398,13 +398,29 @@
                 
             }
             
+            //this is supposed to do caching, but doesn't work for some reason
+//            for edge in self.edges{
+//                
+//                var inFeature = false
+//                for featureEdge in featureEdges{
+//                    
+//                    if(featureEdge ≈ edge){
+//                    inFeature = true
+//                    break
+//                    }
+//                }
+//                
+//                if(!inFeature){
+//                    self.removeEdge(edge)
+//                }
+//                else{
+//                    println("EDGE: cache hit")
+//                }
+//            }
+//            
+            
             for edge in self.edges{
-                if(!featureEdges.contains(edge)){
-                    self.removeEdge(edge)
-                }
-                else{
-                    println("EDGE: cache hit")
-                }
+                self.removeEdge(edge)
             }
             
             //            print("FEATURES: \(self.features?.count)\n")
@@ -414,9 +430,9 @@
                 for edge in edgesToAdd{
                     
                     //add edges that aren't already in the sketch
-                    if(!self.edges.contains(edge)){
+//                    if(!self.edges.contains(edge)){
                         self.addEdge(edge)
-                    }
+//                    }
                 }
                 
                 //                print("SKETCH: \(self.edges.count)\n")

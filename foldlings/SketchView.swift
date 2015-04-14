@@ -101,7 +101,7 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -109,13 +109,52 @@ class SketchView: UIView {
             shape.path = path
             forceRedraw()
         }
-        //close the shape when the pan gesture ends
+            //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
             //reset path
             path = UIBezierPath()
             
+            if let drawingFeature = sketch.currentFeature{
+                //for feature in features -- check folds for spanning
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    
+                    for fold in feature.horizontalFolds{
+                        if(drawingFeature.featureSpansFold(fold)){
+                            
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            
+                            
+                            if (drawingFeature.parent!.children != nil){
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+                            else{
+                                drawingFeature.parent!.children = []
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+                            
+
+                            let fragments = drawingFeature.splitFoldByOcclusion(fold)
+                            drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                            
+                            //set cached edges
+                            shape.cachedEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+//                                                        break;
+                        }
+                    }
+                }
+            }
+            
+          
+
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
@@ -149,29 +188,29 @@ class SketchView: UIView {
             var touchPoint = gesture.locationInView(self)
             
             var goodPlaceToDraw = true
-            if let children = sketch.masterFeature?.children{
-                
-                for child in children{
-                    if(child.boundingBox()!.contains(touchPoint)){
-                        
-                        //get the edge & nearest point to hit
-                        let edge = child.featureEdgeAtPoint(touchPoint)
-                        if let e = edge{
-                            
-                            //this is really only right for horizontal folds, not cuts...
-                            //maybe limit to fold for now?
-                            sketch.draggedEdge = e
-                            e.deltaY = gesture.translationInView(self).y
-                            println("init deltaY: \(e.deltaY)")
-                        }
-                        else{
-                            println("No Edge Here...")
-                        }
-                        goodPlaceToDraw = false
-                        break
-                    }
-                }
-            }
+            //            if let children = sketch.masterFeature?.children{
+            
+            //                for child in children{
+            //                    if(child.boundingBox()!.contains(touchPoint)){
+            //
+            //                        //get the edge & nearest point to hit
+            //                        let edge = child.featureEdgeAtPoint(touchPoint)
+            //                        if let e = edge{
+            //
+            //                            //this is really only right for horizontal folds, not cuts...
+            //                            //maybe limit to fold for now?
+            //                            sketch.draggedEdge = e
+            //                            e.deltaY = gesture.translationInView(self).y
+            //                            println("init deltaY: \(e.deltaY)")
+            //                        }
+            //                        else{
+            //                            println("No Edge Here...")
+            //                        }
+            //                        goodPlaceToDraw = false
+            //                        break
+            //                    }
+            //                }
+            //            }
             
             if(goodPlaceToDraw){
                 //start a new box-fold feature
@@ -183,25 +222,25 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            if var e = sketch.draggedEdge{
-                
-                e.start.y += e.deltaY!
-                e.end.y += e.deltaY!
-                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-                eNew.deltaY = nil
-                
-                sketch.addEdge(eNew)
-                
-                sketch.masterFeature!.invalidateEdges()
-                
-            }
+            //            if var e = sketch.draggedEdge{
+            //
+            //                e.start.y += e.deltaY!
+            //                e.end.y += e.deltaY!
+            //                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
+            //                eNew.deltaY = nil
+            //
+            //                sketch.addEdge(eNew)
+            //
+            ////                sketch.masterFeature!.invalidateEdges()
+            //
+            //            }
             
             
             if let drawingFeature = sketch.currentFeature{
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
-                sketch.masterFeature!.invalidateEdges()
+                //                sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
                 //add edges from the feature to the sketch
@@ -209,39 +248,26 @@ class SketchView: UIView {
                 
                 if(drawingFeature.drivingFold != nil){
                     
-                    if (drawingFeature.parent!.children != nil){
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                    let drawParent = drawingFeature.parent!
+                    
+                    if (drawParent.children != nil){
+                        drawParent.children!.append(drawingFeature)
                     }
                     else{
-                        drawingFeature.parent!.children = []
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                        drawParent.children = []
+                        drawParent.children!.append(drawingFeature)
                         //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
-                    drawingFeature.parent!.invalidateEdges()
+                    drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
                     
+                    //                    drawingFeature.parent!.invalidateEdges()
+                }
+                else{
+                    drawingFeature.removeFromSketch(sketch)
                 }
                 
                 sketch.refreshFeatureEdges()
-                
-                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                
-                for edge in sketch.edges{
-                    sketch.removeEdge(edge)
-                }
-                
-                print("FEATURES: \(sketch.features?.count)\n")
-                for feature in sketch.features!{
-                    
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
-                    let edgesToAdd = feature.getEdges()
-                    for edge in edgesToAdd{
-                        sketch.addEdge(edge)
-                    }
-                    print("SKETCH: \(sketch.edges.count)\n")
-                    
-                    
-                }
                 
                 //clear the current feature
                 sketch.currentFeature = nil
@@ -273,10 +299,10 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds{
-                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
+                        if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            
+                            println(feature)
                             break;
                         }
                     }
@@ -480,7 +506,7 @@ class SketchView: UIView {
     }
     
     
-
+    
     
     //this creates a popup dialog box to send the SVG version
     // this gets the path and SVG to print and then be sent to

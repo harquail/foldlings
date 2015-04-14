@@ -16,6 +16,7 @@ typedef void(^OBUIBezierPathEnumerationHandler)(const CGPathElement *element);
 - (void)ob_enumerateElementsUsingBlock:(OBUIBezierPathEnumerationHandler)handler;
 - (NSString *)ob_description;
 - (NSArray*) getPathElements;
+- (CGRect) boundsForPath;
 
 @end
 

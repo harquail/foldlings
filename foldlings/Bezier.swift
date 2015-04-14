@@ -31,6 +31,20 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 /// is the path given drawn in counterclockwise winding order
  func isCounterClockwise(path:UIBezierPath) -> Bool
 {
+    
+    let elements = path.getPathElements()
+//    println(elements.count);
+    //    let points = getSubdivisions(elements, increments:25)
+//    
+//    var total:CGFloat = 0.0
+//    for var i = 1; i < points.count; i++
+//    {
+//        total +=  (points[i].x - points[i-1].x) * (points[i].y + points[i-1].y)
+//    }
+//    
+//    return total > 0
+
+    
     return !path.isClockwise()
 }
 
@@ -155,7 +169,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     
     // if only two elements then it must be a line so treat it that way
     if elements.count == 0 {
-        println("no elements in path returning same! \(elements)")
+//        println("no elements in path returning same! \(elements)")
         return point
     }
     else if elements.count == 2
@@ -237,7 +251,8 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
             subdivPoints.append(subdivPoints[0])
             break
         default:
-            println("other: \(currPath.type)")
+            break
+//            println("other: \(currPath.type)")
         }
     }
     

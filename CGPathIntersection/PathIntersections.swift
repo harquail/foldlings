@@ -74,16 +74,17 @@ class PathIntersections {
                 pointBins = [[point]]
             }
             else{
+                var placedInBin = false
                 for var index = 0; index<pointBins.count; index++ {
                     // if near a bin point, add to existing bin
                     if nearEachOther(pointBins[index][0],p2:point){
                         pointBins[index].append(point)
+                        placedInBin = true
                         break
                     }
-                    // if not near each other, make new bin
-                    else{
-                        pointBins.append([point])
-                    }
+                }
+                if(!placedInBin){
+                pointBins.append([point])
                 }
             }
         }
@@ -103,7 +104,8 @@ class PathIntersections {
     
     //points are near each other if they are within kHitTestRadius
     class func nearEachOther(p:CGPoint,p2:CGPoint)->Bool{
-        let minDist = kHitTestRadius as CGFloat
+        let minDist = kHitTestRadius
+            as CGFloat
         if(CGPointGetDistance(p, p2) < minDist){
             return true
         }
