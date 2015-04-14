@@ -41,7 +41,7 @@ class FoldFeature: NSObject, Printable{
     
     //used by getEdges
     var cachedEdges:[Edge]?
-    // features that affect this feature's edges/validity
+    // features that span folds in this feature
     var children:[FoldFeature]?
     var drivingFold:Edge?
     var parent:FoldFeature?
@@ -99,17 +99,6 @@ class FoldFeature: NSObject, Printable{
         
         horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
         
-    }
-    
-    
-    /// #TODO: things you can do to this feature and the function that does them (eg: Delete)
-    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?
-    // If so, delete should probably be added in at the sketch/sketchview level, and this should just feature-specific options
-    // or, we could keep a reference to the sketch in each feature so we can do the deletion from here...
-    // Some of these options will necessarily do some UI things also (for example, we might want to preview fold adding).
-    // That might mean we should keep a sketchView here (not just a sketch)
-    func options() -> [(String,())]{
-        return [("Claim Edges",claimEdges())]
     }
     
     

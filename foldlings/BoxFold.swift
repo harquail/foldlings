@@ -35,8 +35,6 @@ class BoxFold:FoldFeature{
         //if there's a driving fold
         if let master = drivingFold{
             
-            //            println(" has driving")
-            
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
             returnee.append(h1)
@@ -92,7 +90,6 @@ class BoxFold:FoldFeature{
             returnee.append(e0)
             
         }
-        
         
         // split edges for children
         for fold in horizontalFolds{
