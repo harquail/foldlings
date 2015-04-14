@@ -147,6 +147,8 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            
+                            println(shape.cachedEdges!)
 //                                                        break;
                         }
                     }
