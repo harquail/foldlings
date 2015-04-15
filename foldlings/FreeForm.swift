@@ -79,7 +79,7 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-            let p = pathFromPoints(bin)
+            let p = pathFromPoints(smoothPoints(bin))
             
             //discard paths whose centroid is above or below top & bottom foldss
             if(p.center().y < self.horizontalFolds[0].start.y || p.center().y > self.horizontalFolds[1].start.y ){
