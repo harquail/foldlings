@@ -18,7 +18,7 @@ class FreeForm:FoldFeature{
     //the intrsection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
-
+    
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -48,7 +48,7 @@ class FreeForm:FoldFeature{
     /// splits a path at each of the points, which are already known to be on it
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
-        
+        //intersectin points
         var breaks = breakers
         let elements = path.getPathElements()
         var points = getSubdivisions(elements)
@@ -58,22 +58,16 @@ class FreeForm:FoldFeature{
         // this is necessary because the subdivisions are not guaranteed equal all the time
         // but will usually be pretty exact
         var minDist = CGFloat(1)
-        
+
+        //collect points into bins, making a new bin at every braker
         for (i, point) in enumerate(points)
         {
-            
-//            if(pointBins.count == 0){
-//                points.append(point)
-//            }
-//            else{
-                pointBins[pointBins.count-1].append(point);
-//            }
+            pointBins[pointBins.count-1].append(point);
             
             for (var i = 0; i<breaks.count; i++){
                 if(ccpDistance(point,breaks[i]) < minDist){
-                 
-                    //TODO:look at this more closely later
-                    //add break point instead of point
+                    
+                    //add break point instead of point, to ensure all paths have start & end points that exactly match others'
                     pointBins[pointBins.count-1].append(breaks[i])
                     pointBins.append([breaks[i]])
                     breaks.remove(breaks[i])
@@ -82,10 +76,12 @@ class FreeForm:FoldFeature{
         }
         
         var paths:[UIBezierPath] = []
+        //make paths from the point bins
         for bin in pointBins{
             
             let p = pathFromPoints(bin)
             
+            //discard paths whose centroid is above or below top & bottom foldss
             if(p.center().y < self.horizontalFolds[0].start.y || p.center().y > self.horizontalFolds[1].start.y ){
                 continue
             }
@@ -93,9 +89,7 @@ class FreeForm:FoldFeature{
             paths.append(p)
         }
         
-//        println(paths.count)
-//        paths.first!.appendPath(paths.last!)
-//        paths.removeLast()
+
         return paths
         
     }
@@ -103,17 +97,15 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-            var paths = pathSplitByPoints(path!,breakers: intersections)
-            var edges:[Edge] = []
+        /// splits the path into multiple edges based on intersection points
+        var paths = pathSplitByPoints(path!,breakers: intersections)
+        var edges:[Edge] = []
         
-//        paths.removeAtIndex(0)
-             for p in paths{
-                edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
-//            println("points: \(p.firstPoint()), \(p.lastPoint())")
-//                return edges
-            }
+        for p in paths{
+            edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
+        }
         
-            return edges
+        return edges
     }
     
     
@@ -214,7 +206,6 @@ class FreeForm:FoldFeature{
         
         if let driver = drivingFold{
             
-            
             let box = self.boundingBox()
             var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
@@ -276,13 +267,12 @@ class FreeForm:FoldFeature{
             // add a fold between those intersection points
             let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
             
-//            func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIBezierPath)
-
             self.horizontalFolds.append(midLine)
             self.cachedEdges!.append(midLine)
         }
     }
     
+    //split folds around intersections with driving fold
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
         let start = edge.start
@@ -299,7 +289,7 @@ class FreeForm:FoldFeature{
         
         var brushTip = intersectionsWithDrivingFold[0]
         
-        //skip every other point
+        //skip every other point, so we don't make edges inside shape
         for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2){
             
             brushTip = intersectionsWithDrivingFold[i]
