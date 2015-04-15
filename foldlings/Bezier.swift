@@ -155,7 +155,7 @@ func getNearestPointOnPath(point:CGPoint, path:UIBezierPath) -> CGPoint
     
     // if only two elements then it must be a line so treat it that way
     if elements.count == 0 {
-        println("no elements in path returning same! \(elements)")
+//        println("no elements in path returning same! \(elements)")
         return point
     }
     else if elements.count == 2
@@ -237,7 +237,8 @@ func getSubdivisions(elements:NSArray, increments:CGFloat = kBezierIncrements) -
             subdivPoints.append(subdivPoints[0])
             break
         default:
-            println("other: \(currPath.type)")
+            break
+//            println("other: \(currPath.type)")
         }
     }
     

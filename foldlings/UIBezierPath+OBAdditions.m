@@ -21,6 +21,11 @@
     CGPathApply(cgPath, (__bridge void *)(handler), CGPathEnumerationCallback);
 }
 
+- (CGRect) boundsForPath{
+    CGPathRef cgPath = self.CGPath;
+    return CGPathGetPathBoundingBox(cgPath);
+}
+
 - (NSString *)ob_description
 {
     CGPathRef cgPath = self.CGPath;

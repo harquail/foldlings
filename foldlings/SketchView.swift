@@ -110,7 +110,7 @@ class SketchView: UIView {
         
         
         // if it's been a few microseconds since we tried to add a point
-        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.05){
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -123,12 +123,56 @@ class SketchView: UIView {
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
-            gesture.enabled = true
+            //reset path
+            path = UIBezierPath()
             
+            if let drawingFeature = sketch.currentFeature{
+                //for feature in features -- check folds for spanning
+                drawingFeature.drivingFold = nil
+                drawingFeature.parent = nil
+                for feature in sketch.features!{
+                    
+                    for fold in feature.horizontalFolds{
+                        if(drawingFeature.featureSpansFold(fold)){
+                            
+                            drawingFeature.drivingFold = fold
+                            drawingFeature.parent = feature
+                            
+                            //set parents if the fold spans drivinf
+                            if (drawingFeature.parent!.children != nil){
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+                            else{
+                                drawingFeature.parent!.children = []
+                                drawingFeature.parent!.children!.append(drawingFeature)
+                            }
+
+                            
+                            //#TODO: maybe refactor this
+                            
+                            //fragments are the pieces of the fold created splitFoldByOcclusion
+                            let fragments = drawingFeature.splitFoldByOcclusion(fold)
+                            drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                            
+                            //set cached edges
+                            shape.cachedEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            
+                        }
+                    }
+                }
+            }
+            
+          
+
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
             sketch.refreshFeatureEdges()
+            self.sketch.getPlanes()
             forceRedraw()
         }
         
@@ -218,7 +262,7 @@ class SketchView: UIView {
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
-                sketch.masterFeature!.invalidateEdges()
+                //                sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
                 //add edges from the feature to the sketch

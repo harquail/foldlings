@@ -222,7 +222,6 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-            
             dispatch_sync(edgeAdjacencylockQueue) {
                // println("\ngetPlanes\n")
                 self.visited = []
@@ -267,6 +266,7 @@
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
         {
+
             var closest = current.twin
             
             // if adjacency has only twin and edge, return twin
@@ -405,10 +405,8 @@
                 let edgesToAdd = feature.getEdges()
                 for edge in edgesToAdd{
                     
-                    //add edges that aren't already in the sketch
-                    if(!self.edges.contains(edge)){
+
                         self.addEdge(edge)
-                    }
                 }
                 
             }

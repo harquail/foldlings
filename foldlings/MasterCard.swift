@@ -31,6 +31,8 @@ class MasterCard:FoldFeature{
         if let returnee = featureEdges {
             return returnee
         }
+//        println("MASTER: cache miss")
+
         
         //if the mastercard hasn't been created then create the mastercard
         let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
@@ -46,7 +48,7 @@ class MasterCard:FoldFeature{
         
         // draw the masterfold
         let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
-        horizontalFolds = [top,bottom]
+//        horizontalFolds = [top,bottom]
         
         // account for any split edges
         let fragments = edgeSplitByChildren(master)

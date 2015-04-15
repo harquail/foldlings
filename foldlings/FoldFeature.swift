@@ -88,17 +88,6 @@ class FoldFeature: NSObject, Printable{
     }
     
     
-    /// #TODO: things you can do to this feature and the function that does them (eg: Delete)
-    // delete is special because it affects the sketch (& possibly other features).  Is that true of others?
-    // If so, delete should probably be added in at the sketch/sketchview level, and this should just feature-specific options
-    // or, we could keep a reference to the sketch in each feature so we can do the deletion from here...
-    // Some of these options will necessarily do some UI things also (for example, we might want to preview fold adding).
-    // That might mean we should keep a sketchView here (not just a sketch)
-    func options() -> [(String,())]{
-        return [("Claim Edges",claimEdges())]
-    }
-    
-    
     /// returns the edge in a feature at a point
     /// and the nearest point on that edge to the hit
     func featureEdgeAtPoint(touchPoint:CGPoint) -> Edge?{
@@ -124,8 +113,13 @@ class FoldFeature: NSObject, Printable{
         }
     }
     
-    /// splits an edge, making edges around its children
-    func edgeSplitByChildren(edge:Edge) -> [Edge]{
+    /// splits an edge around the current feature
+    func splitFoldByOcclusion(edge:Edge) -> [Edge]{
+        //by default, return edge whole
+        return [edge]
+    }
+    
+    func healFold(fold:Edge){
         
         var start = edge.start
         let end = edge.end
@@ -151,19 +145,64 @@ class FoldFeature: NSObject, Printable{
             returnee.append(finalPiece)
         }
         
-        //if there are no split edges, give the edge back whole
-        if (returnee.count == 0){
-            return [edge]
+        for f in fragments{
+            horizontalFolds.remove(f)
+            cachedEdges?.remove(f)
         }
-        return returnee
+        horizontalFolds.append(fold)
+        cachedEdges?.append(fold)
         
     }
-    
+//    
+//    /// splits an edge, making edges around its children
+//    func edgeSplitByChildren(edge:Edge) -> [Edge]{
+//        
+//        let start = edge.start
+//        let end = edge.end
+//        var returnee = [Edge]()
+//        
+//        if var childs = children{
+//            
+//            //sort children by x position
+//            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
+//            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
+//            
+//            //pieces of the edge, which go inbetween child features
+//            var masterPieces:[Edge] = []
+//            
+//            //create fold pieces between the children
+//            var brushTip = start
+//            
+//            for child in childs{
+//                
+//                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
+//                
+//                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
+//                returnee.append(piece)
+//                horizontalFolds.append(piece)
+//                
+//                brushTip = brushTipTranslated
+//            }
+//            
+//            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
+//            returnee.append(finalPiece)
+//        }
+//        
+//        //if there are no split edges, give the edge back whole
+//        if (returnee.count == 0){
+//            return [edge]
+//        }
+//        return returnee
+//        
+//    }
+//    
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch){
         
         //remove parent relationship from children
         if let childs = self.children{
+//            println(childs);
+
             for child in childs{
                 child.removeFromSketch(sketch)
                 child.invalidateEdges()
@@ -175,6 +214,7 @@ class FoldFeature: NSObject, Printable{
         // TODO: Mark feature as dirty?
         self.parent?.invalidateEdges()
         sketch.features?.remove(self)
+        
 
     }
     
@@ -188,18 +228,23 @@ class FoldFeature: NSObject, Printable{
         return nil
     }
     
-    class func featureSpansFold(feature:FoldFeature!,fold:Edge)->Bool{
+    
+    
+    func featureSpansFold(fold:Edge)->Bool{
         
         //feature must be inside fold x bounds
-        if(!(feature.startPoint!.x > fold.start.x && feature.endPoint!.x > fold.start.x  &&  feature.startPoint!.x < fold.end.x && feature.endPoint!.x < fold.end.x   )){
+        if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   )){
             return false
         }
         
+        //sort points by y
         func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
             return (a.y < b.y) ? (a,b) : (b,a)
         }
         
-        let sorted = pointsByY(feature.startPoint!, feature.endPoint!)
+        let sorted = pointsByY(self.startPoint!, self.endPoint!)
+        
+        // test whether the feature starts above minimum height & below maximum
         return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
         
     }
