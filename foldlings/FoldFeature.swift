@@ -137,26 +137,7 @@ class FoldFeature: NSObject, Printable{
         return [edge]
     }
     
-    func healFold(fold:Edge){
-        
-        var fragments:[Edge] = []
-        for h in horizontalFolds{
-        
-            //also need to test xs
-            //search for horizontalfolds with x values in intersectionpoints, repleace with fold that spans minx
-            if(abs(h.start.y - fold.start.y) < 1){
-            fragments.append(h)
-            }
-        }
-        
-        for f in fragments{
-            horizontalFolds.remove(f)
-            cachedEdges?.remove(f)
-        }
-        horizontalFolds.append(fold)
-        cachedEdges?.append(fold)
-        
-    }
+
 //    
 //    /// splits an edge, making edges around its children
 //    func edgeSplitByChildren(edge:Edge) -> [Edge]{
