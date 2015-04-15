@@ -128,6 +128,7 @@ class SketchView: UIView {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
+                            //set parents if the fold spans drivinf
                             if (drawingFeature.parent!.children != nil){
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
@@ -136,6 +137,10 @@ class SketchView: UIView {
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
 
+                            
+                            //#TODO: maybe refactor this
+                            
+                            //fragments are the pieces of the fold created splitFoldByOcclusion
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
                             
@@ -217,6 +222,7 @@ class SketchView: UIView {
             }
             
         }
+            //
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
@@ -234,7 +240,7 @@ class SketchView: UIView {
             //
             //            }
             
-            
+            //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature{
                 
                 //invalidate the current and master features
@@ -255,7 +261,6 @@ class SketchView: UIView {
                     else{
                         drawParent.children = []
                         drawParent.children!.append(drawingFeature)
-                        //                        print("~~~ADDED FIRST CHILD~~~\n\n")
                         
                     }
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
@@ -297,6 +302,7 @@ class SketchView: UIView {
                 drawingFeature.parent = nil
                 for feature in sketch.features!{
                     
+                    // if spanning, set parent (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds{
                         if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold

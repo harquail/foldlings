@@ -156,16 +156,7 @@ class Plane: Printable, Hashable
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
-        
-//        var path2:UIBezierPath;
-//        if(path.isClockwise()){
-//                path2 = path.bezierPathByReversingPath()
-//            println("REVERSED")
-//        }
-//        else{
-//            path2 = path
-//        }
-        
+
         let elements = path.getPathElements()
         
         let els = elements as! [CGPathElementObj]

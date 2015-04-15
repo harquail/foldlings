@@ -89,6 +89,7 @@ class PathIntersections {
             }
         }
         
+        // collapse clustered points to their centroid
         var averagedPointBins:[CGPoint]=[]
         for (i,bin) in enumerate(pointBins){
             averagedPointBins.append(CGPointZero)

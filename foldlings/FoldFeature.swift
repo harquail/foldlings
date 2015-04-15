@@ -137,6 +137,7 @@ class FoldFeature: NSObject, Printable{
     
     func healFold(fold:Edge){
         
+        
         var fragments:[Edge] = []
         for h in horizontalFolds{
         
@@ -241,11 +242,14 @@ class FoldFeature: NSObject, Printable{
             return false
         }
         
+        //sort points by y
         func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
             return (a.y < b.y) ? (a,b) : (b,a)
         }
         
         let sorted = pointsByY(self.startPoint!, self.endPoint!)
+        
+        // test whether the feature starts above minimum height & below maximum
         return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
         
     }

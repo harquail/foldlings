@@ -101,6 +101,7 @@ class FreeForm:FoldFeature{
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
         
+        //create edges from split paths
         for p in paths{
             edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
         }
@@ -183,7 +184,7 @@ class FreeForm:FoldFeature{
         }
         
     }
-    
+    /// This bounding box does not include control points, used for scanline
     override func boundingBox() -> CGRect? {
         return path?.boundsForPath()
     }
@@ -201,23 +202,24 @@ class FreeForm:FoldFeature{
         
     }
     
-    
+    /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds(){
         
         if let driver = drivingFold{
             
             let box = self.boundingBox()
+            // scan line is the line we use for intersection testing
             var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
             
-            //move scanline, testing intersections until the length of the intersecting segment is > than the minimum edge length
+//            adds points to intersections which are used to split the paths and makes edge betwixt points, adds to folds and edges and returns whether there were two intersection points
             func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
-                
                 
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: path!.CGPath)
                 
+                // right now, only succeeds if there are two intersection points
                 if let ps = points{
                     if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
                         let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
@@ -230,6 +232,7 @@ class FreeForm:FoldFeature{
                 return false
             }
             
+            //TOP FOLD
             // move line down successively to find intersection point
             while(scanLine.path.firstPoint().y < driver.start.y){
                 var moveDown = CGAffineTransformMakeTranslation(0, 3);
@@ -243,6 +246,7 @@ class FreeForm:FoldFeature{
             
             scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             
+            //BOTTOM FOLD
             //move scanline up to find bottom intersection point
             while(scanLine.path.firstPoint().y > driver.start.y){
                 var moveDown = CGAffineTransformMakeTranslation(0, -3);
@@ -254,19 +258,19 @@ class FreeForm:FoldFeature{
                 }
             }
             
+            //MIDDLE FOLD
             //move can line to position that will make the shape fold to 90º
             let masterdist = yTop - driver.start.y
             let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
+            // scanline is at the bottom fold position, so we just move it up by masterdist
             scanLine.path.applyTransform(moveToCenter)
             
-            //get the intersections
+            //get the intersections with the mid fold
             let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
-            
             intersections.extend(points!)
             
             // add a fold between those intersection points
             let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
-            
             self.horizontalFolds.append(midLine)
             self.cachedEdges!.append(midLine)
         }

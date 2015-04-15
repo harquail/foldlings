@@ -93,38 +93,22 @@ class BoxFold:FoldFeature{
         }
         
         
-        //        // split edges for children
-        //        for fold in horizontalFolds{
-        //            if let childs = children{
-        //                let fragments = edgeSplitByChildren(fold)
-        //                horizontalFolds.remove(fold)
-        //                returnee.remove(fold)
-        //                horizontalFolds.extend(fragments)
-        //                returnee.extend(fragments)
-        //
-        //            }
-        //
-        //        }
-        
         cachedEdges = returnee
         claimEdges()
         return returnee
         
     }
     
+    // for box folds, this always creates two folds
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
         let start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
-//        //if there are no split edges, give the edge back whole
-//        if (returnee.count == 0){
-//            return [edge]
-//        }
         
+        //make two pieces between the end points of the split fold and the place the intersect with box fold
         let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold)
-        
         let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold)
         
         returnee = [piece,piece2]
@@ -134,6 +118,7 @@ class BoxFold:FoldFeature{
     
 }
 
+// bounding box is between start & end point corners
 override func boundingBox() -> CGRect? {
     if (startPoint == nil || endPoint == nil){
         return nil;

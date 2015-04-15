@@ -131,7 +131,6 @@ class ArchivedEdges : NSObject, NSCoding {
     class func loadSaved(#dex:Int) -> Sketch? {
         if let data = NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(dex)") as? NSData {
             if let unarchived = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ArchivedEdges{
-//                println("loaded save")
                 let sktchName = unarchived.fetchNames()[dex]
                 let sktch = Sketch(at:dex, named:sktchName)
                 for edge in unarchived.edges{
@@ -143,7 +142,6 @@ class ArchivedEdges : NSObject, NSCoding {
                 return sktch
             }
         }
-//        println("failed to load save at: \(dex)")
         return nil
     }
     
@@ -166,7 +164,6 @@ class ArchivedEdges : NSObject, NSCoding {
             
             // remove last
             names!.removeAtIndex(index)
-//            println("names\(names)")
             NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
             NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(names?.count)")
             NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(names?.count)")
