@@ -6,10 +6,11 @@ class BoxFold:FoldFeature{
     override func getEdges() -> [Edge] {
         
         if let returnee = cachedEdges {
-            //            println("BOX: cache hit")
+//            println("BOX: cache hit")
             return returnee
         }
-        //        println("   BOX: cache MISS")
+        
+//        println("  BOX: cache MISS")
         
         // make h0, h1, and h2 first.  Then s0, s1, s2, e0, e1, e2....
         //
@@ -31,11 +32,9 @@ class BoxFold:FoldFeature{
         
         returnee.append(h0)
         returnee.append(h2)
-
+        
         //if there's a driving fold
         if let master = drivingFold{
-            
-            //            println(" has driving")
             
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
@@ -94,44 +93,50 @@ class BoxFold:FoldFeature{
         }
         
         
-        // split edges for children
-        for fold in horizontalFolds{
-            if let childs = children{
-                let fragments = edgeSplitByChildren(fold)
-                horizontalFolds.remove(fold)
-                returnee.remove(fold)
-                horizontalFolds.extend(fragments)
-                returnee.extend(fragments)
-                
-            }
-            
-        }
-        
         cachedEdges = returnee
         claimEdges()
         return returnee
         
     }
     
-    override func boundingBox() -> CGRect? {
-        if (startPoint == nil || endPoint == nil){
-            return nil;
-        }
-        return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
-    }
-    
-    
-    /// boxFolds can be deleted
-    /// folds can be added only to leaves
-    override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
-        options.append(.DeleteFeature)
-        if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
+    // for box folds, this always creates two folds
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
-        return options
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
         
-    }
+        
+        //make two pieces between the end points of the split fold and the place the intersect with box fold
+        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold)
+        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold)
+        
+        returnee = [piece,piece2]
+        
+    return returnee
+    
     
 }
+
+// bounding box is between start & end point corners
+override func boundingBox() -> CGRect? {
+    if (startPoint == nil || endPoint == nil){
+        return nil;
+    }
+    return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
+}
+
+
+/// boxFolds can be deleted
+/// folds can be added only to leaves
+override func tapOptions() -> [FeatureOption]?{
+    var options:[FeatureOption] = []
+    options.append(.DeleteFeature)
+    if(self.isLeaf()){
+        options.append(.AddFolds)
+    }
+    
+    return options
+    
+
+}}

@@ -39,7 +39,7 @@ class Plane: Printable, Hashable
     
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
-    var color = getRandomColor(0.5)
+    var color = getRandomGray(1.0)
 //    var color : UIColor { get{
 //        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
 //        }
@@ -156,7 +156,7 @@ class Plane: Printable, Hashable
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
-        
+
         let elements = path.getPathElements()
         
         let els = elements as! [CGPathElementObj]
@@ -195,9 +195,7 @@ class Plane: Printable, Hashable
         }
         outPath.closePath()
         return outPath
-        
     }
-    
     
     func hasEdge(edge:Edge) -> Bool
     {

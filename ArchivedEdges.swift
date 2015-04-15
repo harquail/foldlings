@@ -131,7 +131,6 @@ class ArchivedEdges : NSObject, NSCoding {
     class func loadSaved(#dex:Int) -> Sketch? {
         if let data = NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(dex)") as? NSData {
             if let unarchived = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ArchivedEdges{
-                println("loaded save")
                 let sktchName = unarchived.fetchNames()[dex]
                 let sktch = Sketch(at:dex, named:sktchName)
                 for edge in unarchived.edges{
@@ -143,22 +142,21 @@ class ArchivedEdges : NSObject, NSCoding {
                 return sktch
             }
         }
-        println("failed to load save at: \(dex)")
         return nil
     }
     
     class func removeAtIndex(index:Int) {
         var i:Int
         var names = archivedSketchNames()
-        println("names\(names)")
-        println("removing object at \(index)")
+//        println("names\(names)")
+//        println("removing object at \(index)")
         
         if(names != nil){
             for(i = index; i<names!.count-1; i++){
                 if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as! NSData?{
                     NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
                 }
-                println("set object for achivedEdges\(i)")
+//                println("set object for achivedEdges\(i)")
                 if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as! String?{
                     NSUserDefaults.standardUserDefaults().setObject(nextImage, forKey: "archivedSketchImage\(i)")
                 }
@@ -166,7 +164,6 @@ class ArchivedEdges : NSObject, NSCoding {
             
             // remove last
             names!.removeAtIndex(index)
-            println("names\(names)")
             NSUserDefaults.standardUserDefaults().setObject(names, forKey: "edgeNames")
             NSUserDefaults.standardUserDefaults().removeObjectForKey("achivedEdges\(names?.count)")
             NSUserDefaults.standardUserDefaults().removeObjectForKey("archivedSketchImage\(names?.count)")

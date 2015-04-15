@@ -26,7 +26,8 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-        return "Start: \(start), End: \(end), \n \(kind.rawValue), \(path)"
+        return "Start: \(start), End: \(end), \n \(kind.rawValue)"
+        
     }
     
     override var hashValue: Int { get {
@@ -47,11 +48,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     
     struct Color {
-        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 0.5)
-        static var Valley:UIColor = UIColor(red: 0.0, green: 255.0, blue: 0.0, alpha: 0.5)
-        static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 0.5)
-        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
-        static var Tab:UIColor = UIColor(red: 0.0, green: 150.0, blue: 150.0, alpha: 0.5)
+        static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
+        static var Valley:UIColor = UIColor(red: 0.0, green: 255.0, blue: 0.0, alpha: 1.0)
+        static var Fold:UIColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        static var Cut:UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        static var Tab:UIColor = UIColor(red: 0.0, green: 150.0, blue: 150.0, alpha: 1.0)
         
     }
     
@@ -139,7 +140,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case .Fold:
             color = Color.Fold
         case .Cut:
-            color = Color.Cut
+            color = getRandomColor(0.8);
+            //            color = Color.Cut
         default:
             color = Color.Cut
         }

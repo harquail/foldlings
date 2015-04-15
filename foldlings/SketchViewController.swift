@@ -42,9 +42,15 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             
             for f in fsBackwards{
                 
-                //delete tapped feature
+                //detect tapped feature
                 if(f.boundingBox()!.contains(touchPoint)){
                     
+                    // if freeform shape, reject points outside bounds
+                    if let freeForm = f as? FreeForm{
+                        if(!freeForm.path!.containsPoint(touchPoint)){
+                        continue
+                        }
+                    }
                     
                     if let options = f.tapOptions(){
                         
@@ -88,6 +94,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             break
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
+//            feature.parent?.healFold(feature.drivingFold!)
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
         }
