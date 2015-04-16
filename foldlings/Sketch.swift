@@ -396,10 +396,9 @@
             }
             
             for edge in self.edges{
-                if(!featureEdges.contains(edge)){
-                    self.removeEdge(edge)
-                }
+                self.removeEdge(edge)
             }
+            
             for feature in self.features!{
                 
                 let edgesToAdd = feature.getEdges()
@@ -408,7 +407,7 @@
 
                         self.addEdge(edge)
                 }
-                
+                                
             }
         }
 

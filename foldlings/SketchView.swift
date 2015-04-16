@@ -58,7 +58,6 @@ class SketchView: UIView {
         
     }
     
-
     override func drawRect(rect: CGRect)
     {
         if (incrementalImage != nil)
@@ -69,15 +68,17 @@ class SketchView: UIView {
         }
     }
     
-    func handleLongPress(sender: AnyObject) {
+    func handleLongPress(sender: AnyObject)
+    {
         print("\nLOOOONG PRESSS\n")
         
     }
     
-    //TODO: Comments
-    func handlePan(sender: AnyObject) {
-        
-        switch (sketchMode) {
+    //Determine which feature you are drawing
+    func handlePan(sender: AnyObject)
+    {
+        switch (sketchMode)
+        {
         case .BoxFold:
             handleBoxFoldPan(sender)
         case .FreeForm:
@@ -85,16 +86,14 @@ class SketchView: UIView {
         default:
             break
         }
-        
-        
     }
-    // TODO: comments
-    func handleFreeFormPan(sender: AnyObject){
-        
+    
+    // Draws Free-form Shape
+    func handleFreeFormPan(sender: AnyObject)
+    {
         let gesture = sender as! UIPanGestureRecognizer
-        
-        
-        if(gesture.state == UIGestureRecognizerState.Began){
+        if(gesture.state == UIGestureRecognizerState.Began)
+        {
             
             // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
@@ -105,12 +104,10 @@ class SketchView: UIView {
             shape.endPoint = touchPoint
             return
         }
-        
         let shape = sketch.currentFeature as! FreeForm
-        
-        
         // if it's been a few microseconds since we tried to add a point
-        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1){
+        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1)
+        {
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -118,56 +115,56 @@ class SketchView: UIView {
             shape.path = path
             forceRedraw()
         }
-            
-        //close the shape when the pan gesture ends
-        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            //close the shape when the pan gesture ends
+        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled)
+        {
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
             //reset path
             path = UIBezierPath()
             
-            if let drawingFeature = sketch.currentFeature{
+            if let drawingFeature = sketch.currentFeature
+            {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                for feature in sketch.features!{
-                    
-                    for fold in feature.horizontalFolds{
-                        if(drawingFeature.featureSpansFold(fold)){
-                            
+                for feature in sketch.features!
+                {
+                    for fold in feature.horizontalFolds
+                    {
+                        if(drawingFeature.featureSpansFold(fold))
+                        {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             
                             //set parents if the fold spans drivinf
-                            if (drawingFeature.parent!.children != nil){
+                            if (drawingFeature.parent!.children != nil)
+                            {
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
-                            else{
+                            else
+                            {
                                 drawingFeature.parent!.children = []
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
-
                             
-                            //#TODO: maybe refactor this
                             
                             //fragments are the pieces of the fold created splitFoldByOcclusion
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
                             drawingFeature.parent?.replaceFold(fold, folds: fragments)
                             
                             //set cached edges
-                            shape.cachedEdges = []
+                            shape.featureEdges = []
                             //create truncated folds
                             shape.truncateWithFolds()
                             //split paths at intersections
-                            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
                             
                         }
                     }
                 }
             }
             
-          
-
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
@@ -176,45 +173,43 @@ class SketchView: UIView {
             forceRedraw()
         }
         
-        
     }
     
     
     //draws boxfolds and adds them to features if valid
-    func handleBoxFoldPan(sender: AnyObject){
-        
+    func handleBoxFoldPan(sender: AnyObject)
+    {
         var gesture = sender as! UIPanGestureRecognizer
         
-        switch gesture.state {
-        
-        // gesture is just starting create a boxfold where the touch began
+        switch gesture.state
+        {
+            // gesture is just starting create a boxfold where the touch began
         case UIGestureRecognizerState.Began:
-            
             var touchPoint = gesture.locationInView(self)
             sketch.currentFeature = BoxFold(start: touchPoint)
             
-         // while user is dragging
+            // while user is dragging
         case UIGestureRecognizerState.Changed:
-            
             var touchPoint: CGPoint = gesture.locationInView(self)
-            if let e = sketch.draggedEdge{
-                e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")
-            }
-            if let drawingFeature = sketch.currentFeature{
+            
+            if let drawingFeature = sketch.currentFeature
+            {
                 //disallow features outside the master card
-                if(sketch.masterFeature!.boundingBox()!.contains(touchPoint)){
+                if(sketch.masterFeature!.boundingBox()!.contains(touchPoint))
+                {
                     drawingFeature.endPoint = touchPoint
                 }
                 
                 //for feature in features -- check folds for spanning
-                // feature validity depends on if it spans a fold 
-                // then find the parent of the fold 
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                for feature in sketch.features!{
-                    for fold in feature.horizontalFolds{
-                        if(FoldFeature.featureSpansFold(sketch.currentFeature, fold:fold)){
+                for feature in sketch.features!
+                {
+                    // if spanning, set parent (but not children), because the feature has not been finalized
+                    for fold in feature.horizontalFolds
+                    {
+                        if(drawingFeature.featureSpansFold(fold))
+                        {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             break;
@@ -222,44 +217,21 @@ class SketchView: UIView {
                     }
                     
                 }
-                //This might be better here to determine the feature parent, 
-                // by detecting the plane and the edges
-//                var goodPlaceToDraw = true
-                
-//                // check if user is in a child feature
-//                // TODO: check if feature spans multiple children here?
-//                if let children = sketch.masterFeature?.children{
-//                    for child in children{
-//                        //if feature begins in a child, then
-//                        if(child.boundingBox()!.contains(touchPoint)){
-//                            
-//                            //get the edge & nearest point to hit
-//                            //TODO: testing planes here might be better than edges
-//                            if let edge = child.featureEdgeAtPoint(touchPoint){
-//                                sketch.draggedEdge = edge
-//                                edge.deltaY = gesture.translationInView(self).y
-//                                println("init deltaY: \(edge.deltaY)")
-//                            }
-//                            goodPlaceToDraw = false
-//                            break
-//                        }
-//                    }
-//                }
-
                 
                 // box folds have different behaviors if they span the driving edge
                 drawingFeature.invalidateEdges()
                 forceRedraw()
-                
             }
-         
-            // gesture is ended
+            
+            
+            
         case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+            
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            // if you completed a feature
-            if let drawingFeature = sketch.currentFeature{
-                
+            //if feature spans fold, sets the drawing feature's driving fold and parent
+            if let drawingFeature = sketch.currentFeature
+            {
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
                 //                sketch.masterFeature!.invalidateEdges()
@@ -268,70 +240,67 @@ class SketchView: UIView {
                 //add edges from the feature to the sketch
                 sketch.features?.append(sketch.currentFeature!)
                 
-                if(drawingFeature.drivingFold != nil){
+                if(drawingFeature.drivingFold != nil)
+                {
+                    let drawParent = drawingFeature.parent!
                     
-                    if (drawingFeature.parent!.children != nil){
-                        // TODO: if doing active features mark as a leaf, or active feature
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                    if (drawParent.children != nil)
+                    {
+                        drawParent.children!.append(drawingFeature)
                     }
-                    else{
-                        drawingFeature.parent!.children = []
-                        drawingFeature.parent!.children!.append(drawingFeature)
+                    else
+                    {
+                        drawParent.children = []
+                        drawParent.children!.append(drawingFeature)
                     }
-                    drawingFeature.parent!.invalidateEdges()
+                    drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
+                    
                 }
-                // add feature edges to sketch
+                else
+                {
+                    drawingFeature.removeFromSketch(sketch)
+                }
                 sketch.refreshFeatureEdges()
-                
-                //clear all the edges for all features and re-create them.  This is bad, we'll be smarter later
-                // TODO: Look at this
-                for edge in sketch.edges{
-                    sketch.removeEdge(edge)
-                }
-                for feature in sketch.features!{
-                    
-                    //                print("FEATURE: \(feature.getEdges().count)\n")
-                    //TODO: Look at this
-                    let edgesToAdd = feature.getEdges()
-                    for edge in edgesToAdd{
-                        sketch.addEdge(edge)
-                    }
-                }
                 //clear the current feature
                 sketch.currentFeature = nil
             }
-            
             self.sketch.getPlanes()
             forceRedraw()
-
+            
+            
         default:
             println("Gesture not recognized")
         }
     }
-    
     /// erase hitpoint edge
     /// needs to be refactored for features
-    func erase(touchPoint: CGPoint) {
+    func erase(touchPoint: CGPoint)
+    {
         if var (edge, np) = sketch.edgeHitTest(touchPoint)
         {
-            if edge != nil && ( (!edge!.isMaster)){
+            if edge != nil && ( (!edge!.isMaster))
+            {
                 sketch.removeEdge(edge!)
                 forceRedraw()
             }
-        } else if var plane = sketch.planeHitTest(touchPoint) {
+        }
+            
+        else if var plane = sketch.planeHitTest(touchPoint)
+        {
             sketch.planes.removePlane(plane)
         }
     }
-
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
+    {
         self.touchesEnded(touches, withEvent: event)
     }
-
+    
     // creates a bitmap preview image of sketch
-    func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
-        
+    func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
+    {
         let startTime = CFAbsoluteTimeGetCurrent()/// taking time
-
+        
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         
         var color:UIColor = UIColor.blackColor()
@@ -346,10 +315,12 @@ class SketchView: UIView {
             rectpath.fill()
             
             // this will draw all possibly set paths
-
-            if(!grayscale){
+            
+            if(!grayscale)
+            {
                 // print planes first if exist
-                for plane in sketch.planes.planes {
+                for plane in sketch.planes.planes
+                {
                     let c = plane.color
                     //set pleasing colors here based on orientation
                     c.setFill()
@@ -358,19 +329,21 @@ class SketchView: UIView {
                 }
                 
                 var twinsOfVisited = [Edge]()
-
+                
                 //iterate through features and draw them
-                if var currentFeatures = sketch.features{
+                if var currentFeatures = sketch.features
+                {
                     //add most recent feature if it exists
-                    if(sketch.currentFeature != nil){
+                    if(sketch.currentFeature != nil)
+                    {
                         currentFeatures.append(sketch.currentFeature!)
                     }
                     
-                    for feature in currentFeatures{
-                        //if let feature = currentFeature{
-                        if(feature.startPoint != nil && feature.endPoint != nil){
+                    for feature in currentFeatures
+                    {
+                        if(feature.startPoint != nil && feature.endPoint != nil)
+                        {
                             let edges = feature.getEdges()
-                            
                             for e in edges
                             {
                                 setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
@@ -387,12 +360,15 @@ class SketchView: UIView {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     
                     //don't draw twin edges
-                    if(!twinsOfVisited.contains(e)){
+                    if(!twinsOfVisited.contains(e))
+                    {
                         e.path.stroke()
                         twinsOfVisited.append(e.twin)
                     }
                 }
             }
+                
+                // if grayscale
             else // this is a grayscale for print image
             {
                 for e in sketch.edges
@@ -423,88 +399,84 @@ class SketchView: UIView {
     //TODO: comment
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
-        
         var edgekind:Edge.Kind!
         var color:UIColor!
         
         if let e = edge
         {
             edgekind = e.kind
-            if(grayscale){
-                color = e.getLaserColor()
-            }
-            else{
-                color = e.getColor()
-            }
+            
+            if(grayscale){color = e.getLaserColor()}
+            else{color = e.getColor()}
         }
-        else {
+            
+        else
+        {
             edgekind = modeToEdgeKind(sketchMode)
-            if(grayscale){
-                color = Edge.getLaserColor(edgekind)
-            }
-            else{
-                color = Edge.getColor(edgekind)
-            }
+            
+            if(grayscale){color = Edge.getLaserColor(edgekind)}
+            else{color = Edge.getColor(edgekind)}
         }
         
         if edgekind == Edge.Kind.Fold {
-            if grayscale {
-                path.setLineDash([1,10], count: 2, phase:0)
-            } else {
-                path.setLineDash([10,5], count: 2, phase:0)
-            }
+            
+            if grayscale {path.setLineDash([1,10], count: 2, phase:0)}
+            else {path.setLineDash([10,5], count: 2, phase:0)}
         }
-        else {
-            path.setLineDash(nil, count: 0, phase:0)
-        }
+            
+        else {path.setLineDash(nil, count: 0, phase:0)}
         
         path.lineWidth=kLineWidth
         return color
     }
     
     
-
+    
     func forceRedraw()
     {
-        if(!self.redrawing){
-            dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0), {
+        if(!self.redrawing)
+        {
+            dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0),
+                {
                 self.redrawing = true
-                dispatch_sync(self.redrawLockQueue) {
-                    
-                }
+                dispatch_sync(self.redrawLockQueue){}
                 
-                dispatch_async(dispatch_get_main_queue(), {
-                    dispatch_sync(self.redrawLockQueue) {
-                        self.incrementalImage = nil
-                        self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                        self.setNeedsDisplay() //draw to clear the deleted path
-                        self.redrawing = false
-                    }
+                dispatch_async(dispatch_get_main_queue(),
+                    {
+                        dispatch_sync(self.redrawLockQueue)
+                            {
+                                self.incrementalImage = nil
+                                self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                                self.setNeedsDisplay() //draw to clear the deleted path
+                                self.redrawing = false
+                        }
                 })
             })
             
-            dispatch_sync(self.redrawLockQueue) {
-                self.incrementalImage = nil
-                self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                self.setNeedsDisplay() //draw to clear the deleted path
+            dispatch_sync(self.redrawLockQueue)
+                {
+                    self.incrementalImage = nil
+                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                    self.setNeedsDisplay() //draw to clear the deleted path
             }
         }
-        
     }
     
     //This function creates the contents of the SVG file
     // converts CGPaths into SVG path and organizes
     // it in correct xml format
-    func svgImage() -> String{
-
+    func svgImage() -> String
+    {
         var edgesVisited:[Edge] = []
         
         var paths:[String] = sketch.edges.map({
-            if(!edgesVisited.contains($0)){
+            if(!edgesVisited.contains($0))
+            {
                 edgesVisited.append($0.twin)
                 edgesVisited.append($0)
                 // if it is a fold then create dash stroke
-                if $0.kind == .Fold{
+                if $0.kind == .Fold
+                {
                     return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                 }
                 // if not, normal stroke
@@ -516,12 +488,13 @@ class SketchView: UIView {
         //add closing tags
         paths.append("\n</g>\n</svg>")
         
-        // concatenate all the paths into one string and 
+        // concatenate all the paths into one string and
         // insert beginning tags for svg file
         let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }
         
         return svgString
     }
+    
     
     
     func setButtonBG(image:UIImage){
@@ -531,7 +504,8 @@ class SketchView: UIView {
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
     {
-        switch sketchMode {
+        switch sketchMode
+        {
         case .Cut:
             return Edge.Kind.Cut
         default:
@@ -541,7 +515,8 @@ class SketchView: UIView {
     }
     
     
-    func hideXCheck(){
+    func hideXCheck()
+    {
         checkButton.userInteractionEnabled = false
         checkButton.alpha = 0
         xButton.userInteractionEnabled = false
@@ -549,7 +524,8 @@ class SketchView: UIView {
         print("shown")
     }
     
-    func showXCheck(){
+    func showXCheck()
+    {
         checkButton.userInteractionEnabled = true
         checkButton.alpha = 1
         xButton.userInteractionEnabled = true

@@ -45,18 +45,15 @@ class MasterCard:FoldFeature{
         
         //set edges in feature
         var returnee = [top,bottom,l0,l1,r0,r1]
-        
-        // draw the masterfold
+        // if there are no children, then we just need to draw a single fold
+        // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
         let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
-//        horizontalFolds = [top,bottom]
+
         
-        // account for any split edges
-        let fragments = edgeSplitByChildren(master)
-        for fragment in fragments{
-            returnee.append(fragment)
-            horizontalFolds.append(fragment)
-        }
-        // set all the edes to master in the mastercard
+        returnee.append(master)
+        horizontalFolds = [master]
+//        
+        
         for edge in returnee{
             edge.isMaster = true
         }

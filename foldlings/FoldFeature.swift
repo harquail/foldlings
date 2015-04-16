@@ -121,36 +121,23 @@ class FoldFeature: NSObject, Printable{
     
     func healFold(fold:Edge){
         
-        var start = edge.start
-        let end = edge.end
-        var returnee = [Edge]()
         
-        if var childs = children{
-            
-            //sort children by x position
-            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
-            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
-            
-            //create fold pieces between the children
-            //needs explanation
-            for child in childs{
-                var newStart = CGPointMake(child.endPoint!.x,start.y)
-                let piece = Edge.straightEdgeBetween(start, end: CGPointMake(child.startPoint!.x, start.y), kind: .Fold)
-                returnee.append(piece)
-                horizontalFolds.append(piece)
-                start = newStart
+        var fragments:[Edge] = []
+        for h in horizontalFolds{
+        
+            //also need to test xs
+            //search for horizontalfolds with x values in intersectionpoints, repleace with fold that spans minx
+            if(abs(h.start.y - fold.start.y) < 1){
+            fragments.append(h)
             }
-            
-            let finalPiece = Edge.straightEdgeBetween(start, end: end, kind: .Fold)
-            returnee.append(finalPiece)
         }
         
         for f in fragments{
             horizontalFolds.remove(f)
-            cachedEdges?.remove(f)
+            featureEdges?.remove(f)
         }
         horizontalFolds.append(fold)
-        cachedEdges?.append(fold)
+        featureEdges?.append(fold)
         
     }
 //    
@@ -205,14 +192,14 @@ class FoldFeature: NSObject, Printable{
 
             for child in childs{
                 child.removeFromSketch(sketch)
-                child.invalidateEdges()
+//                child.invalidateEdges()
+
             }
         }
         
         //remove child relationship from parents
         self.parent?.children?.remove(self)
-        // TODO: Mark feature as dirty?
-        self.parent?.invalidateEdges()
+//        self.parent?.invalidateEdges()
         sketch.features?.remove(self)
         
 
@@ -249,7 +236,13 @@ class FoldFeature: NSObject, Printable{
         
     }
     // this caches planes from edges
-    func getFeaturePlanes(){
+    func getFeaturePlanes(){}
     
+    func replaceFold(fold:Edge, folds:[Edge]){
+        horizontalFolds.remove(fold)
+        featureEdges?.remove(fold)
+        horizontalFolds.extend(folds)
+        featureEdges?.extend(folds)
     }
+    
 }

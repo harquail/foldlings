@@ -26,7 +26,13 @@ class FreeForm:FoldFeature{
     }
     
     override func getEdges() -> [Edge] {
-        // if path exists
+        
+        //if there are cached edges, return them
+        if let cache = featureEdges {
+            println("freeform cache HIT!!")
+            return cache
+        }
+        
         if let p = path{
             
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
@@ -219,7 +225,7 @@ class FreeForm:FoldFeature{
                     if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
                         let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
                         self.horizontalFolds.append(edge)
-                        self.cachedEdges!.append(edge)
+                        self.featureEdges!.append(edge)
                         intersections.extend(ps)
                         return true
                     }
@@ -267,7 +273,7 @@ class FreeForm:FoldFeature{
             // add a fold between those intersection points
             let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
             self.horizontalFolds.append(midLine)
-            self.cachedEdges!.append(midLine)
+            self.featureEdges!.append(midLine)
         }
     }
     
