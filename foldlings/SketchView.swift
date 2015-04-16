@@ -94,7 +94,6 @@ class SketchView: UIView {
         let gesture = sender as! UIPanGestureRecognizer
         if(gesture.state == UIGestureRecognizerState.Began)
         {
-            
             // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
             let shape = FreeForm(start:touchPoint)
@@ -138,15 +137,7 @@ class SketchView: UIView {
                             drawingFeature.parent = feature
                             
                             //set parents if the fold spans drivinf
-                            if (drawingFeature.parent!.children != nil)
-                            {
-                                drawingFeature.parent!.children!.append(drawingFeature)
-                            }
-                            else
-                            {
-                                drawingFeature.parent!.children = []
-                                drawingFeature.parent!.children!.append(drawingFeature)
-                            }
+                            drawingFeature.parent!.children.append(drawingFeature)
                             
                             
                             //fragments are the pieces of the fold created splitFoldByOcclusion
@@ -232,27 +223,25 @@ class SketchView: UIView {
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature
             {
-                //invalidate the current and master features
+                //invalidate the current features
                 drawingFeature.invalidateEdges()
-                //                sketch.masterFeature!.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
                 //add edges from the feature to the sketch
+                if sketch.currentFeature?.state == .Valid{
                 sketch.features?.append(sketch.currentFeature!)
-                
+                }
+                // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
-                {
+                {   //add feature to parent's children
                     let drawParent = drawingFeature.parent!
+                    drawParent.children.append(drawingFeature)
                     
-                    if (drawParent.children != nil)
-                    {
-                        drawParent.children!.append(drawingFeature)
-                    }
-                    else
-                    {
-                        drawParent.children = []
-                        drawParent.children!.append(drawingFeature)
-                    }
+                    // set both children and parent features as dirty
+                    drawParent.dirty = true
+                    drawParent.children.map({$0.dirty = true})
+                    
+                    // splits the driving fold of the parent
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
                     
                 }
@@ -284,7 +273,6 @@ class SketchView: UIView {
                 forceRedraw()
             }
         }
-            
         else if var plane = sketch.planeHitTest(touchPoint)
         {
             sketch.planes.removePlane(plane)
@@ -396,7 +384,6 @@ class SketchView: UIView {
     
     
     /// this will set the path style as well as return the color of the path to be stroked
-    //TODO: comment
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
         var edgekind:Edge.Kind!
@@ -438,19 +425,19 @@ class SketchView: UIView {
         {
             dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0),
                 {
-                self.redrawing = true
-                dispatch_sync(self.redrawLockQueue){}
-                
-                dispatch_async(dispatch_get_main_queue(),
-                    {
-                        dispatch_sync(self.redrawLockQueue)
-                            {
-                                self.incrementalImage = nil
-                                self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                                self.setNeedsDisplay() //draw to clear the deleted path
-                                self.redrawing = false
-                        }
-                })
+                    self.redrawing = true
+                    dispatch_sync(self.redrawLockQueue){}
+                    
+                    dispatch_async(dispatch_get_main_queue(),
+                        {
+                            dispatch_sync(self.redrawLockQueue)
+                                {
+                                    self.incrementalImage = nil
+                                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                                    self.setNeedsDisplay() //draw to clear the deleted path
+                                    self.redrawing = false
+                            }
+                    })
             })
             
             dispatch_sync(self.redrawLockQueue)
@@ -477,7 +464,7 @@ class SketchView: UIView {
                 // if it is a fold then create dash stroke
                 if $0.kind == .Fold
                 {
-                    return "\n<path stroke-dasharray=\"2,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                 }
                 // if not, normal stroke
                 return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
@@ -490,7 +477,7 @@ class SketchView: UIView {
         
         // concatenate all the paths into one string and
         // insert beginning tags for svg file
-        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".5\">") { $0 + $1 }
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
         
         return svgString
     }

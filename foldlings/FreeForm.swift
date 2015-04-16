@@ -29,7 +29,6 @@ class FreeForm:FoldFeature{
         
         //if there are cached edges, return them
         if let cache = featureEdges {
-            println("freeform cache HIT!!")
             return cache
         }
         
