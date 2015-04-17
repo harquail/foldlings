@@ -227,13 +227,13 @@ class SketchView: UIView {
                 drawingFeature.invalidateEdges()
                 drawingFeature.fixStartEndPoint()
                 
-                //add edges from the feature to the sketch
-                if sketch.currentFeature?.state == .Valid{
-                sketch.features?.append(sketch.currentFeature!)
-                }
+
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
-                {   //add feature to parent's children
+                {
+                    //add edges from the feature to the sketch
+                    sketch.features?.append(sketch.currentFeature!)
+                    //add feature to parent's children
                     let drawParent = drawingFeature.parent!
                     drawParent.children.append(drawingFeature)
                     
@@ -245,10 +245,7 @@ class SketchView: UIView {
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
                     
                 }
-                else
-                {
-                    drawingFeature.removeFromSketch(sketch)
-                }
+
                 sketch.refreshFeatureEdges()
                 //clear the current feature
                 sketch.currentFeature = nil
