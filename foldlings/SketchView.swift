@@ -159,7 +159,7 @@ class SketchView: UIView {
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
-            sketch.refreshFeatureEdges()
+            //sketch.refreshFeatureEdges()
             self.sketch.getPlanes()
             forceRedraw()
         }
@@ -243,10 +243,11 @@ class SketchView: UIView {
                     
                     // splits the driving fold of the parent
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
-                    
+                    sketch.removeEdge(drawingFeature.drivingFold!)
+
                 }
 
-                sketch.refreshFeatureEdges()
+                //sketch.refreshFeatureEdges()
                 //clear the current feature
                 sketch.currentFeature = nil
             }

@@ -195,7 +195,7 @@ class FoldFeature: NSObject, Printable
     
     // replaces one fold edge with an array of fold edges
     // that span the same distance
-    // mark these edges as dirty
+
     func replaceFold(fold:Edge, folds:[Edge]){
         horizontalFolds.remove(fold)
         featureEdges?.remove(fold)
