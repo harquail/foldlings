@@ -145,14 +145,14 @@ func smoothPath(path:UIBezierPath) -> UIBezierPath
 func smoothPoints(points:[CGPoint]) -> [CGPoint]
 {
     let pArray = convertToNSArray(points)
-    var nArray = BezierSimple.douglasPeucker(pArray as [AnyObject], epsilon:0.5)
+    var nArray = BezierSimple.douglasPeucker(pArray as [AnyObject], epsilon:0.4)
     // if it is a closed shape we want to smooth the first point also so run it twice choosing a different ordering of points
     // clever if confusing
     if CGPointEqualToPoint(points[0], points[points.count-1]) {
         let midp:Int = nArray.count/2
         var closearray = Array(nArray[midp...(nArray.count-1)])
         closearray += Array(nArray[0...midp])
-        nArray = BezierSimple.douglasPeucker(closearray, epsilon:0.5)
+        nArray = BezierSimple.douglasPeucker(closearray, epsilon:0.4)
     }
     let npaths = convertToCGPoints(nArray)
     return npaths
