@@ -220,11 +220,13 @@ class FreeForm:FoldFeature{
             // #TODO: refactor to combine with splitFoldByOcclusion(Edge)
             func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
                 
-                
+//                print(testPathOne)
+//                print(testPathTwo)
+
                 var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: path!.CGPath)
                 
                 if let ps = points{
-                    if(ps.count%2 == 0 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
+                    if(ps.count%2 == 0 ){
                         
                         var i = 0
                         var edgesToAdd:[Edge] = []
@@ -232,7 +234,7 @@ class FreeForm:FoldFeature{
                             //try making a straight edge between the points
                             let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
                             // if the line's center is inside the path, add the edge and go to the next pair
-                            if(path!.containsPoint(edge.path.center())){
+                            if(path!.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                                 edgesToAdd.append(edge)
                                 i += 2
                             }
@@ -242,7 +244,7 @@ class FreeForm:FoldFeature{
                             }
                         }
 
-                        //if there are edges to add
+                        //if there are edges to add, add them, and return that the trucation succeeded
                         if(edgesToAdd.count>0){
                             intersections.extend(ps)
                             self.horizontalFolds.extend(edgesToAdd)
