@@ -79,10 +79,14 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-            let p = pathFromPoints(bin)
+            let p = pathFromPoints(smoothPoints(bin))
             
+            //get top and bottom folds
+            let maxFold = self.horizontalFolds.maxBy({$0.start.y})
+            let minFold = self.horizontalFolds.minBy({$0.start.y})
+
             //discard paths whose centroid is above or below top & bottom foldss
-            if(p.center().y < self.horizontalFolds[0].start.y || p.center().y > self.horizontalFolds[1].start.y ){
+            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 continue
             }
             
@@ -116,7 +120,7 @@ class FreeForm:FoldFeature{
         
         //if the points are far enough apart, make a new path
         //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
-        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 5)){
+        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 10)){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
@@ -221,12 +225,32 @@ class FreeForm:FoldFeature{
                 
                 // right now, only succeeds if there are two intersection points
                 if let ps = points{
-                    if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
-                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
-                        self.horizontalFolds.append(edge)
-                        self.cachedEdges!.append(edge)
-                        intersections.extend(ps)
-                        return true
+                    if(ps.count%2 == 0 ){
+                        
+                        var i = 0
+                        var edgesToAdd:[Edge] = []
+                        while(i<ps.count){
+                            //try making a straight edge between the points
+                            let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
+                            // if the line's center is inside the path, add the edge and go to the next pair
+                            if(path!.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
+                                edgesToAdd.append(edge)
+                                i += 2
+                            }
+                            //otherwise, try the next point
+                            else{
+                                i += 1
+                            }
+                        }
+
+                        //if there are edges to add, add them, and return that the trucation succeeded
+                        if(edgesToAdd.count>0){
+                            intersections.extend(ps)
+                            self.horizontalFolds.extend(edgesToAdd)
+                            self.cachedEdges!.extend(edgesToAdd)
+                            return true
+                        }
+                       
                     }
                 }
                 return false

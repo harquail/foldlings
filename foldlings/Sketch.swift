@@ -20,7 +20,7 @@
         
         var masterFeature:FoldFeature?
         
-
+        
         
         
         //the folds that define a sketch
@@ -54,8 +54,8 @@
             super.init()
             
             //insert master fold and make borders into cuts
-                makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-
+            makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+            
         }
         
         /// add an already-constructed edge
@@ -115,7 +115,7 @@
                     self.adjacency[end] = [twin]
                 }
                 
-
+                
             }
             
             
@@ -218,7 +218,7 @@
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
             }
-//            drivingEdge = masterFeature!.horizontalFolds.first
+            //            drivingEdge = masterFeature!.horizontalFolds.first
             
         }
         
@@ -226,8 +226,9 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
+            return;
             dispatch_sync(edgeAdjacencylockQueue) {
-               // println("\ngetPlanes\n")
+                // println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -270,11 +271,11 @@
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
         {
-
+            
             var closest = current.twin
             //      println("adjacency count \(current.adjacency.count)")
             //println("\n current \(current.start) , \(current.end) \n")
-           // printAdjList(current.adjacency, edge: current)
+            // printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
@@ -333,7 +334,7 @@
             for edge in self.edges
             {
                 if let np = edge.hitTest(point) {
-                        r = (edge, np)
+                    r = (edge, np)
                 }
             }
             
@@ -370,22 +371,38 @@
         
         func isTopEdge(edge:Edge) -> Bool
         {
-                if let masterF = masterFeature{
-                    return masterF.startPoint!.y == edge.start.y
-                }
-                return false
-           
+            if let masterF = masterFeature{
+                return masterF.startPoint!.y == edge.start.y
+            }
+            return false
+            
             
         }
         
         func isBottomEdge(edge:Edge) -> Bool
         {
-                if let masterF = masterFeature{
-                    if(masterF.endPoint != nil){
-                        return masterF.endPoint!.y == edge.start.y
-                    }
+            if let masterF = masterFeature{
+                if(masterF.endPoint != nil){
+                    return masterF.endPoint!.y == edge.start.y
                 }
-                return false
+            }
+            return false
+        }
+        
+        func healFoldsOccludedBy(feature:FreeForm){
+            
+            var fragments:[Edge] = [];
+            
+            for edge in edges{
+                if(edge.start.y == feature.drivingFold!.start.y  && (feature.intersections.contains(edge.start)  || feature.intersections.contains(edge.end))) {
+                    fragments.append(edge)
+                }
+            }
+            
+            for edge in fragments{
+                feature.parent?.horizontalFolds.remove(edge)
+                feature.parent?.cachedEdges?.remove(edge)
+            }
         }
         
         // #TODO: this is bad and shouldn't exist...
@@ -413,5 +430,5 @@
                                 
             }
         }
-
+        
     }
