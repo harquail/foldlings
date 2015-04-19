@@ -144,24 +144,6 @@
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5a-fM-kIq" userLabel="placeholder">
-                                <rect key="frame" x="70" y="874" width="136" height="135"/>
-                                <state key="normal" backgroundImage="placeholder_button.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="PlaceholderFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="nKQ-fY-Bp2"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gd1-nJ-Xr5" userLabel="placeholder">
-                                <rect key="frame" x="200" y="874" width="136" height="135"/>
-                                <state key="normal" backgroundImage="placeholder_button.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="FreeFormFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="qog-TG-bll"/>
-                                </connections>
-                            </button>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kZL-bf-d4C">
                                 <rect key="frame" x="-5" y="894" width="768" height="130"/>
                                 <constraints>
@@ -319,7 +301,6 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="check_green.png" width="49" height="49"/>
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
-        <image name="placeholder_button.png" width="208" height="208"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="send.jpeg" width="400" height="345"/>
         <image name="small_2d.jpeg" width="426" height="461"/>
