@@ -57,11 +57,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
             println(vc.sketchView.sketch.index)
             Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]) as [NSObject : AnyObject])
         }
-        
-        
-        
-        
-        
+
     }
     
     func toggleMode(switcher:UISwitch,key:String){
@@ -119,6 +115,16 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         (vc.view as! SketchView).forceRedraw()
     }
     
+    //hides nav bar on splash screen
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        super.viewWillDisappear(animated)
+    }
     
 }
 

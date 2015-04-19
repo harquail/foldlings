@@ -150,7 +150,11 @@
                                     <constraint firstAttribute="height" constant="130" id="C8r-13-0KB"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Box Fold" id="E02-M3-PsK"/>
+                                    <barButtonItem title="Box Fold" id="E02-M3-PsK">
+                                        <connections>
+                                            <action selector="boxFold:" destination="3LN-Qg-JOH" id="JrI-Dr-L6N"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Free Form" id="CDd-Cx-xwy">
                                         <connections>
                                             <action selector="freeForm:" destination="3LN-Qg-JOH" id="f2S-BR-gaT"/>
@@ -168,7 +172,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="GCF-EU-yVp">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="D0e-au-O7w">
+                        <barButtonItem key="rightBarButtonItem" title="3D Preview" id="D0e-au-O7w">
                             <connections>
                                 <segue destination="BV1-FR-VrT" kind="push" identifier="PreviewSegue" id="sAu-0a-oZx"/>
                             </connections>

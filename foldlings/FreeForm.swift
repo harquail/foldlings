@@ -265,7 +265,12 @@ class FreeForm:FoldFeature{
             while(scanLine.path.firstPoint().y < driver.start.y){
                 var moveDown = CGAffineTransformMakeTranslation(0, 3);
                 scanLine.path.applyTransform(moveDown)
-                var truncated = tryIntersectionTruncation(scanLine.path,p)
+                
+                //futile? attempt to keep references to the paths so we don't segfault further down
+                let retainedPath = scanLine.path
+                let retainedPath2 = p
+
+                var truncated = tryIntersectionTruncation(retainedPath,retainedPath2)
                 if(truncated){
                     yTop = scanLine.path.firstPoint().y
                     break
