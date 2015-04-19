@@ -10,6 +10,7 @@ import SceneKit
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var sketchView: SketchView!
+
     @IBOutlet var selected: UIImageView!
     
     @IBAction func checkButtonClicked(sender:UIButton){
@@ -35,6 +36,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         
         if let fs = sketchView.sketch.features{
+            println(sketchView.path)
             
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
@@ -48,7 +50,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                     // if freeform shape, reject points outside bounds
                     if let freeForm = f as? FreeForm{
                         if(!freeForm.path!.containsPoint(touchPoint)){
-                        continue
+                            continue
                         }
                     }
                     
@@ -94,7 +96,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             break
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
-//            feature.parent?.healFold(feature.drivingFold!)
+            //            feature.parent?.healFold(feature.drivingFold!)
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
         }
@@ -103,11 +105,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     override func viewDidLoad() {
         
-            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
-            sketchView.addGestureRecognizer(singleFingerTap)
-            
-            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
-            sketchView.addGestureRecognizer(draggy)
+        let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
+        sketchView.addGestureRecognizer(singleFingerTap)
+        
+        let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
+        sketchView.addGestureRecognizer(draggy)
         
     }
     
@@ -122,7 +124,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
     
     
     @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
@@ -132,28 +134,34 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     
     @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
-
+        
         println("box fold")
         sketchView.sketchMode = .BoxFold
         
     }
     
+    @IBAction func freeForm(sender: UIBarButtonItem) {
+        println("free form")
+        sketchView.sketchMode = .FreeForm
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            let vew = self.sketchView;
             
-            let img = sketchView.bitmap(grayscale: false, circles: false)
+            let img = vew.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
-            viewController.setButtonBG(imgNew)
+            let viewController:GameViewController = segue.destinationViewController as! GameViewController
             
+            viewController.setButtonBG(imgNew)
             
             viewController.laserImage = sketchView.bitmap(grayscale: true)
             viewController.svgString = sketchView.svgImage()
             viewController.planes = sketchView.sketch.planes
             viewController.parentButton = sketchView.previewButton
-        
+            
             // pass data to next view
         }
     }
