@@ -223,8 +223,6 @@ class FreeForm:FoldFeature{
             func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
 
                 //this seems to prevent the cgpath crash??!??
-//                print(testPathTwo)
-
                 let cpath1 = scanLine.path.CGPath
 
                 

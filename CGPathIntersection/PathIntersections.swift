@@ -11,7 +11,7 @@ import Foundation
 class PathIntersections {
     
     /// all the intersection points between two paths
-    class func intersectionsBetweenCGPaths(p:CGPathRef,p2:CGPathRef) ->[CGPoint]? {
+    class func intersectionsBetweenCGPaths(p:CGPath,p2:CGPath) ->[CGPoint]? {
         
         
         //ported objective c code from https://github.com/unixpickle/PathIntersection
