@@ -169,22 +169,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         
-//        visited = []
-//        notMyChild = [Int: [Plane]]()
-//        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
-//            theOneSphere.addChildNode(topPlaneSphere)
-//        }
-//        
-//        
-//        // make bottomPlane manually
-//        if var bottomPlane = planes.bottomPlane {
-//            let bottomPlaneNode = bottomPlane.lazyNode()
-//            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-//            theOneSphere.addChildNode(masterSphere)
-//            masterSphere.addChildNode(bottomPlaneNode)
-//            undoParentTranslate(masterSphere, child: bottomPlaneNode)
-//            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
-//        }
+        visited = []
+        notMyChild = [Int: [Plane]]()
+        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
+            theOneSphere.addChildNode(topPlaneSphere)
+        }
+        
+        
+        // make bottomPlane manually
+        if var bottomPlane = planes.bottomPlane {
+            let bottomPlaneNode = bottomPlane.lazyNode()
+            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
+            theOneSphere.addChildNode(masterSphere)
+            masterSphere.addChildNode(bottomPlaneNode)
+            undoParentTranslate(masterSphere, child: bottomPlaneNode)
+            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
+        }
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView

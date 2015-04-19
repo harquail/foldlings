@@ -150,7 +150,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             
             //this retains a reference to the sketch view
             let vew = self.sketchView
-//            let plns = self.sketchView.sketch.planes
+            let sketch = self.sketchView.sketch
             
             let img = vew.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
@@ -163,7 +163,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             
             viewController.laserImage = vew.bitmap(grayscale: true)
             viewController.svgString = vew.svgImage()
-//            viewController.planes = plns
+            viewController.planes = sketch.planes
 //            viewController.parentButton = vew.previewButton
             
             // pass data to next view
