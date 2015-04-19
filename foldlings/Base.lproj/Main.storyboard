@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7528.3" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="xNl-vj-y2i">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="nM8-t4-tim">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7518.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="LiM-8A-nzS">
+        <!--Navigation Controller-->
+        <scene sceneID="Dgh-Yh-WBD">
             <objects>
-                <viewController id="ONI-YJ-hgm" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2V7-s3-UU3">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WpJ-dk-b6E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="nM8-t4-tim" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CDa-Ym-5ZE">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="xNl-vj-y2i" kind="relationship" relationship="rootViewController" id="pYW-d2-V5O"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="06l-hu-hV0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3324.1599999999999" y="-1938.7733333333335"/>
+            <point key="canvasLocation" x="-4290" y="-322"/>
         </scene>
         <!--Splash View Controller-->
         <scene sceneID="POB-fl-LU2">
@@ -97,7 +99,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="newButtonPressed:" destination="xNl-vj-y2i" eventType="touchUpInside" id="Dhe-69-pgG"/>
+                                    <segue destination="3LN-Qg-JOH" kind="push" id="pTr-zm-X2t"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -113,10 +115,10 @@
             </objects>
             <point key="canvasLocation" x="-2169.5999999999999" y="-436.90666666666669"/>
         </scene>
-        <!--Sketch View Controller-->
+        <!--Sketch-->
         <scene sceneID="Wv9-yy-re7">
             <objects>
-                <viewController storyboardIdentifier="sketchView" id="3LN-Qg-JOH" customClass="SketchViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sketchView" title="Sketch" id="3LN-Qg-JOH" customClass="SketchViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n4X-WK-eFO" customClass="SketchView" customModule="foldlings" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -129,18 +131,6 @@
                                 </state>
                                 <connections>
                                     <action selector="CardsButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="2s8-7j-shA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GAq-0O-Knm" userLabel="preview">
-                                <rect key="frame" x="678" y="5" width="84" height="91"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
-                                <state key="normal" backgroundImage="preview_button.png">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="BV1-FR-VrT" kind="modal" identifier="PreviewSegue" id="nen-Mt-An5"/>
                                 </connections>
                             </button>
                             <button opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8hW-xp-FEz" userLabel="check">
@@ -190,11 +180,18 @@
                         <gestureRecognizers/>
                         <connections>
                             <outlet property="checkButton" destination="8hW-xp-FEz" id="oS5-gS-sPc"/>
-                            <outlet property="previewButton" destination="GAq-0O-Knm" id="ENZ-SI-2CE"/>
                             <outlet property="statusLabel" destination="CHC-sF-4RD" id="hbd-bV-6vH"/>
                             <outlet property="xButton" destination="rCL-z3-lIr" id="bPy-NV-Sks"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="GCF-EU-yVp">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="D0e-au-O7w">
+                            <connections>
+                                <segue destination="BV1-FR-VrT" kind="push" identifier="PreviewSegue" id="sAu-0a-oZx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="SketchView" destination="n4X-WK-eFO" id="pXc-IO-3nu"/>
@@ -262,10 +259,10 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
             </objects>
             <point key="canvasLocation" x="-2177.2800000000002" y="1865.3866666666668"/>
         </scene>
-        <!--Game View Controller-->
+        <!--Preview-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Preview" id="BV1-FR-VrT" customClass="GameViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="redraw" id="3se-qz-xqx" customClass="SCNView">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -307,40 +304,14 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="fBJ-DE-29n"/>
                     <connections>
                         <outlet property="backToSketchButton" destination="pt6-Wh-EdJ" id="FOB-0M-6PX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-938.24000000000001" y="948.90666666666675"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="RMS-Rd-YXg">
-            <objects>
-                <viewController id="92A-e8-G20" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="pIR-uK-Vys">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oNA-LZ-3BN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="360.95999999999998" y="433.49333333333334"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="iZi-yr-5A4">
-            <objects>
-                <viewController id="Jig-y1-xnh" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ppJ-Gf-Euh">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Il1-Bd-4H7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
+            <point key="canvasLocation" x="-704" y="124"/>
         </scene>
     </scenes>
     <resources>
@@ -349,7 +320,6 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="menu.png" width="206" height="208"/>
         <image name="placeholder_button.png" width="208" height="208"/>
-        <image name="preview_button.png" width="160" height="172"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="send.jpeg" width="400" height="345"/>
         <image name="small_2d.jpeg" width="426" height="461"/>
