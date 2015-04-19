@@ -175,6 +175,14 @@
                                     <action selector="FreeFormFeatureButtonClicked:" destination="3LN-Qg-JOH" eventType="touchUpInside" id="qog-TG-bll"/>
                                 </connections>
                             </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="kZL-bf-d4C">
+                                <rect key="frame" x="0.0" y="920" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Item" id="E02-M3-PsK"/>
+                                    <barButtonItem title="Item" id="CDd-Cx-xwy"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -200,7 +208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-928" y="-1352"/>
+            <point key="canvasLocation" x="-916" y="-1328"/>
         </scene>
         <!--About View Controller-->
         <scene sceneID="ICt-1G-R6w">
