@@ -226,7 +226,7 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-            return;
+//            return;
             dispatch_sync(edgeAdjacencylockQueue) {
                 // println("\ngetPlanes\n")
                 self.visited = []
@@ -415,6 +415,27 @@
                 
             }
             
+            //this is supposed to do caching, but doesn't work for some reason
+            //            for edge in self.edges{
+            //
+            //                var inFeature = false
+            //                for featureEdge in featureEdges{
+            //
+            //                    if(featureEdge ≈ edge){
+            //                    inFeature = true
+            //                    break
+            //                    }
+            //                }
+            //
+            //                if(!inFeature){
+            //                    self.removeEdge(edge)
+            //                }
+            //                else{
+            //                    println("EDGE: cache hit")
+            //                }
+            //            }
+            //
+            
             for edge in self.edges{
                 self.removeEdge(edge)
             }
@@ -424,8 +445,10 @@
                 let edgesToAdd = feature.getEdges()
                 for edge in edgesToAdd{
                     
-
-                        self.addEdge(edge)
+                    //add edges that aren't already in the sketch
+                    //                    if(!self.edges.contains(edge)){
+                    self.addEdge(edge)
+                    //                    }
                 }
                                 
             }
