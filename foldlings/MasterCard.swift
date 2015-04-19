@@ -35,32 +35,30 @@ class MasterCard:FoldFeature{
 
         
         //if the mastercard hasn't been created then create the mastercard
-        let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
-        let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+        let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut, feature: self)
+        let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut, feature: self)
         let midPointDist = (endPoint!.y - startPoint!.y)/2
-        let l0 = Edge.straightEdgeBetween(startPoint!, end: CGPointMake(startPoint!.x, startPoint!.y + midPointDist), kind: .Cut)
-        let l1 = Edge.straightEdgeBetween(l0.end, end: CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
-        let r1 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x,endPoint!.y-midPointDist), kind: .Cut)
-        let r0 = Edge.straightEdgeBetween(r1.end, end: CGPointMake(endPoint!.x,startPoint!.y), kind: .Cut)
+        let l0 = Edge.straightEdgeBetween(startPoint!, end: CGPointMake(startPoint!.x, startPoint!.y + midPointDist), kind: .Cut, feature: self)
+        let l1 = Edge.straightEdgeBetween(l0.end, end: CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut, feature: self)
+        let r1 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x,endPoint!.y-midPointDist), kind: .Cut, feature: self)
+        let r0 = Edge.straightEdgeBetween(r1.end, end: CGPointMake(endPoint!.x,startPoint!.y), kind: .Cut, feature: self)
         
         //set edges in feature
         var returnee = [top,bottom,l0,l1,r0,r1]
         // if there are no children, then we just need to draw a single fold
         // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
-        let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
+        let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold, feature: self)
 
         
         returnee.append(master)
         horizontalFolds = [master]
 //        
         
-        for edge in returnee{
-            edge.isMaster = true
-        }
+        returnee.map({$0.isMaster = true})
         //set feature edges
         featureEdges = returnee
         //assign edges to feature 
-        claimEdges()
+        //claimEdges()
         return returnee
         
     }

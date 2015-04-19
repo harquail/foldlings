@@ -57,19 +57,19 @@
         
         /// add an already-constructed edge
         func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge {
-            var edge = Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster)
-            return addEdge(edge)
+            return addEdge(Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster))
         }
         
         /// adds an edge to the adjacency graph
-        func addEdge(edge:Edge) -> Edge
-        {   var end = edge.end
-            var start = edge.start
+        func addEdge(edge: Edge) -> Edge
+        {
             var path = edge.path
+            var start = edge.start
+            var end = edge.end
             var kind = edge.kind
             var isMaster = edge.isMaster
-            
-            var revpath = edge.path.bezierPathByReversingPath() // need to reverse the path for better drawing
+
+            var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
             var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
             edge.twin = twin
             twin.twin = edge
@@ -151,7 +151,6 @@
                     self.removeEdgesFromEdgeAdj(edgelist, edge: twin)
                     
                     //Remove edge from adjacency dictionary
-                    println(twin)
                     self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
                     if self.adjacency[twin.start]!.count == 0 { self.adjacency[twin.start] = nil }
                 }
@@ -416,5 +415,7 @@
                                 
             }
         }
+        
+
 
     }

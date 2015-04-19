@@ -231,7 +231,7 @@ class SketchView: UIView {
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
-                    //add edges from the feature to the sketch
+                    // add feature to sketch features
                     sketch.features?.append(sketch.currentFeature!)
                     //add feature to parent's children
                     let drawParent = drawingFeature.parent!
@@ -243,6 +243,9 @@ class SketchView: UIView {
                     
                     // splits the driving fold of the parent
                     drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
+                    println("edge being removed: \(drawingFeature.drivingFold!)")
+                    println("edges of sketch: \(sketch.edges)")
+                    
                     sketch.removeEdge(drawingFeature.drivingFold!)
 
                 }

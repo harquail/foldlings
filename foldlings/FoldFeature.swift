@@ -117,16 +117,16 @@ class FoldFeature: NSObject, Printable
     
     // assign edges to a features
     // TODO: should do this when we make edges instead of looping through
-    func claimEdges()
-    {
-        if let edges = featureEdges
-        {
-            for edge in edges
-            {
-                edge.feature = self
-            }
-        }
-    }
+//    func claimEdges()
+//    {
+//        if let edges = featureEdges
+//        {
+//            for edge in edges
+//            {
+//                edge.feature = self
+//            }
+//        }
+//    }
     
     /// splits an edge around the current feature
     func splitFoldByOcclusion(edge:Edge) -> [Edge]
@@ -203,4 +203,12 @@ class FoldFeature: NSObject, Printable
         featureEdges?.extend(folds)
     }
     
+    // makes a straight path between two points
+    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
+        let path = UIBezierPath()
+        path.moveToPoint(start)
+        path.addLineToPoint(end)
+        
+        return path
+    }
 }

@@ -26,8 +26,8 @@ class BoxFold:FoldFeature{
         }
         //else make a new boxfold
         var returnee:[Edge] = []
-        let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold)
-        let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold)
+        let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold, feature: self)
+        let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold, feature: self)
         
         
         //if there's a driving fold
@@ -41,7 +41,7 @@ class BoxFold:FoldFeature{
         if let master = drivingFold{
             
             let masterDist = endPoint!.y - master.start.y
-            let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold)
+            let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold, feature: self)
             returnee.append(h1)
             horizontalFolds.append(h1)
             
@@ -49,7 +49,7 @@ class BoxFold:FoldFeature{
             // getting intersections on every drag might be too expensive...
             let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
             let tempMasterEnd = CGPointMake(endPoint!.x, master.start.y)
-            let tempMaster = Edge.straightEdgeBetween(tempMasterStart, end: tempMasterEnd, kind: .Fold)
+            let tempMaster = Edge.straightEdgeBetween(tempMasterStart, end: tempMasterEnd, kind: .Fold, feature:self)
             horizontalFolds.append(tempMaster)
             
             //sort horizontal folds by y height
@@ -71,8 +71,8 @@ class BoxFold:FoldFeature{
                 let rightPoint =  horizontalFolds[i].end
                 let nextRightPoint = horizontalFolds[i + 1].end
                 
-                let leftEdge = Edge.straightEdgeBetween(leftPoint,end:nextLeftPoint,kind: .Cut)
-                let rightEdge = Edge.straightEdgeBetween(rightPoint,end:nextRightPoint,kind: .Cut)
+                let leftEdge = Edge.straightEdgeBetween(leftPoint,end:nextLeftPoint,kind: .Cut, feature: self)
+                let rightEdge = Edge.straightEdgeBetween(rightPoint,end:nextRightPoint,kind: .Cut, feature: self)
                 
                 returnee.append(leftEdge)
                 returnee.append(rightEdge)
@@ -92,15 +92,15 @@ class BoxFold:FoldFeature{
             
         else
         {
-            let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
-            let e0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+            let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut, feature: self)
+            let e0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut, feature: self)
             
             returnee.append(s0)
             returnee.append(e0)
         }
         
         featureEdges = returnee
-        claimEdges()
+        //claimEdges()
         return returnee
     }
     
@@ -113,8 +113,8 @@ class BoxFold:FoldFeature{
         var returnee = [Edge]()
         
         //make two pieces between the end points of the split fold and the place the intersect with box fold
-        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold)
-        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold)
+        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold, feature:self)
+        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold, feature: self)
         
         returnee = [piece,piece2]
         return returnee

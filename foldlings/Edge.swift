@@ -49,7 +49,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var adjacency: [Edge] = []
     var isMaster = false
     var colorOverride:UIColor? = nil
-    // the feature the edge is part of
     var feature:FoldFeature?
     
     enum Kind: String {
@@ -81,10 +80,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = path
     }
     
-    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
         self.isMaster = isMaster
+        self.feature = feature
+
     }
     
     
@@ -94,6 +95,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
+        self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
+
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -102,14 +105,15 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+        aCoder.encodeObject(self.feature, forKey: "feature")
     }
     
     /// makes a straight edge between two points, constructing the path as well
-    class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind) -> Edge{
+    class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind, feature: FoldFeature) -> Edge{
         let path = UIBezierPath()
         path.moveToPoint(start)
         path.addLineToPoint(end)
-        return Edge(start: start, end: end, path: path, kind:kind)
+        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?

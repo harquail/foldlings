@@ -34,13 +34,13 @@ class FreeForm:FoldFeature{
         
         if let p = path{
             
-            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
+            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
             
             return [edge]
         }
         // else create a straight edge
         else{
-            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
+            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)]
         }
     }
     
@@ -103,7 +103,7 @@ class FreeForm:FoldFeature{
         
         //create edges from split paths
         for p in paths{
-            edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
+            edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self))
         }
         
         return edges
@@ -209,7 +209,7 @@ class FreeForm:FoldFeature{
             
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
-            var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
             
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
@@ -222,7 +222,7 @@ class FreeForm:FoldFeature{
                 // right now, only succeeds if there are two intersection points
                 if let ps = points{
                     if(ps.count == 2 && ccpDistance(ps[0], ps[1]) > kMinLineLength*3){
-                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold)
+                        let edge = Edge.straightEdgeBetween(ps[0], end: ps[1], kind: .Fold, feature: self)
                         self.horizontalFolds.append(edge)
                         self.featureEdges!.append(edge)
                         intersections.extend(ps)
@@ -244,7 +244,7 @@ class FreeForm:FoldFeature{
                 }
             }
             
-            scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
+            scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut, feature: self)
             
             //BOTTOM FOLD
             //move scanline up to find bottom intersection point
@@ -270,7 +270,7 @@ class FreeForm:FoldFeature{
             intersections.extend(points!)
             
             // add a fold between those intersection points
-            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold, feature:self)
             self.horizontalFolds.append(midLine)
             self.featureEdges!.append(midLine)
         }
@@ -288,7 +288,7 @@ class FreeForm:FoldFeature{
         }
         
         
-        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
+        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold, feature:self)
         returnee.append(firstPiece)
         
         var brushTip = intersectionsWithDrivingFold[0]
@@ -298,11 +298,11 @@ class FreeForm:FoldFeature{
             
             brushTip = intersectionsWithDrivingFold[i]
             let brushTipTranslated = CGPointMake(intersectionsWithDrivingFold[i+1].x,brushTip.y)
-            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold)
+            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold, feature: self)
             returnee.append(piece)
         }
         
-        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold)
+        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold, feature: self)
         returnee.append(finalPiece)
         return returnee
     }
