@@ -148,19 +148,23 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
-            let vew = self.sketchView;
+            //this retains a reference to the sketch view
+            let vew = self.sketchView
+//            let plns = self.sketchView.sketch.planes
             
             let img = vew.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
             let viewController:GameViewController = segue.destinationViewController as! GameViewController
             
+//            let viewController:GameViewController = nav.viewControllers[0] as! GameViewController
+//            
             viewController.setButtonBG(imgNew)
             
-            viewController.laserImage = sketchView.bitmap(grayscale: true)
-            viewController.svgString = sketchView.svgImage()
-            viewController.planes = sketchView.sketch.planes
-            viewController.parentButton = sketchView.previewButton
+            viewController.laserImage = vew.bitmap(grayscale: true)
+            viewController.svgString = vew.svgImage()
+//            viewController.planes = plns
+//            viewController.parentButton = vew.previewButton
             
             // pass data to next view
         }

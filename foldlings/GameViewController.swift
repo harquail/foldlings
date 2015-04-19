@@ -119,24 +119,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = SCNLightTypeOmni
-        lightNode.light!.color = UIColor.whiteColor()
-        lightNode.light!.attenuationStartDistance = 100
-        lightNode.light!.attenuationEndDistance = 1000
-        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //scene.rootNode.addChildNode(lightNode)
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = SCNLightTypeAmbient
-        ambientLightNode.light!.color = UIColor.whiteColor()
-        scene.rootNode.addChildNode(ambientLightNode)
-        
-        scene.physicsWorld.gravity.y = 0.0
+//        
+//        // create and add a light to the scene
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        lightNode.light!.type = SCNLightTypeOmni
+//        lightNode.light!.color = UIColor.whiteColor()
+//        lightNode.light!.attenuationStartDistance = 100
+//        lightNode.light!.attenuationEndDistance = 1000
+//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+//        //scene.rootNode.addChildNode(lightNode)
+//        // create and add an ambient light to the scene
+//        let ambientLightNode = SCNNode()
+//        ambientLightNode.light = SCNLight()
+//        ambientLightNode.light!.type = SCNLightTypeAmbient
+//        ambientLightNode.light!.color = UIColor.whiteColor()
+//        scene.rootNode.addChildNode(ambientLightNode)
+//        
+//        scene.physicsWorld.gravity.y = 0.0
         
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
@@ -169,22 +169,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         
-        visited = []
-        notMyChild = [Int: [Plane]]()
-        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
-            theOneSphere.addChildNode(topPlaneSphere)
-        }
-        
-        
-        // make bottomPlane manually
-        if var bottomPlane = planes.bottomPlane {
-            let bottomPlaneNode = bottomPlane.lazyNode()
-            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-            theOneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode)
-            undoParentTranslate(masterSphere, child: bottomPlaneNode)
-            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
-        }
+//        visited = []
+//        notMyChild = [Int: [Plane]]()
+//        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
+//            theOneSphere.addChildNode(topPlaneSphere)
+//        }
+//        
+//        
+//        // make bottomPlane manually
+//        if var bottomPlane = planes.bottomPlane {
+//            let bottomPlaneNode = bottomPlane.lazyNode()
+//            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
+//            theOneSphere.addChildNode(masterSphere)
+//            masterSphere.addChildNode(bottomPlaneNode)
+//            undoParentTranslate(masterSphere, child: bottomPlaneNode)
+//            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
+//        }
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
