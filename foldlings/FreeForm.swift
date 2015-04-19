@@ -48,6 +48,7 @@ class FreeForm:FoldFeature{
     /// splits a path at each of the points, which are already known to be on it
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
+        println("breakers count: \(breakers.count)")
         //intersectin points
         var breaks = breakers
         let elements = path.getPathElements()
@@ -79,7 +80,7 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-            let p = pathFromPoints(smoothPoints(bin))
+            let p = pathFromPoints(smoothPoints(bin,epsilon: 0.01))
             
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})
@@ -101,6 +102,7 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
+        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
@@ -178,7 +180,7 @@ class FreeForm:FoldFeature{
             return false
         }
         else{
-            if let intersects = PathIntersections.intersectionsBetweenCGPaths(fold.path.CGPath,p2: self.path!.CGPath){
+            if let intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
                 
                 intersectionsWithDrivingFold = intersects
                 intersections += intersects
@@ -206,6 +208,52 @@ class FreeForm:FoldFeature{
         
     }
     
+    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
+        
+        print("trunc. ")
+        
+        var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
+        
+        if let ps = points{
+            if(ps.count%2 == 0 ){
+                print(" points")
+                var i = 0
+                var edgesToAdd:[Edge] = []
+                while(i+1<ps.count){
+                    print(" \(i) ")
+
+                    //try making a straight edge between the points
+                    let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
+                    // if the line's center is inside the path, add the edge and go to the next pair
+                    print(" just before contains point ")
+                    if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength*5){
+                        edgesToAdd.append(edge)
+                       print(" i+2 ")
+                    }
+                    //otherwise, try the next point
+                    else{
+                        print(" i+1 ")
+                        i += 1
+                    }
+                }
+                
+                //if there are edges to add, add them, and return that the trucation succeeded
+                if(edgesToAdd.count>0){
+                    print(" got to add edge")
+                    intersections.extend(ps)
+                    self.horizontalFolds.extend(edgesToAdd)
+                    self.cachedEdges!.extend(edgesToAdd)
+                    return true
+                    
+                }
+                
+            }
+        }
+        print(" escaped to freedom ")
+        return false
+    }
+
+    
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds(){
         
@@ -220,57 +268,17 @@ class FreeForm:FoldFeature{
             
             //move scanline, testing intersections until the length of the intersecting segment is > than the minimum edge length
             // #TODO: refactor to combine with splitFoldByOcclusion(Edge)
-            func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
-
-                //this seems to prevent the cgpath crash??!??
-                let cpath1 = scanLine.path.CGPath
-
-                
-                var points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: p.CGPath)
-                
-                if let ps = points{
-                    if(ps.count%2 == 0 ){
-                        
-                        var i = 0
-                        var edgesToAdd:[Edge] = []
-                        while(i<ps.count){
-                            //try making a straight edge between the points
-                            let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
-                            // if the line's center is inside the path, add the edge and go to the next pair
-                            if(p.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
-                                edgesToAdd.append(edge)
-                                i += 2
-                            }
-                            //otherwise, try the next point
-                            else{
-                                i += 1
-                            }
-                        }
-
-                        //if there are edges to add, add them, and return that the trucation succeeded
-                        if(edgesToAdd.count>0){
-                            intersections.extend(ps)
-                            self.horizontalFolds.extend(edgesToAdd)
-                            self.cachedEdges!.extend(edgesToAdd)
-                            return true
-                        }
-                       
-                    }
-                }
-                return false
-            }
             
             //TOP FOLD
             // move line down successively to find intersection point
             while(scanLine.path.firstPoint().y < driver.start.y){
                 var moveDown = CGAffineTransformMakeTranslation(0, 3);
                 scanLine.path.applyTransform(moveDown)
-                
-                //futile? attempt to keep references to the paths so we don't segfault further down
-                let retainedPath = scanLine.path
-                let retainedPath2 = p
+    
+                println(scanLine.path)
 
-                var truncated = tryIntersectionTruncation(retainedPath,retainedPath2)
+                
+                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
                 if(truncated){
                     yTop = scanLine.path.firstPoint().y
                     break
@@ -282,9 +290,16 @@ class FreeForm:FoldFeature{
             //BOTTOM FOLD
             //move scanline up to find bottom intersection point
             while(scanLine.path.firstPoint().y > driver.start.y){
+                
                 var moveDown = CGAffineTransformMakeTranslation(0, -3);
                 scanLine.path.applyTransform(moveDown)
-                var truncated = tryIntersectionTruncation(scanLine.path,p)
+                
+   
+                println(scanLine.path)
+                println(p
+                )
+
+                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
                 if(truncated){
                     yBottom = scanLine.path.firstPoint().y
                     break
@@ -303,7 +318,7 @@ class FreeForm:FoldFeature{
 //            intersections.extend(points!)
             
             
-            var middleFolds = tryIntersectionTruncation(scanLine.path,self.path!)
+            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
             if(!middleFolds){
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
