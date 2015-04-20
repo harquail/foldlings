@@ -288,7 +288,7 @@ class FreeForm:FoldFeature{
         }
         
         
-        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold, feature:self)
+        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold, feature:self.parent!)
         returnee.append(firstPiece)
         
         var brushTip = intersectionsWithDrivingFold[0]
@@ -298,11 +298,11 @@ class FreeForm:FoldFeature{
             
             brushTip = intersectionsWithDrivingFold[i]
             let brushTipTranslated = CGPointMake(intersectionsWithDrivingFold[i+1].x,brushTip.y)
-            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold, feature: self)
+            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold, feature: self.parent!)
             returnee.append(piece)
         }
         
-        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold, feature: self)
+        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold, feature: self.parent!)
         returnee.append(finalPiece)
         return returnee
     }

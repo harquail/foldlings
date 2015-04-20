@@ -428,5 +428,11 @@
             feature.featureEdges?.extend(folds)
             folds.map({self.addEdge($0)})
         }
+        
+        func addFeatureToSketch(feature: FoldFeature){
+            if let fEdges = feature.featureEdges{
+                fEdges.map({self.addEdge($0)})
+              }
+        }
 
     }
