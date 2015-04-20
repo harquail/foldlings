@@ -285,7 +285,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="SketchViewButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4eW-Gn-T5V"/>
+                                    <segue destination="YpY-9h-vAX" kind="unwind" unwindAction="unWindToSketchViewController:" id="hl2-Gk-oOv"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -297,6 +297,7 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+                <exit id="YpY-9h-vAX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-704" y="124"/>
         </scene>

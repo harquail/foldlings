@@ -149,17 +149,13 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let imgNew = img.copy() as! UIImage
             
             let viewController:GameViewController = segue.destinationViewController as! GameViewController
-            
-//            let viewController:GameViewController = nav.viewControllers[0] as! GameViewController
 //            
             viewController.setButtonBG(imgNew)
             
             viewController.laserImage = vew.bitmap(grayscale: true)
             viewController.svgString = vew.svgImage()
             viewController.planes = sketch.planes
-//            viewController.parentButton = vew.previewButton
-            
-            // pass data to next view
+
         }
     }
     // hide status bar
@@ -167,6 +163,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         return true
     }
     
+    @IBAction func unWindToSketchViewController(segue: UIStoryboardSegue) {
+        //nothing goes here
+    }
     
     
 }
