@@ -48,7 +48,6 @@ class FreeForm:FoldFeature{
     /// splits a path at each of the points, which are already known to be on it
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
-        println("breakers count: \(breakers.count)")
         //intersectin points
         var breaks = breakers
         let elements = path.getPathElements()
@@ -219,27 +218,30 @@ class FreeForm:FoldFeature{
                 print(" points")
                 var i = 0
                 var edgesToAdd:[Edge] = []
-                while(i+1<ps.count){
+                while(i<ps.count){
                     print(" \(i) ")
-
+                    
+                    if(ps.count>i+1){
                     //try making a straight edge between the points
                     let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
                     // if the line's center is inside the path, add the edge and go to the next pair
                     print(" just before contains point ")
-                    if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength*5){
+                    if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                         edgesToAdd.append(edge)
                        print(" i+2 ")
+                        i += 2
+                        continue
                     }
-                    //otherwise, try the next point
-                    else{
+                    }
+                        //otherwise, try the next point
+//                    else{
                         print(" i+1 ")
                         i += 1
-                    }
+//                    }
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
-                    print(" got to add edge")
                     intersections.extend(ps)
                     self.horizontalFolds.extend(edgesToAdd)
                     self.cachedEdges!.extend(edgesToAdd)
@@ -249,7 +251,6 @@ class FreeForm:FoldFeature{
                 
             }
         }
-        print(" escaped to freedom ")
         return false
     }
 
