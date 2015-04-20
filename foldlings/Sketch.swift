@@ -56,8 +56,8 @@
         }
         
         /// add an already-constructed edge
-        func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false) -> Edge {
-            return addEdge(Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster))
+        func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false, feature: FoldFeature?) -> Edge {
+            return addEdge(Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster, feature: feature))
         }
         
         /// adds an edge to the adjacency graph
@@ -68,9 +68,10 @@
             var end = edge.end
             var kind = edge.kind
             var isMaster = edge.isMaster
+            var feature = edge.feature
 
             var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
-            var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster)
+            var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
             edge.twin = twin
             twin.twin = edge
             
@@ -416,6 +417,16 @@
             }
         }
         
+        // replaces one fold edge with an array of fold edges
+        // that span the same distance
+        func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
+            feature.horizontalFolds.remove(fold)
+            feature.featureEdges?.remove(fold)
+            removeEdge(fold)
 
+            feature.horizontalFolds.extend(folds)
+            feature.featureEdges?.extend(folds)
+            folds.map({self.addEdge($0)})
+        }
 
     }

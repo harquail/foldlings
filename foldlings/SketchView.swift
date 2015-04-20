@@ -142,7 +142,7 @@ class SketchView: UIView {
                             
                             //fragments are the pieces of the fold created splitFoldByOcclusion
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
-                            drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                            sketch.replaceFold(drawingFeature.parent!, fold: fold, folds: fragments)
                             
                             //set cached edges
                             shape.featureEdges = []
@@ -242,11 +242,13 @@ class SketchView: UIView {
                     drawParent.children.map({$0.dirty = true})
                     
                     // splits the driving fold of the parent
-                    drawParent.replaceFold(drawingFeature.drivingFold!,folds: drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!))
+                    let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     println("edge being removed: \(drawingFeature.drivingFold!)")
+                    println("edge replacing: \(newFolds)")
                     println("edges of sketch: \(sketch.edges)")
+                    sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
+
                     
-                    sketch.removeEdge(drawingFeature.drivingFold!)
 
                 }
 

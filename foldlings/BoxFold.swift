@@ -113,8 +113,8 @@ class BoxFold:FoldFeature{
         var returnee = [Edge]()
         
         //make two pieces between the end points of the split fold and the place the intersect with box fold
-        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold, feature:self)
-        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold, feature: self)
+        let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold, feature: self.parent!)
+        let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold, feature: self.parent!)
         
         returnee = [piece,piece2]
         return returnee
