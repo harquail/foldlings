@@ -24,6 +24,10 @@ class FreeForm:FoldFeature{
         super.init(start: start)
         interpolationPoints.append(NSValue(CGPoint: start))
     }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func getEdges() -> [Edge] {
         
@@ -79,7 +83,9 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-            let p = pathFromPoints(smoothPoints(bin,epsilon: 0.01))
+            
+            var p = pathFromPoints(smoothPoints(bin))
+//            p = smoothPath(p)
             
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})

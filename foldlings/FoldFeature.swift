@@ -9,7 +9,7 @@
 import Foundation
 
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
-class FoldFeature: NSObject, Printable{
+class FoldFeature: NSObject, Printable, NSCoding{
     //
     //    enum Kind {
     //        case Box,
@@ -21,10 +21,10 @@ class FoldFeature: NSObject, Printable{
     //        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
     //    }
     
-    
-    enum ValidityState {
-        case Invalid, // we don't know how to make this feature valid
-        Valid // can be simulated in 3d/folded in real life
+
+    enum ValidityState:Int {
+        case Invalid = 0, // we don't know how to make this feature valid
+        Valid = 1 // can be simulated in 3d/folded in real life
     }
     
     enum DefinitionState {
@@ -49,6 +49,47 @@ class FoldFeature: NSObject, Printable{
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
+    required init(coder aDecoder: NSCoder) {
+        //startpoint
+        //endpoint
+//        [coder encodeCGPoint:myPoint forKey:@"myPoint"];
+        //children
+        //drivingFold
+        //parent
+        //horizontalFolds
+        //cachedEdges
+        //validity
+
+//        self.myCourses  = aDecoder.decodeObjectForKey("myCourses") as? Dictionary
+    }
+    
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        //startpoint
+        //endpoint
+        //        [coder encodeCGPoint:myPoint forKey:@"myPoint"];
+        //children
+        //drivingFold
+        //parent
+        //horizontalFolds
+        //cachedEdges
+        //validity
+        
+        if let point = startPoint{
+        aCoder.encodeCGPoint(point, forKey: "startPoint")
+        }
+        if let point = endPoint{
+            aCoder.encodeCGPoint(point, forKey: "endPoint")
+        }
+        aCoder.encodeObject(parent,forKey:"parent")
+        aCoder.encodeObject(children, forKey:"children")
+        aCoder.encodeObject(drivingFold, forKey:"drivingFold")
+        aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
+        aCoder.encodeObject(cachedEdges,forKey:"horizontalFolds")
+        aCoder.encodeObject(state.rawValue,forKey:"state")
+        
+
+    }
     
     /// is it valid?
     var state:ValidityState = .Valid
