@@ -24,7 +24,7 @@ class FreeForm:FoldFeature{
         super.init(start: start)
         interpolationPoints.append(NSValue(CGPoint: start))
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -60,7 +60,7 @@ class FreeForm:FoldFeature{
         
         // distance between point on curve and intersection point, for splitting
         var minDist = CGFloat(1.0)
-
+        
         //collect points into bins, making a new bin at every braker
         for (i, point) in enumerate(points)
         {
@@ -81,16 +81,16 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-           
             
-//            var p = UIBezierPath.interpolateCGPointsWithCatmullRom(convertToNSArray(bin) as [AnyObject], closed: false, alpha: 1.0)
+            
+            //            var p = UIBezierPath.interpolateCGPointsWithCatmullRom(convertToNSArray(bin) as [AnyObject], closed: false, alpha: 1.0)
             
             var p = pathFromPoints(smoothPoints(bin))
             
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})
             let minFold = self.horizontalFolds.minBy({$0.start.y})
-
+            
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 continue
@@ -150,7 +150,7 @@ class FreeForm:FoldFeature{
                 }
                 
                 
-//                path.appendPath(pathFromPoints(convertToCGPoints(interpolationPoints)))
+                //                path.appendPath(pathFromPoints(convertToCGPoints(interpolationPoints)))
                 path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints as! [NSArray], closed: closed,alpha: 1.0))
                 
                 //                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
@@ -215,14 +215,14 @@ class FreeForm:FoldFeature{
         
     }
     
-    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
+    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
         
         print("trunc. ")
         
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         
         if let ps = points{
-            if(ps.count%2 == 0 ){
+            if(ps.count%2 == 0 && ps.count <= maxIntercepts){
                 print(" points")
                 var i = 0
                 var edgesToAdd:[Edge] = []
@@ -230,22 +230,22 @@ class FreeForm:FoldFeature{
                     print(" \(i) ")
                     
                     if(ps.count>i+1){
-                    //try making a straight edge between the points
-                    let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
-                    // if the line's center is inside the path, add the edge and go to the next pair
-                    print(" just before contains point ")
-                    if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
-                        edgesToAdd.append(edge)
-                       print(" i+2 ")
-                        i += 2
-                        continue
+                        //try making a straight edge between the points
+                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
+                        // if the line's center is inside the path, add the edge and go to the next pair
+                        print(" just before contains point ")
+                        if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
+                            edgesToAdd.append(edge)
+                            print(" i+2 ")
+                            i += 2
+                            continue
+                        }
                     }
-                    }
-                        //otherwise, try the next point
-//                    else{
-                        print(" i+1 ")
-                        i += 1
-//                    }
+                    //otherwise, try the next point
+                    //                    else{
+                    print(" i+1 ")
+                    i += 1
+                    //                    }
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded
@@ -261,7 +261,7 @@ class FreeForm:FoldFeature{
         }
         return false
     }
-
+    
     
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds(){
@@ -270,7 +270,7 @@ class FreeForm:FoldFeature{
             
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
-            var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
@@ -278,41 +278,56 @@ class FreeForm:FoldFeature{
             //move scanline, testing intersections until the length of the intersecting segment is > than the minimum edge length
             // #TODO: refactor to combine with splitFoldByOcclusion(Edge)
             
+        
+            
+            
+            func truncateTop(hop:CGFloat,intercepts:Int, endSearchAtY:CGFloat) -> Bool{
+
             //TOP FOLD
             // move line down successively to find intersection point
-            while(scanLine.path.firstPoint().y < driver.start.y){
-                var moveDown = CGAffineTransformMakeTranslation(0, 3);
+            while(scanLine.path.firstPoint().y < endSearchAtY){
+                var moveDown = CGAffineTransformMakeTranslation(0, hop);
                 scanLine.path.applyTransform(moveDown)
-    
-                println(scanLine.path)
-
                 
                 let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
                 if(truncated){
                     yTop = scanLine.path.firstPoint().y
-                    break
+                    return true
                 }
             }
+            return false
+            }
+
+            //try truncting at top with 2 intersections first, then 3 if that fails in the first 50 points
+            if(!truncateTop(5,2,driver.start.y+50)){
+                scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+                truncateTop(3,100,driver.start.y)
+            }
+            
+            
+            func truncateBottom(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> Bool{
             
             scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             
             //BOTTOM FOLD
             //move scanline up to find bottom intersection point
-            while(scanLine.path.firstPoint().y > driver.start.y){
-                
-                var moveDown = CGAffineTransformMakeTranslation(0, -3);
+            while(scanLine.path.firstPoint().y > endSearchAtY){
+
+                var moveDown = CGAffineTransformMakeTranslation(0, -hop);
                 scanLine.path.applyTransform(moveDown)
                 
-   
-                println(scanLine.path)
-                println(p
-                )
-
-                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
+                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints(), maxIntercepts: intercepts)
                 if(truncated){
                     yBottom = scanLine.path.firstPoint().y
-                    break
+                    return true
                 }
+            }
+            return false
+            }
+            
+            //try truncting at bottom with 2 intersections first, then 3 if that fails in the first 50 points
+            if(!truncateBottom(5,2,driver.start.y-50)){
+                truncateBottom(3,100,driver.start.y)
             }
             
             //MIDDLE FOLD
@@ -323,8 +338,8 @@ class FreeForm:FoldFeature{
             scanLine.path.applyTransform(moveToCenter)
             
             //get the intersections with the mid fold
-//            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
-//            intersections.extend(points!)
+            //            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+            //            intersections.extend(points!)
             
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
@@ -332,12 +347,12 @@ class FreeForm:FoldFeature{
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
-//
-//            
-//            // add a fold between those intersection points
-//            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
-//            self.horizontalFolds.append(midLine)
-//            self.cachedEdges!.append(midLine)
+            //
+            //
+            //            // add a fold between those intersection points
+            //            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+            //            self.horizontalFolds.append(midLine)
+            //            self.cachedEdges!.append(midLine)
         }
     }
     
@@ -371,6 +386,6 @@ class FreeForm:FoldFeature{
         returnee.append(finalPiece)
         return returnee
     }
-
+    
     
 }
