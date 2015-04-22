@@ -194,7 +194,7 @@ class Plane: Printable, Hashable
             }
         }
         outPath.closePath()
-        outPath.flatness = 3.0;
+        outPath.flatness = 7.0;
         return outPath
     }
     

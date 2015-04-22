@@ -93,6 +93,7 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
+		F1A0DBCE1AE704DD00AF4C93 /* ArchivedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A0DBCD1AE704DD00AF4C93 /* ArchivedFeatures.swift */; };
 		F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */; };
 		F1AD3D3E1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D3C1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m */; };
 		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
@@ -300,6 +301,7 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
+		F1A0DBCD1AE704DD00AF4C93 /* ArchivedFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchivedFeatures.swift; sourceTree = "<group>"; };
 		F1AD3D381AD4BBEB00B55D2C /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		F1AD3D3A1AD4BBEB00B55D2C /* Curve Interpolation-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Curve Interpolation-Prefix.pch"; sourceTree = "<group>"; };
@@ -653,6 +655,7 @@
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
 				F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */,
+				F1A0DBCD1AE704DD00AF4C93 /* ArchivedFeatures.swift */,
 				F1B9AE791A06B37D00265AAE /* data.plist */,
 				22C0D6891A04965C00D521CA /* Bezier.swift */,
 				223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */,
@@ -971,6 +974,7 @@
 				F153BBA01A1EAED50029FDF2 /* SVGGradientUtilities.m in Sources */,
 				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
 				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
+				F1A0DBCE1AE704DD00AF4C93 /* ArchivedFeatures.swift in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
 				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,

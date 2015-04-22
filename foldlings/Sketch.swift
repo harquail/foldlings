@@ -15,7 +15,6 @@
         
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
-        
         var draggedEdge:Edge? //edge being dragged
         
         var masterFeature:FoldFeature?

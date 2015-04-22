@@ -10,7 +10,6 @@ import Foundation
 
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
 class FoldFeature: NSObject, Printable, NSCoding{
-    //
     //    enum Kind {
     //        case Box,
     //        Mirrored,
@@ -18,10 +17,9 @@ class FoldFeature: NSObject, Printable, NSCoding{
     //        VFold,
     //        Track,
     //        Slider,
-    //        MasterCard//some things are priceless; for everything else there's border edges and the driving fold
+    //        MasterCard //some things are priceless; for everything else there's border edges and the driving fold
     //    }
     
-
     enum ValidityState:Int {
         case Invalid = 0, // we don't know how to make this feature valid
         Valid = 1 // can be simulated in 3d/folded in real life
@@ -50,17 +48,15 @@ class FoldFeature: NSObject, Printable, NSCoding{
     var endPoint:CGPoint?
     
     required init(coder aDecoder: NSCoder) {
-        //startpoint
-        //endpoint
-//        [coder encodeCGPoint:myPoint forKey:@"myPoint"];
-        //children
-        //drivingFold
-        //parent
-        //horizontalFolds
-        //cachedEdges
-        //validity
-
-//        self.myCourses  = aDecoder.decodeObjectForKey("myCourses") as? Dictionary
+        
+        self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
+        self.endPoint = aDecoder.decodeCGPointForKey("endPoint")
+        self.children = aDecoder.decodeObjectForKey("children") as? [FoldFeature]
+        self.parent = aDecoder.decodeObjectForKey("parent") as? FoldFeature
+        self.drivingFold = aDecoder.decodeObjectForKey("children") as? Edge
+        self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
+        self.cachedEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
+        self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
     
     
@@ -85,10 +81,8 @@ class FoldFeature: NSObject, Printable, NSCoding{
         aCoder.encodeObject(children, forKey:"children")
         aCoder.encodeObject(drivingFold, forKey:"drivingFold")
         aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
-        aCoder.encodeObject(cachedEdges,forKey:"horizontalFolds")
+        aCoder.encodeObject(cachedEdges,forKey:"cachedEdges")
         aCoder.encodeObject(state.rawValue,forKey:"state")
-        
-
     }
     
     /// is it valid?

@@ -105,6 +105,8 @@ class SketchView: UIView {
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
+            //kill cached path
+//            shape.cachedPath = nil
             path = shape.pathThroughTouchPoints()
             shape.path = path
             forceRedraw()

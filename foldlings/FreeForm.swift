@@ -58,10 +58,8 @@ class FreeForm:FoldFeature{
         var points = getSubdivisions(elements)
         var pointBins: [[CGPoint]] = [[]]
         
-        // find the nearest point
-        // this is necessary because the subdivisions are not guaranteed equal all the time
-        // but will usually be pretty exact
-        var minDist = CGFloat(1)
+        // distance between point on curve and intersection point, for splitting
+        var minDist = CGFloat(1.0)
 
         //collect points into bins, making a new bin at every braker
         for (i, point) in enumerate(points)
@@ -83,15 +81,17 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
+           
+            
+//            var p = UIBezierPath.interpolateCGPointsWithCatmullRom(convertToNSArray(bin) as [AnyObject], closed: false, alpha: 1.0)
             
             var p = pathFromPoints(smoothPoints(bin))
-//            p = smoothPath(p)
             
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})
             let minFold = self.horizontalFolds.minBy({$0.start.y})
 
-            //discard paths whose centroid is above or below top & bottom foldss
+            //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 continue
             }
@@ -99,7 +99,6 @@ class FreeForm:FoldFeature{
             paths.append(p)
         }
         
-
         return paths
         
     }
@@ -150,7 +149,9 @@ class FreeForm:FoldFeature{
                     path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
                 
-                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints, closed: closed,alpha: 1.0))
+                
+//                path.appendPath(pathFromPoints(convertToCGPoints(interpolationPoints)))
+                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints as! [NSArray], closed: closed,alpha: 1.0))
                 
                 //                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
                 
@@ -185,6 +186,7 @@ class FreeForm:FoldFeature{
             return false
         }
         else{
+            
             if let intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
                 
                 intersectionsWithDrivingFold = intersects
