@@ -55,6 +55,7 @@ class SketchView: UIView {
         path.lineWidth = kLineWidth
         sketch = Sketch(at: 0, named:"placeholder")
         incrementalImage = bitmap(grayscale: false)
+        sketch.getPlanes()
         
     }
     
