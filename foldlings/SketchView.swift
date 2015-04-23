@@ -202,7 +202,8 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                for feature in sketch.features!
+                /// what happens if I make this a while loop
+                outer:for feature in sketch.features!
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds
@@ -211,10 +212,9 @@ class SketchView: UIView {
                         {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            break;
+                            break outer;
                         }
                     }
-                    
                 }
                 
                 // box folds have different behaviors if they span the driving edge
@@ -238,7 +238,7 @@ class SketchView: UIView {
                 if(drawingFeature.drivingFold != nil)
                 {
                     // add feature to sketch features and to parent's children
-                    sketch.features?.append(sketch.currentFeature!)
+                    sketch.features?.append(drawingFeature)
                     let drawParent = drawingFeature.parent!
                     drawParent.children.append(drawingFeature)
 
@@ -248,15 +248,18 @@ class SketchView: UIView {
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
                     sketch.addFeatureToSketch(drawingFeature)
+                    //println(drawingFeature.horizontalFolds)
 
                 }
 
                 //clear the current feature
                 sketch.currentFeature = nil
             }
-            self.sketch.getPlanes()
+            sketch.getPlanes()
             forceRedraw()
-            
+            //println("edge being removed: \(drawingFeature.drivingFold!)")
+            //println("edge replacing: \(newFolds)")
+            //println("edges of sketch: \(sketch.edges)")
             
         default:
             println("Gesture not recognized")

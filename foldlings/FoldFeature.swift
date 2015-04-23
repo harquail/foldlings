@@ -159,36 +159,28 @@ class FoldFeature: NSObject, Printable
     
     func featureSpansFold(fold:Edge)->Bool
     {
-        //feature must be inside fold x bounds
-        if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   ))
-        {
-            return false
+        var fMin = min(fold.start.x, fold.end.x)
+        var fMax = max(fold.start.x, fold.end.x)
+
+        if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
+            //sort points by y
+//            func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint)
+//            {
+//                return (a.y < b.y) ? (a,b) : (b,a)
+//            }
+//            
+//            let sorted = pointsByY(self.startPoint!, self.endPoint!)
+//            
+//            // test whether the feature starts above minimum height & below maximum
+//            return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
+            return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
-        
-        //sort points by y
-        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint)
-        {
-            return (a.y < b.y) ? (a,b) : (b,a)
-        }
-        
-        let sorted = pointsByY(self.startPoint!, self.endPoint!)
-        
-        // test whether the feature starts above minimum height & below maximum
-        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
+        return false
     }
     
     // this caches planes from edges
     func getFeaturePlanes(){}
     
-//    // replaces one fold edge with an array of fold edges
-//    // that span the same distance
-//
-//    func replaceFold(fold:Edge, folds:[Edge]){
-//        horizontalFolds.remove(fold)
-//        featureEdges?.remove(fold)
-//        horizontalFolds.extend(folds)
-//        featureEdges?.extend(folds)
-//    }
     
     // makes a straight path between two points
     func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
