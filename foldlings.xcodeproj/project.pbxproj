@@ -469,6 +469,34 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
+		22D0E8041A169F3200C9ECAA /* ExSwift */ = {
+			isa = PBXGroup;
+			children = (
+				22D0E7EF1A169F2400C9ECAA /* Array.swift */,
+				22D0E7F01A169F2400C9ECAA /* Dictionary.swift */,
+				22D0E7F11A169F2400C9ECAA /* Double.swift */,
+				22D0E7F21A169F2400C9ECAA /* ExSwift.h */,
+				22D0E7F31A169F2400C9ECAA /* ExSwift.swift */,
+				22D0E7F41A169F2400C9ECAA /* Float.swift */,
+				22D0E7F51A169F2400C9ECAA /* Int.swift */,
+				22D0E7F61A169F2400C9ECAA /* NSArray.swift */,
+				22D0E7F71A169F2400C9ECAA /* Range.swift */,
+				22D0E7F81A169F2400C9ECAA /* Sequence.swift */,
+				22D0E7F91A169F2400C9ECAA /* String.swift */,
+				F10FACC11A1D2E98006541BF /* CGPoint.swift */,
+			);
+			name = ExSwift;
+			sourceTree = "<group>";
+		};
+		A9A761815BB194C2316788AF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EA0AB42294980D87D43534AA /* Pods.debug.xcconfig */,
+				642452DC68F2718B57849DDF /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F13AD4E71ABF549F00372898 /* Fold Features */ = {
 			isa = PBXGroup;
 			children = (
