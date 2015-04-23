@@ -103,6 +103,13 @@ class FreeForm:FoldFeature{
         
     }
     
+    func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
+        
+        //get element of each breaker
+        //split elements at t
+        return [UIBezierPath()]
+    }
+    
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
