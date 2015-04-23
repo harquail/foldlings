@@ -126,7 +126,7 @@ class FreeForm:FoldFeature{
         
         //if the points are far enough apart, make a new path
         //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
-        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 10)){
+        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2)){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
@@ -275,59 +275,57 @@ class FreeForm:FoldFeature{
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
             
-            //move scanline, testing intersections until the length of the intersecting segment is > than the minimum edge length
-            // #TODO: refactor to combine with splitFoldByOcclusion(Edge)
-            
-        
-            
-            
-            func truncateTop(hop:CGFloat,intercepts:Int, endSearchAtY:CGFloat) -> Bool{
 
-            //TOP FOLD
-            // move line down successively to find intersection point
-            while(scanLine.path.firstPoint().y < endSearchAtY){
-                var moveDown = CGAffineTransformMakeTranslation(0, hop);
-                scanLine.path.applyTransform(moveDown)
+            //hop defines the amount to move each time through the loop, intercepts is the maximum number of accepatable intercepts, endSearchAtY is the   
+            func truncate(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> CGFloat?{
                 
-                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
-                if(truncated){
-                    yTop = scanLine.path.firstPoint().y
-                    return true
+                //move scanline up to find bottom intersection point
+                while(abs(scanLine.path.firstPoint().y - endSearchAtY) > hop){
+                    
+                    var moveDown = CGAffineTransformMakeTranslation(0, hop);
+                    scanLine.path.applyTransform(moveDown)
+                    
+                    let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints(), maxIntercepts: intercepts)
+                    if(truncated){
+//                        println("success! \()")
+                        return scanLine.path.firstPoint().y
+                    }
                 }
-            }
-            return false
+                return nil
             }
 
-            //try truncting at top with 2 intersections first, then 3 if that fails in the first 50 points
-            if(!truncateTop(5,2,driver.start.y+50)){
-                scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
-                truncateTop(3,100,driver.start.y)
-            }
             
-            
-            func truncateBottom(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> Bool{
-            
-            scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
-            
-            //BOTTOM FOLD
-            //move scanline up to find bottom intersection point
-            while(scanLine.path.firstPoint().y > endSearchAtY){
+            let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
 
-                var moveDown = CGAffineTransformMakeTranslation(0, -hop);
-                scanLine.path.applyTransform(moveDown)
+            scanLine = scanLineStartingAtTop
+            //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
+            if let top = truncate(3,2,box!.origin.y+20){
                 
-                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints(), maxIntercepts: intercepts)
-                if(truncated){
-                    yBottom = scanLine.path.firstPoint().y
-                    return true
-                }
+                yTop = top
             }
-            return false
+            else{
+                scanLine = scanLineStartingAtTop
+                if let top = truncate(3,100,driver.start.y){
+                    yTop = top
+                }
+                
             }
             
-            //try truncting at bottom with 2 intersections first, then 3 if that fails in the first 50 points
-            if(!truncateBottom(5,2,driver.start.y-50)){
-                truncateBottom(3,100,driver.start.y)
+            
+            let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
+            scanLine = scanLineStartingAtBottom
+            //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
+            if let bottom = truncate(-5,2,box!.origin.y + box!.height - 20){
+                
+                yBottom = bottom
+            }
+            else{
+                scanLine = scanLineStartingAtBottom
+                if let bottom = truncate(-3,100,driver.start.y){
+                    
+                    yBottom = bottom
+                }
+
             }
             
             //MIDDLE FOLD
@@ -344,11 +342,11 @@ class FreeForm:FoldFeature{
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
             if(!middleFolds){
+                println("\(intersections)");
+                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
-            //
-            //
             //            // add a fold between those intersection points
             //            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
             //            self.horizontalFolds.append(midLine)

@@ -145,6 +145,8 @@ NSDictionary* AttributesFromSVGCompactAttributes(NSString* compactedAttributes);
 */
 NSString* UnquotedSVGString(NSString* possiblyQuotedString);
 
+CGFloat CalculateVectorMagnitude(CGPoint aVector);
+
 /*! \brief given two vectors, caclculate the angle
 * \param vector1 a vector
 * \param vector2 a vector

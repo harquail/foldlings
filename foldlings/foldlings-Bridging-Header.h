@@ -11,6 +11,7 @@
 #import "BezierSimple.h"
 #import "CGPoint+Vector.h"
 #import "SVGPathGenerator.h"
+#import "SVGUtilities.h"
 #import "Flurry.h"
 #import "ANPathBitmap.h"
 #import "ANPathIntersection.h"
