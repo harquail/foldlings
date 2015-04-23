@@ -10,6 +10,7 @@ import SceneKit
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var sketchView: SketchView!
+
     @IBOutlet var selected: UIImageView!
     
     @IBAction func checkButtonClicked(sender:UIButton){
@@ -35,6 +36,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         
         if let fs = sketchView.sketch.features{
+            println(sketchView.path)
             
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
@@ -48,7 +50,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                     // if freeform shape, reject points outside bounds
                     if let freeForm = f as? FreeForm{
                         if(!freeForm.path!.containsPoint(touchPoint)){
-                        continue
+                            continue
                         }
                     }
                     
@@ -94,7 +96,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             break
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
-//            feature.parent?.healFold(feature.drivingFold!)
+            //            feature.parent?.healFold(feature.drivingFold!)
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
         }
@@ -103,11 +105,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     override func viewDidLoad() {
         
-            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
-            sketchView.addGestureRecognizer(singleFingerTap)
-            
-            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
-            sketchView.addGestureRecognizer(draggy)
+        let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
+        sketchView.addGestureRecognizer(singleFingerTap)
+        
+        let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
+        sketchView.addGestureRecognizer(draggy)
         
     }
     
@@ -122,39 +124,38 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     
     
-    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
-        println("free form")
-        sketchView.sketchMode = .FreeForm
+    
+    //box fold button selected
+    // #TODO: flurry logging here
+    @IBAction func boxFold(sender: UIBarButtonItem) {
+        sketchView.sketchMode = .BoxFold
     }
     
-    
-    @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
-
-        println("box fold")
-        sketchView.sketchMode = .BoxFold
-        
+    //box free-form selected
+    @IBAction func freeForm(sender: UIBarButtonItem) {
+        sketchView.sketchMode = .FreeForm
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            //this retains a reference to the sketch view
+            let vew = self.sketchView
+            let sketch = self.sketchView.sketch
             
-            let img = sketchView.bitmap(grayscale: false, circles: false)
+            let img = vew.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
+            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+//            
             viewController.setButtonBG(imgNew)
             
-            
-            viewController.laserImage = sketchView.bitmap(grayscale: true)
-            viewController.svgString = sketchView.svgImage()
-            viewController.planes = sketchView.sketch.planes
-            viewController.parentButton = sketchView.previewButton
-        
-            // pass data to next view
+            viewController.laserImage = vew.bitmap(grayscale: true)
+            viewController.svgString = vew.svgImage()
+            viewController.planes = sketch.planes
+
         }
     }
     // hide status bar
@@ -162,6 +163,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         return true
     }
     
+    @IBAction func unWindToSketchViewController(segue: UIStoryboardSegue) {
+        //nothing goes here
+    }
     
     
 }

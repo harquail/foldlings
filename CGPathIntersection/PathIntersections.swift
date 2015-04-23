@@ -11,8 +11,10 @@ import Foundation
 class PathIntersections {
     
     /// all the intersection points between two paths
-    class func intersectionsBetweenCGPaths(p:CGPathRef,p2:CGPathRef) ->[CGPoint]? {
+    class func intersectionsBetween(path1:UIBezierPath,path2:UIBezierPath) ->[CGPoint]? {
         
+        let p = CGPathCreateCopy(path1.CGPath)
+        let p2 =  CGPathCreateCopy(path2.CGPath)
         
         //ported objective c code from https://github.com/unixpickle/PathIntersection
         var returnee:[CGPoint]?
