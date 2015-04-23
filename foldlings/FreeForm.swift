@@ -82,7 +82,7 @@ class FreeForm:FoldFeature{
         for bin in pointBins{
             
             
-            
+
             //            var p = UIBezierPath.interpolateCGPointsWithCatmullRom(convertToNSArray(bin) as [AnyObject], closed: false, alpha: 1.0)
             
             var p = pathFromPoints(smoothPoints(bin))
@@ -105,6 +105,44 @@ class FreeForm:FoldFeature{
     
     func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
+        var elements:[CGPathElement] = []
+        
+        for var i = 0; i < Int(path.elementCount()); i++ {
+            
+//            var points:[CGPoint] = []
+            let el = path.elementAtIndex(i)
+            let prevPoint:CGPoint
+            if(i == 0){
+                prevPoint = el.points[0]
+            }
+            else{
+                prevPoint = el.points[2]
+            }
+            if(el.type.value == kCGPathElementAddCurveToPoint.value){
+//          func addCurveToPoint(endPoint: NSPoint, controlPoint1: NSPoint, controlPoint2: NSPoint)
+            let points = el.points
+//            let point = CGPointMake(bezierInterpolation(0.5, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(0.5, points[0].y, points[1].y, points[2].y, points[3].y));
+            println("{{\(points[0]),\(points[1]),\(points[2]),\(points[3])}}")
+            }
+            else{
+                switch(el.type.value){
+                case kCGPathElementMoveToPoint.value : println("moveto: \(el.points[0])")
+                case kCGPathElementAddLineToPoint.value : println("line")
+                case kCGPathElementAddQuadCurveToPoint.value : println("quad")
+                case kCGPathElementAddCurveToPoint.value : println("add curve")
+                case kCGPathElementCloseSubpath.value : println("close")
+                default: println("unexpected")
+                }
+            }
+//            //TODO: Fix this not-super terrible, but still bad shit (pathFromPoints)
+//            let bounds = pathFromPoints(points).bounds
+//            let length = max(bounds.width, bounds.height)
+//            for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
+//                let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+//                npoints.append(point);
+
+                
+        }
         //get element of each breaker
         //split elements at t
         return [UIBezierPath()]
@@ -116,6 +154,7 @@ class FreeForm:FoldFeature{
         println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
+        pathSplitByPointsNew(path!, breakers:intersections)
         var edges:[Edge] = []
         
         //create edges from split paths
