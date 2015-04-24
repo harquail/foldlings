@@ -277,26 +277,52 @@ class FreeForm:FoldFeature{
         
         
         let maxRecursionDepth = 4
-        return approachT(0.0,endT: 1.0,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],recursionDepth: maxRecursionDepth)
+        return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     
-    func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint, recursionDepth:Int) -> CGFloat{
+    func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint,goal:CGPoint, recursionDepth:Int) -> CGFloat{
+        println(recursionDepth)
         
-        let divisions = CGFloat(5.0)
-        let step = (endT - startT)/divisions
+        print("t: \(startT) t2: \(endT)");
+
+        //calculate 5 t values
+        let divisions = CGFloat(4.0000)
+        let step = abs(endT - startT)/divisions
+        print("step: \(step)");
+
         
         if(recursionDepth > 0){
             
-            for(var i = startT; i<=endT; i+=step){
-                println("recursion: \(recursionDepth) i: \(i)")
+            var closestPointOnCurve = (t:CGFloat(0),p:CGPointZero,dist:CGFloat.max
+            )
+            var secondClosest = (t:CGFloat(1.0),p:CGPointZero,dist:CGFloat.max)
+
+            
+            
+            for(var t = startT; t <= endT; t += step){
+                
+                let p = bezierInterpolation(t, start, ctrl1, ctrl2, end)
+                let distToGoal = ccpDistance(p,goal)
+                
+                    if(distToGoal < secondClosest.dist){
+                        secondClosest = closestPointOnCurve
+                        closestPointOnCurve = (t:t,p:p,dist:distToGoal)
+                    }
+                //
             }
-            return approachT(startT,endT: endT,start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end,recursionDepth: recursionDepth - 1)
+            
+            //get closest two points
+
+            print("closest: \(closestPointOnCurve.t), secondClosest:\(secondClosest.t)");
+
+             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
+            
+            
         }
         else{
             // base case: return the average of the t values of the two closest points
             return (startT + endT)/2
         }
-        return 0.0
     }
     
     
