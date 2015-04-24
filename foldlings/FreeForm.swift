@@ -130,7 +130,7 @@ class FreeForm:FoldFeature{
 
                 for (i,breaker) in enumerate(breakers){
                     
-                    for j:Float in [0.1,1]{
+                    for j:Float in [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]{
                     
                         
                         let p = CGPointMake(bezierInterpolation(CGFloat(j), prevPoint.x, points[0].x, points[1].x, points[2].x), bezierInterpolation(CGFloat(j), prevPoint.y, points[0].y, points[1].y, points[2].y));
