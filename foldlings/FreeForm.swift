@@ -245,7 +245,7 @@ class FreeForm:FoldFeature{
         return returnee
     }
     
-//    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
+
 //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
 //    Calculate a temporary point T which is 0.4 along the line B→C
 //    Let point A1 be equal to point A
@@ -257,12 +257,27 @@ class FreeForm:FoldFeature{
 //    Calculate point B2 which is 0.4 along the line T→C2
 //    Let point A2 be equal to the split point S
     
-    func tVeryNearPointonCurve(originalCurve:CGPathElement,p:CGPoint) -> CGFloat
+    func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
     {
+        
+        //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
+        let maxRecursionDepth = 4
+        func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,end:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint, recursionDepth:Int) -> CGFloat{
+            
+            if(recursionDepth < maxRecursionDepth){
+            
+            }
+            else{
+                // base case: return the average of the two points
+                return (startT + endT)/2
+            }
+            return 0.0
+        }
+        
         return 0.0
     }
     
-    func splitQuadCurveAtT(prviousPoint:CGPoint,originalCurve:CGPathElementObj,t:CGFloat) -> (CGPathElementObj,CGPathElementObj){
+    func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:CGFloat) -> (CGPathElementObj,CGPathElementObj){
 
 
 //        let a:CGPathElementObj =         convertToNSArray([originalCurve.points[0],originalCurve.points[0],originalCurve.points[0],originalCurve.points[0]])(type: originalCurve.type, points: )
