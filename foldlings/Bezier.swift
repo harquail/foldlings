@@ -258,7 +258,7 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
         let bounds = pathFromPoints(points).bounds
         let length = max(bounds.width, bounds.height)
         for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
-            let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+            let point = bezierInterpolation(t,points[0],points[1],points[2],points[3])
             npoints.append(point);
         }
     case 3:
