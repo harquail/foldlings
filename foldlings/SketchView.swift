@@ -101,7 +101,7 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.01
+        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.001
         if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
                         
             var touchPoint: CGPoint = gesture.locationInView(self)

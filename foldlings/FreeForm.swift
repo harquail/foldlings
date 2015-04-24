@@ -105,6 +105,8 @@ class FreeForm:FoldFeature{
     
     func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
+//        let p = getSubdivisions(path., increments: <#CGFloat#>)
+        
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
