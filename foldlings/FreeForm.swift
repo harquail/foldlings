@@ -264,11 +264,14 @@ class FreeForm:FoldFeature{
         let maxRecursionDepth = 4
         func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,end:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint, recursionDepth:Int) -> CGFloat{
             
+            let divisions = CGFloat(5.0)
+            let step = (endT - startT)/divisions
+            
             if(recursionDepth < maxRecursionDepth){
             
             }
             else{
-                // base case: return the average of the two points
+                // base case: return the average of the t values of the two closest points
                 return (startT + endT)/2
             }
             return 0.0

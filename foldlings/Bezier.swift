@@ -280,6 +280,13 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
 }
 
 
+//convenience method for interpolating between control points
+func bezierInterpolation(t:CGFloat, a:CGPoint, b:CGPoint, c:CGPoint, d:CGPoint) -> CGPoint {
+    let x = bezierInterpolation(t,a.x,b.x,c.x,d.x)
+    let y = bezierInterpolation(t,a.y,b.y,c.y,d.y)
+    return CGPointMake(x,y)
+}
+
 /// simple 4 point bezier interpolation give a t value along the curve
 func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat {
     let t2 = t * t;
