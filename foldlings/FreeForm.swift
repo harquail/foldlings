@@ -110,7 +110,9 @@ class FreeForm:FoldFeature{
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
-        let returnee = UIBezierPath()
+        //put an empty path in the first index
+        var returnee:[UIBezierPath] = []
+        returnee.append(UIBezierPath())
         
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -155,7 +157,7 @@ class FreeForm:FoldFeature{
                 
                 //                returnee.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
                 
-            case kCGPathElementCloseSubpath.value : returnee.closePath()
+            case kCGPathElementCloseSubpath.value : returnee.last!.closePath()
             default: println("unexpected")
                 
                 
@@ -169,15 +171,17 @@ class FreeForm:FoldFeature{
             let el = path.elementAtIndex(i)
             let prevPoint:CGPoint
             if(i == 1){
-                prevPoint = el.points[0]
+                let elPrev = path.elementAtIndex(0)
+                prevPoint = elPrev.points[0]
             }
             else{
-                prevPoint = el.points[2]
+                let elPrev = path.elementAtIndex(i-1)
+                prevPoint = elPrev.points[2]
             }
             let points = el.points
             
             switch(el.type.value){
-            case kCGPathElementMoveToPoint.value : returnee.moveToPoint(points[0])
+            case kCGPathElementMoveToPoint.value : returnee.last!.moveToPoint(points[0])
             case kCGPathElementAddLineToPoint.value : println("line")
             case kCGPathElementAddQuadCurveToPoint.value : println("quad")
             case kCGPathElementAddCurveToPoint.value :
@@ -187,14 +191,18 @@ class FreeForm:FoldFeature{
                 
                 if(contains(closestElements, pointsEqual)){
                     println("FOUND CLOSE")
-                    returnee.moveToPoint(points[2])
+                    returnee.append(UIBezierPath())
+                    returnee.last!.moveToPoint(prevPoint)
+                    returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
 //            points[2]
                 }
                 else{
                     println("added")
-                    returnee.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
+                    returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
                 }
-            case kCGPathElementCloseSubpath.value : returnee.closePath()
+            case kCGPathElementCloseSubpath.value :
+            println("left path unclosed")
+//                returnee.last!.closePath()
             default: println("unexpected")
             }
         }
@@ -234,7 +242,36 @@ class FreeForm:FoldFeature{
         
         //get element of each breaker
         //split elements at t
-        return [returnee]
+        return returnee
+    }
+    
+//    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
+//    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
+//    Calculate a temporary point T which is 0.4 along the line B→C
+//    Let point A1 be equal to point A
+//    Calculate point B1 which is 0.4 along the line A→B
+//    Calculate point C1 which is 0.4 along the line B1→T
+//    Let point D1 be equal to the split point S
+//    Let point D2 be equal to point D
+//    Calculate point C2 which is 0.4 along the line C→D
+//    Calculate point B2 which is 0.4 along the line T→C2
+//    Let point A2 be equal to the split point S
+    
+    func tVeryNearPointonCurve(originalCurve:CGPathElement,p:CGPoint) -> CGFloat
+    {
+        return 0.0
+    }
+    
+    func splitQuadCurveAtT(prviousPoint:CGPoint,originalCurve:CGPathElementObj,t:CGFloat) -> (CGPathElementObj,CGPathElementObj){
+
+
+//        let a:CGPathElementObj =         convertToNSArray([originalCurve.points[0],originalCurve.points[0],originalCurve.points[0],originalCurve.points[0]])(type: originalCurve.type, points: )
+//        a.type = kCGPathElementAddQuadCurveToPoint
+//        a.points = []
+//        a.points.append(NSValue(CGPoint: CGPointZero))
+        
+        return (originalCurve,originalCurve)
+//        return 
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
