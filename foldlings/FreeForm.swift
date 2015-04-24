@@ -105,7 +105,7 @@ class FreeForm:FoldFeature{
     
     func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
-//        let p = getSubdivisions(path., increments: <#CGFloat#>)
+        //        let p = getSubdivisions(path., increments: <#CGFloat#>)
         
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
@@ -130,12 +130,11 @@ class FreeForm:FoldFeature{
             switch(el.type.value){
             case kCGPathElementAddCurveToPoint.value :
                 //replace with moveToPoint
-
-
+                
+                
                 for (i,breaker) in enumerate(breakers){
                     
                     for j:Float in [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]{
-                    
                         
                         let p = CGPointMake(bezierInterpolation(CGFloat(j), prevPoint.x, points[0].x, points[1].x, points[2].x), bezierInterpolation(CGFloat(j), prevPoint.y, points[0].y, points[1].y, points[2].y));
                         
@@ -147,11 +146,11 @@ class FreeForm:FoldFeature{
                         
                     }
                     
-//
-//                    if (dist < closestElementsDists[i]){
-//                        closestElementsDists[i] = dist
-//                        closestElements[i] = el
-//                    }
+                    //
+                    //                    if (dist < closestElementsDists[i]){
+                    //                        closestElementsDists[i] = dist
+                    //                        closestElements[i] = el
+                    //                    }
                     
                 }
                 
@@ -186,23 +185,37 @@ class FreeForm:FoldFeature{
             case kCGPathElementAddQuadCurveToPoint.value : println("quad")
             case kCGPathElementAddCurveToPoint.value :
                 
-                
                 var pointsEqual = {(element:CGPathElement) -> (Bool) in return CGPointEqualToPoint(el.points[2], element.points[2])}
                 
-                if(contains(closestElements, pointsEqual)){
-                    println("FOUND CLOSE")
-                    returnee.append(UIBezierPath())
-                    returnee.last!.moveToPoint(prevPoint)
-                    returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
-//            points[2]
+                
+                var elementShouldSplit = false
+                
+                for (i,breaker) in enumerate(breakers){
+                    
+                    // if the point element contains a break point
+                    if(CGPointEqualToPoint(el.points[2], closestElements[i].points[2])){
+                        elementShouldSplit = true
+                        let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: breaker)
+                        returnee.append(UIBezierPath())
+                        returnee.last!.moveToPoint(prevPoint)
+                        returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
+                        
+                        break
+                    }
                 }
-                else{
-                    println("added")
+                
+                //                if(contains(closestElements, pointsEqual)){
+                //                    returnee.append(UIBezierPath())
+                //                    returnee.last!.moveToPoint(prevPoint)
+                //                    returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
+                //            points[2]
+                //                }
+                if(!elementShouldSplit){
                     returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
                 }
             case kCGPathElementCloseSubpath.value :
-            println("left path unclosed")
-//                returnee.last!.closePath()
+                println("left path unclosed")
+                //                returnee.last!.closePath()
             default: println("unexpected")
             }
         }
@@ -245,51 +258,58 @@ class FreeForm:FoldFeature{
         return returnee
     }
     
-
-//    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
-//    Calculate a temporary point T which is 0.4 along the line B→C
-//    Let point A1 be equal to point A
-//    Calculate point B1 which is 0.4 along the line A→B
-//    Calculate point C1 which is 0.4 along the line B1→T
-//    Let point D1 be equal to the split point S
-//    Let point D2 be equal to point D
-//    Calculate point C2 which is 0.4 along the line C→D
-//    Calculate point B2 which is 0.4 along the line T→C2
-//    Let point A2 be equal to the split point S
+    
+    //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
+    //    Calculate a temporary point T which is 0.4 along the line B→C
+    //    Let point A1 be equal to point A
+    //    Calculate point B1 which is 0.4 along the line A→B
+    //    Calculate point C1 which is 0.4 along the line B1→T
+    //    Let point D1 be equal to the split point S
+    //    Let point D2 be equal to point D
+    //    Calculate point C2 which is 0.4 along the line C→D
+    //    Calculate point B2 which is 0.4 along the line T→C2
+    //    Let point A2 be equal to the split point S
     
     func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
     {
         
         //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
-        let maxRecursionDepth = 4
-        func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,end:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint, recursionDepth:Int) -> CGFloat{
-            
-            let divisions = CGFloat(5.0)
-            let step = (endT - startT)/divisions
-            
-            if(recursionDepth < maxRecursionDepth){
-            
-            }
-            else{
-                // base case: return the average of the t values of the two closest points
-                return (startT + endT)/2
-            }
-            return 0.0
-        }
         
+        
+        let maxRecursionDepth = 4
+        return approachT(0.0,endT: 1.0,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],recursionDepth: maxRecursionDepth)
+    }
+    
+    func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint, recursionDepth:Int) -> CGFloat{
+        
+        let divisions = CGFloat(5.0)
+        let step = (endT - startT)/divisions
+        
+        if(recursionDepth > 0){
+            
+            for(var i = startT; i<=endT; i+=step){
+                println("recursion: \(recursionDepth) i: \(i)")
+            }
+            return approachT(startT,endT: endT,start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end,recursionDepth: recursionDepth - 1)
+        }
+        else{
+            // base case: return the average of the t values of the two closest points
+            return (startT + endT)/2
+        }
         return 0.0
     }
     
+    
     func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:CGFloat) -> (CGPathElementObj,CGPathElementObj){
-
-
-//        let a:CGPathElementObj =         convertToNSArray([originalCurve.points[0],originalCurve.points[0],originalCurve.points[0],originalCurve.points[0]])(type: originalCurve.type, points: )
-//        a.type = kCGPathElementAddQuadCurveToPoint
-//        a.points = []
-//        a.points.append(NSValue(CGPoint: CGPointZero))
+        
+        
+        //        let a:CGPathElementObj =         convertToNSArray([originalCurve.points[0],originalCurve.points[0],originalCurve.points[0],originalCurve.points[0]])(type: originalCurve.type, points: )
+        //        a.type = kCGPathElementAddQuadCurveToPoint
+        //        a.points = []
+        //        a.points.append(NSValue(CGPoint: CGPointZero))
         
         return (originalCurve,originalCurve)
-//        return 
+        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
