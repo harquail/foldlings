@@ -195,11 +195,20 @@ class FreeForm:FoldFeature{
                         elementShouldSplit = true
                         let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: breaker)
                         
-//                        splitQuadCurveAtT(prevPoint,el,,t)
+//                        func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
+
+                        let cgObj = CGPathElementObj()
+                        cgObj.type = el.type
+                        cgObj.points =  convertToNSArray([el.points[0],el.points[1],el.points[2]]) as [AnyObject]
+                        let newCurves = splitQuadCurveAtT(prevPoint,originalCurve: cgObj,t: Float(t))
                         
                         returnee.append(UIBezierPath())
                         returnee.last!.moveToPoint(prevPoint)
-                        returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
+                        returnee.last!.addCurveToPoint(newCurves.0.points[2].CGPointValue(), controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
+                        
+                        returnee.append(UIBezierPath())
+                        returnee.last!.moveToPoint(newCurves.0.points[2].CGPointValue())
+                        returnee.last!.addCurveToPoint(newCurves.1.points[2].CGPointValue(), controlPoint1: newCurves.1.points[0].CGPointValue(), controlPoint2: newCurves.1.points[1].CGPointValue())
                         
                         break
                     }
