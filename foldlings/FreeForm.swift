@@ -33,7 +33,7 @@ class FreeForm:FoldFeature{
         
         //if there are cached edges, return them
         if let cache = cachedEdges {
-            println("freeform cache HIT!!")
+//            println("freeform cache HIT!!")
             return cache
         }
         
@@ -189,20 +189,27 @@ class FreeForm:FoldFeature{
                 
                 
                 var splittingPointsForElement:[CGPoint] = []
+                var splittingTforElement :[Float] = []
+
                 
                 for (i,breaker) in enumerate(breakers){
                     
                     // if the point element contains a break point
                     if(CGPointEqualToPoint(el.points[2], closestElements[i].points[2])){
                         splittingPointsForElement.append(breaker)
+//                        splittingTforElement.append(closestElementsDists[i])
                     }
                 }
                 
 //                var pathTospkit =
 //                var previousEndpoint =
-                //need to sort plitting points by t value
+                //need to sort splitting points by t value
+                
+//                splittingPointsForElement.sort( {(element:CGPathElement) -> (Bool))
+                
                 for split in splittingPointsForElement{
                 
+                    println(splittingPointsForElement.count)
                     let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: split)
                     
                     let cgObj = CGPathElementObj()
@@ -217,6 +224,7 @@ class FreeForm:FoldFeature{
                     returnee.append(UIBezierPath())
                     returnee.last!.moveToPoint(split)
                     returnee.last!.addCurveToPoint(newCurves.1.points[2].CGPointValue(), controlPoint1: newCurves.1.points[0].CGPointValue(), controlPoint2: newCurves.1.points[1].CGPointValue())
+                    break;
                 
                 }
 
