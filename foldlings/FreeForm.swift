@@ -161,7 +161,7 @@ class FreeForm:FoldFeature{
             }
         }
         
-        var groupedBreakers = breakers.
+//        var groupedBreakers = breakers.
         
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
@@ -200,7 +200,7 @@ class FreeForm:FoldFeature{
                 
 //                var pathTospkit =
 //                var previousEndpoint =
-                //need to sort plitting points y t value
+                //need to sort plitting points by t value
                 for split in splittingPointsForElement{
                 
                     let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: split)
@@ -212,10 +212,10 @@ class FreeForm:FoldFeature{
                     
                     returnee.append(UIBezierPath())
                     returnee.last!.moveToPoint(prevPoint)
-                    returnee.last!.addCurveToPoint(newCurves.0.points[2].CGPointValue(), controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
+                    returnee.last!.addCurveToPoint(split, controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
                     
                     returnee.append(UIBezierPath())
-                    returnee.last!.moveToPoint(newCurves.0.points[2].CGPointValue())
+                    returnee.last!.moveToPoint(split)
                     returnee.last!.addCurveToPoint(newCurves.1.points[2].CGPointValue(), controlPoint1: newCurves.1.points[0].CGPointValue(), controlPoint2: newCurves.1.points[1].CGPointValue())
                 
                 }
