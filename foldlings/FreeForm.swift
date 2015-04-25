@@ -105,8 +105,6 @@ class FreeForm:FoldFeature{
     
     func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
-        //        let p = getSubdivisions(path., increments: <#CGFloat#>)
-        
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
@@ -196,6 +194,9 @@ class FreeForm:FoldFeature{
                     if(CGPointEqualToPoint(el.points[2], closestElements[i].points[2])){
                         elementShouldSplit = true
                         let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: breaker)
+                        
+//                        splitQuadCurveAtT(prevPoint,el,,t)
+                        
                         returnee.append(UIBezierPath())
                         returnee.last!.moveToPoint(prevPoint)
                         returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
@@ -259,63 +260,41 @@ class FreeForm:FoldFeature{
     }
     
     
-    //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
-    //    Calculate a temporary point T which is 0.4 along the line B→C
-    //    Let point A1 be equal to point A
-    //    Calculate point B1 which is 0.4 along the line A→B
-    //    Calculate point C1 which is 0.4 along the line B1→T
-    //    Let point D1 be equal to the split point S
-    //    Let point D2 be equal to point D
-    //    Calculate point C2 which is 0.4 along the line C→D
-    //    Calculate point B2 which is 0.4 along the line T→C2
-    //    Let point A2 be equal to the split point S
     
     func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
     {
         
         //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
-        
-        
         let maxRecursionDepth = 4
         return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     
     func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint,goal:CGPoint, recursionDepth:Int) -> CGFloat{
-        println(recursionDepth)
         
-        print("t: \(startT) t2: \(endT)");
-
         //calculate 5 t values
         let divisions = CGFloat(4.0000)
         let step = abs(endT - startT)/divisions
-        print("step: \(step)");
-
         
         if(recursionDepth > 0){
             
             var closestPointOnCurve = (t:CGFloat(0),p:CGPointZero,dist:CGFloat.max
             )
             var secondClosest = (t:CGFloat(1.0),p:CGPointZero,dist:CGFloat.max)
-
             
-            
+            //get the two closest points, between which we will take our next set of divisions
             for(var t = startT; t <= endT; t += step){
-                
                 let p = bezierInterpolation(t, start, ctrl1, ctrl2, end)
                 let distToGoal = ccpDistance(p,goal)
                 
-                    if(distToGoal < secondClosest.dist){
-                        secondClosest = closestPointOnCurve
-                        closestPointOnCurve = (t:t,p:p,dist:distToGoal)
-                    }
+                if(distToGoal < secondClosest.dist){
+                    secondClosest = closestPointOnCurve
+                    closestPointOnCurve = (t:t,p:p,dist:distToGoal)
+                }
                 //
             }
             
-            //get closest two points
-
-            print("closest: \(closestPointOnCurve.t), secondClosest:\(secondClosest.t)");
-
-             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
+            //recurse with new t values and everything else the same
+            return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
         }
@@ -326,15 +305,43 @@ class FreeForm:FoldFeature{
     }
     
     
-    func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:CGFloat) -> (CGPathElementObj,CGPathElementObj){
+    //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
+    
+    func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
         
+        //    Calculate a temporary point T which is 0.4 along the line B→C
+
+        let a = previousPoint
+        let b = originalCurve.points[0].CGPointValue()
+        let c = originalCurve.points[1].CGPointValue()
+        let d = originalCurve.points[2].CGPointValue()
+                                                 //t a b c d
+        let s = bezierInterpolation(CGFloat(t), a, b, c, d)
         
-        //        let a:CGPathElementObj =         convertToNSArray([originalCurve.points[0],originalCurve.points[0],originalCurve.points[0],originalCurve.points[0]])(type: originalCurve.type, points: )
-        //        a.type = kCGPathElementAddQuadCurveToPoint
-        //        a.points = []
-        //        a.points.append(NSValue(CGPoint: CGPointZero))
+        //Calculate a temporary point T which is 0.4 along the line B→C
+        let temp = ccpLerp(b,c,t)
+        //    Let point A1 be equal to point A
+        let a1 = a
+        //    Calculate point B1 which is 0.4 along the line A→B
+        let b1 = ccpLerp(a1,b,t)
+        //    Calculate point C1 which is 0.4 along the line B1→T
+        let c1 = ccpLerp(b1,temp,t)
+        //    Let point D1 be equal to the split point S
+        let d1 = s
+        //    Let point D2 be equal to point D
+        let d2 = d
+        //    Calculate point C2 which is 0.4 along the line C→D
+        let c2 = ccpLerp(c,d,t)
+        //    Calculate point B2 which is 0.4 along the line T→C2
+        let b2 = ccpLerp(temp,c2,t)
+        //    Let point A2 be equal to the split point S
+        let a2 = s
+
         
-        return (originalCurve,originalCurve)
+        let leg1 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b1,c1,d1]) as [AnyObject])
+        let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
+
+        return (leg1,leg2)
         //        return
     }
     
