@@ -101,14 +101,12 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.001
+        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.1
         if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
                         
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
-            //kill cached path
-//            shape.cachedPath = nil
             path = shape.pathThroughTouchPoints()
             shape.path = path
             forceRedraw()

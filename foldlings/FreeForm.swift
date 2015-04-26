@@ -33,7 +33,6 @@ class FreeForm:FoldFeature{
         
         //if there are cached edges, return them
         if let cache = cachedEdges {
-//            println("freeform cache HIT!!")
             return cache
         }
         
@@ -48,73 +47,22 @@ class FreeForm:FoldFeature{
         }
     }
     
-    
-    /// splits a path at each of the points, which are already known to be on it
+    //splits a bezierpath composed of cubic curves at intersection points
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
-        
-        //intersectin points
-        var breaks = breakers
-        let elements = path.getPathElements()
-        var points = getSubdivisions(elements)
-        var pointBins: [[CGPoint]] = [[]]
-        
-        // distance between point on curve and intersection point, for splitting
-        var minDist = CGFloat(1.0)
-        
-        //collect points into bins, making a new bin at every braker
-        for (i, point) in enumerate(points)
-        {
-            pointBins[pointBins.count-1].append(point);
-            
-            for (var i = 0; i<breaks.count; i++){
-                if(ccpDistance(point,breaks[i]) < minDist){
-                    
-                    //add break point instead of point, to ensure all paths have start & end points that exactly match others'
-                    pointBins[pointBins.count-1].append(breaks[i])
-                    pointBins.append([breaks[i]])
-                    breaks.remove(breaks[i])
-                }
-            }
-        }
-        
-        var paths:[UIBezierPath] = []
-        //make paths from the point bins
-        for bin in pointBins{
-            
-            
-            
-            //            var p = UIBezierPath.interpolateCGPointsWithCatmullRom(convertToNSArray(bin) as [AnyObject], closed: false, alpha: 1.0)
-            
-            var p = pathFromPoints(smoothPoints(bin))
-            
-            //get top and bottom folds
-            let maxFold = self.horizontalFolds.maxBy({$0.start.y})
-            let minFold = self.horizontalFolds.minBy({$0.start.y})
-            
-            //discard paths whose centroid is above or below top & bottom folds
-            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
-                continue
-            }
-            
-            paths.append(p)
-        }
-        
-        return paths
-        
-    }
-    
-    func pathSplitByPointsNew(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
-        //put an empty path in the first index
+        // start with an empty path
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
+        // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
+            // this is the end point of the previous element, which is our new start point
             let prevPoint:CGPoint
+            // element 0 is always a moveto
             if(i == 1){
                 let elPrev = path.elementAtIndex(0)
                 prevPoint = elPrev.points[0]
@@ -125,17 +73,16 @@ class FreeForm:FoldFeature{
             }
             let points = el.points
             
-            switch(el.type.value){
-            case kCGPathElementAddCurveToPoint.value :
-                //replace with moveToPoint
-                
-                
+            // ignore elements that are not curves
+            if el.type.value == kCGPathElementAddCurveToPoint.value{
                 for (i,breaker) in enumerate(breakers){
-                    
+                    // take 10 subdivisions
                     for j:Float in [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]{
                         
+                        //get point at t value on curve
                         let p = CGPointMake(bezierInterpolation(CGFloat(j), prevPoint.x, points[0].x, points[1].x, points[2].x), bezierInterpolation(CGFloat(j), prevPoint.y, points[0].y, points[1].y, points[2].y));
                         
+                        // set new closest element if appropriate
                         let dist = ccpDistance(p, breaker)
                         if ( dist < closestElementsDists[i]){
                             closestElementsDists[i] = dist
@@ -143,32 +90,18 @@ class FreeForm:FoldFeature{
                         }
                         
                     }
-                    
-                    //
-                    //                    if (dist < closestElementsDists[i]){
-                    //                        closestElementsDists[i] = dist
-                    //                        closestElements[i] = el
-                    //                    }
-                    
                 }
-                
-                //                returnee.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
-                
-            case kCGPathElementCloseSubpath.value : returnee.last!.closePath()
-            default: println("unexpected")
-                
                 
             }
         }
         
-//        var groupedBreakers = breakers.
-        
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
             
-            //            var points:[CGPoint] = []
             let el = path.elementAtIndex(i)
+            // this is the end point of the previous element, which is our new start point
             var prevPoint:CGPoint
+            // element 0 is always a moveto
             if(i == 1){
                 let elPrev = path.elementAtIndex(0)
                 prevPoint = elPrev.points[0]
@@ -185,116 +118,59 @@ class FreeForm:FoldFeature{
             case kCGPathElementAddQuadCurveToPoint.value : println("quad")
             case kCGPathElementAddCurveToPoint.value :
                 
-                var pointsEqual = {(element:CGPathElement) -> (Bool) in return CGPointEqualToPoint(el.points[2], element.points[2])}
-                
-                
                 var splittingPointsForElement:[(p:CGPoint,t:CGFloat)] = []
-//                var splittingTforElement :[Float] = []
-
                 
                 for (j,breaker) in enumerate(breakers){
-                    
-                    // if the point element contains a break point
+                    // if the element contains a break point
                     if(CGPointEqualToPoint(el.points[2], closestElements[j].points[2])){
                         
+                        //add the point & t value to the splitting points
                         let t = tVeryNearPointonCurve(prevPoint, originalCurve: el, p: breaker)
                         splittingPointsForElement.append((p:breaker,t:t))
-                        
-//                        splittingTforElement.append(closestElementsDists[i])
                     }
                 }
                 
-
-                //need to sort splitting points by t value
+                //need to sort splitting points by t value, so we can keep subdividing the last point
                 splittingPointsForElement.sort({$0.t < $1.t})
                 
-//                var newCurves:[CGPathElementObj] = []
-                println(" ")
-
-                
+                //set initial curve to entire cgpathelement
                 var cgObj = CGPathElementObj()
                 cgObj.type = el.type
                 cgObj.points =  convertToNSArray([el.points[0],el.points[1],el.points[2]]) as [AnyObject]
-
                 
                 for (i,split) in enumerate(splittingPointsForElement){
-                
-                    println(split.t)
-//                    println(splittingPointsForElement.count)
-                    
-                    
-//                    if(!newCurves.isEmpty){
-//                        newCurves.removeLast()
-//                    }
 
-                    let newCurves = splitQuadCurveAtT(prevPoint,originalCurve: cgObj,t: Float(split.t))
+                    // split the curve at t
+                    let newCurves = splitCubicCurveAtT(prevPoint,originalCurve: cgObj,t: Float(split.t))
                     
-//                    if(i == 0){
+                    //append the portion of the element between its startpoint and the t point
                     returnee.append(UIBezierPath())
                     returnee.last!.moveToPoint(prevPoint)
-//                    returnee.last!.addLineToPoint(split.p)
                     returnee.last!.addCurveToPoint(split.p  , controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
-//                    }
                     
-                    //also append last element
+                    //if this is the last intersection, also append last portion of the path, from t point to end
                     if(i == splittingPointsForElement.count - 1){
                         returnee.append(UIBezierPath())
                         returnee.last!.moveToPoint(split.p)
                         returnee.last!.addCurveToPoint(newCurves.1.points[2].CGPointValue(), controlPoint1: newCurves.1.points[0].CGPointValue(), controlPoint2: newCurves.1.points[1].CGPointValue())
                     }
+                    // set up curve for next interation.  The new curve goes from split to the end of the previous path element
                     prevPoint = split.p
                     cgObj.points = newCurves.1.points
-
+                    
                 }
-
-                //if the element does not have any splitting points, add it to the returned path
+                
+                //if the element does not have any splitting points, add it to the returned path as is
                 if(splittingPointsForElement.isEmpty){
                     returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
                 }
             case kCGPathElementCloseSubpath.value :
-                println("left path unclosed")
-                //                returnee.last!.closePath()
+                break
             default: println("unexpected")
             }
         }
         
-        //
-        //            for (var i = 1; i < els.count; i++) {
-        //                currPath = els[i]
-        //                switch (currPath.type.value) {
-        //                case kCGPathElementMoveToPoint.value:
-        //                    let p = currPath.points[0].CGPointValue()
-        //
-        //                case kCGPathElementAddLineToPoint.value:
-        //                    let p = currPath.points[0].CGPointValue()
-        //                    outPath.addLineToPoint(p)
-        //
-        //                case kCGPathElementAddQuadCurveToPoint.value:
-        //                    let p1 = currPath.points[0].CGPointValue()
-        //                    let p2 = currPath.points[1].CGPointValue()
-        //                    outPath.addQuadCurveToPoint(p2, controlPoint: p1)
-        //
-        //                case kCGPathElementAddCurveToPoint.value:
-        //                    let p1 = currPath.points[0].CGPointValue()
-        //                    let p2 = currPath.points[1].CGPointValue()
-        //                    let p3 = currPath.points[2].CGPointValue()
-        //                    outPath.addCurveToPoint(p3, controlPoint1: p1, controlPoint2: p2)
-        //                default:
-        //                    break
-        //                }
-        
-        
-        //            //TODO: Fix this not-super terrible, but still bad shit (pathFromPoints)
-        //            let bounds = pathFromPoints(points).bounds
-        //            let length = max(bounds.width, bounds.height)
-        //            for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
-        //                let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
-        //                npoints.append(point);
-        
-        //get element of each breaker
-        //split elements at t
-        
-        
+        //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})
@@ -305,13 +181,11 @@ class FreeForm:FoldFeature{
                 returnee.remove(p)
             }
         }
-        
-        
         return returnee
     }
     
     
-    
+    // searches for the nearest interpolation point to p on curve
     func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
     {
         
@@ -320,6 +194,7 @@ class FreeForm:FoldFeature{
         return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     
+    //recursive search for nearest t value
     func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint,goal:CGPoint, recursionDepth:Int) -> CGFloat{
         
         //calculate 5 t values
@@ -328,11 +203,10 @@ class FreeForm:FoldFeature{
         
         if(recursionDepth > 0){
             
-            var closestPointOnCurve = (t:CGFloat(0),p:CGPointZero,dist:CGFloat.max
-            )
+            var closestPointOnCurve = (t:CGFloat(0),p:CGPointZero,dist:CGFloat.max)
             var secondClosest = (t:CGFloat(1.0),p:CGPointZero,dist:CGFloat.max)
             
-            //get the two closest points, between which we will take our next set of divisions
+            //get the two closest points, between which we will make our next set of divisions
             for(var t = startT; t <= endT; t += step){
                 let p = bezierInterpolation(t, start, ctrl1, ctrl2, end)
                 let distToGoal = ccpDistance(p,goal)
@@ -341,10 +215,9 @@ class FreeForm:FoldFeature{
                     secondClosest = closestPointOnCurve
                     closestPointOnCurve = (t:t,p:p,dist:distToGoal)
                 }
-                //
             }
             
-            //recurse with new t values and everything else the same
+            //recurse with new t values, decremented recursion value, and everything else the same
             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
@@ -356,9 +229,9 @@ class FreeForm:FoldFeature{
     }
     
     
+    // splits a cubic bezier curve at a fraction of its length.  Pseudocode from stackoverflow
     //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
-    
-    func splitQuadCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
+    func splitCubicCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
         
         //    Calculate a temporary point T which is 0.4 along the line B→C
         
@@ -400,8 +273,7 @@ class FreeForm:FoldFeature{
         
         println(intersections)
         /// splits the path into multiple edges based on intersection points
-        var paths = pathSplitByPointsNew(path!,breakers: intersections)
-        //        pathSplitByPoints(path!, breakers:intersections)
+        var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
         
         //create edges from split paths
@@ -442,11 +314,7 @@ class FreeForm:FoldFeature{
                     path.addLineToPoint(interpolationPoints[1].CGPointValue())
                 }
                 
-                
-                //                path.appendPath(pathFromPoints(convertToCGPoints(interpolationPoints)))
-                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints as! [NSArray], closed: closed,alpha: 1.0))
-                
-                //                path.appendPath(UIBezierPath.interpolateCGPointsWithHermite(interpolationPoints, closed: closed))
+                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints as! [NSArray], closed: closed, alpha: 1.0))
                 
                 //the line to the currrent touch point from the end
                 if(!closed){
@@ -508,53 +376,43 @@ class FreeForm:FoldFeature{
         
     }
     
+    // attempt to truncate testpathtwo with testpathone, which should be a line.  maxIntercepts indicates how many intersection points are allowed
     private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
-        
-        print("trunc. ")
         
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         
         if let ps = points{
+            //for all intersections, if there are an even number
             if(ps.count%2 == 0 && ps.count <= maxIntercepts){
-                print(" points")
                 var i = 0
                 var edgesToAdd:[Edge] = []
                 while(i<ps.count){
-                    print(" \(i) ")
-                    
                     if(ps.count>i+1){
                         //try making a straight edge between the points
                         let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
                         // if the line's center is inside the path, add the edge and go to the next pair
-                        print(" just before contains point ")
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
-                            print(" i+2 ")
                             i += 2
                             continue
                         }
                     }
                     //otherwise, try the next point
-                    //                    else{
-                    print(" i+1 ")
                     i += 1
-                    //                    }
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
+                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.cachedEdges!.extend(edgesToAdd)
                     return true
-                    
                 }
-                
             }
         }
         return false
     }
-    
     
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds(){
@@ -568,11 +426,10 @@ class FreeForm:FoldFeature{
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
             
-            
             //hop defines the amount to move each time through the loop, intercepts is the maximum number of accepatable intercepts, endSearchAtY is the
             func truncate(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> CGFloat?{
                 
-                //move scanline up to find bottom intersection point
+                //move scanline to find bottom intersection point until we are close to limit
                 while(abs(scanLine.path.firstPoint().y - endSearchAtY) > 20 ){
                     
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
@@ -580,14 +437,13 @@ class FreeForm:FoldFeature{
                     
                     let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!, maxIntercepts: intercepts)
                     if(truncated){
-                        //                        println("success! \()")
                         return scanLine.path.firstPoint().y
                     }
                 }
                 return nil
             }
             
-            
+            /// TOP FOLD
             let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
             scanLine = scanLineStartingAtTop
@@ -603,18 +459,16 @@ class FreeForm:FoldFeature{
                 
             }
             
-            
+            // BOTTOM FOLD
             let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             scanLine = scanLineStartingAtBottom
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
             if let bottom = truncate(-5,2,box!.origin.y + box!.height - 50){
-                
                 yBottom = bottom
             }
             else{
                 scanLine = scanLineStartingAtBottom
                 if let bottom = truncate(-5,100,driver.start.y){
-                    
                     yBottom = bottom
                 }
             }
@@ -625,11 +479,6 @@ class FreeForm:FoldFeature{
             let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
             // scanline is at the bottom fold position, so we just move it up by masterdist
             scanLine.path.applyTransform(moveToCenter)
-            
-            //get the intersections with the mid fold
-            //            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
-            //            intersections.extend(points!)
-            
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
@@ -655,7 +504,6 @@ class FreeForm:FoldFeature{
         if intersectionsWithDrivingFold.count == 0{
             return [edge]
         }
-        
         
         let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
         returnee.append(firstPiece)
