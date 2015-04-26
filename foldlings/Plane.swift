@@ -39,7 +39,7 @@ class Plane: Printable, Hashable
     
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
-    var color = getRandomColor(0.5)
+    var color = getRandomGray(0.9)
 //    var color : UIColor { get{
 //        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
 //        }
@@ -194,7 +194,8 @@ class Plane: Printable, Hashable
             }
         }
         outPath.closePath()
-//        outPath.flatness = 7.0;
+        //makes 3d land more forgiving
+        outPath.flatness = 2.0
         return outPath
     }
     

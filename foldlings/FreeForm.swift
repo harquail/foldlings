@@ -573,7 +573,7 @@ class FreeForm:FoldFeature{
             func truncate(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> CGFloat?{
                 
                 //move scanline up to find bottom intersection point
-                while(abs(scanLine.path.firstPoint().y - endSearchAtY) > hop){
+                while(abs(scanLine.path.firstPoint().y - endSearchAtY) > 20 ){
                     
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
                     scanLine.path.applyTransform(moveDown)
@@ -592,13 +592,12 @@ class FreeForm:FoldFeature{
             
             scanLine = scanLineStartingAtTop
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
-            if let top = truncate(3,2,box!.origin.y+20){
-                
+            if let top = truncate(5,2,box!.origin.y+50){
                 yTop = top
             }
             else{
                 scanLine = scanLineStartingAtTop
-                if let top = truncate(3,100,driver.start.y){
+                if let top = truncate(5 ,100,driver.start.y){
                     yTop = top
                 }
                 
@@ -608,17 +607,16 @@ class FreeForm:FoldFeature{
             let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
             scanLine = scanLineStartingAtBottom
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
-            if let bottom = truncate(-5,2,box!.origin.y + box!.height - 20){
+            if let bottom = truncate(-5,2,box!.origin.y + box!.height - 50){
                 
                 yBottom = bottom
             }
             else{
                 scanLine = scanLineStartingAtBottom
-                if let bottom = truncate(-3,100,driver.start.y){
+                if let bottom = truncate(-5,100,driver.start.y){
                     
                     yBottom = bottom
                 }
-                
             }
             
             //MIDDLE FOLD
@@ -633,7 +631,7 @@ class FreeForm:FoldFeature{
             //            intersections.extend(points!)
             
             
-            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
+            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
                 println("\(intersections)");
                 println("\(intersectionsWithDrivingFold)");
