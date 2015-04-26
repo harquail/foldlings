@@ -204,34 +204,46 @@ class FreeForm:FoldFeature{
                     }
                 }
                 
-//                var pathTospkit =
-//                var previousEndpoint =
+
                 //need to sort splitting points by t value
-                
                 splittingPointsForElement.sort({$0.t < $1.t})
+                
+//                var newCurves:[CGPathElementObj] = []
+                println(" ")
+
+                
+                var cgObj = CGPathElementObj()
+                cgObj.type = el.type
+                cgObj.points =  convertToNSArray([el.points[0],el.points[1],el.points[2]]) as [AnyObject]
+
                 
                 for (i,split) in enumerate(splittingPointsForElement){
                 
-                    println(splittingPointsForElement.count)
+                    println(split.t)
+//                    println(splittingPointsForElement.count)
                     
-                    let cgObj = CGPathElementObj()
-                    cgObj.type = el.type
-                    cgObj.points =  convertToNSArray([el.points[0],el.points[1],el.points[2]]) as [AnyObject]
+                    
+//                    if(!newCurves.isEmpty){
+//                        newCurves.removeLast()
+//                    }
+
                     let newCurves = splitQuadCurveAtT(prevPoint,originalCurve: cgObj,t: Float(split.t))
                     
+//                    if(i == 0){
                     returnee.append(UIBezierPath())
                     returnee.last!.moveToPoint(prevPoint)
-                    returnee.last!.addCurveToPoint(split.p, controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
-                    
+//                    returnee.last!.addLineToPoint(split.p)
+                    returnee.last!.addCurveToPoint(split.p  , controlPoint1: newCurves.0.points[0].CGPointValue(), controlPoint2: newCurves.0.points[1].CGPointValue())
+//                    }
                     
                     //also append last element
-//                    if(i == splittingPointsForElement.count - 1){
+                    if(i == splittingPointsForElement.count - 1){
                         returnee.append(UIBezierPath())
                         returnee.last!.moveToPoint(split.p)
                         returnee.last!.addCurveToPoint(newCurves.1.points[2].CGPointValue(), controlPoint1: newCurves.1.points[0].CGPointValue(), controlPoint2: newCurves.1.points[1].CGPointValue())
-//                    }
-//                    prevPoint = split.p
-                    break;
+                    }
+                    prevPoint = split.p
+                    cgObj.points = newCurves.1.points
 
                 }
 

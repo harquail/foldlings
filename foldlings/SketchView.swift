@@ -115,12 +115,15 @@ class SketchView: UIView {
         }
             //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            
+
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
             //reset path
             path = UIBezierPath()
             
             if let drawingFeature = sketch.currentFeature{
+                
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
@@ -155,6 +158,8 @@ class SketchView: UIView {
                             //split paths at intersections
                             shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
                             
+                            println(shape.cachedEdges)
+
                         }
                     }
                 }
@@ -231,6 +236,8 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
+            
+            
             //            if var e = sketch.draggedEdge{
             //
             //                e.start.y += e.deltaY!
@@ -246,6 +253,7 @@ class SketchView: UIView {
             
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature{
+                
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
