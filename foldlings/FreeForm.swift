@@ -271,7 +271,7 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-        println(intersections)
+//        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
@@ -404,7 +404,7 @@ class FreeForm:FoldFeature{
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-                    println("added fold");
+//                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.cachedEdges!.extend(edgesToAdd)
                     return true
@@ -482,8 +482,8 @@ class FreeForm:FoldFeature{
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
-                println("\(intersections)");
-                println("\(intersectionsWithDrivingFold)");
+//                println("\(intersections)");
+//                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
