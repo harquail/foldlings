@@ -482,7 +482,7 @@ class FreeForm:FoldFeature{
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
-//                println("\(intersections)");
+                println("FAILED INTERSECTION POINTS: \(intersections)");
 //                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")

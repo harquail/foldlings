@@ -29,7 +29,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.handlePan(sender)
     }
     
-    
     @IBAction func handleTap(sender: AnyObject) {
         let gesture = sender as! UITapGestureRecognizer
         
@@ -99,6 +98,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             //            feature.parent?.healFold(feature.drivingFold!)
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
+        case .MoveFolds:
+            break
         }
         
     }

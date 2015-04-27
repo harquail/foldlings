@@ -156,23 +156,37 @@ class SketchView: UIView {
                             //split paths at intersections
                             shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
                             
+                            
+                            println("===EDGES===")
+                            println(shape.cachedEdges!)
+                            
+                            
                             //orphaned edges have start or end points that are not shared with any other edge
                             func printOrphanedEdges(){
                                 
-                                var starts:[CGPoint] = []
-                                var ends:[CGPoint] = []
                                 for edge in shape.cachedEdges!{
-                                    starts.append(edge.start)
-                                    starts.append(edge.end)
-                                }
-                                
-                                for edge in shape.cachedEdges!{
-                                    if(!starts.contains(edge.end) || !starts.contains(edge.start)){
+                                    var foundStart = false
+                                    var foundEnd = false
+
+                                    for edge2 in shape.cachedEdges!{
+                                        
+                                        if (edge != edge2){
+                                            if(CGPointEqualToPoint(edge.start, edge2.end) || CGPointEqualToPoint(edge.start, edge2.start)){
+                                                foundStart = true
+                                            }
+                                            if(CGPointEqualToPoint(edge.end, edge2.start) || CGPointEqualToPoint(edge.end, edge2.end)){
+                                                foundEnd = true
+                                            }
+                                        }
+
+                                    }
+                                    if(!(foundStart && foundEnd)){
                                         println(edge)
                                     }
                                 }
                             }
                             
+                            println("===ORPHANS===")
                             printOrphanedEdges()
                             
                         }
