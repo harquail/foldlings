@@ -80,7 +80,7 @@ class Plane: Printable, Hashable
             
             // make the node
             node = SCNNode()
-            var shape = SCNShape(path: path, extrusionDepth: 5)
+            var shape = SCNShape(path: path/*.bezierPathByFlatteningPath*/, extrusionDepth: 5)
             
             let material = SCNMaterial()
             
@@ -195,7 +195,8 @@ class Plane: Printable, Hashable
         }
         outPath.closePath()
         //makes 3d land more forgiving
-        outPath.flatness = 2.0
+        outPath.flatness = 4.0
+//        outPath.miterLimit = 10;
         return outPath
     }
     
