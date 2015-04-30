@@ -101,7 +101,9 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        if(gesture.state == UIGestureRecognizerState.Changed &&  shape.lastUpdated.timeIntervalSinceNow < -0.1){
+        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.1
+        if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
+            
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -111,12 +113,15 @@ class SketchView: UIView {
         }
             //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            
+            
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
             shape.path = path
             //reset path
             path = UIBezierPath()
             
             if let drawingFeature = sketch.currentFeature{
+                
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
@@ -136,7 +141,7 @@ class SketchView: UIView {
                                 drawingFeature.parent!.children = []
                                 drawingFeature.parent!.children!.append(drawingFeature)
                             }
-
+                            
                             
                             //#TODO: maybe refactor this
                             
@@ -151,13 +156,46 @@ class SketchView: UIView {
                             //split paths at intersections
                             shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
                             
+                            
+                            println("===EDGES===")
+                            println(shape.cachedEdges!)
+                            
+                            
+                            //orphaned edges have start or end points that are not shared with any other edge
+                            func printOrphanedEdges(){
+                                
+                                for edge in shape.cachedEdges!{
+                                    var foundStart = false
+                                    var foundEnd = false
+
+                                    for edge2 in shape.cachedEdges!{
+                                        
+                                        if (edge != edge2){
+                                            if(CGPointEqualToPoint(edge.start, edge2.end) || CGPointEqualToPoint(edge.start, edge2.start)){
+                                                foundStart = true
+                                            }
+                                            if(CGPointEqualToPoint(edge.end, edge2.start) || CGPointEqualToPoint(edge.end, edge2.end)){
+                                                foundEnd = true
+                                            }
+                                        }
+
+                                    }
+                                    if(!(foundStart && foundEnd)){
+                                        println(edge)
+                                    }
+                                }
+                            }
+                            
+                            println("===ORPHANS===")
+                            printOrphanedEdges()
+                            
                         }
                     }
                 }
             }
             
-          
-
+            
+            
             //add edges from the feature to the sketch
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
@@ -227,6 +265,8 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
+            
+            
             //            if var e = sketch.draggedEdge{
             //
             //                e.start.y += e.deltaY!
@@ -242,6 +282,7 @@ class SketchView: UIView {
             
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature{
+                
                 
                 //invalidate the current and master features
                 drawingFeature.invalidateEdges()
@@ -285,10 +326,10 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-//            if let e = sketch.draggedEdge{
-//                e.deltaY = gesture.translationInView(self).y
-//                println("delta: \(e.deltaY)")
-//            }
+            //            if let e = sketch.draggedEdge{
+            //                e.deltaY = gesture.translationInView(self).y
+            //                println("delta: \(e.deltaY)")
+            //            }
             
             if let drawingFeature = sketch.currentFeature{
                 

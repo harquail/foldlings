@@ -258,9 +258,11 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
         let bounds = pathFromPoints(points).bounds
         let length = max(bounds.width, bounds.height)
         for var t:CGFloat = 0.0; t <= 1.00001; t += increments / length {
-            let point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+            let point = bezierInterpolation(t,points[0],points[1],points[2],points[3])
             npoints.append(point);
         }
+    case 3:
+        println("3");
     case 2:
         let start = points[0]
         let end = points[1]
@@ -277,6 +279,13 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
     return npoints
 }
 
+
+//convenience method for interpolating between control points
+func bezierInterpolation(t:CGFloat, a:CGPoint, b:CGPoint, c:CGPoint, d:CGPoint) -> CGPoint {
+    let x = bezierInterpolation(t,a.x,b.x,c.x,d.x)
+    let y = bezierInterpolation(t,a.y,b.y,c.y,d.y)
+    return CGPointMake(x,y)
+}
 
 /// simple 4 point bezier interpolation give a t value along the curve
 func bezierInterpolation(t:CGFloat, a:CGFloat, b:CGFloat, c:CGFloat, d:CGFloat) -> CGFloat {

@@ -98,6 +98,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         ArchivedEdges.removeAll()
         var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
         
+        // this makes the pre-fab sketches
         var localSketch:Sketch
         for (var i = 0; i < 10; i++){
             localSketch = Sketch(at: i, named: "Sketch \(i)")
