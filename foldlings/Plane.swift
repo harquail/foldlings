@@ -39,7 +39,7 @@ class Plane: Printable, Hashable
     
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
-    var color = getRandomGray(1.0)
+    var color = getRandomColor(1.0)
 //    var color : UIColor { get{
 //        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
 //        }
@@ -106,7 +106,7 @@ class Plane: Printable, Hashable
         return node!
     }
     
-    
+    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
     /// the fold with minimum y height in a plane
     func bottomFold(tab:Bool = true) -> Edge? {
         
@@ -121,6 +121,7 @@ class Plane: Printable, Hashable
                 }
             }
         }
+        
         return minEdge
     }
     
@@ -138,7 +139,7 @@ class Plane: Printable, Hashable
                 }
             }
         }
-        
+                
         return maxEdge
     }
     

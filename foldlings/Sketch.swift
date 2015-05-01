@@ -75,7 +75,7 @@
             edge.twin = twin
             twin.twin = edge
             
-            dispatch_sync(edgeAdjacencylockQueue) {
+           // dispatch_sync(edgeAdjacencylockQueue) {
                 if !contains(self.edges, edge) {
                     self.edges.append(edge)
                 }
@@ -119,7 +119,7 @@
                 }
                 
 
-            }
+            //}
             
             
             return edge
@@ -129,7 +129,7 @@
         ///removes and edge from edges and both adjacency lists
         func removeEdge(edge:Edge)
         {
-            dispatch_sync(edgeAdjacencylockQueue) {
+           // dispatch_sync(edgeAdjacencylockQueue) {
                 if let plane = edge.plane { self.planes.removePlane(plane) }
                 if let plane = edge.twin.plane { self.planes.removePlane(plane) }
                 var twin = edge.twin
@@ -155,7 +155,7 @@
                     self.adjacency[twin.start] = self.adjacency[twin.start]!.filter({ $0 != twin })
                     if self.adjacency[twin.start]!.count == 0 { self.adjacency[twin.start] = nil }
                 }
-            }
+            //}
         }
         // prints the lists and the angles between them
         func printAdjList(edgelist: [Edge], edge: Edge){
@@ -228,13 +228,13 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
-            dispatch_sync(edgeAdjacencylockQueue) {
-               // println("\ngetPlanes\n")
+           // dispatch_sync(edgeAdjacencylockQueue) {
+                println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
                 {
-                    if start.dirty {
+//                    if start.dirty {
                         var p : [Edge] = []//plane
                         var isContained = contains(self.visited, start)
                         if !isContained// skipped over already visited edges
@@ -257,21 +257,22 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                //println("\nplane complete\n")
-                                // println(plane)
+                                println("\nplane complete\n")
+//                                println("\(plane)\n")
                             }
                             closest.crossed = false
                         }
-                    }
+//                    }
                 }
-            }
+           // }
         }
         
         
         //get closest adjancent edge
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
-        {
+        {   println(current)
+            printAdjList(current.adjacency, edge: current)
 
             var closest = current.twin
             
@@ -345,7 +346,7 @@
         func shapeHitTest(path: UIBezierPath) -> [Edge]?
         {
             var list = [Edge]()
-            dispatch_sync(edgeAdjacencylockQueue) {
+           /// dispatch_sync(edgeAdjacencylockQueue) {
                 for (k,v) in self.adjacency
                 {
                     if CGPathContainsPoint(path.CGPath, nil, k, true)
@@ -356,7 +357,7 @@
                         }
                     }
                 }
-            }
+           // }
             return (list.count > 0) ? list : nil
         }
         
@@ -429,10 +430,16 @@
             folds.map({self.addEdge($0)})
         }
         
-        func addFeatureToSketch(feature: FoldFeature){
-            if let fEdges = feature.featureEdges{
-                fEdges.map({self.addEdge($0)})
-              }
+        // add any feature edges that aren't
+        // already in the sketch 
+        func addFeatureToSketch(feature: FoldFeature)
+        {   let fEdges = feature.featureEdges!
+            for edge in fEdges
+            {
+                if (!self.edges.contains(edge))
+                {
+                    self.addEdge(edge)
+                }
+            }
         }
-
     }

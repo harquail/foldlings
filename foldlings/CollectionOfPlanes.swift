@@ -39,81 +39,86 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane, sketch:Sketch)
     {
-        dispatch_sync(planeAdjacencylockQueue) {
+        // dispatch_sync(planeAdjacencylockQueue) {
+        if !contains(self.planes, plane) {
+            
             if isCounterClockwise(plane.path) {
                 let color = plane.color
-                if !contains(self.planes, plane) {
-                    self.planes.append(plane)
-                }
+                //if !contains(self.planes, plane) {
+                self.planes.append(plane)
+                 }
                 
-                if self.adjacency[plane] == nil {
-                    self.adjacency[plane] = []
-                }
                 
-                for edge in plane.edges {
-                    edge.dirty = false //mark it as clean
-                    if sketch.isTopEdge(edge) {
-                        self.topPlane = plane
-                    }
-                    else if sketch.isBottomEdge(edge) {
-                        self.bottomPlane = plane
-                    }
-                    edge.plane = plane
-                    if kOverrideColor { edge.colorOverride = getRandomColor(0.8) }
-                    if edge.kind == .Fold {
-                        plane.kind = .Plane
-                        
-                        if let p = edge.twin.plane {
-                            let index = self.adjacency[plane]!.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                            self.adjacency[plane]!.insert(p, atIndex: index)
-                            if self.adjacency[p] == nil {
-                                self.adjacency[p] = [plane]
-                            }
-                            else if !self.adjacency[p]!.contains(plane) {
-                                let index = self.adjacency[p]!.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                                self.adjacency[p]!.insert(plane, atIndex: index)
-                            }
-                        }
-                    }
-                }
-            }
+//                for edge in plane.edges {
+//                    edge.dirty = false //mark it as clean
+//                    if sketch.isTopEdge(edge) {
+//                        self.topPlane = plane
+//                    }
+//                    else if sketch.isBottomEdge(edge) {
+//                        self.bottomPlane = plane
+//                    }
+//                    edge.plane = plane
+//                    if kOverrideColor { edge.colorOverride = getRandomColor(0.8) }
+//                    if edge.kind == .Fold {
+//                        plane.kind = .Plane
+//                        
+//                        if let p = edge.twin.plane {
+//                            if self.adjacency[plane] == nil {
+//                                println("did encounter an nil plane adjacency")
+//                                println(plane)
+//                                self.adjacency[plane] = []
+//                            }
+//                            var adjacencylist = self.adjacency[plane]!
+//                            let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+//                            adjacencylist.insert(p, atIndex: index)
+//                            if self.adjacency[p] == nil {
+//                                self.adjacency[p] = [plane]
+//                            }
+//                            else if !self.adjacency[p]!.contains(plane) {
+//                                let index = self.adjacency[p]!.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+//                                self.adjacency[p]!.insert(plane, atIndex: index)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            // }
         }
-        
     }
     
     
     /// remove a plane and set dirty on edges
     func removePlane(plane:Plane)
     {
-        dispatch_sync(planeAdjacencylockQueue) {
-            
-            for edge in plane.edges {
-                edge.dirty = true
-                edge.plane = nil
-            }
-            
-            if self.topPlane == plane { self.topPlane = nil }
-            if self.bottomPlane == plane { self.bottomPlane = nil }
-            
-            for p in self.planes {
-                if self.adjacency[p] != nil {
-                    self.adjacency[p]!.remove(plane)
-                }
-            }
-            
-            self.adjacency[plane] = nil
-            self.planes.remove(plane)
-            
+        // dispatch_sync(planeAdjacencylockQueue) {
+        
+        for edge in plane.edges {
+            edge.dirty = true
+            edge.plane = nil
         }
+        
+        if self.topPlane == plane { self.topPlane = nil }
+        if self.bottomPlane == plane { self.bottomPlane = nil }
+        
+        for p in self.planes {
+            if self.adjacency[p] != nil {
+                self.adjacency[p]!.remove(plane)
+            }
+        }
+        
+        self.adjacency[plane] = nil
+        self.planes.remove(plane)
+        
+        // }
     }
     
     //just re-init it all
     func removeAll()
     {
-        dispatch_sync(planeAdjacencylockQueue) {
-            self.planes =  []
-            self.adjacency = [Plane : [Plane]]()
-        }
+        // dispatch_sync(planeAdjacencylockQueue) {
+        self.planes =  []
+        self.adjacency = [Plane : [Plane]]()
+        //}
     }
     
     // #TODO lol
@@ -123,7 +128,7 @@ class CollectionOfPlanes: Printable, Hashable {
         return true
     }
     
-
-
+    
+    
 }
 

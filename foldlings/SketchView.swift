@@ -249,18 +249,18 @@ class SketchView: UIView {
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
                     sketch.addFeatureToSketch(drawingFeature)
-                    //println(drawingFeature.horizontalFolds)
 
                 }
 
                 //clear the current feature
                 sketch.currentFeature = nil
+//                println("edges of sketch: \(sketch.edges)\n")
+                sketch.getPlanes()
+                forceRedraw()
             }
-            sketch.getPlanes()
-            forceRedraw()
+
             //println("edge being removed: \(drawingFeature.drivingFold!)")
             //println("edge replacing: \(newFolds)")
-            //println("edges of sketch: \(sketch.edges)")
             
         default:
             println("Gesture not recognized")
@@ -429,30 +429,30 @@ class SketchView: UIView {
     {
         if(!self.redrawing)
         {
-            dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0),
-                {
-                    self.redrawing = true
-                    dispatch_sync(self.redrawLockQueue){}
-                    
-                    dispatch_async(dispatch_get_main_queue(),
-                        {
-                            dispatch_sync(self.redrawLockQueue)
-                                {
-                                    self.incrementalImage = nil
-                                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                                    self.setNeedsDisplay() //draw to clear the deleted path
-                                    self.redrawing = false
-                            }
-                    })
-            })
-            
-            dispatch_sync(self.redrawLockQueue)
-                {
-                    self.incrementalImage = nil
-                    self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
-                    self.setNeedsDisplay() //draw to clear the deleted path
-            }
+            //            dispatch_async(dispatch_get_global_queue(self.redrawPriority, 0),
+            //                {
+            self.redrawing = true
+            //dispatch_sync(self.redrawLockQueue){}
+            //
+            //                    dispatch_async(dispatch_get_main_queue(),
+            //                        {
+            //                            dispatch_sync(self.redrawLockQueue)
+            //                                {
+            self.incrementalImage = nil
+            self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+            self.setNeedsDisplay() //draw to clear the deleted path
+            self.redrawing = false
+            //                            }
+            //                    })
+            //            })
         }
+//        dispatch_sync(self.redrawLockQueue)
+//            {
+                self.incrementalImage = nil
+                self.incrementalImage = self.bitmap(grayscale: false) // the bitmap isn't grayscale
+                self.setNeedsDisplay() //draw to clear the deleted path
+//        }
+        
     }
     
     //This function creates the contents of the SVG file
