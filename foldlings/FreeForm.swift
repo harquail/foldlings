@@ -369,8 +369,8 @@ class FreeForm:FoldFeature{
         var options:[FeatureOption] = []
         options.append(.DeleteFeature)
         if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
+                options.append(.MoveFolds);
+          }
         
         return options
         
