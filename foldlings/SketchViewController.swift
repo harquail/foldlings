@@ -40,7 +40,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         
         if let fs = sketchView.sketch.features{
-            println(sketchView.path)
+            
+            //set tapped feature to nil, clearing any taps 
+            sketchView.sketch.tappedFeature = nil
             
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
