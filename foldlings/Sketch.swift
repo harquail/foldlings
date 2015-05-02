@@ -391,33 +391,6 @@
                 return false
         }
         
-        // #TODO: this is bad and shouldn't exist...
-        /// updates sketch edges to match those generated from features
-        // what exactly does this do??
-//        func refreshFeatureEdges(){
-//            
-//            var featureEdges:[Edge] = []
-//            for feature in self.features!{
-//                featureEdges = feature.getEdges()
-//                
-//            }
-//            
-//            for edge in self.edges{
-//                self.removeEdge(edge)
-//            }
-//            
-//            for feature in self.features!{
-//                
-//                let edgesToAdd = feature.getEdges()
-//                for edge in edgesToAdd{
-//                    
-//
-//                        self.addEdge(edge)
-//                }
-//                                
-//            }
-//        }
-        
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
