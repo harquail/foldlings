@@ -10,6 +10,7 @@ import SceneKit
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var sketchView: SketchView!
+
     @IBOutlet var selected: UIImageView!
     
     @IBAction func checkButtonClicked(sender:UIButton){
@@ -35,6 +36,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         
         if let fs = sketchView.sketch.features{
+            println(sketchView.path)
             
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
@@ -48,7 +50,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                     // if freeform shape, reject points outside bounds
                     if let freeForm = f as? FreeForm{
                         if(!freeForm.path!.containsPoint(touchPoint)){
-                        continue
+                            continue
                         }
                     }
                     
@@ -102,11 +104,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     override func viewDidLoad() {
         
-            let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
-            sketchView.addGestureRecognizer(singleFingerTap)
-            
-            let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
-            sketchView.addGestureRecognizer(draggy)
+        let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
+        sketchView.addGestureRecognizer(singleFingerTap)
+        
+        let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
+        sketchView.addGestureRecognizer(draggy)
         
     }
     
@@ -121,7 +123,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
     
     
     @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
@@ -134,17 +135,25 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
 
         //println("box fold")
         sketchView.sketchMode = .BoxFold
-        
+    }
+    
+    //box free-form selected
+    @IBAction func freeForm(sender: UIBarButtonItem) {
+        sketchView.sketchMode = .FreeForm
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "PreviewSegue") {
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            //this retains a reference to the sketch view
+            let vew = self.sketchView
+            let sketch = self.sketchView.sketch
             
-            let img = sketchView.bitmap(grayscale: false, circles: false)
+            let img = vew.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
+            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+//            
             viewController.setButtonBG(imgNew)
             
             // pass data to next view
@@ -160,6 +169,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         return true
     }
     
+    @IBAction func unWindToSketchViewController(segue: UIStoryboardSegue) {
+        //nothing goes here
+    }
     
     
 }

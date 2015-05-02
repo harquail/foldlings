@@ -79,10 +79,14 @@ class FreeForm:FoldFeature{
         //make paths from the point bins
         for bin in pointBins{
             
-            let p = pathFromPoints(bin)
+            let p = pathFromPoints(smoothPoints(bin,epsilon: 0.01))
             
+            //get top and bottom folds
+            let maxFold = self.horizontalFolds.maxBy({$0.start.y})
+            let minFold = self.horizontalFolds.minBy({$0.start.y})
+
             //discard paths whose centroid is above or below top & bottom foldss
-            if(p.center().y < self.horizontalFolds[0].start.y || p.center().y > self.horizontalFolds[1].start.y ){
+            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 continue
             }
             
@@ -97,6 +101,7 @@ class FreeForm:FoldFeature{
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
+        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
@@ -116,7 +121,7 @@ class FreeForm:FoldFeature{
         
         //if the points are far enough apart, make a new path
         //(Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2
-        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 5)){
+        if (cachedPath == nil || (Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 10)){
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
             interpolationPoints.append(NSValue(CGPoint: endPoint!))
@@ -174,7 +179,7 @@ class FreeForm:FoldFeature{
             return false
         }
         else{
-            if let intersects = PathIntersections.intersectionsBetweenCGPaths(fold.path.CGPath,p2: self.path!.CGPath){
+            if let intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
                 
                 intersectionsWithDrivingFold = intersects
                 intersections += intersects
@@ -202,10 +207,58 @@ class FreeForm:FoldFeature{
         
     }
     
+    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath) -> Bool{
+        
+        print("trunc. ")
+        
+        var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
+        
+        if let ps = points{
+            if(ps.count%2 == 0 ){
+                print(" points")
+                var i = 0
+                var edgesToAdd:[Edge] = []
+                while(i<ps.count){
+                    print(" \(i) ")
+                    
+                    if(ps.count>i+1){
+                    //try making a straight edge between the points
+                    let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
+                    // if the line's center is inside the path, add the edge and go to the next pair
+                    print(" just before contains point ")
+                    if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
+                        edgesToAdd.append(edge)
+                       print(" i+2 ")
+                        i += 2
+                        continue
+                    }
+                    }
+                        //otherwise, try the next point
+//                    else{
+                        print(" i+1 ")
+                        i += 1
+//                    }
+                }
+                
+                //if there are edges to add, add them, and return that the trucation succeeded
+                if(edgesToAdd.count>0){
+                    intersections.extend(ps)
+                    self.horizontalFolds.extend(edgesToAdd)
+                    self.cachedEdges!.extend(edgesToAdd)
+                    return true
+                    
+                }
+                
+            }
+        }
+        return false
+    }
+
+    
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds(){
         
-        if let driver = drivingFold{
+        if let driver = drivingFold, p = path{
             
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
@@ -237,7 +290,11 @@ class FreeForm:FoldFeature{
             while(scanLine.path.firstPoint().y < driver.start.y){
                 var moveDown = CGAffineTransformMakeTranslation(0, 3);
                 scanLine.path.applyTransform(moveDown)
-                var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
+    
+                println(scanLine.path)
+
+                
+                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
                 if(truncated){
                     yTop = scanLine.path.firstPoint().y
                     break
@@ -249,9 +306,16 @@ class FreeForm:FoldFeature{
             //BOTTOM FOLD
             //move scanline up to find bottom intersection point
             while(scanLine.path.firstPoint().y > driver.start.y){
+                
                 var moveDown = CGAffineTransformMakeTranslation(0, -3);
                 scanLine.path.applyTransform(moveDown)
-                var truncated = tryIntersectionTruncation(scanLine.path,self.path!)
+                
+   
+                println(scanLine.path)
+                println(p
+                )
+
+                let truncated = tryIntersectionTruncation(scanLine.path,testPathTwo: pathThroughTouchPoints())
                 if(truncated){
                     yBottom = scanLine.path.firstPoint().y
                     break
@@ -259,15 +323,15 @@ class FreeForm:FoldFeature{
             }
             
             //MIDDLE FOLD
-            //move can line to position that will make the shape fold to 90º
+            //move scan line to position that will make the shape fold to 90º
             let masterdist = yTop - driver.start.y
             let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
             // scanline is at the bottom fold position, so we just move it up by masterdist
             scanLine.path.applyTransform(moveToCenter)
             
             //get the intersections with the mid fold
-            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
-            intersections.extend(points!)
+//            let points = PathIntersections.intersectionsBetweenCGPaths(scanLine.path.CGPath, p2: self.path!.CGPath)
+//            intersections.extend(points!)
             
             // add a fold between those intersection points
             let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold, feature:self)

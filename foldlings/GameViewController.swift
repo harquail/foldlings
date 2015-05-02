@@ -119,24 +119,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = SCNLightTypeOmni
-        lightNode.light!.color = UIColor.whiteColor()
-        lightNode.light!.attenuationStartDistance = 100
-        lightNode.light!.attenuationEndDistance = 1000
-        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //scene.rootNode.addChildNode(lightNode)
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = SCNLightTypeAmbient
-        ambientLightNode.light!.color = UIColor.whiteColor()
-        scene.rootNode.addChildNode(ambientLightNode)
-        
-        scene.physicsWorld.gravity.y = 0.0
+//        
+//        // create and add a light to the scene
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        lightNode.light!.type = SCNLightTypeOmni
+//        lightNode.light!.color = UIColor.whiteColor()
+//        lightNode.light!.attenuationStartDistance = 100
+//        lightNode.light!.attenuationEndDistance = 1000
+//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+//        //scene.rootNode.addChildNode(lightNode)
+//        // create and add an ambient light to the scene
+//        let ambientLightNode = SCNNode()
+//        ambientLightNode.light = SCNLight()
+//        ambientLightNode.light!.type = SCNLightTypeAmbient
+//        ambientLightNode.light!.color = UIColor.whiteColor()
+//        scene.rootNode.addChildNode(ambientLightNode)
+//        
+//        scene.physicsWorld.gravity.y = 0.0
         
         //create the OneShpere
         scene.rootNode.addChildNode(theOneSphere)
@@ -448,6 +448,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    
+
     
     
     

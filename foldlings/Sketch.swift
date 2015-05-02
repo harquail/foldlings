@@ -333,7 +333,7 @@
             for edge in self.edges
             {
                 if let np = edge.hitTest(point) {
-                        r = (edge, np)
+                    r = (edge, np)
                 }
             }
             
@@ -373,22 +373,38 @@
         // might be better living in plane
         func isTopEdge(edge:Edge) -> Bool
         {
-                if let masterF = masterFeature{
-                    return masterF.startPoint!.y == edge.start.y
-                }
-                return false
-           
+            if let masterF = masterFeature{
+                return masterF.startPoint!.y == edge.start.y
+            }
+            return false
+            
             
         }
         
         func isBottomEdge(edge:Edge) -> Bool
         {
-                if let masterF = masterFeature{
-                    if(masterF.endPoint != nil){
-                        return masterF.endPoint!.y == edge.start.y
-                    }
+            if let masterF = masterFeature{
+                if(masterF.endPoint != nil){
+                    return masterF.endPoint!.y == edge.start.y
                 }
-                return false
+            }
+            return false
+        }
+        
+        func healFoldsOccludedBy(feature:FreeForm){
+            
+            var fragments:[Edge] = [];
+            
+            for edge in edges{
+                if(edge.start.y == feature.drivingFold!.start.y  && (feature.intersections.contains(edge.start)  || feature.intersections.contains(edge.end))) {
+                    fragments.append(edge)
+                }
+            }
+            
+            for edge in fragments{
+                feature.parent?.horizontalFolds.remove(edge)
+                feature.parent?.cachedEdges?.remove(edge)
+            }
         }
         
         // replaces one fold edge with an array of fold edges
