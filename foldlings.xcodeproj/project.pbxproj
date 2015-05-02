@@ -66,7 +66,6 @@
 		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
 		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
 		F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15472D31A97AA74009E36A6 /* FoldFeature.swift */; };
-		F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F15472DB1A97AFD3009E36A6 /* placeholder_button.png */; };
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
@@ -99,6 +98,14 @@
 		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
 		F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B9AE771A06A64B00265AAE /* Archivist.swift */; };
 		F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1B9AE791A06B37D00265AAE /* data.plist */; };
+		F1BB8E1F1AF56A09006800CB /* freeform-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E1A1AF56A09006800CB /* freeform-icon.png */; };
+		F1BB8E201AF56A09006800CB /* vfold-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E1B1AF56A09006800CB /* vfold-icon.png */; };
+		F1BB8E211AF56A09006800CB /* polygon-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E1C1AF56A09006800CB /* polygon-icon.png */; };
+		F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E1D1AF56A09006800CB /* box-fold-icon.png */; };
+		F1BB8E291AF56F7E006800CB /* freeform-selected-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E251AF56F7E006800CB /* freeform-selected-icon.png */; };
+		F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E261AF56F7E006800CB /* vfold-selected-icon.png */; };
+		F1BB8E2B1AF56F7E006800CB /* polygon-selected-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E271AF56F7E006800CB /* polygon-selected-icon.png */; };
+		F1BB8E2C1AF56F7E006800CB /* box-fold-selected-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BB8E281AF56F7E006800CB /* box-fold-selected-icon.png */; };
 		F1BE6A7E1AC1EF4A00B99C8F /* ANImageBitmapRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A611AC1EF4900B99C8F /* ANImageBitmapRep.m */; };
 		F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A631AC1EF4900B99C8F /* BitmapContextRep.m */; };
 		F1BE6A801AC1EF4A00B99C8F /* NSImage+ANImageBitmapRep.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A661AC1EF4900B99C8F /* NSImage+ANImageBitmapRep.m */; };
@@ -259,7 +266,6 @@
 		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
 		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
 		F15472D31A97AA74009E36A6 /* FoldFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldFeature.swift; sourceTree = "<group>"; };
-		F15472DB1A97AFD3009E36A6 /* placeholder_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_button.png; sourceTree = "<group>"; };
 		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -315,6 +321,14 @@
 		F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfFoldlings.swift; sourceTree = "<group>"; };
 		F1B9AE771A06A64B00265AAE /* Archivist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivist.swift; sourceTree = "<group>"; };
 		F1B9AE791A06B37D00265AAE /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
+		F1BB8E1A1AF56A09006800CB /* freeform-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "freeform-icon.png"; sourceTree = "<group>"; };
+		F1BB8E1B1AF56A09006800CB /* vfold-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vfold-icon.png"; sourceTree = "<group>"; };
+		F1BB8E1C1AF56A09006800CB /* polygon-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polygon-icon.png"; sourceTree = "<group>"; };
+		F1BB8E1D1AF56A09006800CB /* box-fold-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box-fold-icon.png"; sourceTree = "<group>"; };
+		F1BB8E251AF56F7E006800CB /* freeform-selected-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "freeform-selected-icon.png"; sourceTree = "<group>"; };
+		F1BB8E261AF56F7E006800CB /* vfold-selected-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vfold-selected-icon.png"; sourceTree = "<group>"; };
+		F1BB8E271AF56F7E006800CB /* polygon-selected-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polygon-selected-icon.png"; sourceTree = "<group>"; };
+		F1BB8E281AF56F7E006800CB /* box-fold-selected-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "box-fold-selected-icon.png"; sourceTree = "<group>"; };
 		F1BE6A601AC1EF4900B99C8F /* ANImageBitmapRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANImageBitmapRep.h; sourceTree = "<group>"; };
 		F1BE6A611AC1EF4900B99C8F /* ANImageBitmapRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANImageBitmapRep.m; sourceTree = "<group>"; };
 		F1BE6A621AC1EF4900B99C8F /* BitmapContextRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapContextRep.h; sourceTree = "<group>"; };
@@ -454,7 +468,14 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				F15472DB1A97AFD3009E36A6 /* placeholder_button.png */,
+				F1BB8E251AF56F7E006800CB /* freeform-selected-icon.png */,
+				F1BB8E261AF56F7E006800CB /* vfold-selected-icon.png */,
+				F1BB8E271AF56F7E006800CB /* polygon-selected-icon.png */,
+				F1BB8E281AF56F7E006800CB /* box-fold-selected-icon.png */,
+				F1BB8E1A1AF56A09006800CB /* freeform-icon.png */,
+				F1BB8E1B1AF56A09006800CB /* vfold-icon.png */,
+				F1BB8E1C1AF56A09006800CB /* polygon-icon.png */,
+				F1BB8E1D1AF56A09006800CB /* box-fold-icon.png */,
 				F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */,
 				F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */,
 				F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */,
@@ -913,17 +934,24 @@
 				F145829C1A79E89000760799 /* slider_button.png in Resources */,
 				F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
+				F1BB8E211AF56A09006800CB /* polygon-icon.png in Resources */,
 				F145829B1A79E89000760799 /* preview_button.png in Resources */,
+				F1BB8E1F1AF56A09006800CB /* freeform-icon.png in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */,
+				F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				F16673BD1ACE3F5700243D70 /* Info.plist in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
+				F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
+				F1BB8E2B1AF56F7E006800CB /* polygon-selected-icon.png in Resources */,
 				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
 				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
+				F1BB8E201AF56A09006800CB /* vfold-icon.png in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
-				F15472DC1A97AFD3009E36A6 /* placeholder_button.png in Resources */,
+				F1BB8E2C1AF56F7E006800CB /* box-fold-selected-icon.png in Resources */,
+				F1BB8E291AF56F7E006800CB /* freeform-selected-icon.png in Resources */,
 				F1EB375E1AE4A1AD007DCEC5 /* Info.plist in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,

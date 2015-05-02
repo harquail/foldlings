@@ -22,6 +22,9 @@ class SketchView: UIView {
         case Slider
         case BoxFold
         case FreeForm
+        case VFold
+        case Polygon
+
     }
     
     var path: UIBezierPath! //currently drawing path
