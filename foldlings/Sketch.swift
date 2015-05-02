@@ -18,7 +18,9 @@
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
         var masterFeature:FoldFeature?
-
+        
+        
+        
         
         //the folds that define a sketch
         //for now, cuts are in this array to
@@ -221,6 +223,7 @@
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
             }
+            //            drivingEdge = masterFeature!.horizontalFolds.first
             
         }
         
@@ -229,7 +232,7 @@
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {
-                //println("\ngetPlanes\n")
+                println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -257,8 +260,8 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                //println("\nplane complete\n")
-//                                println("\(plane)\n")
+                                println("\nplane complete\n")
+                                println("\(plane)\n")
                             }
                             closest.crossed = false
                         }
@@ -275,6 +278,9 @@
 //            printAdjList(current.adjacency, edge: current)
 
             var closest = current.twin
+            //      println("adjacency count \(current.adjacency.count)")
+            //println("\n current \(current.start) , \(current.end) \n")
+            // printAdjList(current.adjacency, edge: current)
             
             // if adjacency has only twin and edge, return twin
             if current.adjacency.count < 2 {
@@ -403,10 +409,9 @@
             
             for edge in fragments{
                 feature.parent?.horizontalFolds.remove(edge)
-                feature.parent?.cachedEdges?.remove(edge)
+                feature.parent?.featureEdges?.remove(edge)
             }
         }
-        
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
@@ -428,7 +433,9 @@
                 if (!self.edges.contains(edge))
                 {
                     self.addEdge(edge)
+                    //                    }
                 }
             }
         }
+        
     }

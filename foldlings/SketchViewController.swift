@@ -96,7 +96,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             break
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
-//            feature.parent?.healFold(feature.drivingFold!)
             self.sketchView.forceRedraw()
         }
         
@@ -130,10 +129,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.sketchMode = .FreeForm
     }
     
-    
-    @IBAction func PlaceholderFeatureButtonClicked(sender:UIButton){
-
-        //println("box fold")
+    //box fold button selected
+    // #TODO: flurry logging here
+    @IBAction func boxFold(sender: UIBarButtonItem) {
         sketchView.sketchMode = .BoxFold
     }
     
@@ -156,12 +154,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
 //            
             viewController.setButtonBG(imgNew)
             
-            // pass data to next view
-            viewController.laserImage = sketchView.bitmap(grayscale: true)
-            viewController.svgString = sketchView.svgImage()
-            viewController.planes = sketchView.sketch.planes
-            viewController.parentButton = sketchView.previewButton
-        
+            viewController.laserImage = vew.bitmap(grayscale: true)
+            viewController.svgString = vew.svgImage()
+            viewController.planes = sketch.planes
+
         }
     }
     // hide status bar
