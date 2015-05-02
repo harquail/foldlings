@@ -271,8 +271,8 @@
         //get closest adjancent edge
         // *not* concurrency safe, only use if you have a lock
         func getClosest(current: Edge) -> Edge
-        {   println(current)
-            printAdjList(current.adjacency, edge: current)
+        {   //println(current)
+//            printAdjList(current.adjacency, edge: current)
 
             var closest = current.twin
             

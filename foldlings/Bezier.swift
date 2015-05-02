@@ -15,6 +15,11 @@ let kBezierIncrements:CGFloat = 0.5
 func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
+    // if a staright line, just return endpoint 
+    if elements.count <= 2{
+        return path.lastPoint()
+    }
+    
     let points = getSubdivisions(elements, increments:25)
     var npoint:CGPoint = CGPointZero
     
