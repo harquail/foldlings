@@ -310,7 +310,7 @@ class SketchView: UIView {
                 }
                 else{
                     drawingFeature.removeFromSketch(sketch)
-                    AFMInfoBanner.showAndHideWithText("Box Folds must cross a single fold", style: AFMInfoBannerStyle.Error)
+                    AFMInfoBanner.showWithText("Box Folds must span a single fold", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(2.5))
                 }
                 
                 sketch.refreshFeatureEdges()

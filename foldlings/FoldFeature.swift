@@ -25,10 +25,10 @@ class FoldFeature: NSObject, Printable, NSCoding{
         Valid = 1 // can be simulated in 3d/folded in real life
     }
     
-    enum DefinitionState {
-        case Incomplete, //still drawing/dragging
-        Complete //finished drawing
-    }
+//    enum DefinitionState {
+//        case Incomplete, //still drawing/dragging
+//        Complete //finished drawing
+//    }
     
     //not used yet
     var featurePlanes:[Plane] = []
@@ -126,11 +126,13 @@ class FoldFeature: NSObject, Printable, NSCoding{
     /// makes the start point the top left point
     func fixStartEndPoint(){
         
+        if(startPoint != nil && endPoint != nil){
         let topLeft = CGPointMake(min(startPoint!.x,endPoint!.x), min(startPoint!.y,endPoint!.y))
         let bottomRight = CGPointMake(max(startPoint!.x,endPoint!.x), max(startPoint!.y,endPoint!.y))
         
         startPoint = topLeft
         endPoint = bottomRight
+        }
         
         horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
         
@@ -251,6 +253,10 @@ class FoldFeature: NSObject, Printable, NSCoding{
     
     
     func featureSpansFold(fold:Edge)->Bool{
+        
+        if(self.startPoint == nil ||  self.endPoint == nil){
+            return false
+        }
         
         //feature must be inside fold x bounds
         if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   )){

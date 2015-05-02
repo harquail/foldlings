@@ -139,8 +139,8 @@
 		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
 		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 		F1F9CBD91AF49A8A00213C3E /* libPods-AFMInfoBanner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F9CBD61AF49A8A00213C3E /* libPods-AFMInfoBanner.a */; };
-		F1F9CBDA1AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F9CBD71AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a */; };
 		F1F9CBDB1AF49A8A00213C3E /* libPods-UAAppReviewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F9CBD81AF49A8A00213C3E /* libPods-UAAppReviewManager.a */; };
+		F1F9CBDD1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F9CBDC1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -371,6 +371,7 @@
 		F1F9CBD61AF49A8A00213C3E /* libPods-AFMInfoBanner.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AFMInfoBanner.a"; path = "Pods/../build/Debug-iphoneos/libPods-AFMInfoBanner.a"; sourceTree = "<group>"; };
 		F1F9CBD71AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-CVKHierarchySearcher.a"; path = "Pods/../build/Debug-iphoneos/libPods-CVKHierarchySearcher.a"; sourceTree = "<group>"; };
 		F1F9CBD81AF49A8A00213C3E /* libPods-UAAppReviewManager.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-UAAppReviewManager.a"; path = "Pods/../build/Debug-iphoneos/libPods-UAAppReviewManager.a"; sourceTree = "<group>"; };
+		F1F9CBDC1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-CVKHierarchySearcher.a"; path = "Pods/../build/Debug-iphoneos/libPods-CVKHierarchySearcher.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,8 +379,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1F9CBDD1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a in Frameworks */,
 				F1F9CBD91AF49A8A00213C3E /* libPods-AFMInfoBanner.a in Frameworks */,
-				F1F9CBDA1AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a in Frameworks */,
 				F1F9CBDB1AF49A8A00213C3E /* libPods-UAAppReviewManager.a in Frameworks */,
 				F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */,
 				F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */,
@@ -403,6 +404,7 @@
 		165FC34A891412DCA9DCF30F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1F9CBDC1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a */,
 				F1F9CBD61AF49A8A00213C3E /* libPods-AFMInfoBanner.a */,
 				F1F9CBD71AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a */,
 				F1F9CBD81AF49A8A00213C3E /* libPods-UAAppReviewManager.a */,
