@@ -22,6 +22,9 @@ class SketchView: UIView {
         case Slider
         case BoxFold
         case FreeForm
+        case VFold
+        case Polygon
+
     }
     
     var path: UIBezierPath! //currently drawing path
@@ -101,7 +104,7 @@ class SketchView: UIView {
         }
         let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
-        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.1
+        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
         if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
@@ -310,6 +313,7 @@ class SketchView: UIView {
                 }
                 else{
                     drawingFeature.removeFromSketch(sketch)
+                    AFMInfoBanner.showWithText("Box Folds must span a single fold", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(2.5))
                 }
                 
                 sketch.refreshFeatureEdges()

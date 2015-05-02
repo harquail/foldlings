@@ -11,6 +11,6 @@ import Foundation
 
 enum FeatureOption:String {
     case AddFolds = "Add Folds"
-    case MoveFolds = "Move Folds"
+    case MoveFolds = "Drag Folds"
     case DeleteFeature = "Delete"
 }

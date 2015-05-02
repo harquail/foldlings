@@ -342,6 +342,10 @@ class FreeForm:FoldFeature{
         //first, test if y value is within cgrect ys
         let lineRect = CGRectMake(fold.start.x,fold.start.y,fold.end.x - fold.start.x,1)
         
+//        if(self.boundingBox() == nil){
+//            return false
+//        }
+        
         //if the line does not intersect the bezier's bounding box, the fold can't span it
         if(!CGRectIntersectsRect(self.boundingBox()!,lineRect)){
             return false
@@ -369,8 +373,8 @@ class FreeForm:FoldFeature{
         var options:[FeatureOption] = []
         options.append(.DeleteFeature)
         if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
+                options.append(.MoveFolds);
+          }
         
         return options
         
