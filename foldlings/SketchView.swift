@@ -310,6 +310,7 @@ class SketchView: UIView {
                 }
                 else{
                     drawingFeature.removeFromSketch(sketch)
+                    AFMInfoBanner.showAndHideWithText("Box Folds must cross a single fold", style: AFMInfoBannerStyle.Error)
                 }
                 
                 sketch.refreshFeatureEdges()

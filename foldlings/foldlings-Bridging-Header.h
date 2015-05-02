@@ -16,4 +16,5 @@
 #import "ANPathBitmap.h"
 #import "ANPathIntersection.h"
 #import "PerformanceBezier/PerformanceBezier.h"
-
+#import <AFMInfoBanner/AFMInfoBanner.h>
+#import <UAAppReviewManager/UAAppReviewManager.h>
