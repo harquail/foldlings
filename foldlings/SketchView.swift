@@ -413,7 +413,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 
-                //iterrte trhough features and draw them
+                //iterate trhough features and draw them
                 if var currentFeatures = sketch.features{
                     
                     if(sketch.currentFeature != nil){
@@ -421,33 +421,32 @@ class SketchView: UIView {
                     }
                     
                     for feature in currentFeatures{
-                        //                    if let feature = currentFeature{
+//                        if (feature == sketch.tappedFeature)
+                        
                         if(feature.startPoint != nil && feature.endPoint != nil){
                             let edges = feature.getEdges()
-                            
                             for e in edges
                             {
                                 setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                                 e.path.stroke()
                             }
-                            
                         }
                     }
                 }
                 
-                //print all edges
-                for e in sketch.edges
-                {
-                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                    
-                    //don't draw twin edges
-                    if(!twinsOfVisited.contains(e)){
-                        e.path.stroke()
-                        twinsOfVisited.append(e.twin)
-                    }
-                    
-                    
-                }
+//                //print all edges
+//                for e in sketch.edges
+//                {
+//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+//                    
+//                    //don't draw twin edges
+//                    if(!twinsOfVisited.contains(e)){
+//                        e.path.stroke()
+//                        twinsOfVisited.append(e.twin)
+//                    }
+//                    
+//                    
+//                }
             }
             else // this is a grayscale for print image
             {

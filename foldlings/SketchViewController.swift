@@ -41,7 +41,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         if let fs = sketchView.sketch.features{
             
-            //set tapped feature to nil, clearing any taps 
+            //set tapped feature to nil, clearing any taps
             sketchView.sketch.tappedFeature = nil
             
             // evaluate newer features first
