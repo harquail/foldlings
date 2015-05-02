@@ -154,19 +154,22 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                            
+
+
                         }
                     }
                 }
-                println("edge being removed: \(drawingFeature.drivingFold!)")
+                //println("edge being removed: \(drawingFeature.drivingFold!)")
                 //println("edge replacing: \(newFolds)")
-                println("edges of sketch: \(sketch.edges)")
+                //println("edges of sketch: \(sketch.edges)")
             }
             
-            //add edges from the feature to the sketch
+            // add the edges of the feature to the sketch
+            sketch.addFeatureToSketch(sketch.currentFeature!)
             sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
-            //sketch.refreshFeatureEdges()
+            
+            //println("edges of sketch: \(sketch.edges)\n")
             self.sketch.getPlanes()
             forceRedraw()
         
@@ -254,7 +257,6 @@ class SketchView: UIView {
 
                 //clear the current feature
                 sketch.currentFeature = nil
-//                println("edges of sketch: \(sketch.edges)\n")
                 sketch.getPlanes()
                 forceRedraw()
             }

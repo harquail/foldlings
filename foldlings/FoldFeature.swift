@@ -123,6 +123,7 @@ class FoldFeature: NSObject, Printable
     }
 
     //delete a feature from a sketch
+    // TODO: Remove edges of feature from the sketch
     func removeFromSketch(sketch:Sketch)
     {
         

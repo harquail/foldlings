@@ -229,7 +229,7 @@
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {
-                println("\ngetPlanes\n")
+                //println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -257,7 +257,7 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                println("\nplane complete\n")
+                                //println("\nplane complete\n")
 //                                println("\(plane)\n")
                             }
                             closest.crossed = false
@@ -394,29 +394,29 @@
         // #TODO: this is bad and shouldn't exist...
         /// updates sketch edges to match those generated from features
         // what exactly does this do??
-        func refreshFeatureEdges(){
-            
-            var featureEdges:[Edge] = []
-            for feature in self.features!{
-                featureEdges = feature.getEdges()
-                
-            }
-            
-            for edge in self.edges{
-                self.removeEdge(edge)
-            }
-            
-            for feature in self.features!{
-                
-                let edgesToAdd = feature.getEdges()
-                for edge in edgesToAdd{
-                    
-
-                        self.addEdge(edge)
-                }
-                                
-            }
-        }
+//        func refreshFeatureEdges(){
+//            
+//            var featureEdges:[Edge] = []
+//            for feature in self.features!{
+//                featureEdges = feature.getEdges()
+//                
+//            }
+//            
+//            for edge in self.edges{
+//                self.removeEdge(edge)
+//            }
+//            
+//            for feature in self.features!{
+//                
+//                let edgesToAdd = feature.getEdges()
+//                for edge in edgesToAdd{
+//                    
+//
+//                        self.addEdge(edge)
+//                }
+//                                
+//            }
+//        }
         
         // replaces one fold edge with an array of fold edges
         // that span the same distance

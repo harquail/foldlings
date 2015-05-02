@@ -64,8 +64,8 @@ class CollectionOfPlanes: Printable, Hashable {
                         
                         if let p = edge.twin.plane {
                             if self.adjacency[plane] == nil {
-                                println("did encounter an nil plane adjacency")
-                                println(plane)
+//                                println("did encounter an nil plane adjacency")
+//                                println(plane)
                                 self.adjacency[plane] = []
                             }
                             var adjacencylist = self.adjacency[plane]!

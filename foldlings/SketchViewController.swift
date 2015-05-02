@@ -95,7 +95,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
 //            feature.parent?.healFold(feature.drivingFold!)
-            //self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
         }
         
