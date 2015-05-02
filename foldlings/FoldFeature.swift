@@ -47,6 +47,8 @@ class FoldFeature: NSObject, Printable, NSCoding{
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
+    var activeOption:FeatureOption?  // the operation being performed on this feature (eg. .MoveFold)
+    
     required init(coder aDecoder: NSCoder) {
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")

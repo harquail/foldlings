@@ -104,7 +104,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             self.sketchView.sketch.refreshFeatureEdges()
             self.sketchView.forceRedraw()
         case .MoveFolds:
-            break
+            sketchView.sketch.tappedFeature = feature
+            feature.activeOption = .MoveFolds;
         }
         
     }

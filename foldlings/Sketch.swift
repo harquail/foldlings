@@ -15,8 +15,10 @@
         
         var features:[FoldFeature]? = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
-        var draggedEdge:Edge? //edge being dragged
         
+        var tappedFeature:FoldFeature? //feature currently tapped (which should sometimes be drawn differently
+        
+        var draggedEdge:Edge? //edge being dragged
         var masterFeature:FoldFeature?
         
         
