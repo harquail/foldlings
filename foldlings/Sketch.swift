@@ -234,7 +234,7 @@
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
                 {
-//                    if start.dirty {
+                    if start.dirty {
                         var p : [Edge] = []//plane
                         var isContained = contains(self.visited, start)
                         if !isContained// skipped over already visited edges
@@ -262,7 +262,7 @@
                             }
                             closest.crossed = false
                         }
-//                    }
+                    }
                 }
            // }
         }
