@@ -94,70 +94,56 @@ class SketchView: UIView {
         if(gesture.state == UIGestureRecognizerState.Began){
             
             
-//            println(sketch.tappedFeature)
-            println("rawrBefore")
-            if let tappedF = sketch.tappedFeature{
-                
-            if let activeOpt = tappedF.activeOption {
-                println("rawrAfter")
-                if activeOpt == .MoveFolds{
-//                        if let children = sketch.masterFeature?.children{
-//                            for child in children{
-//                                if(tappedF.boundingBox()!.contains(gesture.locationInView(self))){
-            
-                                    println("rawrABitAfter")
-
-                                    //get the edge & nearest point to hit
-                                    let edge = tappedF.featureEdgeAtPoint(gesture.locationInView(self))
-                                    if let e = edge{
-            
-                                        // keep track of change to dragged edges
-                                        sketch.draggedEdge = e
-                                        e.deltaY = gesture.translationInView(self).y
-                                        println("init deltaY: \(e.deltaY)")
-                                    }
-                                    else{
-                                        println("No Edge Here...")
-                                    }
-                                    println("rawrABitAfter")
-
-//                                    goodPlaceToDraw = false
-//                                }
-//                            }
-//                        }
+            if sketch.tappedFeature?.activeOption != nil{
+                if let children = sketch.masterFeature?.children{
+                    for child in children{
+                        if(child.boundingBox()!.contains(gesture.locationInView(self))){
+                            
+                            //get the edge & nearest point to hit
+                            let edge = child.featureEdgeAtPoint(gesture.locationInView(self))
+                            if let e = edge{
+                                
+                                // keep track of change to dragged edges
+                                sketch.draggedEdge = e
+                                e.deltaY = gesture.translationInView(self).y
+                                println("init deltaY: \(e.deltaY)")
+                            }
+                            else{
+                                println("No Edge Here...")
+                            }
+                            //                                    goodPlaceToDraw = false
+                            //                                    return
+                        }
+                    }
                 }
-                println("rawrVeryMuchAfter")
-                
-                }
-//                return
             }
-            else{
-            // make a shape with touchpoint
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            let shape = FreeForm(start:touchPoint)
-            sketch.currentFeature = shape
-            sketch.currentFeature?.startPoint = gesture.locationInView(self)
             
-            shape.endPoint = touchPoint
+            if(sketch.tappedFeature == nil){
+                // make a shape with touchpoint
+                var touchPoint: CGPoint = gesture.locationInView(self)
+                let shape = FreeForm(start:touchPoint)
+                sketch.currentFeature = shape
+                sketch.currentFeature?.startPoint = gesture.locationInView(self)
+                shape.endPoint = touchPoint
             }
             return
         }
         
-        let freeFormShape = sketch.currentFeature as? FreeForm
-
+        if sketch.tappedFeature == nil{
+        
+        let shape = sketch.currentFeature as! FreeForm
         // if it's been a few microseconds since we tried to add a point
         let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
-        if let shape = freeFormShape{
-        if(gesture.state == UIGestureRecognizerState.Changed && (Float(freeFormShape!.lastUpdated.timeIntervalSinceNow) < multiplier) && sketch.tappedFeature == nil){
+        if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
             path = shape.pathThroughTouchPoints()
             shape.path = path
             forceRedraw()
-            }
+        }
             //close the shape when the pan gesture ends
-        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled  && sketch.tappedFeature == nil){
+        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
             
             path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
@@ -237,8 +223,7 @@ class SketchView: UIView {
                         }
                     }
                 }
-            }        }
-
+            }
             
             
             
@@ -249,10 +234,10 @@ class SketchView: UIView {
             self.sketch.getPlanes()
             forceRedraw()
         }
-        
+        }
         
     }
-
+    
     
     func handleBoxFoldPan(sender: AnyObject){
         
