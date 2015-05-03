@@ -93,6 +93,31 @@ class SketchView: UIView {
         let gesture = sender as! UIPanGestureRecognizer
         if(gesture.state == UIGestureRecognizerState.Began){
             
+            
+            if sketch.tappedFeature?.activeOption == .MoveFolds{
+                        if let children = sketch.masterFeature?.children{
+                            for child in children{
+                                if(child.boundingBox()!.contains(gesture.locationInView(self))){
+            
+                                    //get the edge & nearest point to hit
+                                    let edge = child.featureEdgeAtPoint(gesture.locationInView(self))
+                                    if let e = edge{
+            
+                                        // keep track of change to dragged edges
+                                        sketch.draggedEdge = e
+                                        e.deltaY = gesture.translationInView(self).y
+                                        println("init deltaY: \(e.deltaY)")
+                                    }
+                                    else{
+                                        println("No Edge Here...")
+                                    }
+//                                    goodPlaceToDraw = false
+                                    return
+                                }
+                            }
+                        }
+            }
+            
             // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
             let shape = FreeForm(start:touchPoint)
@@ -106,7 +131,6 @@ class SketchView: UIView {
         // if it's been a few microseconds since we tried to add a point
         let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
         if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
-            
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
@@ -221,7 +245,6 @@ class SketchView: UIView {
             
             var goodPlaceToDraw = true
             //            if let children = sketch.masterFeature?.children{
-            
             //                for child in children{
             //                    if(child.boundingBox()!.contains(touchPoint)){
             //
