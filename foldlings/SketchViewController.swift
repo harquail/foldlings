@@ -9,6 +9,11 @@ import SceneKit
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
+    @IBOutlet var box: UIBarButtonItem!
+    @IBOutlet var free: UIBarButtonItem!
+    @IBOutlet var v: UIBarButtonItem!
+    @IBOutlet var polygon: UIBarButtonItem!
+    
     @IBOutlet var sketchView: SketchView!
 
     @IBOutlet var selected: UIImageView!
@@ -28,7 +33,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBAction func handlePan(sender: AnyObject) {
         sketchView.handlePan(sender)
     }
-    
     
     @IBAction func handleTap(sender: AnyObject) {
         let gesture = sender as! UITapGestureRecognizer
@@ -97,12 +101,15 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .DeleteFeature :
             feature.removeFromSketch(self.sketchView.sketch)
             self.sketchView.forceRedraw()
+        case .MoveFolds:
+            break
         }
         
     }
     
     override func viewDidLoad() {
         
+        box.image = UIImage(named:"box-fold-selected-icon")
         let singleFingerTap = UITapGestureRecognizer(target: self,action: "handleTap:")
         sketchView.addGestureRecognizer(singleFingerTap)
         
@@ -132,12 +139,35 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     //box fold button selected
     // #TODO: flurry logging here
     @IBAction func boxFold(sender: UIBarButtonItem) {
+        resetButtonImages()
         sketchView.sketchMode = .BoxFold
+        sender.image =  UIImage(named:"box-fold-selected-icon")
     }
     
     //box free-form selected
     @IBAction func freeForm(sender: UIBarButtonItem) {
+        resetButtonImages()
         sketchView.sketchMode = .FreeForm
+        sender.image =  UIImage(named:"freeform-selected-icon")
+    }
+    
+    @IBAction func vFold(sender: UIBarButtonItem) {
+        resetButtonImages()
+        sketchView.sketchMode = .VFold
+        sender.image =  UIImage(named:"vfold-selected-icon")
+    }
+    
+    @IBAction func polygon(sender: UIBarButtonItem) {
+        resetButtonImages()
+        sketchView.sketchMode = .Polygon
+        sender.image =  UIImage(named:"polygon-selected-icon")
+    }
+    
+    func resetButtonImages(){
+        box.image = UIImage(named:"box-fold-icon")
+        v.image = UIImage(named:"vfold-icon")
+        free.image = UIImage(named:"freeform-icon")
+        polygon.image = UIImage(named:"polygon-icon")
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {

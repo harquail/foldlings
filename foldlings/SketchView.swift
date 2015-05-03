@@ -24,6 +24,9 @@ class SketchView: UIView {
         case Slider
         case BoxFold
         case FreeForm
+        case VFold
+        case Polygon
+
     }
     
     //Initiated Global Variables

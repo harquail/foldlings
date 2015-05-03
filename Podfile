@@ -1,1 +1,2 @@
 pod 'UAAppReviewManager'
+pod 'AFMInfoBanner'
