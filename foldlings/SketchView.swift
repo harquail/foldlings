@@ -129,9 +129,9 @@ class SketchView: UIView {
                 println("rawrVeryMuchAfter")
                 
                 }
-                return
+//                return
             }
-            
+            else{
             // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
             let shape = FreeForm(start:touchPoint)
@@ -139,19 +139,23 @@ class SketchView: UIView {
             sketch.currentFeature?.startPoint = gesture.locationInView(self)
             
             shape.endPoint = touchPoint
+            }
             return
         }
-        let shape = sketch.currentFeature as! FreeForm
+        
+        let freeFormShape = sketch.currentFeature as? FreeForm
+
         // if it's been a few microseconds since we tried to add a point
         let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
-        if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier) && sketch.tappedFeature == nil){
+        if let shape = freeFormShape{
+        if(gesture.state == UIGestureRecognizerState.Changed && (Float(freeFormShape!.lastUpdated.timeIntervalSinceNow) < multiplier) && sketch.tappedFeature == nil){
             var touchPoint: CGPoint = gesture.locationInView(self)
             shape.endPoint = touchPoint
             //set the path to a curve through the points
             path = shape.pathThroughTouchPoints()
             shape.path = path
             forceRedraw()
-        }
+            }
             //close the shape when the pan gesture ends
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled  && sketch.tappedFeature == nil){
             
@@ -233,7 +237,8 @@ class SketchView: UIView {
                         }
                     }
                 }
-            }
+            }        }
+
             
             
             
