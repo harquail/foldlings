@@ -75,17 +75,30 @@ class SketchView: UIView {
     }
     
     func handlePan(sender: AnyObject) {
-        
-        switch (sketchMode) {
-        case .BoxFold:
-            handleBoxFoldPan(sender)
-        case .FreeForm:
-            handleFreeFormPan(sender)
-        default:
-            break
+        if(sketch.tappedFeature != nil){
+            
+            switch(sketch.tappedFeature!.activeOption!){
+            case .MoveFolds:
+                handleMoveFoldPan(sender)
+            default: break
+            }
+        }
+        else{
+            switch (sketchMode) {
+            case .BoxFold:
+                handleBoxFoldPan(sender)
+            case .FreeForm:
+                handleFreeFormPan(sender)
+            default:
+                break
+            }
         }
         
         
+    }
+    
+    func handleMoveFoldPan(sender: AnyObject){
+    
     }
     
     func handleFreeFormPan(sender: AnyObject){
@@ -130,110 +143,110 @@ class SketchView: UIView {
         }
         
         if sketch.tappedFeature == nil{
-        
-        let shape = sketch.currentFeature as! FreeForm
-        // if it's been a few microseconds since we tried to add a point
-        let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
-        if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            shape.endPoint = touchPoint
-            //set the path to a curve through the points
-            path = shape.pathThroughTouchPoints()
-            shape.path = path
-            forceRedraw()
-        }
-            //close the shape when the pan gesture ends
-        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
-            
-            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
-            shape.path = path
-            //reset path
-            path = UIBezierPath()
-            
-            if let drawingFeature = sketch.currentFeature{
+            let shape = sketch.currentFeature as! FreeForm
+            // if it's been a few microseconds since we tried to add a point
+            let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
+            if(gesture.state == UIGestureRecognizerState.Changed && (Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier)){
+                var touchPoint: CGPoint = gesture.locationInView(self)
+                shape.endPoint = touchPoint
+                //set the path to a curve through the points
+                path = shape.pathThroughTouchPoints()
+                shape.path = path
+                forceRedraw()
+            }
+                //close the shape when the pan gesture ends
+            else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
                 
-                //for feature in features -- check folds for spanning
-                drawingFeature.drivingFold = nil
-                drawingFeature.parent = nil
-                for feature in sketch.features!{
+                
+                path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
+                shape.path = path
+                //reset path
+                path = UIBezierPath()
+                
+                if let drawingFeature = sketch.currentFeature{
                     
-                    for fold in feature.horizontalFolds{
-                        if(drawingFeature.featureSpansFold(fold)){
-                            
-                            drawingFeature.drivingFold = fold
-                            drawingFeature.parent = feature
-                            
-                            //set parents if the fold spans drivinf
-                            if (drawingFeature.parent!.children != nil){
-                                drawingFeature.parent!.children!.append(drawingFeature)
-                            }
-                            else{
-                                drawingFeature.parent!.children = []
-                                drawingFeature.parent!.children!.append(drawingFeature)
-                            }
-                            
-                            
-                            //#TODO: maybe refactor this
-                            
-                            //fragments are the pieces of the fold created splitFoldByOcclusion
-                            let fragments = drawingFeature.splitFoldByOcclusion(fold)
-                            drawingFeature.parent?.replaceFold(fold, folds: fragments)
-                            
-                            //set cached edges
-                            shape.cachedEdges = []
-                            //create truncated folds
-                            shape.truncateWithFolds()
-                            //split paths at intersections
-                            shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                            
-                            
-                            println("===EDGES===")
-                            println(shape.cachedEdges!)
-                            
-                            
-                            //orphaned edges have start or end points that are not shared with any other edge
-                            func printOrphanedEdges(){
+                    //for feature in features -- check folds for spanning
+                    drawingFeature.drivingFold = nil
+                    drawingFeature.parent = nil
+                    for feature in sketch.features!{
+                        
+                        for fold in feature.horizontalFolds{
+                            if(drawingFeature.featureSpansFold(fold)){
                                 
-                                for edge in shape.cachedEdges!{
-                                    var foundStart = false
-                                    var foundEnd = false
+                                drawingFeature.drivingFold = fold
+                                drawingFeature.parent = feature
+                                
+                                //set parents if the fold spans drivinf
+                                if (drawingFeature.parent!.children != nil){
+                                    drawingFeature.parent!.children!.append(drawingFeature)
+                                }
+                                else{
+                                    drawingFeature.parent!.children = []
+                                    drawingFeature.parent!.children!.append(drawingFeature)
+                                }
+                                
+                                
+                                //#TODO: maybe refactor this
+                                
+                                //fragments are the pieces of the fold created splitFoldByOcclusion
+                                let fragments = drawingFeature.splitFoldByOcclusion(fold)
+                                drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                                
+                                //set cached edges
+                                shape.cachedEdges = []
+                                //create truncated folds
+                                shape.truncateWithFolds()
+                                //split paths at intersections
+                                shape.cachedEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                                
+                                
+                                println("===EDGES===")
+                                println(shape.cachedEdges!)
+                                
+                                
+                                //orphaned edges have start or end points that are not shared with any other edge
+                                func printOrphanedEdges(){
                                     
-                                    for edge2 in shape.cachedEdges!{
+                                    for edge in shape.cachedEdges!{
+                                        var foundStart = false
+                                        var foundEnd = false
                                         
-                                        if (edge != edge2){
-                                            if(CGPointEqualToPoint(edge.start, edge2.end) || CGPointEqualToPoint(edge.start, edge2.start)){
-                                                foundStart = true
+                                        for edge2 in shape.cachedEdges!{
+                                            
+                                            if (edge != edge2){
+                                                if(CGPointEqualToPoint(edge.start, edge2.end) || CGPointEqualToPoint(edge.start, edge2.start)){
+                                                    foundStart = true
+                                                }
+                                                if(CGPointEqualToPoint(edge.end, edge2.start) || CGPointEqualToPoint(edge.end, edge2.end)){
+                                                    foundEnd = true
+                                                }
                                             }
-                                            if(CGPointEqualToPoint(edge.end, edge2.start) || CGPointEqualToPoint(edge.end, edge2.end)){
-                                                foundEnd = true
-                                            }
+                                            
                                         }
-                                        
-                                    }
-                                    if(!(foundStart && foundEnd)){
-                                        println(edge)
+                                        if(!(foundStart && foundEnd)){
+                                            println(edge)
+                                        }
                                     }
                                 }
+                                
+                                println("===ORPHANS===")
+                                printOrphanedEdges()
+                                
                             }
-                            
-                            println("===ORPHANS===")
-                            printOrphanedEdges()
-                            
                         }
                     }
                 }
+                
+                
+                
+                //add edges from the feature to the sketch
+                sketch.features?.append(sketch.currentFeature!)
+                sketch.currentFeature = nil
+                sketch.refreshFeatureEdges()
+                self.sketch.getPlanes()
+                forceRedraw()
             }
-            
-            
-            
-            //add edges from the feature to the sketch
-            sketch.features?.append(sketch.currentFeature!)
-            sketch.currentFeature = nil
-            sketch.refreshFeatureEdges()
-            self.sketch.getPlanes()
-            forceRedraw()
-        }
         }
         
     }
