@@ -24,7 +24,7 @@ class SketchView: UIView {
         case FreeForm
         case VFold
         case Polygon
-
+        
     }
     
     var path: UIBezierPath! //currently drawing path
@@ -170,7 +170,7 @@ class SketchView: UIView {
                                 for edge in shape.cachedEdges!{
                                     var foundStart = false
                                     var foundEnd = false
-
+                                    
                                     for edge2 in shape.cachedEdges!{
                                         
                                         if (edge != edge2){
@@ -181,7 +181,7 @@ class SketchView: UIView {
                                                 foundEnd = true
                                             }
                                         }
-
+                                        
                                     }
                                     if(!(foundStart && foundEnd)){
                                         println(edge)
@@ -209,20 +209,7 @@ class SketchView: UIView {
         
         
     }
-    
-    /// erase hitpoint edge
-    /// needs to be refactored for features
-    func erase(touchPoint: CGPoint) {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (!edge!.isMaster)){
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        } else if var plane = sketch.planeHitTest(touchPoint) {
-            sketch.planes.removePlane(plane)
-        }
-    }
+
     
     func handleBoxFoldPan(sender: AnyObject){
         
@@ -421,32 +408,35 @@ class SketchView: UIView {
                     }
                     
                     for feature in currentFeatures{
-//                        if (feature == sketch.tappedFeature)
-                        
-                        if(feature.startPoint != nil && feature.endPoint != nil){
-                            let edges = feature.getEdges()
-                            for e in edges
-                            {
-                                setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                                e.path.stroke()
+                        if (feature == sketch.tappedFeature){
+                            
+                        }
+                        else{
+                            if(feature.startPoint != nil && feature.endPoint != nil){
+                                let edges = feature.getEdges()
+                                for e in edges
+                                {
+                                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                                    e.path.stroke()
+                                }
                             }
                         }
                     }
                 }
                 
-//                //print all edges
-//                for e in sketch.edges
-//                {
-//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-//                    
-//                    //don't draw twin edges
-//                    if(!twinsOfVisited.contains(e)){
-//                        e.path.stroke()
-//                        twinsOfVisited.append(e.twin)
-//                    }
-//                    
-//                    
-//                }
+                //                //print all edges
+                //                for e in sketch.edges
+                //                {
+                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                //
+                //                    //don't draw twin edges
+                //                    if(!twinsOfVisited.contains(e)){
+                //                        e.path.stroke()
+                //                        twinsOfVisited.append(e.twin)
+                //                    }
+                //
+                //
+                //                }
             }
             else // this is a grayscale for print image
             {
