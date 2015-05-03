@@ -12,17 +12,15 @@ import Foundation
 class FoldFeature: NSObject, Printable
 {
     
-    enum ValidityState
-    {
-        case Invalid, // we don't know how to make this feature valid
-        Valid // can be simulated in 3d/folded in real life
+    enum ValidityState:Int {
+        case Invalid = 0, // we don't know how to make this feature valid
+        Valid = 1 // can be simulated in 3d/folded in real life
     }
     
-    enum DefinitionState
-    {
-        case Incomplete, //still drawing/dragging
-        Complete //finished drawing
-    }
+//    enum DefinitionState {
+//        case Incomplete, //still drawing/dragging
+//        Complete //finished drawing
+//    }
     
     //not used yet
     var featurePlanes:[Plane] = []
@@ -121,8 +119,9 @@ class FoldFeature: NSObject, Printable
     }
     
     /// makes the start point the top left point
-    func fixStartEndPoint()
-    {
+    func fixStartEndPoint(){
+        
+        if(startPoint != nil && endPoint != nil){
         let topLeft = CGPointMake(min(startPoint!.x,endPoint!.x), min(startPoint!.y,endPoint!.y))
         let bottomRight = CGPointMake(max(startPoint!.x,endPoint!.x), max(startPoint!.y,endPoint!.y))
         

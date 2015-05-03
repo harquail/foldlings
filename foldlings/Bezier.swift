@@ -266,8 +266,6 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
             let point = bezierInterpolation(t,points[0],points[1],points[2],points[3])
             npoints.append(point);
         }
-    case 3:
-        println("3");
     case 2:
         let start = points[0]
         let end = points[1]

@@ -130,15 +130,30 @@ class BoxFold:FoldFeature{
     }
     
     
-    /// boxFolds can be deleted
-    /// folds can be added only to leaves
-    override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
-        options.append(.DeleteFeature)
-        if(self.isLeaf()){
-            options.append(.AddFolds)
-        }
-        
-        return options
+//    /// boxFolds can be deleted
+//    /// folds can be added only to leaves
+//    override func tapOptions() -> [FeatureOption]?{
+//        var options:[FeatureOption] = []
+//        options.append(.DeleteFeature)
+//        if(self.isLeaf()){
+//            options.append(.AddFolds)
+//        }
+//        
+//        return options
+//    }
+//}
+
+//
+/// boxFolds can be deleted
+/// folds can be added only to leaves
+override func tapOptions() -> [FeatureOption]?{
+    var options:[FeatureOption] = []
+    options.append(.DeleteFeature)
+    if(self.isLeaf()){
+        options.append(.MoveFolds);
     }
-}
+    
+    return options
+    
+
+}}

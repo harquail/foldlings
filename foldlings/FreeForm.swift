@@ -396,13 +396,10 @@ class FreeForm:FoldFeature{
                     //try making a straight edge between the points
                         let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature: self)
                     // if the line's center is inside the path, add the edge and go to the next pair
-                    print(" just before contains point ")
                     if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                         edgesToAdd.append(edge)
-                       print(" i+2 ")
                         i += 2
                         continue
-                    }
                     }
                     //otherwise, try the next point
                     i += 1
@@ -411,7 +408,6 @@ class FreeForm:FoldFeature{
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-//                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.featureEdges!.extend(edgesToAdd)
                     return true
@@ -428,7 +424,7 @@ class FreeForm:FoldFeature{
             
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
-            var scanLine = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
+            var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
             
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
@@ -450,7 +446,8 @@ class FreeForm:FoldFeature{
                 return nil
             }
             
-            scanLine = Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut, feature: self)
+            /// TOP FOLD
+            let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
             
             scanLine = scanLineStartingAtTop
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
