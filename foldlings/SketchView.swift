@@ -117,19 +117,28 @@ class SketchView: UIView {
                         else{
                             println("No Edge Here...")
                         }
-                        //                                    goodPlaceToDraw = false
-                        //                                    return
                     }
                 }
             }
         }
-        if(gesture.state == UIGestureRecognizerState.Changed){
-
-                    if let e = sketch.draggedEdge{
-                        e.deltaY = gesture.translationInView(self).y
-                        println("delta: \(e.deltaY)")
-                    }
-        
+        else if(gesture.state == UIGestureRecognizerState.Changed){
+            
+            if let e = sketch.draggedEdge{
+                e.deltaY = gesture.translationInView(self).y
+                println("delta: \(e.deltaY)")
+                forceRedraw()
+            }
+            
+        }
+        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+            
+            //end the drag by clearing tapped feature
+            if let e = sketch.draggedEdge{
+                e.deltaY = gesture.translationInView(self).y
+                sketch.tappedFeature?.activeOption = nil
+                sketch.tappedFeature = nil
+                forceRedraw()
+            }
         }
     }
     
@@ -365,7 +374,7 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-    
+            
             if let drawingFeature = sketch.currentFeature{
                 
                 //disallow features outside the master card
