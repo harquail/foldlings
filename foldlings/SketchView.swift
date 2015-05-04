@@ -98,7 +98,39 @@ class SketchView: UIView {
     }
     
     func handleMoveFoldPan(sender: AnyObject){
-    
+        
+        let gesture = sender as! UIPanGestureRecognizer
+        if(gesture.state == UIGestureRecognizerState.Began){
+            if let children = sketch.masterFeature?.children{
+                for child in children{
+                    if(child.boundingBox()!.contains(gesture.locationInView(self))){
+                        
+                        //get the edge & nearest point to hit
+                        let edge = child.featureEdgeAtPoint(gesture.locationInView(self))
+                        if let e = edge{
+                            
+                            // keep track of change to dragged edges
+                            sketch.draggedEdge = e
+                            e.deltaY = gesture.translationInView(self).y
+                            println("init deltaY: \(e.deltaY)")
+                        }
+                        else{
+                            println("No Edge Here...")
+                        }
+                        //                                    goodPlaceToDraw = false
+                        //                                    return
+                    }
+                }
+            }
+        }
+        if(gesture.state == UIGestureRecognizerState.Changed){
+
+                    if let e = sketch.draggedEdge{
+                        e.deltaY = gesture.translationInView(self).y
+                        println("delta: \(e.deltaY)")
+                    }
+        
+        }
     }
     
     func handleFreeFormPan(sender: AnyObject){
@@ -106,30 +138,6 @@ class SketchView: UIView {
         let gesture = sender as! UIPanGestureRecognizer
         if(gesture.state == UIGestureRecognizerState.Began){
             
-            
-            if sketch.tappedFeature?.activeOption != nil{
-                if let children = sketch.masterFeature?.children{
-                    for child in children{
-                        if(child.boundingBox()!.contains(gesture.locationInView(self))){
-                            
-                            //get the edge & nearest point to hit
-                            let edge = child.featureEdgeAtPoint(gesture.locationInView(self))
-                            if let e = edge{
-                                
-                                // keep track of change to dragged edges
-                                sketch.draggedEdge = e
-                                e.deltaY = gesture.translationInView(self).y
-                                println("init deltaY: \(e.deltaY)")
-                            }
-                            else{
-                                println("No Edge Here...")
-                            }
-                            //                                    goodPlaceToDraw = false
-                            //                                    return
-                        }
-                    }
-                }
-            }
             
             if(sketch.tappedFeature == nil){
                 // make a shape with touchpoint
@@ -357,11 +365,7 @@ class SketchView: UIView {
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            //            if let e = sketch.draggedEdge{
-            //                e.deltaY = gesture.translationInView(self).y
-            //                println("delta: \(e.deltaY)")
-            //            }
-            
+    
             if let drawingFeature = sketch.currentFeature{
                 
                 //disallow features outside the master card
