@@ -462,7 +462,7 @@ class SketchView: UIView {
                         if (feature == sketch.tappedFeature){
                             let foldHeights = feature.uniqueFoldHeights()
                             for height in foldHeights{
-                                let edge = Edge.straightEdgeBetween(CGPointMake(0, height + feature.deltaY!), end: CGPointMake(10000, height + feature.deltaY!), kind: .Fold)
+                                let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height + feature.deltaY!), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height + feature.deltaY!), kind: .Fold)
                                 setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
                                 edge.path.stroke()
                 
