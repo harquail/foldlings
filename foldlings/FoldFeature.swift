@@ -48,7 +48,8 @@ class FoldFeature: NSObject, Printable, NSCoding{
     var endPoint:CGPoint?
     
     var activeOption:FeatureOption?  // the operation being performed on this feature (eg. .MoveFold)
-    
+    var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
+
     required init(coder aDecoder: NSCoder) {
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
@@ -153,9 +154,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
                 }
             }
         }
-        else{
-            
-        }
+
         return nil;
     }
     

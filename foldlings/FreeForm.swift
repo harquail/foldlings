@@ -19,6 +19,7 @@ class FreeForm:FoldFeature{
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
+
     
     override init(start: CGPoint) {
         super.init(start: start)

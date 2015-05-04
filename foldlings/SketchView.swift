@@ -100,44 +100,40 @@ class SketchView: UIView {
     func handleMoveFoldPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
-        if(gesture.state == UIGestureRecognizerState.Began){
-            if let children = sketch.masterFeature?.children{
-                for child in children{
-                    if(child.boundingBox()!.contains(gesture.locationInView(self))){
-                        
-                        //get the edge & nearest point to hit
-                        let edge = child.featureEdgeAtPoint(gesture.locationInView(self))
-                        if let e = edge{
-                            
-                            // keep track of change to dragged edges
-                            sketch.draggedEdge = e
-                            e.deltaY = gesture.translationInView(self).y
-                            println("init deltaY: \(e.deltaY)")
-                        }
-                        else{
-                            println("No Edge Here...")
-                        }
-                    }
+        if let tappedF = sketch.tappedFeature{
+            
+            if(gesture.state == UIGestureRecognizerState.Began){
+                //get the edge & nearest point to hit
+                let edge = tappedF.featureEdgeAtPoint(gesture.locationInView(self))
+                if let e = edge{
+                    
+                    // keep track of change to dragged edges
+                    sketch.draggedEdge = e
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    println("init deltaY: \(tappedF.deltaY)")
+                }
+                else{
+                    println("No Edge Here...")
                 }
             }
-        }
-        else if(gesture.state == UIGestureRecognizerState.Changed){
-            
-            if let e = sketch.draggedEdge{
-                e.deltaY = gesture.translationInView(self).y
-                println("delta: \(e.deltaY)")
-                forceRedraw()
+            else if(gesture.state == UIGestureRecognizerState.Changed){
+                
+                if let e = sketch.draggedEdge{
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    println("delta: \(tappedF.deltaY)")
+                    forceRedraw()
+                }
+                
             }
-            
-        }
-        else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
-            
-            //end the drag by clearing tapped feature
-            if let e = sketch.draggedEdge{
-                e.deltaY = gesture.translationInView(self).y
-                sketch.tappedFeature?.activeOption = nil
-                sketch.tappedFeature = nil
-                forceRedraw()
+            else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+                
+                //end the drag by clearing tapped feature
+                if let e = sketch.draggedEdge{
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    sketch.tappedFeature?.activeOption = nil
+                    sketch.tappedFeature = nil
+                    forceRedraw()
+                }
             }
         }
     }
