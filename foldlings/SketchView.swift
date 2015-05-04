@@ -465,6 +465,10 @@ class SketchView: UIView {
                                 let edge = Edge.straightEdgeBetween(CGPointMake(0, height + feature.deltaY!), end: CGPointMake(10000, height + feature.deltaY!), kind: .Fold)
                                 setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
                                 edge.path.stroke()
+                
+                                let fpath = (feature as! FreeForm).path!
+                                setPathStyle(fpath, edge:nil, grayscale:grayscale).setStroke()
+                                fpath.stroke()
 
                             }
                         }
