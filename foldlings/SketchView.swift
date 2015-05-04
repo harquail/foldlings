@@ -458,19 +458,36 @@ class SketchView: UIView {
                     
                     for feature in currentFeatures{
                         
-                        //draw the tapped feature preview differently
+
+                        
+                        //draw the tapped feature preview
                         if (feature == sketch.tappedFeature){
+                            
+                            let pathAroundFeature = (feature as! FreeForm).path!                            
+                            let context =  UIGraphicsGetCurrentContext()
+                            CGContextSaveGState(context);
+
+                            CGContextAddPath(context, pathAroundFeature.CGPath);
+                            let boundingRect = CGContextGetClipBoundingBox(context);
+                            CGContextAddRect(context, boundingRect);
+                            CGContextEOClip(context)
+//                            CGContext
+//                            CGContextClipToMask()
+
+                            
                             let foldHeights = feature.uniqueFoldHeights()
+                            
                             for height in foldHeights{
                                 let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height + feature.deltaY!), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height + feature.deltaY!), kind: .Fold)
                                 setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
                                 edge.path.stroke()
-                
-                                let fpath = (feature as! FreeForm).path!
-                                setPathStyle(fpath, edge:nil, grayscale:grayscale).setStroke()
-                                fpath.stroke()
-
                             }
+                            
+                            CGContextRestoreGState(context);
+
+                            //draw path
+                            setPathStyle(pathAroundFeature, edge:nil, grayscale:grayscale).setStroke()
+                            pathAroundFeature.stroke()
                         }
                         else{
                             if(feature.startPoint != nil && feature.endPoint != nil){
