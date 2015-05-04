@@ -467,10 +467,41 @@ class SketchView: UIView {
                             let context =  UIGraphicsGetCurrentContext()
                             CGContextSaveGState(context);
 
-                            CGContextAddPath(context, pathAroundFeature.CGPath);
                             let boundingRect = CGContextGetClipBoundingBox(context);
                             CGContextAddRect(context, boundingRect);
-                            CGContextEOClip(context)
+                            
+                            
+//                            CGContextSaveGState(context);
+                            
+//                            UIGraphicsBeginImageContextWith(self.frame.size);
+                            UIGraphicsBeginImageContextWithOptions((self.frame.size), false, 0.0);
+                            
+                            
+                            //Set color of current context
+                            UIColor.blackColor().set();
+                            
+                            //Draw ellipse &lt;- I know we’re drawing a circle, but a circle is just a special ellipse.
+                            let ellipseRect = CGRectMake(110.0, 200.0, 100.0, 100.0);
+                            CGContextFillEllipseInRect(context, ellipseRect);
+                            
+                            let mask = CGBitmapContextCreateImage(UIGraphicsGetCurrentContext());
+                            UIGraphicsEndImageContext();
+                            CGContextClipToMask(context, self.bounds, mask);
+                            
+                            
+                            
+//                            [self drawGradient:context];
+//                            CGImageRelease(mask);
+//                            CGContextRestoreGState(context);
+                            
+                            
+                            
+//                            CGContextAddPath(context, pathAroundFeature.CGPath);
+                            
+
+//                            CGContextClipToMask(<#c: CGContext!#>, <#rect: CGRect#>, <#mask: CGImage!#>)
+                            
+//                            CGContextEOClip(context)
 //                            CGContext
 //                            CGContextClipToMask()
 
