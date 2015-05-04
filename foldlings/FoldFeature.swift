@@ -252,7 +252,11 @@ class FoldFeature: NSObject, Printable, NSCoding{
         
     }
     
-    
+    /// the unique fold heights in the feature (ignores duplicates)
+    func uniqueFoldHeights() -> [CGFloat]{
+        let uniquefolds = horizontalFolds.uniqueBy({$0.start.y})
+        return uniquefolds.map({$0.start.y})
+    }
     
     func featureSpansFold(fold:Edge)->Bool{
         
