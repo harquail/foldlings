@@ -274,7 +274,9 @@ class FreeForm:FoldFeature
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-        //        println(intersections)
+                println(intersections)
+        println(path?.description)
+
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
