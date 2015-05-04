@@ -42,11 +42,11 @@ class FoldFeature: NSObject, Printable
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
         self.endPoint = aDecoder.decodeCGPointForKey("endPoint")
-        self.children = aDecoder.decodeObjectForKey("children") as? [FoldFeature]
+        self.children = (aDecoder.decodeObjectForKey("children") as? [FoldFeature])!
         self.parent = aDecoder.decodeObjectForKey("parent") as? FoldFeature
         self.drivingFold = aDecoder.decodeObjectForKey("children") as? Edge
         self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
-        self.cachedEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
+        self.featureEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
         self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
     
@@ -72,7 +72,7 @@ class FoldFeature: NSObject, Printable
         aCoder.encodeObject(children, forKey:"children")
         aCoder.encodeObject(drivingFold, forKey:"drivingFold")
         aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
-        aCoder.encodeObject(cachedEdges,forKey:"cachedEdges")
+        aCoder.encodeObject(featureEdges,forKey:"cachedEdges")
         aCoder.encodeObject(state.rawValue,forKey:"state")
     }
     
@@ -247,16 +247,6 @@ class FoldFeature: NSObject, Printable
         var fMax = max(fold.start.x, fold.end.x)
 
         if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
-            //sort points by y
-//            func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint)
-//            {
-//                return (a.y < b.y) ? (a,b) : (b,a)
-//            }
-//            
-//            let sorted = pointsByY(self.startPoint!, self.endPoint!)
-//            
-//            // test whether the feature starts above minimum height & below maximum
-//            return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
             return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
         return false
@@ -274,4 +264,5 @@ class FoldFeature: NSObject, Printable
         
         return path
     }
+
 }

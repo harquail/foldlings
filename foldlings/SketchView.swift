@@ -155,7 +155,7 @@ class SketchView: UIView {
                                 //#TODO: maybe refactor this
                                 //fragments are the pieces of the fold created splitFoldByOcclusion
                                 let fragments = drawingFeature.splitFoldByOcclusion(fold)
-                                drawingFeature.parent?.replaceFold(fold, folds: fragments)
+                                sketch.replaceFold(drawingFeature.parent!, fold: fold, folds: fragments)
                                 
                                 //set cached edges
                                 shape.featureEdges = []
