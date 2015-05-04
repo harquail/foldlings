@@ -131,10 +131,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     
-    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
-        //println("free form")
-        sketchView.sketchMode = .FreeForm
-    }
+//    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
+//        //println("free form")
+//        sketchView.sketchMode = .FreeForm
+//    }
     
     //box fold button selected
     // #TODO: flurry logging here

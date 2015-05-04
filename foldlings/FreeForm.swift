@@ -221,12 +221,14 @@ class FreeForm:FoldFeature
             }
             
             //recurse with new t values, decremented recursion value, and everything else the same
+            
             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
         }
         else{
             // base case: return the average of the t values of the two closest points
+            
             return (startT + endT)/2
         }
     }
