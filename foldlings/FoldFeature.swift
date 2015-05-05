@@ -159,7 +159,7 @@ class FoldFeature: NSObject, Printable
         return [edge]
     }
     
-  
+
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch)
     {
@@ -204,6 +204,7 @@ class FoldFeature: NSObject, Printable
         var fMax = max(fold.start.x, fold.end.x)
 
         if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
+
             return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
         return false

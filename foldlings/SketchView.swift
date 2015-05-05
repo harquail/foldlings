@@ -138,14 +138,13 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                outer: for feature in sketch.features!{
-                    
+                outer: for feature in sketch.features
+                {
                     for fold in feature.horizontalFolds
                     {
                         if(drawingFeature.featureSpansFold(fold))
                         {
                             drawingFeature.drivingFold = fold
-                            drawingFeature.parent = feature
                             
                             //set parents if the fold spans driving
                             drawingFeature.parent!.children.append(drawingFeature)
@@ -161,15 +160,19 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                            // add the edges of the feature to the sketch
-                            sketch.addFeatureToSketch(shape)
-                            sketch.features?.append(shape)
-                            break outer
+                            shape.parent = feature
+                            break outer;
 
                         }
                     }
                     
                 }
+                // if feature didn't span a fold, then make it a hole?
+                // find parent for hole
+                if shape.parent == nil{
+                   shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                }
+                sketch.addFeatureToSketch(drawingFeature, parent: shape.parent!)
             }
             
 
@@ -247,15 +250,14 @@ class SketchView: UIView {
                 if(drawingFeature.drivingFold != nil)
                 {
                     let drawParent = drawingFeature.parent!
-                    drawParent.children.append(drawingFeature)
-                    
-                    
+
                     // splits the driving fold of the parent
                     // removes and adds edges to sketch
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
-                    sketch.addFeatureToSketch(drawingFeature)
-                    
+                    // add feature to sketch features and to parent's children
+                    sketch.addFeatureToSketch(drawingFeature, parent: drawParent)
+
                 }
                 
                 //clear the current feature
