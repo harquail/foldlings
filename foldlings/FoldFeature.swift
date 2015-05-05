@@ -257,6 +257,24 @@ class FoldFeature: NSObject, Printable, NSCoding{
         return uniquefolds.map({$0.start.y})
     }
     
+    
+    /// the unique fold heights in the feature (ignores duplicates)
+    func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
+        
+        let draggedHeight = draggedEdge.start.y
+        
+        switch (originalHeights.indexOf(draggedHeight)!) {
+        case 0:
+            return[originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]]
+        case 1:
+            return [originalHeights[0],originalHeights[1]+deltaY!,originalHeights[2]]
+        case 2:
+            return [originalHeights[0],originalHeights[1],originalHeights[2]+deltaY!]
+        default:
+            return [originalHeights[0],originalHeights[1],originalHeights[2]]
+        }
+    }
+    
     func featureSpansFold(fold:Edge)->Bool{
         
         if(self.startPoint == nil ||  self.endPoint == nil){

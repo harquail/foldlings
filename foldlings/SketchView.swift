@@ -120,7 +120,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-                    println("delta: \(tappedF.deltaY)")
+//                    println("delta: \(tappedF.deltaY)")
                     forceRedraw()
                 }
                 
@@ -479,11 +479,10 @@ class SketchView: UIView {
 //                            CGContext
 //                            CGContextClipToMask()
 
-                            
-                            let foldHeights = feature.uniqueFoldHeights()
+                            let foldHeights = feature.foldHeightsWithTransform(feature.uniqueFoldHeights(), draggedEdge: sketch.draggedEdge!, masterFold: feature.drivingFold!)
                             
                             for height in foldHeights{
-                                let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height + feature.deltaY!), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height + feature.deltaY!), kind: .Fold)
+                                let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height), kind: .Fold)
                                 setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
                                 edge.path.stroke()
                             }
