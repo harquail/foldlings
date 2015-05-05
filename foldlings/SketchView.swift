@@ -131,7 +131,7 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                for feature in sketch.features!
+                outer: for feature in sketch.features!
                 {
                     for fold in feature.horizontalFolds
                     {
@@ -157,7 +157,7 @@ class SketchView: UIView {
                             sketch.addFeatureToSketch(shape)
                             sketch.features?.append(shape)
                             println("feature edge after if : \(drawingFeature.featureEdges)")
-
+                            break outer;
 
 
                         }
