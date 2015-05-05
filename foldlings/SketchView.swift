@@ -131,18 +131,13 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                outer: for feature in sketch.features!
+                outer: for feature in sketch.features
                 {
                     for fold in feature.horizontalFolds
                     {
                         if(drawingFeature.featureSpansFold(fold))
                         {
                             drawingFeature.drivingFold = fold
-                            drawingFeature.parent = feature
-                            
-                            //set parents if the fold spans drivinf
-                            drawingFeature.parent!.children.append(drawingFeature)
-                            
                             
                             //fragments are the pieces of the fold created splitFoldByOcclusion
                             let fragments = drawingFeature.splitFoldByOcclusion(fold)
@@ -154,27 +149,27 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                            sketch.addFeatureToSketch(shape)
-                            sketch.features?.append(shape)
-                            println("feature edge after if : \(drawingFeature.featureEdges)")
+                            shape.parent = feature
                             break outer;
 
 
                         }
                     }
                 }
-//                println("feature edge after if : \(drawingFeature.featureEdges)")
-                //println("edge replacing: \(newFolds)")
-                //println("edges of sketch: \(sketch.edges)")
+                // if feature didn't span a fold, then make it a hole?
+                // find parent for hole
+                if shape.parent == nil{
+                   shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                }
+                sketch.addFeatureToSketch(drawingFeature, parent: shape.parent!)
             }
             
-            // add the edges of the feature to the sketch
             sketch.currentFeature = nil
             self.sketch.getPlanes()
             forceRedraw()
         
         default:
-            println("Gesture not recognized")
+            break
         }
     }
     
@@ -207,7 +202,7 @@ class SketchView: UIView {
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
                 /// what happens if I make this a while loop
-                outer:for feature in sketch.features!
+                outer:for feature in sketch.features
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds
@@ -241,17 +236,14 @@ class SketchView: UIView {
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
-                    // add feature to sketch features and to parent's children
-                    sketch.features?.append(drawingFeature)
                     let drawParent = drawingFeature.parent!
-                    drawParent.children.append(drawingFeature)
 
-                    
                     // splits the driving fold of the parent
                     // removes and adds edges to sketch
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
-                    sketch.addFeatureToSketch(drawingFeature)
+                    // add feature to sketch features and to parent's children
+                    sketch.addFeatureToSketch(drawingFeature, parent: drawParent)
 
                 }
 
@@ -260,12 +252,9 @@ class SketchView: UIView {
                 sketch.getPlanes()
                 forceRedraw()
             }
-
-            //println("edge being removed: \(drawingFeature.drivingFold!)")
-            //println("edge replacing: \(newFolds)")
             
         default:
-            println("Gesture not recognized")
+            break
         }
     }
     
@@ -327,8 +316,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 //iterate through features and draw them
-                if var currentFeatures = sketch.features
-                {
+                var currentFeatures = sketch.features
                     //add most recent feature if it exists
                     if(sketch.currentFeature != nil)
                     {
@@ -348,7 +336,6 @@ class SketchView: UIView {
                             
                         }
                     }
-                }
                 
                 // all edges
                 for e in sketch.edges
