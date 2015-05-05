@@ -181,7 +181,7 @@ class FoldFeature: NSObject, Printable
                 sketch.removeEdge(edge)
             }
         }
-        sketch.features?.remove(self)
+        sketch.features.remove(self)
     }
     
     /// features are leaves if they don't have children

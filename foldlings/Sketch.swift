@@ -14,7 +14,7 @@
         @IBOutlet var previewButton:UIButton?
         
         // ************ Feature variables ****************
-        var features:[FoldFeature]? = [] //listOfCurrentFeatures
+        var features:[FoldFeature] = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
         var masterFeature:FoldFeature?
@@ -73,7 +73,15 @@
             var feature = edge.feature
 
             var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
-            var twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
+            var twin : Edge
+            
+            // mastercard doesn't have a parent feature, all of its edges belong to itself
+            if isMaster{
+                twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
+            }
+            else{
+                twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature!.parent)
+            }
             edge.twin = twin
             twin.twin = edge
             
@@ -218,7 +226,7 @@
             let b3 = CGPointMake(width, height + downabit)   //bottomright
             masterFeature = MasterCard(start: b1)
             masterFeature!.endPoint = b3
-            features?.append(masterFeature!)
+            features.append(masterFeature!)
             
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
@@ -232,7 +240,7 @@
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {
-                println("\ngetPlanes\n")
+                //println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -259,9 +267,10 @@
                             //// if you didn't cross twin or if the edge is one point, make it a plane
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
+                                plane.feature = start.feature
                                 self.planes.addPlane(plane, sketch: self)
-                                println("\nplane complete\n")
-                                println("\(plane)\n")
+//                                println("\nplane complete\n")
+//                                println("\(plane)\n")
                             }
                             closest.crossed = false
                         }
@@ -426,16 +435,23 @@
         
         // add any feature edges that aren't
         // already in the sketch 
-        func addFeatureToSketch(feature: FoldFeature)
-        {   let fEdges = feature.featureEdges!
+        // create edges, if there are none
+        func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature)
+        {
+            let fEdges = feature.getEdges()
             for edge in fEdges
             {
                 if (!self.edges.contains(edge))
                 {
                     self.addEdge(edge)
-                    //                    }
                 }
             }
+            self.features.append(feature)
+            // set the parent/child relationship
+            parent.children.append(feature)
+            feature.parent = parent
         }
+
+
         
     }

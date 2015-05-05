@@ -39,7 +39,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         var touchPoint = gesture.locationInView(sketchView)
         
-        if let fs = sketchView.sketch.features{
+        let fs = sketchView.sketch.features
             println(sketchView.path)
             
             // evaluate newer features first
@@ -87,7 +87,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                 
             }
             
-        }
         sketchView.statusLabel.text = ""
     }
     

@@ -132,7 +132,7 @@ class SketchView: UIView {
             shape.path = path
             //reset path
             path = UIBezierPath()
-            
+
             if let drawingFeature = sketch.currentFeature
             {
                 //for feature in features -- check folds for spanning
@@ -212,7 +212,7 @@ class SketchView: UIView {
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
                 /// what happens if I make this a while loop
-                outer:for feature in sketch.features!
+                outer:for feature in sketch.features
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds
@@ -246,8 +246,6 @@ class SketchView: UIView {
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
-                    // add feature to sketch features and to parent's children
-                    sketch.features?.append(drawingFeature)
                     let drawParent = drawingFeature.parent!
                     drawParent.children.append(drawingFeature)
                     
@@ -333,8 +331,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 //iterate through features and draw them
-                if var currentFeatures = sketch.features
-                {
+                var currentFeatures = sketch.features
                     //add most recent feature if it exists
                     if(sketch.currentFeature != nil)
                     {
@@ -354,7 +351,6 @@ class SketchView: UIView {
                             
                         }
                     }
-                }
                 
                 // all edges
                 for e in sketch.edges
