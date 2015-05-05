@@ -125,7 +125,7 @@ class SketchView: UIView {
             shape.path = path
             //reset path
             path = UIBezierPath()
-            
+
             if let drawingFeature = sketch.currentFeature
             {
                 //for feature in features -- check folds for spanning
@@ -154,22 +154,22 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            sketch.addFeatureToSketch(shape)
+                            sketch.features?.append(shape)
+                            println("feature edge after if : \(drawingFeature.featureEdges)")
+
 
 
                         }
                     }
                 }
-                //println("edge being removed: \(drawingFeature.drivingFold!)")
+//                println("feature edge after if : \(drawingFeature.featureEdges)")
                 //println("edge replacing: \(newFolds)")
                 //println("edges of sketch: \(sketch.edges)")
             }
             
             // add the edges of the feature to the sketch
-            sketch.addFeatureToSketch(sketch.currentFeature!)
-            sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
-            
-            //println("edges of sketch: \(sketch.edges)\n")
             self.sketch.getPlanes()
             forceRedraw()
         

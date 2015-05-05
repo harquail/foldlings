@@ -232,7 +232,7 @@
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {
-                println("\ngetPlanes\n")
+                //println("\ngetPlanes\n")
                 self.visited = []
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
@@ -260,8 +260,8 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 self.planes.addPlane(plane, sketch: self)
-                                println("\nplane complete\n")
-                                println("\(plane)\n")
+//                                println("\nplane complete\n")
+//                                println("\(plane)\n")
                             }
                             closest.crossed = false
                         }
