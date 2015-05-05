@@ -138,7 +138,7 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                for feature in sketch.features!{
+                outer: for feature in sketch.features!{
                     
                     for fold in feature.horizontalFolds
                     {
@@ -161,6 +161,10 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            // add the edges of the feature to the sketch
+                            sketch.addFeatureToSketch(shape)
+                            sketch.features?.append(shape)
+                            break outer
 
                         }
                     }
@@ -168,9 +172,7 @@ class SketchView: UIView {
                 }
             }
             
-            // add the edges of the feature to the sketch
-            sketch.addFeatureToSketch(sketch.currentFeature!)
-            sketch.features?.append(sketch.currentFeature!)
+
             sketch.currentFeature = nil
             self.sketch.getPlanes()
             forceRedraw()
