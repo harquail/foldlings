@@ -253,7 +253,8 @@ class FoldFeature: NSObject, Printable, NSCoding{
     
     /// the unique fold heights in the feature (ignores duplicates)
     func uniqueFoldHeights() -> [CGFloat]{
-        let uniquefolds = horizontalFolds.uniqueBy({$0.start.y})
+        var uniquefolds = horizontalFolds.uniqueBy({$0.start.y})
+        uniquefolds.sort({$0.start.y < $1.start.y})
         return uniquefolds.map({$0.start.y})
     }
     
@@ -262,16 +263,27 @@ class FoldFeature: NSObject, Printable, NSCoding{
     func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
         
         let draggedHeight = draggedEdge.start.y
+        var newHeights:[CGFloat] = []
         
-        switch (originalHeights.indexOf(draggedHeight)!) {
+        let draggedIndex = originalHeights.indexOf(draggedHeight)!
+        
+        switch (draggedIndex) {
         case 0:
-            return[originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]]
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]-deltaY!]
         case 1:
-            return [originalHeights[0],originalHeights[1]+deltaY!,originalHeights[2]]
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1]+deltaY!,originalHeights[2]+deltaY!]
         case 2:
-            return [originalHeights[0],originalHeights[1],originalHeights[2]+deltaY!]
+            newHeights = [originalHeights[0]-deltaY!,originalHeights[1],originalHeights[2]+deltaY!]
         default:
-            return [originalHeights[0],originalHeights[1],originalHeights[2]]
+            newHeights = originalHeights
+        }
+        
+        if(newHeights.first > masterFold.start.y || newHeights.last < masterFold.start.y){
+         // TODO: original heights is the wrong thing to return here
+            return originalHeights
+        }
+        else{
+            return newHeights
         }
     }
     
