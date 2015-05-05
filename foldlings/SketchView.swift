@@ -463,45 +463,19 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature){
                             
-                            let pathAroundFeature = (feature as! FreeForm).path!                            
+                            
+                            let invertedPath = UIBezierPath(rect: CGRectInfinite)
+                            let pathAroundFeature = (feature as! FreeForm).path!
+                            invertedPath.appendPath(pathAroundFeature)
                             let context =  UIGraphicsGetCurrentContext()
                             CGContextSaveGState(context);
 
+                            CGContextAddPath(context, invertedPath.CGPath);
                             let boundingRect = CGContextGetClipBoundingBox(context);
+                            
+                            
                             CGContextAddRect(context, boundingRect);
-                            
-                            
-//                            CGContextSaveGState(context);
-                            
-//                            UIGraphicsBeginImageContextWith(self.frame.size);
-                            UIGraphicsBeginImageContextWithOptions((self.frame.size), false, 0.0);
-                            
-                            
-                            //Set color of current context
-                            UIColor.blackColor().set();
-                            
-                            //Draw ellipse &lt;- I know we’re drawing a circle, but a circle is just a special ellipse.
-                            let ellipseRect = CGRectMake(110.0, 200.0, 100.0, 100.0);
-                            CGContextFillEllipseInRect(context, ellipseRect);
-                            
-                            let mask = CGBitmapContextCreateImage(UIGraphicsGetCurrentContext());
-                            UIGraphicsEndImageContext();
-                            CGContextClipToMask(context, self.bounds, mask);
-                            
-                            
-                            
-//                            [self drawGradient:context];
-//                            CGImageRelease(mask);
-//                            CGContextRestoreGState(context);
-                            
-                            
-                            
-//                            CGContextAddPath(context, pathAroundFeature.CGPath);
-                            
-
-//                            CGContextClipToMask(<#c: CGContext!#>, <#rect: CGRect#>, <#mask: CGImage!#>)
-                            
-//                            CGContextEOClip(context)
+                            CGContextEOClip(context)
 //                            CGContext
 //                            CGContextClipToMask()
 
