@@ -409,7 +409,7 @@ class FreeForm:FoldFeature{
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-//                    println("added fold");
+                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.cachedEdges!.extend(edgesToAdd)
                     return true

@@ -134,9 +134,9 @@ class SketchView: UIView {
 
                     //get heights,
                     let heights = shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
-                    // clear intersections
-                    
-                    shape.intersectionsWithDrivingFold = []
+                    // clear intersections & edges
+                    shape.cachedEdges = []
+//                    shape.intersectionsWithDrivingFold = []
                     shape.intersections = []
                    
                     let shapePath = shape.path!
@@ -149,8 +149,8 @@ class SketchView: UIView {
                         println(shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath))
 
                     }
-//                    shape.invalidateEdges()
-                    shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
+                    println(shape.intersections)
+                    sketch.tappedFeature!.cachedEdges = shape.freeFormEdgesSplitByIntersections()
 
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
