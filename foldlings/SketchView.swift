@@ -147,7 +147,12 @@ class SketchView: UIView {
                         
                         let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
                     
-                        println(shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath))
+                        let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
+                        
+                        if !success{
+                            AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(2.5))
+
+                        }
 
                     }
                     println(shape.intersections)
