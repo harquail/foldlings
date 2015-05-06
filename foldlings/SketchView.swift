@@ -272,10 +272,9 @@ class SketchView: UIView {
                                         }
                                     }
                                 }
-                                
-                                println("===ORPHANS===")
-                                printOrphanedEdges()
-                                
+//                                println("===ORPHANS===")
+//                                printOrphanedEdges()
+                                shape.setTopBottomTruncations()
                             }
                         }
                     }
@@ -303,55 +302,14 @@ class SketchView: UIView {
             
             var touchPoint = gesture.locationInView(self)
             
-            var goodPlaceToDraw = true
-            //            if let children = sketch.masterFeature?.children{
-            //                for child in children{
-            //                    if(child.boundingBox()!.contains(touchPoint)){
-            //
-            //                        //get the edge & nearest point to hit
-            //                        let edge = child.featureEdgeAtPoint(touchPoint)
-            //                        if let e = edge{
-            //
-            //                            //this is really only right for horizontal folds, not cuts...
-            //                            //maybe limit to fold for now?
-            //                            sketch.draggedEdge = e
-            //                            e.deltaY = gesture.translationInView(self).y
-            //                            println("init deltaY: \(e.deltaY)")
-            //                        }
-            //                        else{
-            //                            println("No Edge Here...")
-            //                        }
-            //                        goodPlaceToDraw = false
-            //                        break
-            //                    }
-            //                }
-            //            }
-            
-            if(goodPlaceToDraw){
-                //start a new box-fold feature
+
                 sketch.currentFeature = BoxFold(start: touchPoint)
-            }
-            
         }
             //
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            
-            
-            //            if var e = sketch.draggedEdge{
-            //
-            //                e.start.y += e.deltaY!
-            //                e.end.y += e.deltaY!
-            //                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-            //                eNew.deltaY = nil
-            //
-            //                sketch.addEdge(eNew)
-            //
-            ////                sketch.masterFeature!.invalidateEdges()
-            //
-            //            }
             
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature{
@@ -443,7 +401,7 @@ class SketchView: UIView {
     
     
     
-    /// constructs a greyscale bitmap preview image of the sketch
+    /// constructs a grayscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
         
         let startTime = CFAbsoluteTimeGetCurrent()/// taking time
@@ -479,7 +437,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 
-                //iterate trhough features and draw them
+                //iterate through features and draw them
                 if var currentFeatures = sketch.features{
                     
                     if(sketch.currentFeature != nil){
@@ -535,20 +493,6 @@ class SketchView: UIView {
                         }
                     }
                 }
-                
-                //                //print all edges
-                //                for e in sketch.edges
-                //                {
-                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                //
-                //                    //don't draw twin edges
-                //                    if(!twinsOfVisited.contains(e)){
-                //                        e.path.stroke()
-                //                        twinsOfVisited.append(e.twin)
-                //                    }
-                //
-                //
-                //                }
             }
             else // this is a grayscale for print image
             {

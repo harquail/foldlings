@@ -19,6 +19,10 @@ class FreeForm:FoldFeature{
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
+    //the top and bottom edges that truncate a shape
+    //these are not modified when folds are dragged, and are used to create tabs.
+    var topTruncations:[Edge] = []
+    var bottomTruncations:[Edge] = []
 
     
     override init(start: CGPoint) {
@@ -266,13 +270,11 @@ class FreeForm:FoldFeature{
         let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
         
         return (leg1,leg2)
-        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-//        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
@@ -529,5 +531,23 @@ class FreeForm:FoldFeature{
         return returnee
     }
     
+    // sets top & bottom truncations based on fold height
+    // TODO: like claimedges, this should probably be done differently
+    func setTopBottomTruncations(){
+        
+        let heights = uniqueFoldHeights()
+        
+        for fold in horizontalFolds{
+            if fold.start.y == heights.first!
+            {
+                topTruncations.append(fold)
+            }
+            else if fold.start.y == heights.last!
+            {
+                bottomTruncations.append(fold)
+            }
+            
+        }
+    }
     
 }
