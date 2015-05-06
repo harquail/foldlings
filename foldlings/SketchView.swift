@@ -129,7 +129,23 @@ class SketchView: UIView {
                 
                 //end the drag by clearing tapped feature
                 if let e = sketch.draggedEdge{
-                    tappedF.deltaY = gesture.translationInView(self).y
+                    /// clear edges
+                    let shape = tappedF as! FreeForm
+                    shape.invalidateEdges()
+
+                    //get heights,
+                    shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
+                    // clear intersections
+                    
+                    shape.intersectionsWithDrivingFold = []
+                    shape.intersections = []
+                   
+                    //                    shape.tryIntersectionTruncation()
+//                    tappedF.
+                    shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
+                    //            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
+
+                    
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
                     forceRedraw()

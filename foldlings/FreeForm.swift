@@ -15,7 +15,7 @@ class FreeForm:FoldFeature{
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
     var cachedPath:UIBezierPath? = UIBezierPath()
     var closed = false
-    //the intrsection points calculated by featureSpansFold & used for occlusion
+    //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
@@ -382,7 +382,7 @@ class FreeForm:FoldFeature{
     }
     
     // attempt to truncate testpathtwo with testpathone, which should be a line.  maxIntercepts indicates how many intersection points are allowed
-    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
+    func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
         
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         

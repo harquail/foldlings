@@ -117,6 +117,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
     //might also need a set of user-defined edges that we don't fuck with
     func invalidateEdges(){
         cachedEdges = nil
+        horizontalFolds = []
     }
     
     /// used for quickly testing whether features might overlap
