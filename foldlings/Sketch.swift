@@ -328,6 +328,7 @@
         }
         
         /// returns the plane that contains the hitpoint
+        /// TODO: use t-value to get the closest plane 
         func planeHitTest(point:CGPoint) -> Plane?
         {
             var p:Plane? = nil
@@ -451,7 +452,27 @@
             parent.children.append(feature)
             feature.parent = parent
         }
-
+        
+        func removeFeatureFromSketch(feature: FoldFeature){
+            //remove children features
+            for child in feature.children{
+                removeFeatureFromSketch(child)
+            }
+            
+            // remove all edges in feature
+            let fEdges = feature.getEdges()
+            for edge in fEdges
+            {
+                if (self.edges.contains(edge))
+                {
+                    self.removeEdge(edge)
+                }
+            }
+            // remove parent/child relationship
+            feature.parent!.children.remove(feature)
+            // remove features from sketch.features
+            self.features.remove(feature)
+        }
 
         
     }

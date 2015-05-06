@@ -170,7 +170,7 @@ class SketchView: UIView {
                 // if feature didn't span a fold, then make it a hole?
                 // find parent for hole
                 if shape.parent == nil{
-                   shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                    shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
                 }
                 sketch.addFeatureToSketch(drawingFeature, parent: shape.parent!)
             }
@@ -182,7 +182,6 @@ class SketchView: UIView {
             
         default:
             break
-            //            println("Gesture not recognized")
         }
     }
     
@@ -266,32 +265,26 @@ class SketchView: UIView {
                 forceRedraw()
             }
             
-            //println("edge being removed: \(drawingFeature.drivingFold!)")
-            //println("edge replacing: \(newFolds)")
+
             
         default:
             break
-            //println("Gesture not recognized")
         }
     }
     
     /// erase hitpoint edge
     /// needs to be refactored for features
-    func erase(touchPoint: CGPoint)
-    {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (!edge!.isMaster))
-            {
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        }
-        else if var plane = sketch.planeHitTest(touchPoint)
-        {
-            sketch.planes.removePlane(plane)
-        }
-    }
+//    func erase(touchPoint: CGPoint)
+//    {
+//        if var feature = sketch.planeHitTest(touchPoint)?.feature
+//        {
+//            if feature.parent != nil {
+//                sketch.removeFeatureFromSketch(feature)
+//                sketch.getPlanes()
+//                forceRedraw()
+//            }
+//        }
+//    }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
@@ -496,9 +489,9 @@ class SketchView: UIView {
     
     
     
-    func setButtonBG(image:UIImage){
-        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    }
+//    func setButtonBG(image:UIImage){
+//        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+//    }
     
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind

@@ -22,7 +22,7 @@ class FoldFeature: NSObject, Printable
 //        Complete //finished drawing
 //    }
     
-    //not used yet
+
     var featurePlanes:[Plane] = []
     //not used yet
     var drawingPlanes:[Plane] = []
@@ -211,7 +211,9 @@ class FoldFeature: NSObject, Printable
     }
     
     // this caches planes from edges
-    func getFeaturePlanes(){}
+    func getFeaturePlanes()-> [Plane]{
+        return featurePlanes
+    }
     
     
     // makes a straight path between two points
