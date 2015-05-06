@@ -131,21 +131,27 @@ class SketchView: UIView {
                 if let e = sketch.draggedEdge{
                     /// clear edges
                     let shape = tappedF as! FreeForm
-                    shape.invalidateEdges()
 
                     //get heights,
-                    shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
+                    let heights = shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
                     // clear intersections
                     
                     shape.intersectionsWithDrivingFold = []
                     shape.intersections = []
                    
-                    //                    shape.tryIntersectionTruncation()
-//                    tappedF.
-                    shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
-                    //            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
-
+                    let shapePath = shape.path!
                     
+                    for height in heights{
+                        //create
+                        
+                        let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
+                    
+                        println(shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath))
+
+                    }
+//                    shape.invalidateEdges()
+                    shape.cachedEdges = shape.freeFormEdgesSplitByIntersections()
+
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
                     forceRedraw()
