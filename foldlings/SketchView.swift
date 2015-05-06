@@ -132,8 +132,9 @@ class SketchView: UIView {
                     /// clear edges
                     let shape = tappedF as! FreeForm
 
+                    let originalHeights = tappedF.uniqueFoldHeights()
                     //get heights,
-                    let heights = shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
+                    let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
                     // clear intersections & edges
                     shape.cachedEdges = []
                     shape.horizontalFolds = []
@@ -141,7 +142,7 @@ class SketchView: UIView {
                     shape.intersections = shape.intersectionsWithDrivingFold
                    
                     let shapePath = shape.path!
-                    
+
                     for height in heights{
                         //create
                         
@@ -150,13 +151,27 @@ class SketchView: UIView {
                         let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
                         
                         if !success{
-                            AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(2.5))
+                            
+                            for fold in shape.topTruncations{
+                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                            }
+                            
+                            for fold in shape.bottomTruncations{
+                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+
+                            }
+                            AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
 
                         }
 
                     }
+                    
+                    
                     println(shape.intersections)
                     sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                    
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights, originalHeights:originalHeights))
+                    
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
                     

@@ -260,7 +260,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
     }
     
     
-    /// the unique fold heights in the feature (ignores duplicates)
+    /// the unique fold heights in the feature (ignores duplicates), modified by delta y
     func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
         
         let draggedHeight = draggedEdge.start.y
@@ -272,6 +272,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
         case 0:
             newHeights = [originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]-deltaY!]
         case 1:
+            //TODO: this is wrong
             newHeights = [originalHeights[0]+deltaY!,originalHeights[1]+deltaY!,originalHeights[2]+deltaY!]
         case 2:
             newHeights = [originalHeights[0]-deltaY!,originalHeights[1],originalHeights[2]+deltaY!]

@@ -62,6 +62,7 @@ class FreeForm:FoldFeature{
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -418,6 +419,8 @@ class FreeForm:FoldFeature{
                 }
             }
         }
+        
+        println("Failed with points: \(points)")
         return false
     }
     
@@ -534,7 +537,6 @@ class FreeForm:FoldFeature{
     // sets top & bottom truncations based on fold height
     // TODO: like claimedges, this should probably be done differently
     func setTopBottomTruncations(){
-        
         let heights = uniqueFoldHeights()
         
         for fold in horizontalFolds{
@@ -548,6 +550,52 @@ class FreeForm:FoldFeature{
             }
             
         }
+    }
+    
+    
+    func getTabs(translatedHeights:[CGFloat],originalHeights:[CGFloat])->[Edge]{
+        
+        var tabs:[Edge] = []
+        
+//        println("TOP DIFFERENCE:")
+//        println(translatedHeights[0] < originalHeights[0])
+//
+//        //compare first and last translated height to original heights
+        
+        func tabForEdge(e:Edge) -> [Edge] {
+            let start = e.start
+            let end = e.end
+            let newStart = CGPointMake(start.x, start.y + deltaY!)
+            let newEnd = CGPointMake(end.x, end.y + deltaY!)
+            
+            let startConnector = Edge.straightEdgeBetween(start, end: newStart, kind: .Cut)
+            let endConnector = Edge.straightEdgeBetween(end, end: newEnd, kind: .Cut)
+            let translatedFold = Edge.straightEdgeBetween(newStart, end: newEnd, kind: .Fold)
+
+            return [startConnector, endConnector, translatedFold]
+        }
+        
+        if translatedHeights[0] < originalHeights[0]{
+            
+            for fold in topTruncations{
+                tabs.extend(tabForEdge(fold))
+            }
+//            println("top heights")
+        }
+        if translatedHeights[2] > originalHeights[2]{
+            
+            for fold in bottomTruncations{
+                tabs.extend(tabForEdge(fold))
+            }
+
+//            println("bottom heights")
+        }
+        
+        
+//        println("BOTTOM DIFFERENCE:")
+//        println(translatedHeights[2] > originalHeights[2])
+
+        return tabs
     }
     
 }
