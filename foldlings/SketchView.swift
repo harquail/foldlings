@@ -126,57 +126,55 @@ class SketchView: UIView {
             
         case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             
-            if let shape = sketch.currentFeature as? FreeForm
-            {
-                path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
-                shape.path = path
-                //reset path
-                path = UIBezierPath()
-                if let drawingFeature = sketch.currentFeature
+            let shape = sketch.currentFeature as! FreeForm
+            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
+            shape.path = path
+            //reset path
+            path = UIBezierPath()
+//            if let drawingFeature = sketch.currentFeature
+//            {
+                //for feature in features -- check folds for spanning
+                outer: for feature in sketch.features
                 {
-                    //for feature in features -- check folds for spanning
-                    drawingFeature.drivingFold = nil
-                    drawingFeature.parent = nil
-                    outer: for feature in sketch.features
+                    for fold in feature.horizontalFolds
                     {
-                        for fold in feature.horizontalFolds
+                        if(shape.featureSpansFold(fold))
                         {
-                            if(drawingFeature.featureSpansFold(fold))
-                            {
-                                drawingFeature.drivingFold = fold
-                                drawingFeature.parent = feature
-                                //set parents if the fold spans driving
-                                drawingFeature.parent!.children.append(drawingFeature)
-                                
-                                //fragments are the pieces of the fold created splitFoldByOcclusion
-                                let fragments = drawingFeature.splitFoldByOcclusion(fold)
-                                sketch.replaceFold(drawingFeature.parent!, fold: fold, folds: fragments)
-                                //set cached edges
-                                shape.featureEdges = []
-                                //create truncated folds
-                                shape.truncateWithFolds()
-                                //split paths at intersections
-                                shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                                shape.parent = feature
-                                break outer;
-                                
-                            }
+                            shape.drivingFold = fold
+                            shape.parent = feature
+                            //set parents if the fold spans driving
+                            shape.parent!.children.append(shape)
+                            
+                            //fragments are the pieces of the fold created splitFoldByOcclusion
+                            let fragments = shape.splitFoldByOcclusion(fold)
+                            sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
+                            //set cached edges
+                            shape.featureEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            shape.parent = feature
+                            break outer;
+                            
                         }
-                        
                     }
-                    // if feature didn't span a fold, then make it a hole?
-                    // find parent for hole
-                    if shape.parent == nil{
-                        shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
-                    }
-                    sketch.addFeatureToSketch(drawingFeature, parent: shape.parent!)
+                    
                 }
-            }
+                // if feature didn't span a fold, then make it a hole?
+                // find parent for hole
+                if shape.parent == nil
+                {
+                    shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                }
+                sketch.addFeatureToSketch(shape, parent: shape.parent!)
+            //}
+            
             sketch.currentFeature = nil
             self.sketch.getPlanes()
             forceRedraw()
             
-
+            
         default:
             break
         }

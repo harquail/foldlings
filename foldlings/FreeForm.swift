@@ -52,6 +52,9 @@ class FreeForm:FoldFeature
     //splits a bezierpath composed of cubic curves at intersection points
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
+        println("path \(path) \n")
+        println("intersections \(breakers) \n")
+
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
@@ -270,7 +273,6 @@ class FreeForm:FoldFeature
         let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
         
         return (leg1,leg2)
-        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
@@ -279,6 +281,7 @@ class FreeForm:FoldFeature
         //        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
+
         var edges:[Edge] = []
         
         //create edges from split paths
