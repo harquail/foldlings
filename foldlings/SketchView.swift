@@ -136,8 +136,9 @@ class SketchView: UIView {
                     let heights = shape.foldHeightsWithTransform(tappedF.uniqueFoldHeights(), draggedEdge: e, masterFold: tappedF.drivingFold!)
                     // clear intersections & edges
                     shape.cachedEdges = []
-//                    shape.intersectionsWithDrivingFold = []
-                    shape.intersections = []
+                    shape.horizontalFolds = []
+                    //clear all intersections except those with driving fold
+                    shape.intersections = shape.intersectionsWithDrivingFold
                    
                     let shapePath = shape.path!
                     
@@ -150,10 +151,16 @@ class SketchView: UIView {
 
                     }
                     println(shape.intersections)
-                    sketch.tappedFeature!.cachedEdges = shape.freeFormEdgesSplitByIntersections()
-
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections()
+)
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
+                    
+                    
+                    //add edges from the feature to the sketch
+//                    sketch.features?.append(sketch.currentFeature!)
+                    sketch.refreshFeatureEdges()
+                    self.sketch.getPlanes()
                     forceRedraw()
                 }
             }
