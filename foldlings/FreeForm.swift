@@ -373,7 +373,7 @@ class FreeForm:FoldFeature{
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = []
         options.append(.DeleteFeature)
-        if(self.isLeaf()){
+        if(self.isLeaf() && horizontalFolds.count >= 3){
                 options.append(.MoveFolds);
           }
         

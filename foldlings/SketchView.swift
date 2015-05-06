@@ -151,14 +151,10 @@ class SketchView: UIView {
 
                     }
                     println(shape.intersections)
-                    sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections()
-)
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
                     
-                    
-                    //add edges from the feature to the sketch
-//                    sketch.features?.append(sketch.currentFeature!)
                     sketch.refreshFeatureEdges()
                     self.sketch.getPlanes()
                     forceRedraw()
