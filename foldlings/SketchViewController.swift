@@ -98,7 +98,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .AddFolds :
             break
         case .DeleteFeature :
-            feature.removeFromSketch(self.sketchView.sketch)
+            sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
         case .MoveFolds:
             break

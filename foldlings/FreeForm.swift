@@ -38,14 +38,14 @@ class FreeForm:FoldFeature
         }
         
         if let p = path{
-            
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
-            
             return [edge]
         }
             // else create a straight edge
         else{
-            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)]
+            println(featureEdges!)
+            let edge = Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)
+            return [edge]
         }
     }
     

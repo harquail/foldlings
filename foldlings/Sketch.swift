@@ -439,7 +439,10 @@
         // create edges, if there are none
         func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature)
         {
+            // get the edges
             let fEdges = feature.getEdges()
+            // set edges for feature, for freeform
+            feature.featureEdges = fEdges
             for edge in fEdges
             {
                 if (!self.edges.contains(edge))
@@ -458,7 +461,6 @@
             for child in feature.children{
                 removeFeatureFromSketch(child)
             }
-            
             // remove all edges in feature
             let fEdges = feature.getEdges()
             for edge in fEdges
@@ -473,6 +475,5 @@
             // remove features from sketch.features
             self.features.remove(feature)
         }
-
         
     }
