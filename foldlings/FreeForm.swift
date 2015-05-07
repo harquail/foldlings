@@ -95,7 +95,7 @@ class FreeForm:FoldFeature
                 
             }
         }
-        
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
             
@@ -170,19 +170,20 @@ class FreeForm:FoldFeature
             default: println("unexpected")
             }
         }
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+        ///CRASH AFTER
         
         //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
             let maxFold = self.horizontalFolds.maxBy({$0.start.y})
             let minFold = self.horizontalFolds.minBy({$0.start.y})
-            
+
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 returnee.remove(p)
             }
         }
-        
         return returnee
     }
     
@@ -385,28 +386,35 @@ class FreeForm:FoldFeature
         
         if let ps = points
         {
+            println("POINTS: \(ps) maxIntercepts: \(maxIntercepts)")
             //for all intersections, if there are an even number
             if(ps.count%2 == 0 && ps.count <= maxIntercepts)
             {
+                println("REACHED")
+
                 var i = 0
                 var edgesToAdd:[Edge] = []
                 while(i<ps.count)
                 {
                     if(ps.count>i+1)
                     {
+
                         //try making a straight edge between the points
                         let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature: self)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength)
                         {
                             edgesToAdd.append(edge)
+
                             i += 2
-                            continue
                         }
+                        else{
                         //otherwise, try the next point
                         i += 1
+                        }
                     }
                     
+
                     //if there are edges to add, add them, and return that the trucation succeeded
                     if(edgesToAdd.count>0)
                     {
@@ -490,7 +498,7 @@ class FreeForm:FoldFeature
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
-                println("FAILED INTERSECTION POINTS: \(intersections)");
+//                println("FAILED INTERSECTION POINTS: \(intersections)");
                 //                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")

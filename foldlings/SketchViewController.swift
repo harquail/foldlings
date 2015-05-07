@@ -40,8 +40,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         
         let fs = sketchView.sketch.features
-            println(sketchView.path)
-            
+//            println(sketchView.path)
+        
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
             let fsBackwards = fs.reverse()

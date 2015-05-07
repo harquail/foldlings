@@ -145,15 +145,12 @@ class ArchivedEdges : NSObject, NSCoding {
     class func removeAtIndex(index:Int) {
         var i:Int
         var names = archivedSketchNames()
-//        println("names\(names)")
-//        println("removing object at \(index)")
         
         if(names != nil){
             for(i = index; i<names!.count-1; i++){
                 if let next:NSData? =  NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(i)") as! NSData?{
                     NSUserDefaults.standardUserDefaults().setObject(next, forKey: "achivedEdges\(i)")
                 }
-//                println("set object for achivedEdges\(i)")
                 if let nextImage:String? =  NSUserDefaults.standardUserDefaults().objectForKey("archivedSketchImage\(i)") as! String?{
                     NSUserDefaults.standardUserDefaults().setObject(nextImage, forKey: "archivedSketchImage\(i)")
                 }
