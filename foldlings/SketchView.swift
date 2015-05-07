@@ -449,7 +449,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 
-                //iterate trhough features and draw them
+                //iterate through features and draw them
                 if var currentFeatures = sketch.features{
                     
                     if(sketch.currentFeature != nil){
