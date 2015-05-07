@@ -377,6 +377,25 @@
             return (list.count > 0) ? list : nil
         }
         
+        
+        /// returns the feature that contains the hitpoint
+        func featureHitTest(point:CGPoint) -> FoldFeature
+        {
+            let f:FoldFeature? = nil
+            outer: for feature in self.features.reverse()
+            {
+                for plane in feature.featurePlanes
+                {
+                    if plane.path.containsPoint(point) {
+                        return feature
+                    }
+                }
+            }
+            println("not in a feature")
+            return f!
+        }
+        
+        
         /// check bounds for drawing
         func checkInBounds(point: CGPoint) -> Bool
         {

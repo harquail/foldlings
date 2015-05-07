@@ -131,8 +131,7 @@ class SketchView: UIView {
             shape.path = path
             //reset path
             path = UIBezierPath()
-//            if let drawingFeature = sketch.currentFeature
-//            {
+
                 //for feature in features -- check folds for spanning
                 outer: for feature in sketch.features
                 {
@@ -165,10 +164,9 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
                 }
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
-            //}
             
             sketch.currentFeature = nil
             self.sketch.getPlanes()
