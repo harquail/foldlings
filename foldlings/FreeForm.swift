@@ -275,9 +275,6 @@ class FreeForm:FoldFeature
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-//                println(intersections)
-//        println(path?.description)
-
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
 
@@ -287,7 +284,6 @@ class FreeForm:FoldFeature
         for p in paths{
             edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self))
         }
-        
         return edges
     }
     
@@ -348,10 +344,6 @@ class FreeForm:FoldFeature
         
         //first, test if y value is within cgrect ys
         let lineRect = CGRectMake(fold.start.x,fold.start.y,fold.end.x - fold.start.x,1)
-        
-        //        if(self.boundingBox() == nil){
-        //            return false
-        //        }
         
         //if the line does not intersect the bezier's bounding box, the fold can't span it
         if(!CGRectIntersectsRect(self.boundingBox()!,lineRect)){

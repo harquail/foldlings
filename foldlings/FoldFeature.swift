@@ -159,30 +159,6 @@ class FoldFeature: NSObject, Printable
         return [edge]
     }
     
-
-    //delete a feature from a sketch
-    func removeFromSketch(sketch:Sketch)
-    {
-        
-        //remove parent relationship from children
-        for child in self.children
-        {
-            if let edges = child.featureEdges{
-            for edge in edges{
-                sketch.removeEdge(edge)
-            }
-            }
-            child.removeFromSketch(sketch)
-        }
-        //remove child relationship from parents
-        self.parent?.children.remove(self)
-        if let edges = self.featureEdges{
-            for edge in edges{
-                sketch.removeEdge(edge)
-            }
-        }
-        sketch.features.remove(self)
-    }
     
     /// features are leaves if they don't have children
     func isLeaf() -> Bool
