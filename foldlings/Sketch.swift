@@ -475,6 +475,8 @@
             feature.parent = parent
         }
         
+        // removes any feature edges that aren't
+        // already in the sketch and the parent/child 
         func removeFeatureFromSketch(feature: FoldFeature){
             //remove children features
             for child in feature.children{
