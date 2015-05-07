@@ -15,10 +15,14 @@ class FreeForm:FoldFeature{
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
     var cachedPath:UIBezierPath? = UIBezierPath()
     var closed = false
-    //the intrsection points calculated by featureSpansFold & used for occlusion
+    //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
+    //the top and bottom edges that truncate a shape
+    //these are not modified when folds are dragged, and are used to create tabs.
+    var topTruncations:[Edge] = []
+    var bottomTruncations:[Edge] = []
 
     
     override init(start: CGPoint) {
@@ -58,6 +62,7 @@ class FreeForm:FoldFeature{
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -266,13 +271,11 @@ class FreeForm:FoldFeature{
         let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
         
         return (leg1,leg2)
-        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-//        println(intersections)
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
         var edges:[Edge] = []
@@ -373,7 +376,7 @@ class FreeForm:FoldFeature{
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = []
         options.append(.DeleteFeature)
-        if(self.isLeaf()){
+        if(self.isLeaf() && horizontalFolds.count >= 3){
                 options.append(.MoveFolds);
           }
         
@@ -382,7 +385,7 @@ class FreeForm:FoldFeature{
     }
     
     // attempt to truncate testpathtwo with testpathone, which should be a line.  maxIntercepts indicates how many intersection points are allowed
-    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
+    func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
         
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         
@@ -409,13 +412,15 @@ class FreeForm:FoldFeature{
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-//                    println("added fold");
+                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.cachedEdges!.extend(edgesToAdd)
                     return true
                 }
             }
         }
+        
+        println("Failed with points: \(points)")
         return false
     }
     
@@ -529,5 +534,68 @@ class FreeForm:FoldFeature{
         return returnee
     }
     
+    // sets top & bottom truncations based on fold height
+    // TODO: like claimedges, this should probably be done differently
+    func setTopBottomTruncations(){
+        let heights = uniqueFoldHeights()
+        
+        for fold in horizontalFolds{
+            if fold.start.y == heights.first!
+            {
+                topTruncations.append(fold)
+            }
+            else if fold.start.y == heights.last!
+            {
+                bottomTruncations.append(fold)
+            }
+            
+        }
+    }
+    
+    
+    func getTabs(translatedHeights:[CGFloat],originalHeights:[CGFloat])->[Edge]{
+        
+        var tabs:[Edge] = []
+        
+//        println("TOP DIFFERENCE:")
+//        println(translatedHeights[0] < originalHeights[0])
+//
+//        //compare first and last translated height to original heights
+        
+        func tabForEdge(e:Edge) -> [Edge] {
+            let start = e.start
+            let end = e.end
+            let newStart = CGPointMake(start.x, start.y + deltaY!)
+            let newEnd = CGPointMake(end.x, end.y + deltaY!)
+            
+            let startConnector = Edge.straightEdgeBetween(start, end: newStart, kind: .Cut)
+            let endConnector = Edge.straightEdgeBetween(end, end: newEnd, kind: .Cut)
+            let translatedFold = Edge.straightEdgeBetween(newStart, end: newEnd, kind: .Fold)
+
+            return [startConnector, endConnector, translatedFold]
+        }
+        
+        if translatedHeights[0] < originalHeights[0]{
+            
+            for fold in topTruncations{
+                tabs.extend(tabForEdge(fold))
+            }
+//            println("top heights")
+        }
+        if translatedHeights[2] > originalHeights[2]{
+            
+            for fold in bottomTruncations{
+                tabs.extend(tabForEdge(fold))
+            }
+
+//            println("bottom heights")
+        }
+        
+        
+//        println("BOTTOM DIFFERENCE:")
+//        println(translatedHeights[2] > originalHeights[2])
+
+        return tabs
+    }
     
 }

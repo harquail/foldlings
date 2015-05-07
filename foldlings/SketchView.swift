@@ -120,7 +120,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-                    println("delta: \(tappedF.deltaY)")
+//                    println("delta: \(tappedF.deltaY)")
                     forceRedraw()
                 }
                 
@@ -129,9 +129,54 @@ class SketchView: UIView {
                 
                 //end the drag by clearing tapped feature
                 if let e = sketch.draggedEdge{
-                    tappedF.deltaY = gesture.translationInView(self).y
+                    /// clear edges
+                    let shape = tappedF as! FreeForm
+
+                    let originalHeights = tappedF.uniqueFoldHeights()
+                    //get heights,
+                    let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
+                    // clear intersections & edges
+                    shape.cachedEdges = []
+                    shape.horizontalFolds = []
+                    //clear all intersections except those with driving fold
+                    shape.intersections = shape.intersectionsWithDrivingFold
+                   
+                    let shapePath = shape.path!
+
+                    for height in heights{
+                        //create
+                        
+                        let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
+                    
+                        let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
+                        
+                        if !success{
+                            
+                            for fold in shape.topTruncations{
+                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                            }
+                            
+                            for fold in shape.bottomTruncations{
+                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+
+                            }
+                            AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+
+                        }
+
+                    }
+                    
+                    
+                    println(shape.intersections)
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                    
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights, originalHeights:originalHeights))
+                    
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
+                    
+                    sketch.refreshFeatureEdges()
+                    self.sketch.getPlanes()
                     forceRedraw()
                 }
             }
@@ -242,10 +287,9 @@ class SketchView: UIView {
                                         }
                                     }
                                 }
-                                
-                                println("===ORPHANS===")
-                                printOrphanedEdges()
-                                
+//                                println("===ORPHANS===")
+//                                printOrphanedEdges()
+                                shape.setTopBottomTruncations()
                             }
                         }
                     }
@@ -273,55 +317,14 @@ class SketchView: UIView {
             
             var touchPoint = gesture.locationInView(self)
             
-            var goodPlaceToDraw = true
-            //            if let children = sketch.masterFeature?.children{
-            //                for child in children{
-            //                    if(child.boundingBox()!.contains(touchPoint)){
-            //
-            //                        //get the edge & nearest point to hit
-            //                        let edge = child.featureEdgeAtPoint(touchPoint)
-            //                        if let e = edge{
-            //
-            //                            //this is really only right for horizontal folds, not cuts...
-            //                            //maybe limit to fold for now?
-            //                            sketch.draggedEdge = e
-            //                            e.deltaY = gesture.translationInView(self).y
-            //                            println("init deltaY: \(e.deltaY)")
-            //                        }
-            //                        else{
-            //                            println("No Edge Here...")
-            //                        }
-            //                        goodPlaceToDraw = false
-            //                        break
-            //                    }
-            //                }
-            //            }
-            
-            if(goodPlaceToDraw){
-                //start a new box-fold feature
+
                 sketch.currentFeature = BoxFold(start: touchPoint)
-            }
-            
         }
             //
         else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
             
             var touchPoint: CGPoint = gesture.locationInView(self)
             
-            
-            
-            //            if var e = sketch.draggedEdge{
-            //
-            //                e.start.y += e.deltaY!
-            //                e.end.y += e.deltaY!
-            //                let eNew =  Edge.straightEdgeBetween(e.start,end:e.end, kind:e.kind)
-            //                eNew.deltaY = nil
-            //
-            //                sketch.addEdge(eNew)
-            //
-            ////                sketch.masterFeature!.invalidateEdges()
-            //
-            //            }
             
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature{
@@ -413,7 +416,7 @@ class SketchView: UIView {
     
     
     
-    /// constructs a greyscale bitmap preview image of the sketch
+    /// constructs a grayscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
         
         let startTime = CFAbsoluteTimeGetCurrent()/// taking time
@@ -463,22 +466,26 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature){
                             
-                            let pathAroundFeature = (feature as! FreeForm).path!                            
+                            
+                            let invertedPath = UIBezierPath(rect: CGRectInfinite)
+                            let pathAroundFeature = (feature as! FreeForm).path!
+                            invertedPath.appendPath(pathAroundFeature)
                             let context =  UIGraphicsGetCurrentContext()
                             CGContextSaveGState(context);
 
-                            CGContextAddPath(context, pathAroundFeature.CGPath);
+                            CGContextAddPath(context, invertedPath.CGPath);
                             let boundingRect = CGContextGetClipBoundingBox(context);
+                            
+                            
                             CGContextAddRect(context, boundingRect);
                             CGContextEOClip(context)
 //                            CGContext
 //                            CGContextClipToMask()
 
-                            
-                            let foldHeights = feature.uniqueFoldHeights()
+                            let foldHeights = feature.foldHeightsWithTransform(feature.uniqueFoldHeights(), draggedEdge: sketch.draggedEdge!, masterFold: feature.drivingFold!)
                             
                             for height in foldHeights{
-                                let edge = Edge.straightEdgeBetween(CGPointMake(0, height + feature.deltaY!), end: CGPointMake(1000, height + feature.deltaY!), kind: .Fold)
+                                let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height), kind: .Fold)
                                 setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
                                 edge.path.stroke()
                             }
@@ -501,20 +508,6 @@ class SketchView: UIView {
                         }
                     }
                 }
-                
-                //                //print all edges
-                //                for e in sketch.edges
-                //                {
-                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                //
-                //                    //don't draw twin edges
-                //                    if(!twinsOfVisited.contains(e)){
-                //                        e.path.stroke()
-                //                        twinsOfVisited.append(e.twin)
-                //                    }
-                //
-                //
-                //                }
             }
             else // this is a grayscale for print image
             {
