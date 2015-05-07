@@ -584,14 +584,36 @@ class FreeForm:FoldFeature{
             
             for fold in topTruncations{
                 tabs.extend(tabForEdge(fold, translatedHeights[0] - topTruncations.first!.start.y))
+                
+                //remove folds inside tabs
+                //this should have worked!
+//                cachedEdges?.remove(fold)
+//                horizontalFolds.remove(fold)
+                //here's the more expensive removal:
+                cachedEdges?.reject({$0.start.y == self.topTruncations.first!.start.y})
+                horizontalFolds.reject({$0.start.y == self.topTruncations.first!.start.y})
             }
-//            println("top heights")
+            
+//            println("BEFORE")
+//            println(cachedEdges?.count)
+//            cachedEdges = cachedEdges?.difference(topTruncations)
+//            println("AFTER  ")
+//            println(cachedEdges?.count)
+//            horizontalFolds = horizontalFolds.difference(topTruncations)
+            
         }
         if translatedHeights[2] > bottomTruncations.first?.start.y{
             
             for fold in bottomTruncations{
                 tabs.extend(tabForEdge(fold,translatedHeights[2] - bottomTruncations.first!.start.y))
+
+//                cachedEdges?.remove(fold)
+//                horizontalFolds.remove(fold)
             }
+            
+//            cachedEdges = cachedEdges?.difference(bottomTruncations)
+//            horizontalFolds = horizontalFolds.difference(bottomTruncations)
+
 
 //            println("bottom heights")
         }

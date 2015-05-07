@@ -167,15 +167,45 @@ class SketchView: UIView {
                     }
                     
                     
-                    println(shape.intersections)
                     sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
                     
                     sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                     
+                    
+                  
+                    
+                 
+                    
+                    sketch.refreshFeatureEdges()
+                    
+                    func foldsToReject() -> [Edge]{
+                        var rejectees:[Edge] = []
+                        
+                        println("\n\n\n\n\n\n\n\nbottom trunks")
+                        println(shape.bottomTruncations.count)
+                        
+                        for fold in sketch.tappedFeature!.cachedEdges!.filter({$0.kind == .Fold}){
+                                if fold.start.y == heights[0]{
+                                    rejectees.append(fold)
+                                }
+                        }
+                        println("\n\n\n\n\n\n\n\nrejectees")
+                        println(rejectees)
+
+                        
+                        return rejectees
+                    }
+                
+                    //cleans up extra horizontal folds
+                    sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
+                    
+                    sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.reject({$0.start.y == shape.bottomTruncations.first!.start.y})
+                    sketch.tappedFeature!.cachedEdges?.reject({$0.start.y == shape.topTruncations.first!.start.y})
+                    sketch.tappedFeature!.horizontalFolds.reject({$0.start.y == shape.topTruncations.first!.start.y})
+
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil
                     
-                    sketch.refreshFeatureEdges()
                     self.sketch.getPlanes()
                     forceRedraw()
                 }
