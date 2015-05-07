@@ -388,54 +388,43 @@ class FreeForm:FoldFeature
     }
     
     // attempt to truncate testpathtwo with testpathone, which should be a line.  maxIntercepts indicates how many intersection points are allowed
-    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool
-    {
+    func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
+        
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         
-        if let ps = points
-        {
-            println("POINTS: \(ps) maxIntercepts: \(maxIntercepts)")
+        if let ps = points{
             //for all intersections, if there are an even number
-            if(ps.count%2 == 0 && ps.count <= maxIntercepts)
-            {
-                println("REACHED")
-
+            if(ps.count%2 == 0 && ps.count <= maxIntercepts){
                 var i = 0
                 var edgesToAdd:[Edge] = []
-                while(i<ps.count)
-                {
-                    if(ps.count>i+1)
-                    {
-
+                while(i<ps.count){
+                    if(ps.count>i+1){
                         //try making a straight edge between the points
-                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature: self)
+                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature:self)
                         // if the line's center is inside the path, add the edge and go to the next pair
-                        if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength)
-                        {
+                        if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
-
                             i += 2
-                        }
-                        else{
-                        //otherwise, try the next point
-                        i += 1
+                            continue
                         }
                     }
-                    
-
-                    //if there are edges to add, add them, and return that the trucation succeeded
-                    if(edgesToAdd.count>0)
-                    {
-                        intersections.extend(ps)
-                        self.horizontalFolds.extend(edgesToAdd)
-                        self.featureEdges!.extend(edgesToAdd)
-                        return true
-                    }
+                    //otherwise, try the next point
+                    i += 1
+                }
+                
+                //if there are edges to add, add them, and return that the trucation succeeded
+                if(edgesToAdd.count>0){
+                    intersections.extend(ps)
+                    println("added fold");
+                    self.horizontalFolds.extend(edgesToAdd)
+                    self.featureEdges!.extend(edgesToAdd)
+                    return true
                 }
             }
         }
-        return false
         
+        println("Failed with points: \(points)")
+        return false
     }
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
     func truncateWithFolds()
