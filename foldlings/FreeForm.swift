@@ -562,11 +562,15 @@ class FreeForm:FoldFeature{
 //
 //        //compare first and last translated height to original heights
         
-        func tabForEdge(e:Edge) -> [Edge] {
+        func tabForEdge(e:Edge,displacement:CGFloat) -> [Edge] {
+            
+            // set direction
+//            let direction = up ? -1 : 1
+            
             let start = e.start
             let end = e.end
-            let newStart = CGPointMake(start.x, start.y + deltaY!)
-            let newEnd = CGPointMake(end.x, end.y + deltaY!)
+            let newStart = CGPointMake(start.x, start.y + displacement)
+            let newEnd = CGPointMake(end.x, end.y + displacement)
             
             let startConnector = Edge.straightEdgeBetween(start, end: newStart, kind: .Cut)
             let endConnector = Edge.straightEdgeBetween(end, end: newEnd, kind: .Cut)
@@ -578,14 +582,14 @@ class FreeForm:FoldFeature{
         if translatedHeights[0] < originalHeights[0]{
             
             for fold in topTruncations{
-                tabs.extend(tabForEdge(fold))
+                tabs.extend(tabForEdge(fold, translatedHeights[0] - originalHeights[0]))
             }
 //            println("top heights")
         }
         if translatedHeights[2] > originalHeights[2]{
             
             for fold in bottomTruncations{
-                tabs.extend(tabForEdge(fold))
+                tabs.extend(tabForEdge(fold,translatedHeights[2] - originalHeights[2]))
             }
 
 //            println("bottom heights")
