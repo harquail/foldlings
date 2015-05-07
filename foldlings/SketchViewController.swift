@@ -39,7 +39,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         var touchPoint = gesture.locationInView(sketchView)
         
-        if let fs = sketchView.sketch.features{
+        let fs = sketchView.sketch.features
             println(sketchView.path)
             
             // evaluate newer features first
@@ -87,7 +87,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                 
             }
             
-        }
         sketchView.statusLabel.text = ""
     }
     
@@ -99,7 +98,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .AddFolds :
             break
         case .DeleteFeature :
-            feature.removeFromSketch(self.sketchView.sketch)
+            sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
         case .MoveFolds:
             break
@@ -131,10 +130,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     
-    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
-        //println("free form")
-        sketchView.sketchMode = .FreeForm
-    }
+//    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
+//        //println("free form")
+//        sketchView.sketchMode = .FreeForm
+//    }
     
     //box fold button selected
     // #TODO: flurry logging here

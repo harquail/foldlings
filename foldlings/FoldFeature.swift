@@ -22,7 +22,7 @@ class FoldFeature: NSObject, Printable
 //        Complete //finished drawing
 //    }
     
-    //not used yet
+
     var featurePlanes:[Plane] = []
     //not used yet
     var drawingPlanes:[Plane] = []
@@ -77,7 +77,7 @@ class FoldFeature: NSObject, Printable
     }
     
     /// is it valid?
-    var state:ValidityState = .Invalid
+    var state:ValidityState = .Valid
     var dirty: Bool = true
     
     /// printable description is the object class & startPoint
@@ -160,49 +160,6 @@ class FoldFeature: NSObject, Printable
     }
     
 
-//    
-//    /// splits an edge, making edges around its children
-//    func edgeSplitByChildren(edge:Edge) -> [Edge]{
-//        
-//        let start = edge.start
-//        let end = edge.end
-//        var returnee = [Edge]()
-//        
-//        if var childs = children{
-//            
-//            //sort children by x position
-//            childs.sort({(a, b) -> Bool in return a.startPoint!.x < b.startPoint!.x})
-//            childs = childs.filter({(a) -> Bool in return a.drivingFold?.start.y == edge.start.y })
-//            
-//            //pieces of the edge, which go inbetween child features
-//            var masterPieces:[Edge] = []
-//            
-//            //create fold pieces between the children
-//            var brushTip = start
-//            
-//            for child in childs{
-//                
-//                let brushTipTranslated = CGPointMake(child.endPoint!.x,brushTip.y)
-//                
-//                let piece = Edge.straightEdgeBetween(brushTip, end: CGPointMake(child.startPoint!.x, brushTip.y), kind: .Fold)
-//                returnee.append(piece)
-//                horizontalFolds.append(piece)
-//                
-//                brushTip = brushTipTranslated
-//            }
-//            
-//            let finalPiece = Edge.straightEdgeBetween(brushTip, end: end, kind: .Fold)
-//            returnee.append(finalPiece)
-//        }
-//        
-//        //if there are no split edges, give the edge back whole
-//        if (returnee.count == 0){
-//            return [edge]
-//        }
-//        return returnee
-//        
-//    }
-//    
     //delete a feature from a sketch
     func removeFromSketch(sketch:Sketch)
     {
@@ -224,7 +181,7 @@ class FoldFeature: NSObject, Printable
                 sketch.removeEdge(edge)
             }
         }
-        sketch.features?.remove(self)
+        sketch.features.remove(self)
     }
     
     /// features are leaves if they don't have children
@@ -247,13 +204,16 @@ class FoldFeature: NSObject, Printable
         var fMax = max(fold.start.x, fold.end.x)
 
         if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
+
             return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
         return false
     }
     
     // this caches planes from edges
-    func getFeaturePlanes(){}
+    func getFeaturePlanes()-> [Plane]{
+        return featurePlanes
+    }
     
     
     // makes a straight path between two points

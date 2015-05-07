@@ -95,19 +95,20 @@ class SketchView: UIView {
     // Draws Free-form Shape
     func handleFreeFormPan(sender: AnyObject)
     {
+        //println("handle")
         let gesture = sender as! UIPanGestureRecognizer
         
-        switch (gesture.state){
+        switch (gesture.state)
+        {
             
         case UIGestureRecognizerState.Began:
             // make a shape with touchpoint
             var touchPoint: CGPoint = gesture.locationInView(self)
-            let shape = FreeForm(start:touchPoint)
+            var shape: FreeForm = FreeForm(start:touchPoint)
             sketch.currentFeature = shape
             sketch.currentFeature?.startPoint = gesture.locationInView(self)
             
             shape.endPoint = touchPoint
-            
             
             
         case UIGestureRecognizerState.Changed:
@@ -125,85 +126,57 @@ class SketchView: UIView {
             
         case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             
-            if let drawingFeature = sketch.currentFeature
-            {
-                let shape = sketch.currentFeature as! FreeForm
-                
-                path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
-                shape.path = path
-                //reset path
-                path = UIBezierPath()
-                
-                if let drawingFeature = sketch.currentFeature
+            let shape = sketch.currentFeature as! FreeForm
+            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
+            shape.path = path
+            //reset path
+            path = UIBezierPath()
+//            if let drawingFeature = sketch.currentFeature
+//            {
+                //for feature in features -- check folds for spanning
+                outer: for feature in sketch.features
                 {
-                    //for feature in features -- check folds for spanning
-                    drawingFeature.drivingFold = nil
-                    drawingFeature.parent = nil
-                    for feature in sketch.features!{
-                        
-                        for fold in feature.horizontalFolds
+                    for fold in feature.horizontalFolds
+                    {
+                        if(shape.featureSpansFold(fold))
                         {
-                            if(drawingFeature.featureSpansFold(fold))
-                            {
-                                drawingFeature.drivingFold = fold
-                                drawingFeature.parent = feature
-                                
-                                //set parents if the fold spans driving
-                                drawingFeature.parent!.children.append(drawingFeature)
-                                
-                                
-                                //#TODO: maybe refactor this
-                                //fragments are the pieces of the fold created splitFoldByOcclusion
-                                let fragments = drawingFeature.splitFoldByOcclusion(fold)
-                                sketch.replaceFold(drawingFeature.parent!, fold: fold, folds: fragments)
-                                
-                                //set cached edges
-                                shape.featureEdges = []
-                                //create truncated folds
-                                shape.truncateWithFolds()
-                                //split paths at intersections
-                                shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                                
-                                
-                                //orphaned edges have start or end points that are not shared with any other edge
-                                func printOrphanedEdges()
-                                {
-                                    for edge in shape.featureEdges!
-                                    {
-                                        var foundStart = false
-                                        var foundEnd = false
-                                        
-                                        for edge2 in shape.featureEdges!
-                                        {
-                                            
-                                            if (edge != edge2)
-                                            {
-                                                if(CGPointEqualToPoint(edge.start, edge2.end) || CGPointEqualToPoint(edge.start, edge2.start))
-                                                {foundStart = true}
-                                                if(CGPointEqualToPoint(edge.end, edge2.start) || CGPointEqualToPoint(edge.end, edge2.end)){ foundEnd = true}
-                                            }
-                                        }
-                                        if(!(foundStart && foundEnd)){println(edge)}
-                                    }
-                                }
-                                //                            println("===ORPHANS===")
-                                //                            printOrphanedEdges()
-                            }
+                            shape.drivingFold = fold
+                            shape.parent = feature
+                            //set parents if the fold spans driving
+                            shape.parent!.children.append(shape)
+                            
+                            //fragments are the pieces of the fold created splitFoldByOcclusion
+                            let fragments = shape.splitFoldByOcclusion(fold)
+                            sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
+                            //set cached edges
+                            shape.featureEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            shape.parent = feature
+                            break outer;
+                            
                         }
                     }
+                    
                 }
-            }
+                // if feature didn't span a fold, then make it a hole?
+                // find parent for hole
+                if shape.parent == nil
+                {
+                    shape.parent = sketch.planeHitTest(shape.path!.firstPoint())!.feature
+                }
+                sketch.addFeatureToSketch(shape, parent: shape.parent!)
+            //}
             
-            // add the edges of the feature to the sketch
-            sketch.addFeatureToSketch(sketch.currentFeature!)
-            sketch.features?.append(sketch.currentFeature!)
             sketch.currentFeature = nil
             self.sketch.getPlanes()
             forceRedraw()
             
+            
         default:
             break
-            //            println("Gesture not recognized")
         }
     }
     
@@ -236,7 +209,7 @@ class SketchView: UIView {
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
                 /// what happens if I make this a while loop
-                outer:for feature in sketch.features!
+                outer:for feature in sketch.features
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds
@@ -270,17 +243,14 @@ class SketchView: UIView {
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
-                    // add feature to sketch features and to parent's children
-                    sketch.features?.append(drawingFeature)
                     let drawParent = drawingFeature.parent!
-                    drawParent.children.append(drawingFeature)
-                    
                     
                     // splits the driving fold of the parent
                     // removes and adds edges to sketch
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
-                    sketch.addFeatureToSketch(drawingFeature)
+                    // add feature to sketch features and to parent's children
+                    sketch.addFeatureToSketch(drawingFeature, parent: drawParent)
                     
                 }
                 
@@ -290,32 +260,26 @@ class SketchView: UIView {
                 forceRedraw()
             }
             
-            //println("edge being removed: \(drawingFeature.drivingFold!)")
-            //println("edge replacing: \(newFolds)")
+            
             
         default:
             break
-            //println("Gesture not recognized")
         }
     }
     
     /// erase hitpoint edge
     /// needs to be refactored for features
-    func erase(touchPoint: CGPoint)
-    {
-        if var (edge, np) = sketch.edgeHitTest(touchPoint)
-        {
-            if edge != nil && ( (!edge!.isMaster))
-            {
-                sketch.removeEdge(edge!)
-                forceRedraw()
-            }
-        }
-        else if var plane = sketch.planeHitTest(touchPoint)
-        {
-            sketch.planes.removePlane(plane)
-        }
-    }
+    //    func erase(touchPoint: CGPoint)
+    //    {
+    //        if var feature = sketch.planeHitTest(touchPoint)?.feature
+    //        {
+    //            if feature.parent != nil {
+    //                sketch.removeFeatureFromSketch(feature)
+    //                sketch.getPlanes()
+    //                forceRedraw()
+    //            }
+    //        }
+    //    }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
@@ -357,26 +321,24 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 
                 //iterate through features and draw them
-                if var currentFeatures = sketch.features
+                var currentFeatures = sketch.features
+                //add most recent feature if it exists
+                if(sketch.currentFeature != nil)
                 {
-                    //add most recent feature if it exists
-                    if(sketch.currentFeature != nil)
+                    currentFeatures.append(sketch.currentFeature!)
+                }
+                
+                for feature in currentFeatures
+                {
+                    if(feature.startPoint != nil && feature.endPoint != nil)
                     {
-                        currentFeatures.append(sketch.currentFeature!)
-                    }
-                    
-                    for feature in currentFeatures
-                    {
-                        if(feature.startPoint != nil && feature.endPoint != nil)
+                        let edges = feature.getEdges()
+                        for e in edges
                         {
-                            let edges = feature.getEdges()
-                            for e in edges
-                            {
-                                setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                                e.path.stroke()
-                            }
-                            
+                            setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                            e.path.stroke()
                         }
+                        
                     }
                 }
                 
@@ -522,9 +484,9 @@ class SketchView: UIView {
     
     
     
-    func setButtonBG(image:UIImage){
-        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    }
+    //    func setButtonBG(image:UIImage){
+    //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+    //    }
     
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind

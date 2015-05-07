@@ -38,20 +38,23 @@ class FreeForm:FoldFeature
         }
         
         if let p = path{
-            
             let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
-            
             return [edge]
         }
             // else create a straight edge
         else{
-            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)]
+            println(featureEdges!)
+            let edge = Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)
+            return [edge]
         }
     }
     
     //splits a bezierpath composed of cubic curves at intersection points
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
         
+        println("path \(path) \n")
+        println("intersections \(breakers) \n")
+
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
@@ -221,12 +224,14 @@ class FreeForm:FoldFeature
             }
             
             //recurse with new t values, decremented recursion value, and everything else the same
+            
             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
         }
         else{
             // base case: return the average of the t values of the two closest points
+            
             return (startT + endT)/2
         }
     }
@@ -268,7 +273,6 @@ class FreeForm:FoldFeature
         let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
         
         return (leg1,leg2)
-        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
@@ -279,6 +283,7 @@ class FreeForm:FoldFeature
 
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections)
+
         var edges:[Edge] = []
         
         //create edges from split paths

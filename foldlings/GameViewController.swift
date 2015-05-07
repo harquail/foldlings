@@ -430,7 +430,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         if (segue.identifier == "backtoSketchSegue") {
             
             let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
-            viewController.sketchView.setButtonBG(previewImage())
+//            viewController.sketchView.setButtonBG(previewImage())
             
         }
     }
