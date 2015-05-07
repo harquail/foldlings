@@ -170,7 +170,7 @@ class SketchView: UIView {
                     println(shape.intersections)
                     sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
                     
-                    sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights, originalHeights:originalHeights))
+                    sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                     
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil

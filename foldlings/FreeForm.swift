@@ -553,7 +553,7 @@ class FreeForm:FoldFeature{
     }
     
     
-    func getTabs(translatedHeights:[CGFloat],originalHeights:[CGFloat])->[Edge]{
+    func getTabs(translatedHeights:[CGFloat])->[Edge]{
         
         var tabs:[Edge] = []
         
@@ -575,21 +575,22 @@ class FreeForm:FoldFeature{
             let startConnector = Edge.straightEdgeBetween(start, end: newStart, kind: .Cut)
             let endConnector = Edge.straightEdgeBetween(end, end: newEnd, kind: .Cut)
             let translatedFold = Edge.straightEdgeBetween(newStart, end: newEnd, kind: .Fold)
-
+            horizontalFolds.append(translatedFold)
+            
             return [startConnector, endConnector, translatedFold]
         }
         
-        if translatedHeights[0] < originalHeights[0]{
+        if translatedHeights[0] < topTruncations.first?.start.y{
             
             for fold in topTruncations{
-                tabs.extend(tabForEdge(fold, translatedHeights[0] - originalHeights[0]))
+                tabs.extend(tabForEdge(fold, translatedHeights[0] - topTruncations.first!.start.y))
             }
 //            println("top heights")
         }
-        if translatedHeights[2] > originalHeights[2]{
+        if translatedHeights[2] > bottomTruncations.first?.start.y{
             
             for fold in bottomTruncations{
-                tabs.extend(tabForEdge(fold,translatedHeights[2] - originalHeights[2]))
+                tabs.extend(tabForEdge(fold,translatedHeights[2] - bottomTruncations.first!.start.y))
             }
 
 //            println("bottom heights")
