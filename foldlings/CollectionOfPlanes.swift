@@ -73,26 +73,23 @@ class CollectionOfPlanes: Printable, Hashable {
                         // if the twin has a plane, setup adjacency
                         if let p = edge.twin.plane {
                             if self.adjacency[plane] == nil {
-//                                println("did encounter an nil plane adjacency")
-//                                println(plane)
                                 self.adjacency[plane] = []
                             }
                             var adjacencylist = self.adjacency[plane]!
                             // order the adjacency list by planes' topfolds
-                            let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                            adjacencylist.insert(p, atIndex: index)
+                            adjacencylist.insertIntoOrdered(p, ordering: { $0.topFold()!.start.y < $1.topFold()!.start.y })
+                            
                             if self.adjacency[p] == nil {
                                 self.adjacency[p] = [plane]
                             }
                             else if !self.adjacency[p]!.contains(plane) {
-                                let index = self.adjacency[p]!.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                                self.adjacency[p]!.insert(plane, atIndex: index)
+                                 self.adjacency[p]!.insertIntoOrdered(plane, ordering: { $0.topFold()!.start.y < $1.topFold()!.start.y })
                             }
                         }
                     }
                 }
             }
-             //}
+             
         }
     }
     
