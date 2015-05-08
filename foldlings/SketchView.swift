@@ -149,7 +149,6 @@ class SketchView: UIView {
                         let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
                     
                         let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
-                        
                         if !success{
                             
                             for fold in shape.topTruncations{
@@ -162,6 +161,7 @@ class SketchView: UIView {
                             }
                             AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
 
+//                            break
                         }
 
                     }
@@ -184,11 +184,9 @@ class SketchView: UIView {
                         println("\n\n\n\n\n\n\n\nbottom trunks")
                         println(shape.bottomTruncations.count)
                         
-                        for fold in sketch.tappedFeature!.cachedEdges!.filter({$0.kind == .Fold}){
-                                if fold.start.y == heights[0]{
-                                    rejectees.append(fold)
+                                if heights[0] < shape.topTruncations[0].start.y{
+                                    rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
                                 }
-                        }
                         println("\n\n\n\n\n\n\n\nrejectees")
                         println(rejectees)
 
@@ -198,10 +196,7 @@ class SketchView: UIView {
                 
                     //cleans up extra horizontal folds
                     sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
-                    
-                    sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.reject({$0.start.y == shape.bottomTruncations.first!.start.y})
-                    sketch.tappedFeature!.cachedEdges?.reject({$0.start.y == shape.topTruncations.first!.start.y})
-                    sketch.tappedFeature!.horizontalFolds.reject({$0.start.y == shape.topTruncations.first!.start.y})
+                    sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
 
                     sketch.tappedFeature?.activeOption = nil
                     sketch.tappedFeature = nil

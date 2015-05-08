@@ -590,8 +590,8 @@ class FreeForm:FoldFeature{
 //                cachedEdges?.remove(fold)
 //                horizontalFolds.remove(fold)
                 //here's the more expensive removal:
-                cachedEdges?.reject({$0.start.y == self.topTruncations.first!.start.y})
-                horizontalFolds.reject({$0.start.y == self.topTruncations.first!.start.y})
+//                cachedEdges?.reject({$0.start.y == self.topTruncations.first!.start.y})
+//                horizontalFolds.reject({$0.start.y == self.topTruncations.first!.start.y})
             }
             
 //            println("BEFORE")

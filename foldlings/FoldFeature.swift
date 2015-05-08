@@ -57,7 +57,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
         self.children = aDecoder.decodeObjectForKey("children") as? [FoldFeature]
         self.parent = aDecoder.decodeObjectForKey("parent") as? FoldFeature
         self.drivingFold = aDecoder.decodeObjectForKey("children") as? Edge
-        self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
+//        self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
         self.cachedEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
         self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
@@ -279,7 +279,7 @@ class FoldFeature: NSObject, Printable, NSCoding{
         default:
             newHeights = originalHeights
         }
-        
+
         if(newHeights.first > masterFold.start.y || newHeights.last < masterFold.start.y){
          // TODO: original heights is the wrong thing to return here
             return originalHeights
