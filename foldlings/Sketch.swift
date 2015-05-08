@@ -17,10 +17,7 @@
         var features:[FoldFeature] = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
-        var masterFeature:FoldFeature?
-        
-        
-        
+        var masterFeature:MasterCard? //the master card feature for the sketch
         
         //the folds that define a sketch
         //for now, cuts are in this array to
@@ -176,7 +173,6 @@
         func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
             for e in edgeList {
                 // add all of these outgoing edges to the edge's adjacency in order
-                
                 if !contains(edge.adjacency, e){
                     edge.adjacency.insertIntoOrdered(e, ordering:  {getAngle(edge, $0) < getAngle(edge, $1)})
                 }
@@ -442,7 +438,10 @@
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
 
-            feature.horizontalFolds.extend(folds)
+            for fold in folds{
+                feature.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+            }
+            
             feature.featureEdges?.extend(folds)
             folds.map({self.addEdge($0)})
         }

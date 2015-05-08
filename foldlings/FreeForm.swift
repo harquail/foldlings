@@ -176,8 +176,8 @@ class FreeForm:FoldFeature
         //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
-            let maxFold = self.horizontalFolds.maxBy({$0.start.y})
-            let minFold = self.horizontalFolds.minBy({$0.start.y})
+            let maxFold = horizontalFolds.last
+            let minFold = horizontalFolds.first
 
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
@@ -408,7 +408,10 @@ class FreeForm:FoldFeature
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
                     println("added fold");
-                    self.horizontalFolds.extend(edgesToAdd)
+                    
+                    for fold in edgesToAdd{
+                        self.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+                    }
                     self.featureEdges!.extend(edgesToAdd)
                     return true
                 }
