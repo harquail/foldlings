@@ -126,6 +126,7 @@ class Plane: Printable, Hashable
     }
     
     /// the fold with maximum y height in a plane
+    // TODO: Topfold based on ordered horizontal folds???
     func topFold(tab:Bool = true) -> Edge? {
         
         var maxEdge:Edge? = nil
@@ -200,6 +201,7 @@ class Plane: Printable, Hashable
     }
     
     //check if edge is in the plane
+    //TODO: change this to return parent or find where this is called
     func containerPlane(planes:[Plane]) -> Plane? {
         
         for (i,potentialParent) in enumerate(planes){

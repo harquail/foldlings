@@ -11,7 +11,8 @@ import Foundation
 import MessageUI
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
-    
+
+    /*************image variables***********/
     var bgImage:UIImage!
     var laserImage:UIImage!
     var svgString: String!
@@ -19,7 +20,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     var parentButton = UIButton()
     let scene = SCNScene()
     
-    //constants
+    /**************constants***************/
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
@@ -30,12 +31,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
-   // let svgStrokeWidth = .001 //mm
-    
     var theOneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
+    
+    /********************color variables*************/
     var debugColor = false
     let debugColors:[UIColor] = [
         UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
@@ -51,6 +52,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         UIColor(hue: 0.5, saturation: 0.0, brightness: 1.0, alpha: 0.8)
     ]
     
+    /*****************buttons*****************/
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -104,6 +106,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         presentViewController(mailView, animated: true, completion: nil)
     }
+    
+    /**************************Create the 3d scene***********************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,6 +212,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
     }
+    
     
     /// this undoes any translation between the child and parent
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
@@ -384,7 +389,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
     }
     
-    
+    // TODO: use features here in the functions called here
     private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
         
         var edge:Edge

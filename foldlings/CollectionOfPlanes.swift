@@ -52,17 +52,25 @@ class CollectionOfPlanes: Printable, Hashable {
                 
                 for edge in plane.edges {
                     edge.dirty = false //mark it as clean
+                    
+                    // mark the topmost plane of sketch- the top plane of mastercard
                     if sketch.isTopEdge(edge) {
                         self.topPlane = plane
                     }
+                        
+                    // mark the bottommost plane of sketch- the bottom plane of mastercard
                     else if sketch.isBottomEdge(edge) {
                         self.bottomPlane = plane
                     }
+                    // set the edges plane
                     edge.plane = plane
+                    //set the color
                     if kOverrideColor { edge.colorOverride = getRandomColor(0.8) }
+                    // if the path is a plane and not a hole
                     if edge.kind == .Fold {
                         plane.kind = .Plane
                         
+                        // if the twin has a plane, setup adjacency
                         if let p = edge.twin.plane {
                             if self.adjacency[plane] == nil {
 //                                println("did encounter an nil plane adjacency")
@@ -70,6 +78,7 @@ class CollectionOfPlanes: Printable, Hashable {
                                 self.adjacency[plane] = []
                             }
                             var adjacencylist = self.adjacency[plane]!
+                            // order the adjacency list by planes' topfolds
                             let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
                             adjacencylist.insert(p, atIndex: index)
                             if self.adjacency[p] == nil {
