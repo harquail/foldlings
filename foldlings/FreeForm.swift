@@ -391,22 +391,15 @@ class FreeForm:FoldFeature{
         
         if let ps = points{
             //for all intersections, if there are an even number
-            if(ps.count%2 == 0 && ps.count <= maxIntercepts){
-                var i = 0
+            if(ps.count>=2 && ps.count <= maxIntercepts){
                 var edgesToAdd:[Edge] = []
-                while(i<ps.count){
-                    if(ps.count>i+1){
+                for (var i = 0; i<ps.count-1; i++){
                         //try making a straight edge between the points
                         let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
-                            i += 2
-                            continue
                         }
-                    }
-                    //otherwise, try the next point
-                    i += 1
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded
