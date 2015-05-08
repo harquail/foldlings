@@ -29,4 +29,10 @@ extension Array {
         }
         return lo // not found, would be inserted at position lo
     }
+    
+    // inserts an element into an ordered array
+    mutating func insertIntoOrdered(x: T, ordering: (T, T) -> Bool){
+        let index = self.insertionIndexOf(x, isOrderedBefore: ordering)
+        self.insert(x, atIndex: index)
+    }
 }
