@@ -471,7 +471,7 @@
             
             var internalEdges:[Edge] = []
             for (var i = 0; i<intercepts.count - 1; i++){
-                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: (i%2 == 0 ? .Cut : .Fold), feature: feature)
+                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Cut, feature: feature)
                 
 //                if()
                 
@@ -489,12 +489,16 @@
                     self.removeEdge(edge)
                 }
                 
-                let returnee = Edge.straightEdgeBetween([e,with].minBy({$0.start.x})!.start, end: [e,with].maxBy({$0.end.x})!.end, kind: .Fold, feature: e.feature!)
+                let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
                 
                 println("exterminated: \(e)")
                 exterminate(e)
+                exterminate(e.twin)
+
                 println("exterminated: \(with)")
                 exterminate(with)
+                exterminate(with.twin)
+
 
                 return returnee
             }
@@ -528,7 +532,7 @@
                     println("just before welded")
                     let welded = weldedFold(startEdge!, endEdge!)
                     println("just after welded")
-//                    appendFold(welded)
+                    appendFold(welded)
                 }
             }
             
