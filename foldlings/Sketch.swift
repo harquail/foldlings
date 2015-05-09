@@ -426,21 +426,110 @@
             return false
         }
         
-        func healFoldsOccludedBy(feature:FreeForm){
+        //replaces edges to close the gap left by deleting a feature
+        func healFoldsOccludedBy(feature:FoldFeature){
             
-            var fragments:[Edge] = [];
+            println("///REACHED///")
             
-            for edge in edges{
-                if(edge.start.y == feature.drivingFold!.start.y  && (feature.intersections.contains(edge.start)  || feature.intersections.contains(edge.end))) {
-                    fragments.append(edge)
+            /// get intersections with driving fold
+            let intercepts:[CGPoint]
+            if let shape = feature as? FreeForm{
+                intercepts  = shape.intersectionsWithDrivingFold
+            }
+            else if let box = feature as? BoxFold{
+            
+                //calculate the intersection points with the driving fold
+                let pointOne = CGPointMake(box.startPoint!.x, feature.drivingFold!.start.y)
+                let pointTwo = CGPointMake(box.endPoint!.x, feature.drivingFold!.start.y)
+                
+                intercepts = [pointOne,pointTwo]
+            }
+            else{
+                intercepts = []
+            }
+
+            //get all the folds in the sketch
+            let allFolds = edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
+            
+            // get the fragments of the driving fold occluded by the feature
+            var fragments = allFolds.filter(
+                {(e:Edge)->Bool in
+                    return e.start.y == feature.drivingFold!.start.y  && (intercepts.contains(e.start)  || intercepts.contains(e.end))
+                })
+            
+            
+            // remove twins from fragments
+            var twinsOfFragments:[Edge] = []
+            for edge in fragments{
+                if(!twinsOfFragments.contains(edge))
+                {
+                    twinsOfFragments.append(edge.twin)
+                }
+            }
+            fragments = fragments.difference(twinsOfFragments)
+            
+            
+            var internalEdges:[Edge] = []
+            for (var i = 0; i<intercepts.count - 1; i++){
+                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Fold, feature: feature)
+                internalEdges.append(e)
+                println("added internal edge")
+            }
+//
+            
+            func weldedFold(e:Edge,with:Edge)->Edge{
+                // kills an edge
+                func exterminate(edge:Edge){
+                    feature.parent?.horizontalFolds.remove(edge)
+                    feature.parent?.featureEdges?.remove(edge)
+                    self.removeEdge(edge)
+                }
+                
+                let returnee = Edge.straightEdgeBetween([e,with].minBy({$0.start.x})!.start, end: [e,with].maxBy({$0.end.x})!.end, kind: .Fold, feature: e.feature!)
+                
+                exterminate(e)
+                exterminate(with)
+
+                return returnee
+            }
+
+            func appendFold(edge:Edge){
+                //TODO: THIS SHOULD BE INSERTED INTO ORDERED
+                feature.parent?.horizontalFolds.append(edge)
+                feature.parent?.featureEdges?.append(edge)
+                self.addEdge(edge)
+            }
+
+            
+            for edge in internalEdges{
+                
+                println("reached internal edge")
+                
+                println("fragments: \(fragments)")
+                println("internal edge: \(edge)")
+
+        
+                let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
+                let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
+
+                
+                println("edges: \(startEdge)  \(endEdge)")
+
+                
+                if startEdge != nil && endEdge != nil{
+                    println("just before welded")
+                    let welded = weldedFold(startEdge!, endEdge!)
+                    println("just after welded")
+                    appendFold(welded)
                 }
             }
             
-            for edge in fragments{
-                feature.parent?.horizontalFolds.remove(edge)
-                feature.parent?.featureEdges?.remove(edge)
-            }
+            println("============== \n\n\n")
+//            let welded = weldedFold(fragments[0],fragments[1])
+        
         }
+        
+        
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
@@ -495,6 +584,9 @@
             feature.parent!.children.remove(feature)
             // remove features from sketch.features
             self.features.remove(feature)
+            
+//            if let shape = feature as? FreeForm{
+                self.healFoldsOccludedBy(feature)
+//            }
         }
-        
-    }
+}
