@@ -429,7 +429,7 @@
         //replaces edges to close the gap left by deleting a feature
         func healFoldsOccludedBy(feature:FoldFeature){
             
-            println("///REACHED///")
+//            println("///REACHED///")
             
             /// get intersections with driving fold
             let intercepts:[CGPoint]
@@ -449,25 +449,29 @@
             }
 
             //get all the folds in the sketch
-            let allFolds = edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
+            let allFolds = self.edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
             
             // get the fragments of the driving fold occluded by the feature
             var fragments = allFolds.filter(
                 {(e:Edge)->Bool in
-                    return e.start.y == feature.drivingFold!.start.y  && (intercepts.contains(e.start)  || intercepts.contains(e.end))
+                    return e.start.y == feature.drivingFold!.start.y  /*&& (intercepts.contains(e.start)  || intercepts.contains(e.end))*/
                 })
             
+//            println("\nfragments: \(fragments)\n\n")
+
             
             // remove twins from fragments
-            var twinsOfFragments:[Edge] = []
-            for edge in fragments{
-                if(!twinsOfFragments.contains(edge))
-                {
-                    twinsOfFragments.append(edge.twin)
-                }
-            }
-            fragments = fragments.difference(twinsOfFragments)
+//            var twinsOfFragments:[Edge] = []
+//            for edge in fragments{
+//                if(!twinsOfFragments.contains(edge))
+//                {
+//                    twinsOfFragments.append(edge.twin)
+//                }
+//            }
+//            fragments = fragments.difference(twinsOfFragments)
             
+//            println("\nfragments without twins: \(fragments)")
+
             
             var internalEdges:[Edge] = []
             for (var i = 0; i<intercepts.count - 1; i++){
@@ -477,7 +481,7 @@
                 
                 internalEdges.append(e)
                 
-                println("added internal edge : \(e)")
+//                println("added internal edge : \(e)")
             }
 //
             
@@ -491,11 +495,15 @@
                 
                 let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
                 
-                println("exterminated: \(e)")
+//                for f in fragments{
+//                    exterminate(f)
+//                }
+//                
+//                println("exterminated: \(e)")
                 exterminate(e)
                 exterminate(e.twin)
 
-                println("exterminated: \(with)")
+//                println("exterminated: \(with)")
                 exterminate(with)
                 exterminate(with.twin)
 
@@ -513,7 +521,7 @@
             
             for edge in internalEdges{
                 
-                println("reached internal edge")
+//                println("reached internal edge")
                 
 //                println("fragments: \(fragments)")
 //                println("internal edge: \(edge)")
@@ -523,22 +531,22 @@
                 let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
 
                 
-                println("edges: \(startEdge)  \(endEdge)")
+//                println("edges: \(startEdge)  \(endEdge)")
 
                 
 //                appendFold(edge)
 
                 if startEdge != nil && endEdge != nil{
-                    println("just before welded")
+//                    println("just before welded")
                     let welded = weldedFold(startEdge!, endEdge!)
-                    println("just after welded")
+//                    println("just after welded")
                     appendFold(welded)
                 }
             }
             
-            println("============== \n\n\n")
+//            println("============== \n\n\n")
             
-            println("edges in sketch at completion \(self.edges.filter({$0.kind == .Fold}))")
+//            println("folds in sketch at completion \(self.edges.filter({$0.kind == .Fold}))")
 
 //            let welded = weldedFold(fragments[0],fragments[1])
         
@@ -603,5 +611,26 @@
 //            if let shape = feature as? FreeForm{
                 self.healFoldsOccludedBy(feature)
 //            }
+        }
+        
+        
+        /// debugging function to find points very near each other
+        func almostCoincidentEdgePoints() -> [CGPoint:[CGPoint]]{
+        
+            var returnee = [CGPoint:[CGPoint]]()
+            var points:[CGPoint] = []
+
+            for edge in edges{
+                points.append(edge.start)
+                points.append(edge.end)
+            }
+            
+            for point in points{
+                let nearPoints = points.filter({ccpDistance($0, point) != 0.0 && ccpDistance($0, point) < 1.0})
+                if(nearPoints.count != 0){
+                returnee[point] = nearPoints
+                }
+            }
+            return returnee
         }
 }

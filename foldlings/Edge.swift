@@ -26,7 +26,7 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-        return "Start: \(start.x), End: \(end.x)"
+//        return "\nStart: \(start.x), End: \(end.x)"
 
         return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
         

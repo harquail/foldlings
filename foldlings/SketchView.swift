@@ -172,6 +172,7 @@ class SketchView: UIView {
             self.sketch.getPlanes()
             forceRedraw()
             
+            println(sketch.almostCoincidentEdgePoints())
             
         default:
             break
