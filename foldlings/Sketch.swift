@@ -471,9 +471,13 @@
             
             var internalEdges:[Edge] = []
             for (var i = 0; i<intercepts.count - 1; i++){
-                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Fold, feature: feature)
+                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: (i%2 == 0 ? .Cut : .Fold), feature: feature)
+                
+//                if()
+                
                 internalEdges.append(e)
-                println("added internal edge")
+                
+                println("added internal edge : \(e)")
             }
 //
             
@@ -487,7 +491,9 @@
                 
                 let returnee = Edge.straightEdgeBetween([e,with].minBy({$0.start.x})!.start, end: [e,with].maxBy({$0.end.x})!.end, kind: .Fold, feature: e.feature!)
                 
+                println("exterminated: \(e)")
                 exterminate(e)
+                println("exterminated: \(with)")
                 exterminate(with)
 
                 return returnee
@@ -505,8 +511,8 @@
                 
                 println("reached internal edge")
                 
-                println("fragments: \(fragments)")
-                println("internal edge: \(edge)")
+//                println("fragments: \(fragments)")
+//                println("internal edge: \(edge)")
 
         
                 let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
@@ -516,15 +522,20 @@
                 println("edges: \(startEdge)  \(endEdge)")
 
                 
+//                appendFold(edge)
+
                 if startEdge != nil && endEdge != nil{
                     println("just before welded")
                     let welded = weldedFold(startEdge!, endEdge!)
                     println("just after welded")
-                    appendFold(welded)
+//                    appendFold(welded)
                 }
             }
             
             println("============== \n\n\n")
+            
+            println("edges in sketch at completion \(self.edges.filter({$0.kind == .Fold}))")
+
 //            let welded = weldedFold(fragments[0],fragments[1])
         
         }
