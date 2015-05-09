@@ -111,9 +111,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     /// makes a straight edge between two points, constructing the path as well
     class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind, feature: FoldFeature) -> Edge{
         let path = UIBezierPath()
-        path.moveToPoint(start)
-        path.addLineToPoint(end)
-        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
+        path.moveToPoint(round(start))
+        path.addLineToPoint(round(end))
+        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?

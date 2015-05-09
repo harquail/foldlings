@@ -38,11 +38,12 @@ class FreeForm:FoldFeature
         }
         
         if let p = path{
-            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
+            let edge = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
             return [edge]
         }
             // else create a straight edge
         else{
+            //TODO: this looks suspiscious
             let edge = Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)
             return [edge]
         }
@@ -282,7 +283,7 @@ class FreeForm:FoldFeature
         
         //create edges from split paths
         for p in paths{
-            edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self))
+            edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
         }
         return edges
     }
@@ -392,7 +393,7 @@ class FreeForm:FoldFeature
                 while(i<ps.count){
                     if(ps.count>i+1){
                         //try making a straight edge between the points
-                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature:self)
+                        let edge = Edge.straightEdgeBetween(round(ps[i]), end: round(ps[i+1]), kind: .Fold, feature:self)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
