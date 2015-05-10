@@ -152,6 +152,7 @@ class Plane: Printable, Hashable
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
+    //TODO: Look into this for weirdness in the path 
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
 
         let elements = path.getPathElements()
@@ -201,6 +202,8 @@ class Plane: Printable, Hashable
     }
     
     //check if edge is in the plane
+    // to find the parent of the plane 
+    // just use twin's plane? for the fold 
     //TODO: change this to return parent or find where this is called
     func containerPlane(planes:[Plane]) -> Plane? {
         

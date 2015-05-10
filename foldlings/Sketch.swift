@@ -231,12 +231,12 @@
             for edge in masterFeature!.getEdges(){
                 addEdge(edge)
             }
-            //            drivingEdge = masterFeature!.horizontalFolds.first
             
         }
         
         
         /// does a traversal of all the edges to find all the planes
+        //TODO: keep a fold count by plane to catch flaps and holes?
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {

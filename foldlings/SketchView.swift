@@ -131,42 +131,42 @@ class SketchView: UIView {
             shape.path = path
             //reset path
             path = UIBezierPath()
-
-                //for feature in features -- check folds for spanning
-                outer: for feature in sketch.features
+            
+            //for feature in features -- check folds for spanning
+            outer: for feature in sketch.features
+            {
+                for fold in feature.horizontalFolds
                 {
-                    for fold in feature.horizontalFolds
+                    if(shape.featureSpansFold(fold))
                     {
-                        if(shape.featureSpansFold(fold))
-                        {
-                            shape.drivingFold = fold
-                            shape.parent = feature
-                            //set parents if the fold spans driving
-                            shape.parent!.children.append(shape)
-                            
-                            //fragments are the pieces of the fold created splitFoldByOcclusion
-                            let fragments = shape.splitFoldByOcclusion(fold)
-                            sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
-                            //set cached edges
-                            shape.featureEdges = []
-                            //create truncated folds
-                            shape.truncateWithFolds()
-                            //split paths at intersections
-                            shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                            shape.parent = feature
-                            break outer;
-                            
-                        }
+                        shape.drivingFold = fold
+                        shape.parent = feature
+                        //set parents if the fold spans driving
+                        shape.parent!.children.append(shape)
+                        
+                        //fragments are the pieces of the fold created splitFoldByOcclusion
+                        let fragments = shape.splitFoldByOcclusion(fold)
+                        sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
+                        //set cached edges
+                        shape.featureEdges = []
+                        //create truncated folds
+                        shape.truncateWithFolds()
+                        //split paths at intersections
+                        shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                        shape.parent = feature
+                        break outer;
+                        
                     }
-                    
                 }
-                // if feature didn't span a fold, then make it a hole?
-                // find parent for hole
-                if shape.parent == nil
-                {
-                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
-                }
-                sketch.addFeatureToSketch(shape, parent: shape.parent!)
+                
+            }
+            // if feature didn't span a fold, then make it a hole?
+            // find parent for hole
+            if shape.parent == nil
+            {
+                shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
+            }
+            sketch.addFeatureToSketch(shape, parent: shape.parent!)
             
             sketch.currentFeature = nil
             self.sketch.getPlanes()
@@ -320,7 +320,7 @@ class SketchView: UIView {
                 
                 //iterate through features and draw them
                 var currentFeatures = sketch.features
-                //add most recent feature if it exists
+                //  add most recent feature if it exists
                 if(sketch.currentFeature != nil)
                 {
                     currentFeatures.append(sketch.currentFeature!)
@@ -335,17 +335,18 @@ class SketchView: UIView {
                         {
                             setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                             e.path.stroke()
+                            
                         }
                         
                     }
                 }
                 
-                // all edges
+//                // all edges
                 for e in sketch.edges
                 {
                     setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     
-                    //don't draw twin edges
+                    // don't draw twin edges
                     if(!twinsOfVisited.contains(e))
                     {
                         e.path.stroke()

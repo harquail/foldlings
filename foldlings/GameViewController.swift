@@ -31,7 +31,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
-    var theOneSphere = SCNNode()
+    var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
@@ -123,32 +123,32 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        
-//        // create and add a light to the scene
-//        let lightNode = SCNNode()
-//        lightNode.light = SCNLight()
-//        lightNode.light!.type = SCNLightTypeOmni
-//        lightNode.light!.color = UIColor.whiteColor()
-//        lightNode.light!.attenuationStartDistance = 100
-//        lightNode.light!.attenuationEndDistance = 1000
-//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        //scene.rootNode.addChildNode(lightNode)
-//        // create and add an ambient light to the scene
-//        let ambientLightNode = SCNNode()
-//        ambientLightNode.light = SCNLight()
-//        ambientLightNode.light!.type = SCNLightTypeAmbient
-//        ambientLightNode.light!.color = UIColor.whiteColor()
-//        scene.rootNode.addChildNode(ambientLightNode)
-//        
-//        scene.physicsWorld.gravity.y = 0.0
         
-        //create the OneShpere
-        scene.rootNode.addChildNode(theOneSphere)
-        theOneSphere.position.y = theOneSphere.position.y + 4.0
+        // create and add a light to the scene
+        let lightNode = SCNNode()
+        lightNode.light = SCNLight()
+        lightNode.light!.type = SCNLightTypeOmni
+        lightNode.light!.color = UIColor.whiteColor()
+        lightNode.light!.attenuationStartDistance = 100
+        lightNode.light!.attenuationEndDistance = 1000
+        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        //scene.rootNode.addChildNode(lightNode)
+        // create and add an ambient light to the scene
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light!.type = SCNLightTypeAmbient
+        ambientLightNode.light!.color = UIColor.whiteColor()
+        scene.rootNode.addChildNode(ambientLightNode)
+        
+        scene.physicsWorld.gravity.y = 0.0
+        
+        //create the sceneShpere
+        scene.rootNode.addChildNode(sceneSphere)
+        sceneSphere.position.y = sceneSphere.position.y + 4.0
         
         
-        //theOneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
-        theOneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
+        //sceneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
+        sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
         
         // main loop for defining plane things
         // add each plane to the scene
@@ -156,8 +156,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             
             plane.clearNode()
             
-            var parent = theOneSphere
+            var parent = sceneSphere
             // if plane is a hole, its parent should be the plane that contains it
+            // TODO: use parent feature and plane for holes
             if(plane.kind == Plane.Kind.Hole) {
                 //TODO: should depend on parent feature 
                 let parentPlane = plane.containerPlane(planes.planes)
@@ -176,7 +177,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         visited = []
         notMyChild = [Int: [Plane]]()
         if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
-            theOneSphere.addChildNode(topPlaneSphere)
+            sceneSphere.addChildNode(topPlaneSphere)
         }
         
         
@@ -184,7 +185,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         if var bottomPlane = planes.bottomPlane {
             let bottomPlaneNode = bottomPlane.lazyNode()
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-            theOneSphere.addChildNode(masterSphere)
+            sceneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode)
             undoParentTranslate(masterSphere, child: bottomPlaneNode)
             bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
@@ -230,6 +231,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         if notMyChild[recurseCount] == nil {
             notMyChild[recurseCount] = [Plane]()
         }
+        //TODO: change this to mastercard feature
         let bottom = planes.bottomPlane!
         
         // base case if bottom

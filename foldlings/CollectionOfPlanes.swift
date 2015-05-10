@@ -31,35 +31,42 @@ class CollectionOfPlanes: Printable, Hashable {
     var adjacency : [Plane : [Plane]] = [Plane : [Plane]]()
     
     var count:Int { get { return planes.count } }
-    var topPlane:Plane? = nil
-    var bottomPlane:Plane? = nil
     
+    // mark the topmost plane of sketch
+    var topPlane:Plane? = nil
+    // mark the bottommost plane of sketch
+    var bottomPlane:Plane? = nil
     
     /// adds a plane into the graph
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane, sketch:Sketch)
     {
         // dispatch_sync(planeAdjacencylockQueue) {
-        if !contains(self.planes, plane) {
-            
-            if isCounterClockwise(plane.path) {
+        if !contains(self.planes, plane)
+        {
+            if isCounterClockwise(plane.path)
+            {
                 let color = plane.color
                 //if !contains(self.planes, plane) {
                 self.planes.append(plane)
+                //TODO: insert sorted by y of horizontal fold 
                 plane.feature.featurePlanes.append(plane)
                  //}
                 
                 
-                for edge in plane.edges {
+                for edge in plane.edges
+                {
                     edge.dirty = false //mark it as clean
                     
                     // mark the topmost plane of sketch- the top plane of mastercard
-                    if sketch.isTopEdge(edge) {
+                    if sketch.isTopEdge(edge)
+                    {
                         self.topPlane = plane
                     }
                         
                     // mark the bottommost plane of sketch- the bottom plane of mastercard
-                    else if sketch.isBottomEdge(edge) {
+                    else if sketch.isBottomEdge(edge)
+                    {
                         self.bottomPlane = plane
                     }
                     // set the edges plane
@@ -67,26 +74,37 @@ class CollectionOfPlanes: Printable, Hashable {
                     //set the color
                     if kOverrideColor { edge.colorOverride = getRandomColor(0.8) }
                     // if the path is a plane and not a hole
-                    if edge.kind == .Fold {
+                    if edge.kind == .Fold
+                    {
                         plane.kind = .Plane
                         
                         // if the twin has a plane, setup adjacency
-                        if let p = edge.twin.plane {
-                            if self.adjacency[plane] == nil {
+                        if let p = edge.twin.plane
+                        {
+                            if self.adjacency[plane] == nil
+                            {
 //                                println("did encounter an nil plane adjacency")
 //                                println(plane)
-                                self.adjacency[plane] = []
+                                self.adjacency[plane] = [p]
                             }
-                            var adjacencylist = self.adjacency[plane]!
-                            // order the adjacency list by planes' topfolds
-                            let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                            adjacencylist.insert(p, atIndex: index)
+                            else
+                            {
+                                var adjacencylist = self.adjacency[plane]!
+                                // insert p into ordered plane adjacency list
+                                let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+                                adjacencylist.insert(p, atIndex: index)
+                            }
+
                             if self.adjacency[p] == nil {
                                 self.adjacency[p] = [plane]
                             }
-                            else if !self.adjacency[p]!.contains(plane) {
-                                let index = self.adjacency[p]!.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                                self.adjacency[p]!.insert(plane, atIndex: index)
+                            // insert plane into p's ordered (plane.twin) adjacency
+                            // p should have an adjacency if it has been in made into a plane
+                            
+                            var pAdjacencylist = self.adjacency[p]!
+                            if !(pAdjacencylist.contains(plane)) {
+                                let index = pAdjacencylist.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
+                                pAdjacencylist.insert(plane, atIndex: index)
                             }
                         }
                     }
