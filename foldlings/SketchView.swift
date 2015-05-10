@@ -244,6 +244,8 @@ class SketchView: UIView {
                 {
                     let drawParent = drawingFeature.parent!
                     
+                    println("parent: \(drawParent)")
+                    
                     // splits the driving fold of the parent
                     // removes and adds edges to sketch
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)

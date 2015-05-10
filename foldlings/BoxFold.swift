@@ -108,8 +108,9 @@ class BoxFold:FoldFeature{
     // for box folds, this always creates two folds
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
-        let start = edge.start
-        let end = edge.end
+        
+        let start = [edge.start,edge.end].minBy({$0.x})!
+        let end = [edge.start,edge.end].maxBy({$0.x})!
         var returnee = [Edge]()
         
         //make two pieces between the end points of the split fold and the place the intersect with box fold

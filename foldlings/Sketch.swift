@@ -556,10 +556,14 @@
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
+            
+            println("replaced fold: \(fold)\n with: \(folds)\n")
             feature.horizontalFolds.remove(fold)
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
 
+
+            //TODO: should be insertion sorted
             feature.horizontalFolds.extend(folds)
             feature.featureEdges?.extend(folds)
             folds.map({self.addEdge($0)})
