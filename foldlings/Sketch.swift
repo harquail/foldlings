@@ -537,9 +537,9 @@
 //                appendFold(edge)
 
                 if startEdge != nil && endEdge != nil{
-//                    println("just before welded")
+                    println("just before welded")
                     let welded = weldedFold(startEdge!, endEdge!)
-//                    println("just after welded")
+                    println("just after welded")
                     appendFold(welded)
                 }
             }
