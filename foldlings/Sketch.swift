@@ -449,13 +449,9 @@
             }
 
             //get all the folds in the sketch
-            let allFolds = self.edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
+//            let allFolds = self.edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
             
             // get the fragments of the driving fold occluded by the feature
-            var fragments = allFolds.filter(
-                {(e:Edge)->Bool in
-                    return e.start.y == feature.drivingFold!.start.y  /*&& (intercepts.contains(e.start)  || intercepts.contains(e.end))*/
-                })
             
 //            println("\nfragments: \(fragments)\n\n")
 
@@ -494,19 +490,12 @@
                 }
                 
                 let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
-                
-//                for f in fragments{
-//                    exterminate(f)
-//                }
-//                
-//                println("exterminated: \(e)")
+
                 exterminate(e)
                 exterminate(e.twin)
 
-//                println("exterminated: \(with)")
                 exterminate(with)
                 exterminate(with.twin)
-
 
                 return returnee
             }
@@ -520,26 +509,30 @@
 
             
             for edge in internalEdges{
-                
-//                println("reached internal edge")
-                
-//                println("fragments: \(fragments)")
-//                println("internal edge: \(edge)")
+ 
+                println("adjacency")
+                println(adjacency[edge.start])
+                println(adjacency[edge.end])
 
-        
+                var fragments = feature.parent!.horizontalFolds.filter(
+                    {(e:Edge)->Bool in
+                        return e.start.y == feature.drivingFold!.start.y  /*&& (intercepts.contains(e.start)  || intercepts.contains(e.end))*/
+                })
+
+//        
                 let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
                 let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
 
-                
-//                println("edges: \(startEdge)  \(endEdge)")
 
                 
-//                appendFold(edge)
+                println("edges: \(startEdge)  \(endEdge)")
 
+            
                 if startEdge != nil && endEdge != nil{
                     println("just before welded")
+
                     let welded = weldedFold(startEdge!, endEdge!)
-                    println("just after welded")
+                    println("just after welded: \(welded)")
                     appendFold(welded)
                 }
             }
@@ -556,10 +549,14 @@
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
+            
+            println("replaced fold: \(fold)\n with: \(folds)\n")
             feature.horizontalFolds.remove(fold)
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
 
+
+            //TODO: should be insertion sorted
             feature.horizontalFolds.extend(folds)
             feature.featureEdges?.extend(folds)
             folds.map({self.addEdge($0)})
@@ -628,7 +625,7 @@
             }
             
             for point in points{
-                let nearPoints = points.filter({ccpDistance($0, point) != 0.0 && ccpDistance($0, point) < 1.0})
+                let nearPoints = points.filter({ccpDistance($0, point) != 0.0 && ccpDistance($0, point) < 3.0})
                 if(nearPoints.count != 0){
                 returnee[point] = nearPoints
                 }

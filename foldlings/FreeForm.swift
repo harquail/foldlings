@@ -277,7 +277,7 @@ class FreeForm:FoldFeature
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
         /// splits the path into multiple edges based on intersection points
-        var paths = pathSplitByPoints(path!,breakers: intersections)
+        var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
 
         var edges:[Edge] = []
         
