@@ -89,24 +89,20 @@ class CollectionOfPlanes: Printable, Hashable {
 //                                println(plane)
                                 self.adjacency[plane] = [p]
                             }
-                            else
+                            var adjacencylist = self.adjacency[plane]!
+                            // order the adjacency list by planes' topfolds
+                            adjacencylist.insertIntoOrdered(p, ordering: { $0.topFold()!.start.y < $1.topFold()!.start.y })
+                            
+                            if self.adjacency[p] == nil
                             {
-                                var adjacencylist = self.adjacency[plane]!
-                                // insert p into ordered plane adjacency list
-                                let index = adjacencylist.insertionIndexOf(p,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                                adjacencylist.insert(p, atIndex: index)
-                            }
-
-                            if self.adjacency[p] == nil {
                                 self.adjacency[p] = [plane]
                             }
+                        
                             // insert plane into p's ordered (plane.twin) adjacency
                             // p should have an adjacency if it has been in made into a plane
-                            
-                            var pAdjacencylist = self.adjacency[p]!
-                            if !(pAdjacencylist.contains(plane)) {
-                                let index = pAdjacencylist.insertionIndexOf(plane,  isOrderedBefore: { $0.topFold()!.start.y < $1.topFold()!.start.y } )
-                                pAdjacencylist.insert(plane, atIndex: index)
+                            else if !self.adjacency[p]!.contains(plane)
+                            {
+                                 self.adjacency[p]!.insertIntoOrdered(plane, ordering: { $0.topFold()!.start.y < $1.topFold()!.start.y })
                             }
                         }
                     }
