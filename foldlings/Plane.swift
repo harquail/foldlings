@@ -111,17 +111,16 @@ class Plane: Printable, Hashable
         return node!
     }
     
-//    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
-//    /// the fold with minimum y height in a plane
-//    func bottomFold(tab:Bool = true) {
-//        
-//        // loop through horizontal edges 
-//        // if topEdge is not set then, set it 
-//        // else set bottomEdge
-//        
-//        bottomEdge = minEdge
-//
-//    }
+    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
+    /// the fold with minimum y height in a plane
+    func bottomFold(tab:Bool = true) {
+        /// this only applies to planes, not flaps or holes
+        // loop through horizontal edges 
+        // if topEdge is not set then, set it 
+        // else set bottomEdge
+        
+
+    }
     
     func bottomFold(tab:Bool = true) -> Edge? {
         
