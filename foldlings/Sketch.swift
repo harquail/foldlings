@@ -429,15 +429,12 @@
         //replaces edges to close the gap left by deleting a feature
         func healFoldsOccludedBy(feature:FoldFeature){
             
-//            println("///REACHED///")
-            
             /// get intersections with driving fold
             let intercepts:[CGPoint]
             if let shape = feature as? FreeForm{
                 intercepts  = shape.intersectionsWithDrivingFold
             }
             else if let box = feature as? BoxFold{
-            
                 //calculate the intersection points with the driving fold
                 let pointOne = CGPointMake(box.startPoint!.x, feature.drivingFold!.start.y)
                 let pointTwo = CGPointMake(box.endPoint!.x, feature.drivingFold!.start.y)
@@ -447,42 +444,20 @@
             else{
                 intercepts = []
             }
-
-            //get all the folds in the sketch
-//            let allFolds = self.edges.filter({(e:Edge)->Bool in return e.kind == .Fold})
             
-            // get the fragments of the driving fold occluded by the feature
             
-//            println("\nfragments: \(fragments)\n\n")
-
-            
-            // remove twins from fragments
-//            var twinsOfFragments:[Edge] = []
-//            for edge in fragments{
-//                if(!twinsOfFragments.contains(edge))
-//                {
-//                    twinsOfFragments.append(edge.twin)
-//                }
-//            }
-//            fragments = fragments.difference(twinsOfFragments)
-            
-//            println("\nfragments without twins: \(fragments)")
-
-            
+            //internal edges are the edges between the intersections points inside the shape
+            //their endpoints will be used to fild
             var internalEdges:[Edge] = []
-            for (var i = 0; i<intercepts.count - 1; i++){
+            for (var i = 0; i<intercepts.count - 1; i+=2){
                 let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Cut, feature: feature)
-                
-//                if()
-                
                 internalEdges.append(e)
-                
-//                println("added internal edge : \(e)")
             }
-//
             
+            //helper function to combine two edges into an edge that closes the gap between them & spans their length
             func weldedFold(e:Edge,with:Edge)->Edge{
-                // kills an edge
+                
+                // removes an edge from the feature & sketch
                 func exterminate(edge:Edge){
                     feature.parent?.horizontalFolds.remove(edge)
                     feature.parent?.featureEdges?.remove(edge)
@@ -490,59 +465,43 @@
                 }
                 
                 let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
-
+                
                 exterminate(e)
                 exterminate(e.twin)
-
                 exterminate(with)
                 exterminate(with.twin)
-
+                
                 return returnee
             }
-
+            
+            //appends a fold to the feature & sketch
             func appendFold(edge:Edge){
                 //TODO: THIS SHOULD BE INSERTED INTO ORDERED
                 feature.parent?.horizontalFolds.append(edge)
                 feature.parent?.featureEdges?.append(edge)
                 self.addEdge(edge)
             }
-
             
+            //for each internal edge (which spans a gap)
             for edge in internalEdges{
- 
-                println("adjacency")
-                println(adjacency[edge.start])
-                println(adjacency[edge.end])
-
+                
+                // get the pieces of the driving fold
                 var fragments = feature.parent!.horizontalFolds.filter(
                     {(e:Edge)->Bool in
-                        return e.start.y == feature.drivingFold!.start.y  /*&& (intercepts.contains(e.start)  || intercepts.contains(e.end))*/
+                        return e.start.y == feature.drivingFold!.start.y
                 })
-
-//        
+                
+                // find driving fold edges that neighbor the internal edge
                 let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
                 let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
-
-
                 
-                println("edges: \(startEdge)  \(endEdge)")
-
-            
+                //if we found a start & end edge, combine them together and append them to the feature
                 if startEdge != nil && endEdge != nil{
-                    println("just before welded")
-
                     let welded = weldedFold(startEdge!, endEdge!)
-                    println("just after welded: \(welded)")
                     appendFold(welded)
                 }
             }
             
-//            println("============== \n\n\n")
-            
-//            println("folds in sketch at completion \(self.edges.filter({$0.kind == .Fold}))")
-
-//            let welded = weldedFold(fragments[0],fragments[1])
-        
         }
         
         
@@ -550,11 +509,9 @@
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
             
-            println("replaced fold: \(fold)\n with: \(folds)\n")
             feature.horizontalFolds.remove(fold)
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
-
 
             //TODO: should be insertion sorted
             feature.horizontalFolds.extend(folds)
@@ -604,12 +561,11 @@
             feature.parent!.children.remove(feature)
             // remove features from sketch.features
             self.features.remove(feature)
-            
-//            if let shape = feature as? FreeForm{
+
+            //if the feature has a driving fold, heal the gaps in the edges it leaves behind
             if (feature.drivingFold != nil) {
                 self.healFoldsOccludedBy(feature)
             }
-//            }
         }
         
         
