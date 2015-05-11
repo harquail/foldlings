@@ -43,19 +43,14 @@ class BoxFold:FoldFeature{
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold, feature: self)
             returnee.append(h1)
-            horizontalFolds.append(h1)
+            horizontalFolds.insertIntoOrdered(h1, ordering: {$0.start.y < $1.start.y})
             
             // this is fine because the box is a rectangle; in the future we'll have to get intersections
             // getting intersections on every drag might be too expensive...
             let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
             let tempMasterEnd = CGPointMake(endPoint!.x, master.start.y)
             let tempMaster = Edge.straightEdgeBetween(tempMasterStart, end: tempMasterEnd, kind: .Fold, feature:self)
-            horizontalFolds.append(tempMaster)
-            
-            //sort horizontal folds by y height
-            horizontalFolds.sort({ (a:Edge, b:Edge) -> Bool in
-                return a.start.y < b.start.y
-            })
+            horizontalFolds.insertIntoOrdered(tempMaster, ordering: {$0.start.y < $1.start.y})
             
             //all hfolds are "drawn" left to right
             //this recreates the vertical cuts

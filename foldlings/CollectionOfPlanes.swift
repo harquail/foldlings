@@ -112,7 +112,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     }
                 }
             }
-             //}
+             
         }
     }
     

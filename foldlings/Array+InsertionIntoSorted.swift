@@ -14,7 +14,7 @@ import Foundation
 extension Array {
     /// gets the insertion index into a sorted array at the appropriate place
     /// using binary insertion search
-    func insertionIndexOf(elem: T, isOrderedBefore: (T, T) -> Bool) -> Int {
+    private func insertionIndexOf(elem: T, isOrderedBefore: (T, T) -> Bool) -> Int {
         var lo = 0
         var hi = self.count - 1
         while lo <= hi {
@@ -28,5 +28,11 @@ extension Array {
             }
         }
         return lo // not found, would be inserted at position lo
+    }
+    
+    // inserts an element into an ordered array
+    mutating func insertIntoOrdered(x: T, ordering: (T, T) -> Bool){
+        let index = self.insertionIndexOf(x, isOrderedBefore: ordering)
+        self.insert(x, atIndex: index)
     }
 }

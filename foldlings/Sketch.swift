@@ -17,10 +17,7 @@
         var features:[FoldFeature] = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
         var draggedEdge:Edge? //edge being dragged
-        var masterFeature:FoldFeature?
-        
-        
-        
+        var masterFeature:MasterCard? //the master card feature for the sketch
         
         //the folds that define a sketch
         //for now, cuts are in this array to
@@ -95,13 +92,10 @@
                 
                 //add twin and edge to each other's adjacency lists
                 if !contains(twin.adjacency, edge) {
-                    let index = twin.adjacency.insertionIndexOf(edge, isOrderedBefore: {getAngle(twin, $0) < getAngle(twin, $1)})
-                    twin.adjacency.insert(edge, atIndex: index)
-                    
+                   twin.adjacency.insertIntoOrdered(edge, ordering: {getAngle(twin, $0) < getAngle(twin, $1)})
                 }
                 if !contains(edge.adjacency, twin) {
-                    let index = edge.adjacency.insertionIndexOf(twin, isOrderedBefore: {getAngle(edge, $0) < getAngle(edge, $1)})
-                    edge.adjacency.insert(twin, atIndex: index)
+                    edge.adjacency.insertIntoOrdered(twin, ordering: {getAngle(edge, $0) < getAngle(edge, $1)})
                 }
                 
                 //create ordered adjacency list before appending
@@ -179,16 +173,12 @@
         func addEdgesToEdgeAdj(edgeList:[Edge], edge: Edge){
             for e in edgeList {
                 // add all of these outgoing edges to the edge's adjacency in order
-                let ajindex = edge.adjacency.insertionIndexOf(e, isOrderedBefore: {getAngle(edge, $0) < getAngle(edge, $1)})
-                
                 if !contains(edge.adjacency, e){
-                    edge.adjacency.insert(e, atIndex: ajindex)
+                    edge.adjacency.insertIntoOrdered(e, ordering:  {getAngle(edge, $0) < getAngle(edge, $1)})
                 }
                 // add to the adj of these e's twins
-                let index = e.twin.adjacency.insertionIndexOf(edge.twin, isOrderedBefore: {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
-                
                 if !contains(e.twin.adjacency, edge.twin){
-                    e.twin.adjacency.insert(edge.twin, atIndex: index)
+                    e.twin.adjacency.insertIntoOrdered(edge.twin, ordering: {getAngle(e.twin, $0) < getAngle(e.twin, $1)})
                 }
                 
                 // this fixes double planes
@@ -448,7 +438,10 @@
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
 
-            feature.horizontalFolds.extend(folds)
+            for fold in folds{
+                feature.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+            }
+            
             feature.featureEdges?.extend(folds)
             folds.map({self.addEdge($0)})
         }
