@@ -16,6 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     var bgImage:UIImage!
     var laserImage:UIImage!
     var svgString: String!
+    var name: String!
     var planes:CollectionOfPlanes = CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
@@ -31,6 +32,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
+    /*****************scene variables*****************/
     var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
@@ -102,11 +104,49 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         mailView.mailComposeDelegate = self
         mailView.setSubject("Here is your Pop-up Card")
         mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
-        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"file.svg")
+        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"\(name).svg")
         
         presentViewController(mailView, animated: true, completion: nil)
     }
     
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "backtoSketchSegue") {
+            
+            let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
+            //            viewController.sketchView.setButtonBG(previewImage())
+            
+        }
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // sets preview button image
+    func setButtonBG(image:UIImage){
+        bgImage = image;
+    }
+    
+    func previewImage() -> UIImage{
+        // TODO: clear other buttons here too
+        self.backToSketchButton.alpha = 0
+        
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
+        view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
+        var img = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return img
+    }
     /**************************Create the 3d scene***********************/
     
     override func viewDidLoad() {
@@ -301,16 +341,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         //        println("recurse level: \(recurseCount)")
         return masterSphere
     }
-    
-    
-    /// fade in animation makes it less jarring
-    func fadeIn() -> CABasicAnimation{
-        var fadeIn = CABasicAnimation(keyPath:"opacity");
-        fadeIn.duration = 2.0;
-        fadeIn.fromValue = 0.0;
-        fadeIn.toValue = 1.0;
-        return fadeIn
-    }
+
     
     ///returns a list from dict including all previous levels up to but including the one
     func flattenUntil(adj: [Int:[Plane]], level:Int) -> [Plane] {
@@ -324,6 +355,71 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         return list
     }
     
+    //
+    func showNodePivot(node:SCNNode) {
+        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+        
+    }
+    
+    /// function to show plane corners and shows how to get the anchor points
+    func showPlaneCorners(plane:Plane, node:SCNNode) {
+        for edge in plane.edges {
+            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
+            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
+            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
+        }
+    }
+    
+    // TODO: use features here in the functions called here
+    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
+        
+        var edge:Edge
+        
+        ////TODO: check to make sure that edges are both folds 
+        if(bottom){
+            edge = plane.bottomEdge
+        }
+            //put check in for no top fold
+        else{
+            edge = plane.topEdge
+        }
+        
+        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, b:edge.end.x)), Float(edge.start.y), Float(0.0))
+        let anchorStart = node.convertPosition(startPoint, toNode: nil)
+        let masterSphere = makeSphere(atPoint: anchorStart)
+        
+        let m = SCNMaterial()
+        m.diffuse.contents = UIColor.clearColor()
+        masterSphere.geometry?.firstMaterial = m
+        
+        return masterSphere
+    }
+    
+    ///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+        sphereNode.position = atPoint
+        return sphereNode
+    }
+    
+    ///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+        sphereNode.position = atPoint
+        inNode.addChildNode(sphereNode)
+    }
+    
+    
+    func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
+        return CGFloat((a + b)/2.0)
+    }
+    
+/***********************animation*************************/
     
     /// back and forth rotation animation
     /// this is magical
@@ -351,111 +447,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    /// fade in animation makes it less jarring
+    func fadeIn() -> CABasicAnimation{
+        var fadeIn = CABasicAnimation(keyPath:"opacity");
+        fadeIn.duration = 2.0;
+        fadeIn.fromValue = 0.0;
+        fadeIn.toValue = 1.0;
+        return fadeIn
     }
-    
-    // sets preview button image
-    func setButtonBG(image:UIImage){
-        bgImage = image;
-    }
-    
-    func previewImage() -> UIImage{
-        // TODO: clear other buttons here too
-        self.backToSketchButton.alpha = 0
-        
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
-        view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
-        var img = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return img
-    }
-    
-    
-    func showNodePivot(node:SCNNode) {
-        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
-        
-    }
-    
-    
-    /// function to show plane corners and shows how to get the anchor points
-    func showPlaneCorners(plane:Plane, node:SCNNode) {
-        for edge in plane.edges {
-            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
-            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
-            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
-            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
-        }
-    }
-    
-    // TODO: use features here in the functions called here
-    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
-        
-        var edge:Edge
-        
-        if(bottom){
-            edge = plane.bottomFold()!
-        }
-            //put check in for no top fold
-        else{
-            edge = plane.topFold()!
-        }
-        
-        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, b:edge.end.x)), Float(edge.start.y), Float(0.0))
-        let anchorStart = node.convertPosition(startPoint, toNode: nil)
-        let masterSphere = makeSphere(atPoint: anchorStart)
-        
-        let m = SCNMaterial()
-        m.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = m
-        
-        return masterSphere
-    }
-    
-    
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        return sphereNode
-    }
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        inNode.addChildNode(sphereNode)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "backtoSketchSegue") {
-            
-            let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
-//            viewController.sketchView.setButtonBG(previewImage())
-            
-        }
-    }
-    
-    func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
-        return CGFloat((a + b)/2.0)
-    }
-    
-    // hide status bar
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-    
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
 
     
     

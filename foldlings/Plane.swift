@@ -28,6 +28,7 @@ class Plane: Printable, Hashable
     enum Kind: String {
         case Hole = "Hole"
         case Plane = "Plane"
+        case Flap = "Flap"
     }
     
     
@@ -47,10 +48,14 @@ class Plane: Printable, Hashable
     var edges : [Edge]!
     var path = UIBezierPath()
     var feature:FoldFeature!
+    var topEdge : Edge!
+    var bottomEdge : Edge!
+    
     private var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
+    
     
     
     init()
@@ -106,8 +111,18 @@ class Plane: Printable, Hashable
         return node!
     }
     
-    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
-    /// the fold with minimum y height in a plane
+//    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
+//    /// the fold with minimum y height in a plane
+//    func bottomFold(tab:Bool = true) {
+//        
+//        // loop through horizontal edges 
+//        // if topEdge is not set then, set it 
+//        // else set bottomEdge
+//        
+//        bottomEdge = minEdge
+//
+//    }
+    
     func bottomFold(tab:Bool = true) -> Edge? {
         
         var minEdge:Edge? = nil

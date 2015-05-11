@@ -173,19 +173,20 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         if (segue.identifier == "PreviewSegue") {
             
             //this retains a reference to the sketch view
-            let vew = self.sketchView
+            let view = self.sketchView
             let sketch = self.sketchView.sketch
             
-            let img = vew.bitmap(grayscale: false, circles: false)
+            let img = view.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
             let viewController:GameViewController = segue.destinationViewController as! GameViewController
 //            
             viewController.setButtonBG(imgNew)
             
-            viewController.laserImage = vew.bitmap(grayscale: true)
-            viewController.svgString = vew.svgImage()
+            viewController.laserImage = view.bitmap(grayscale: true)
+            viewController.svgString = view.svgImage()
             viewController.planes = sketch.planes
+            viewController.name = sketch.name
 
         }
     }

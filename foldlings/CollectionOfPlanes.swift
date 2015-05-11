@@ -59,6 +59,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     edge.dirty = false //mark it as clean
                     
                     // mark the topmost plane of sketch- the top plane of mastercard
+                    //TODO: Change this to be based on mastercard
                     if sketch.isTopEdge(edge)
                     {
                         self.topPlane = plane
@@ -74,6 +75,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     //set the color
                     if kOverrideColor { edge.colorOverride = getRandomColor(0.8) }
                     // if the path is a plane and not a hole
+                    // TODO: maybe set plane parent here, so it's based on twin of top fold
                     if edge.kind == .Fold
                     {
                         plane.kind = .Plane
