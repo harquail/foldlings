@@ -609,7 +609,9 @@
             self.features.remove(feature)
             
 //            if let shape = feature as? FreeForm{
+            if (feature.drivingFold != nil) {
                 self.healFoldsOccludedBy(feature)
+            }
 //            }
         }
         
