@@ -447,7 +447,7 @@
             
             
             //internal edges are the edges between the intersections points inside the shape
-            //their endpoints will be used to fild
+            //their endpoints will be used to find neightboring edges to "weld" together over a gap
             var internalEdges:[Edge] = []
             for (var i = 0; i<intercepts.count - 1; i+=2){
                 let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Cut, feature: feature)
@@ -463,7 +463,7 @@
                     feature.parent?.featureEdges?.remove(edge)
                     self.removeEdge(edge)
                 }
-                
+                // the welded fold goes between the minimum and maximum x values at the given y height
                 let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
                 
                 exterminate(e)

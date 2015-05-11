@@ -408,7 +408,7 @@ class FreeForm:FoldFeature
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-                    println("added fold");
+//                    println("added fold");
                     self.horizontalFolds.extend(edgesToAdd)
                     self.featureEdges!.extend(edgesToAdd)
                     return true
@@ -416,7 +416,7 @@ class FreeForm:FoldFeature
             }
         }
         
-        println("Failed with points: \(points)")
+//        println("Failed with points: \(points)")
         return false
     }
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
