@@ -566,6 +566,7 @@
             if (feature.drivingFold != nil) {
                 self.healFoldsOccludedBy(feature)
             }
+            getPlanes()
         }
         
         
