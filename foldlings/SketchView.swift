@@ -493,8 +493,10 @@ class SketchView: UIView {
                             
                             
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
-                            let pathAroundFeature = ((feature as? FreeForm)?.path) ?? UIBezierPath(rect: CGRectMake(feature.startPoint!.x, feature.startPoint!.y, feature.endPoint!.x - feature.startPoint!.x, feature.endPoint!.y - feature.startPoint!.y))
+                            
+                            let pathAroundFeature = ( (feature as? FreeForm)?.path) ?? UIBezierPath(rect: CGRectMake(feature.startPoint!.x, feature.startPoint!.y, feature.endPoint!.x - feature.startPoint!.x, feature.endPoint!.y - feature.startPoint!.y) )
                             invertedPath.appendPath(pathAroundFeature)
+                            
                             let context =  UIGraphicsGetCurrentContext()
                             CGContextSaveGState(context);
 
