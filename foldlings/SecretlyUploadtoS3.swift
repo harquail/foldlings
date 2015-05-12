@@ -14,100 +14,53 @@
 */
 
 import UIKit
-//import AssetsLibrary
+import AssetsLibrary
 
 class SecretlyUploadtoS3 {
-    
-    var uploadRequests = Array<AWSS3TransferManagerUploadRequest?>()
-    var uploadFileURLs = Array<NSURL?>()
-    
-    init(){
-        var error = NSErrorPointer()
-        if !NSFileManager.defaultManager().createDirectoryAtPath(
-            NSTemporaryDirectory().stringByAppendingPathComponent("upload"),
-            withIntermediateDirectories: true,
-            attributes: nil,
-            error: error) {
-                println("Creating 'upload' directory failed. Error: \(error)")
-        }
-    
-    }
-    
-    private func upload(uploadRequest: AWSS3TransferManagerUploadRequest) {
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    func uploadToS3(image:UIImage,named:String){
         
-        transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
-            if let error = task.error {
-                if error.domain == AWSS3TransferManagerErrorDomain as String {
-                    if let errorCode = AWSS3TransferManagerErrorType(rawValue: error.code) {
-                        switch (errorCode) {
-                        case .Cancelled, .Paused:
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            return
-                            })
-                            break;
-                            
-                        default:
-                            println("upload() failed: [\(error)]")
-                            break;
-                        }
-                    } else {
-                        println("upload() failed: [\(error)]")
-                    }
-                } else {
-                    println("upload() failed: [\(error)]")
-                }
+        // create a local image that we can use to upload to s3
+        var path:String = NSTemporaryDirectory().stringByAppendingPathComponent("image.png")
+        var imageData:NSData = UIImagePNGRepresentation(image)
+        imageData.writeToFile(path, atomically: true)
+        
+        
+        // once the image is saved we can use the path to create a local fileurl
+        var url:NSURL = NSURL(fileURLWithPath: path)!
+        
+        // next we set up the S3 upload request manager
+       let uploadRequest = AWSS3TransferManagerUploadRequest()
+        // set the bucket
+        uploadRequest?.bucket = S3_BUCKET_NAME
+        // I want this image to be public to anyone to view it so I'm setting it to Public Read
+        uploadRequest?.ACL = AWSS3ObjectCannedACL.PublicRead
+        // set the image's name that will be used on the s3 server. I am also creating a folder to place the image in
+        uploadRequest?.key = "\(UIDevice.currentDevice().identifierForVendor.UUIDString)/\(named)-\(NSDate.timeIntervalSinceReferenceDate()).png"
+        // set the content type
+        uploadRequest?.contentType = "image/png"
+        // and finally set the body to the local file path
+        uploadRequest?.body = url;
+    
+        
+        // now the upload request is set up we can creat the transfermanger, the credentials are already set up in the app delegate
+        var transferManager:AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
+        // start the upload
+        transferManager.upload(uploadRequest).continueWithExecutor(BFExecutor.mainThreadExecutor(), withBlock:{ [unowned self]
+            task -> AnyObject in
+            
+            // once the uploadmanager finishes check if there were any errors
+            if(task.error != nil){
+                NSLog("%@", task.error);
+            }else{ // if there aren't any then the image is uploaded!
+                // this is the url of the image we just uploaded
+//                NSLog("https://s3.amazonaws.com/s3-demo-swift/foldername/image.png");
             }
             
-            if let exception = task.exception {
-                println("upload() failed: [\(exception)]")
-            }
-            
-            if task.result != nil {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if let index = self.indexOfUploadRequest(self.uploadRequests, uploadRequest: uploadRequest) {
-                        self.uploadRequests[index] = nil
-                        self.uploadFileURLs[index] = uploadRequest.body
-                        
-                    }
-                })
-            }
-            return nil
-        }
-    }
-    
-    func upload(image:UIImage){
-        
-        let imageData = UIImagePNGRepresentation(image)
-        upload(imageData,fileExtension: ".png")
-    }
-    
-    func upload(data:NSData,fileExtension:String) {
-        
-        
-        let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(fileExtension)
-        
-        let filePath = NSTemporaryDirectory().stringByAppendingPathComponent("upload").stringByAppendingPathComponent(fileName)
-        data.writeToFile(filePath, atomically: true)
-        
-        let uploadRequest = AWSS3TransferManagerUploadRequest()
-        uploadRequest.body = NSURL(fileURLWithPath: filePath)
-        uploadRequest.key = fileName
-        uploadRequest.bucket = S3_BUCKET_NAME
-        
-        self.uploadRequests.append(uploadRequest)
-        self.uploadFileURLs.append(nil)
-        
-        self.upload(uploadRequest)
+//            self.removeLoadingView()
+            return "all done";
+            })
         
     }
     
-    private func indexOfUploadRequest(array: Array<AWSS3TransferManagerUploadRequest?>, uploadRequest: AWSS3TransferManagerUploadRequest?) -> Int? {
-        for (index, object) in enumerate(array) {
-            if object == uploadRequest {
-                return index
-            }
-        }
-        return nil
-    }
 }
+
