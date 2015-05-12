@@ -33,36 +33,6 @@ class SecretlyUploadtoS3 {
     
     }
     
-//    @IBAction func showAlertController(barButtonItem: UIBarButtonItem) {
-//        let alertController = UIAlertController(
-//            title: "Available Actions",
-//            message: "Choose your action.",
-//            preferredStyle: .ActionSheet)
-//        
-//        let selectPictureAction = UIAlertAction(
-//            title: "Select Pictures",
-//            style: .Default) { (action) -> Void in
-//return
-//        }
-//        alertController.addAction(selectPictureAction)
-//        
-//        let cancelAllUploadsAction = UIAlertAction(
-//            title: "Cancel All Uploads",
-//            style: .Default) { (action) -> Void in
-//                //self.cancelAllUploads()
-//        }
-//        alertController.addAction(cancelAllUploadsAction)
-//        
-//        let cancelAction = UIAlertAction(
-//            title: "Cancel",
-//            style: .Cancel) { (action) -> Void in }
-//        alertController.addAction(cancelAction)
-//        
-//        self.presentViewController(
-//            alertController,
-//            animated: true) { () -> Void in }
-//    }
-    
     func upload(uploadRequest: AWSS3TransferManagerUploadRequest) {
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         
@@ -122,12 +92,7 @@ class SecretlyUploadtoS3 {
     }
 
     func elcImagePickerController(picker: AnyObject!, didFinishPickingMediaWithInfo info: [AnyObject]!) {
-//        
-//        for (index, imageDictionary) in enumerate(info) {
-//            if let imageDictionary = imageDictionary as? Dictionary<String, AnyObject> {
-//                if let mediaType = imageDictionary[UIImagePickerControllerMediaType] as? String {
-//                    if mediaType == ALAssetTypePhoto {
-//                        if let image = imageDictionary[UIImagePickerControllerOriginalImage] as? UIImage {
+
                             let image = UIImage()
                             let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
                             let filePath = NSTemporaryDirectory().stringByAppendingPathComponent("upload").stringByAppendingPathComponent(fileName)
