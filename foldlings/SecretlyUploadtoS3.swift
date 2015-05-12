@@ -19,9 +19,26 @@ import AssetsLibrary
 class SecretlyUploadtoS3 {
     func uploadToS3(image:UIImage,named:String){
         
+        
+        func compressForUpload(original:UIImage, scale:CGFloat) -> UIImage
+        {
+            // Calculate new size given scale factor.
+            let originalSize = original.size;
+            let  newSize = CGSizeMake(originalSize.width * scale, originalSize.height * scale);
+            
+            // Scale the original image to match the new size.
+            UIGraphicsBeginImageContext(newSize);
+            original.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height));
+            let compressedImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            return compressedImage;
+        }
+        
         // create a local image that we can use to upload to s3
         var path:String = NSTemporaryDirectory().stringByAppendingPathComponent("image.png")
-        var imageData:NSData = UIImagePNGRepresentation(image)
+        // make the image smaller
+        var imageData:NSData = UIImageJPEGRepresentation(compressForUpload(image,0.75),0.9)
         imageData.writeToFile(path, atomically: true)
         
         
@@ -35,9 +52,9 @@ class SecretlyUploadtoS3 {
         // I want this image to be public to anyone to view it so I'm setting it to Public Read
         uploadRequest?.ACL = AWSS3ObjectCannedACL.PublicRead
         // set the image's name that will be used on the s3 server. I am also creating a folder to place the image in
-        uploadRequest?.key = "\(UIDevice.currentDevice().identifierForVendor.UUIDString)/\(named)-\(NSDate.timeIntervalSinceReferenceDate()).png"
+        uploadRequest?.key = "\(UIDevice.currentDevice().identifierForVendor.UUIDString)/\(named)-\(NSDate.timeIntervalSinceReferenceDate()).jpg"
         // set the content type
-        uploadRequest?.contentType = "image/png"
+        uploadRequest?.contentType = "image/jpg"
         // and finally set the body to the local file path
         uploadRequest?.body = url;
     
