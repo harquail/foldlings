@@ -130,79 +130,82 @@ class SketchView: UIView {
                 //end the drag by clearing tapped feature
                 if let e = sketch.draggedEdge{
                     /// clear edges
-                    let shape = tappedF as! FreeForm
-
-                    let originalHeights = tappedF.uniqueFoldHeights()
-                    //get heights,
-                    let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
-                    // clear intersections & edges
-                    shape.cachedEdges = []
-                    shape.horizontalFolds = []
-                    //clear all intersections except those with driving fold
-                    shape.intersections = shape.intersectionsWithDrivingFold
-                   
-                    let shapePath = shape.path!
-
-                    for height in heights{
-                        //create
+                    if let shape = tappedF as? FreeForm{
                         
-                        let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
-                    
-                        let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
-                        if !success{
+                        let originalHeights = tappedF.uniqueFoldHeights()
+                        //get heights,
+                        let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
+                        // clear intersections & edges
+                        shape.cachedEdges = []
+                        shape.horizontalFolds = []
+                        //clear all intersections except those with driving fold
+                        shape.intersections = shape.intersectionsWithDrivingFold
+                        
+                        let shapePath = shape.path!
+                        
+                        for height in heights{
+                            //create
                             
-                            for fold in shape.topTruncations{
-                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
-                            }
+                            let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut)
                             
-                            for fold in shape.bottomTruncations{
-                                shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
-
-                            }
-                            AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
-
-//                            break
-                        }
-
-                    }
-                    
-                    
-                    sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-                    
-                    sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
-                    
-                    
-                  
-                    
-                 
-                    
-                    sketch.refreshFeatureEdges()
-                    
-                    func foldsToReject() -> [Edge]{
-                        var rejectees:[Edge] = []
-                        
-                        println("\n\n\n\n\n\n\n\nbottom trunks")
-                        println(shape.bottomTruncations.count)
-                        
-                                if heights[0] < shape.topTruncations[0].start.y{
-                                    rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
+                            let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
+                            if !success{
+                                
+                                for fold in shape.topTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
                                 }
-                        println("\n\n\n\n\n\n\n\nrejectees")
-                        println(rejectees)
-
+                                
+                                for fold in shape.bottomTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                                    
+                                }
+                                AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+                                
+                                //                            break
+                            }
+                            
+                        }
                         
-                        return rejectees
+                        
+                        sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                        
+                        sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
+                        
+                        sketch.refreshFeatureEdges()
+                        
+                        func foldsToReject() -> [Edge]{
+                            var rejectees:[Edge] = []
+                            
+                            println("\n\n\n\n\n\n\n\nbottom trunks")
+                            println(shape.bottomTruncations.count)
+                            
+                            if heights[0] < shape.topTruncations[0].start.y{
+                                rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
+                            }
+                            println("\n\n\n\n\n\n\n\nrejectees")
+                            println(rejectees)
+                            
+                            
+                            return rejectees
+                        }
+                        
+                        //cleans up extra horizontal folds
+                        sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
+                        sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+                        
+                        self.sketch.getPlanes()
+                        forceRedraw()
                     }
-                
-                    //cleans up extra horizontal folds
-                    sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
-                    sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
+                    else if let box = tappedF as? BoxFold{
+                       println("box end")
+                    }
+                    else{
+                        println("unexpected feature type")
+                    }
 
-                    sketch.tappedFeature?.activeOption = nil
-                    sketch.tappedFeature = nil
-                    
-                    self.sketch.getPlanes()
-                    forceRedraw()
                 }
             }
         }
@@ -487,14 +490,20 @@ class SketchView: UIView {
                     for feature in currentFeatures{
                         
 
+                        let shape = feature as? FreeForm
                         
                         //draw the tapped feature preview
-                        if (feature == sketch.tappedFeature){
+                        if (feature == sketch.tappedFeature && shape != nil){
                             
+                            
+                            
+                            /// TODO: only for free-form
                             
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
                             
-                            let pathAroundFeature = ( (feature as? FreeForm)?.path) ?? UIBezierPath(rect: CGRectMake(feature.startPoint!.x, feature.startPoint!.y, feature.endPoint!.x - feature.startPoint!.x, feature.endPoint!.y - feature.startPoint!.y) )
+//                            let pathAroundFeature = ( (feature as? FreeForm)?.path) ?? UIBezierPath(rect: CGRectMake(feature.startPoint!.x, feature.startPoint!.y, feature.endPoint!.x - feature.startPoint!.x, feature.endPoint!.y - feature.startPoint!.y) )
+                            
+                            let pathAroundFeature = shape!.path!
                             invertedPath.appendPath(pathAroundFeature)
                             
                             let context =  UIGraphicsGetCurrentContext()
@@ -503,11 +512,8 @@ class SketchView: UIView {
                             CGContextAddPath(context, invertedPath.CGPath);
                             let boundingRect = CGContextGetClipBoundingBox(context);
                             
-                            
                             CGContextAddRect(context, boundingRect);
                             CGContextEOClip(context)
-//                            CGContext
-//                            CGContextClipToMask()
 
                             let foldHeights = feature.foldHeightsWithTransform(feature.uniqueFoldHeights(), draggedEdge: sketch.draggedEdge!, masterFold: feature.drivingFold!)
                             
