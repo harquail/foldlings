@@ -39,7 +39,7 @@ class CollectionOfPlanes: Printable, Hashable {
     
     /// adds a plane into the graph
     /// uses the fold type edges to determine adjacency
-    func addPlane(plane:Plane, sketch:Sketch)
+    func addPlane(plane:Plane, sketch:Sketch, folds: Int)
     {
         // dispatch_sync(planeAdjacencylockQueue) {
         if !contains(self.planes, plane)
@@ -47,12 +47,10 @@ class CollectionOfPlanes: Printable, Hashable {
             if isCounterClockwise(plane.path)
             {
                 let color = plane.color
-                //if !contains(self.planes, plane) {
                 self.planes.append(plane)
                 //TODO: insert sorted by y of horizontal fold 
                 plane.feature.featurePlanes.append(plane)
-                 //}
-                
+                //TODO: switch for types of plane based on foldcount 
                 
                 for edge in plane.edges
                 {

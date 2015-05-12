@@ -226,7 +226,6 @@
         
         
         /// does a traversal of all the edges to find all the planes
-        //TODO: keep a fold count by plane to catch flaps and holes?
         func getPlanes()
         {
            // dispatch_sync(edgeAdjacencylockQueue) {
@@ -235,17 +234,25 @@
                 
                 for (i, start) in enumerate(self.edges)//traverse edges
                 {
+                    //keep a fold count by plane to catch flaps and holes
+                    var foldcount = 0
                     if start.dirty {
                         var p : [Edge] = []//plane
                         var isContained = contains(self.visited, start)
                         if !isContained// skipped over already visited edges
                         {   p.append(start)
+                            if start.kind == .Fold{
+                                foldcount++
+                            }
                             self.visited.append(start)
                             var closest = self.getClosest(start)// get closest adjacent edge
                             
                             // check if twin has not been crossed and not in plane
                             while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
                             {   p.append(closest)
+                                if closest.kind == .Fold{
+                                    foldcount++
+                                }
                                 self.visited.append(closest)
                                 closest = self.getClosest(closest)
                             }
@@ -258,7 +265,7 @@
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
                                 plane.feature = start.feature
-                                self.planes.addPlane(plane, sketch: self)
+                                self.planes.addPlane(plane, sketch: self, folds: foldcount)
 //                                println("\nplane complete\n")
 //                                println("\(plane)\n")
                             }

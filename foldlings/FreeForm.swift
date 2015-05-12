@@ -407,7 +407,6 @@ class FreeForm:FoldFeature
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-                    println("added fold");
                     
                     for fold in edgesToAdd{
                         self.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
