@@ -106,7 +106,6 @@ class SketchView: UIView {
                 //get the edge & nearest point to hit
                 let edge = tappedF.featureEdgeAtPoint(gesture.locationInView(self))
                 if let e = edge{
-                    
                     // keep track of change to dragged edges
                     sketch.draggedEdge = e
                     tappedF.deltaY = gesture.translationInView(self).y
@@ -120,7 +119,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-//                    println("delta: \(tappedF.deltaY)")
+                    println("delta: \(tappedF.deltaY)")
                     forceRedraw()
                 }
                 
@@ -415,13 +414,20 @@ class SketchView: UIView {
                 for feature in sketch.features!{
                     
                     // if spanning, set parent (but not children), because the feature has not been finalized
+                    var intersections = 0
                     for fold in feature.horizontalFolds{
                         if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            break;
+                            intersections++;
+//                            break;
                         }
                     }
+                    if(intersections != 1){
+                        drawingFeature.drivingFold = nil
+                        drawingFeature.parent = nil
+                    }
+                    
                     
                 }
                 
@@ -495,13 +501,8 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature && shape != nil){
                             
-                            
-                            
                             /// TODO: only for free-form
-                            
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
-                            
-//                            let pathAroundFeature = ( (feature as? FreeForm)?.path) ?? UIBezierPath(rect: CGRectMake(feature.startPoint!.x, feature.startPoint!.y, feature.endPoint!.x - feature.startPoint!.x, feature.endPoint!.y - feature.startPoint!.y) )
                             
                             let pathAroundFeature = shape!.path!
                             invertedPath.appendPath(pathAroundFeature)
