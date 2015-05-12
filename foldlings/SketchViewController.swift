@@ -117,6 +117,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        let uploader = SecretlyUploadtoS3()
+        uploader.upload(sketchView.bitmap(grayscale: false, circles: false))
+    }
     
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {

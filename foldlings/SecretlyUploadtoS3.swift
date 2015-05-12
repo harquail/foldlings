@@ -14,7 +14,7 @@
 */
 
 import UIKit
-import AssetsLibrary
+//import AssetsLibrary
 
 class SecretlyUploadtoS3 {
     
@@ -33,7 +33,7 @@ class SecretlyUploadtoS3 {
     
     }
     
-    func upload(uploadRequest: AWSS3TransferManagerUploadRequest) {
+    private func upload(uploadRequest: AWSS3TransferManagerUploadRequest) {
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         
         transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
@@ -43,6 +43,7 @@ class SecretlyUploadtoS3 {
                         switch (errorCode) {
                         case .Cancelled, .Paused:
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            return
                             })
                             break;
                             
@@ -75,43 +76,33 @@ class SecretlyUploadtoS3 {
         }
     }
     
-    func cancelAllDownloads() {
-        for (index, uploadRequest) in enumerate(self.uploadRequests) {
-            if let uploadRequest = uploadRequest {
-                uploadRequest.cancel().continueWithBlock({ (task) -> AnyObject! in
-                    if let error = task.error {
-                        println("cancel() failed: [\(error)]")
-                    }
-                    if let exception = task.exception {
-                        println("cancel() failed: [\(exception)]")
-                    }
-                    return nil
-                })
-            }
-        }
-    }
-
-    func elcImagePickerController(picker: AnyObject!, didFinishPickingMediaWithInfo info: [AnyObject]!) {
-
-                            let image = UIImage()
-                            let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(".png")
-                            let filePath = NSTemporaryDirectory().stringByAppendingPathComponent("upload").stringByAppendingPathComponent(fileName)
-                            let imageData = UIImagePNGRepresentation(image)
-                            imageData.writeToFile(filePath, atomically: true)
-                            
-                            let uploadRequest = AWSS3TransferManagerUploadRequest()
-                            uploadRequest.body = NSURL(fileURLWithPath: filePath)
-                            uploadRequest.key = fileName
-                            uploadRequest.bucket = S3_BUCKET_NAME
-                            
-                            self.uploadRequests.append(uploadRequest)
-                            self.uploadFileURLs.append(nil)
-                            
-                            self.upload(uploadRequest)
-
+    func upload(image:UIImage){
+        
+        let imageData = UIImagePNGRepresentation(image)
+        upload(imageData,fileExtension: ".png")
     }
     
-    func indexOfUploadRequest(array: Array<AWSS3TransferManagerUploadRequest?>, uploadRequest: AWSS3TransferManagerUploadRequest?) -> Int? {
+    func upload(data:NSData,fileExtension:String) {
+        
+        
+        let fileName = NSProcessInfo.processInfo().globallyUniqueString.stringByAppendingString(fileExtension)
+        
+        let filePath = NSTemporaryDirectory().stringByAppendingPathComponent("upload").stringByAppendingPathComponent(fileName)
+        data.writeToFile(filePath, atomically: true)
+        
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest.body = NSURL(fileURLWithPath: filePath)
+        uploadRequest.key = fileName
+        uploadRequest.bucket = S3_BUCKET_NAME
+        
+        self.uploadRequests.append(uploadRequest)
+        self.uploadFileURLs.append(nil)
+        
+        self.upload(uploadRequest)
+        
+    }
+    
+    private func indexOfUploadRequest(array: Array<AWSS3TransferManagerUploadRequest?>, uploadRequest: AWSS3TransferManagerUploadRequest?) -> Int? {
         for (index, object) in enumerate(array) {
             if object == uploadRequest {
                 return index
