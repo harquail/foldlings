@@ -411,10 +411,11 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
+                
+                var intersections = 0
                 for feature in sketch.features!{
                     
                     // if spanning, set parent (but not children), because the feature has not been finalized
-                    var intersections = 0
                     for fold in feature.horizontalFolds{
                         if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
@@ -423,13 +424,14 @@ class SketchView: UIView {
 //                            break;
                         }
                     }
-                    if(intersections != 1){
-                        drawingFeature.drivingFold = nil
-                        drawingFeature.parent = nil
-                    }
-                    
-                    
                 }
+
+                if(intersections != 1){
+                    drawingFeature.drivingFold = nil
+                    drawingFeature.parent = nil
+                }
+                
+
                 
                 // box folds have different behaviors if they span the driving edge
                 

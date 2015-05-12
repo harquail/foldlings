@@ -289,27 +289,39 @@ class FoldFeature: NSObject, Printable, NSCoding{
         }
     }
     
-    func featureSpansFold(fold:Edge)->Bool{
+//    func featureSpansFold(fold:Edge)->Bool{
+//        
+//        if(self.startPoint == nil ||  self.endPoint == nil){
+//            return false
+//        }
+//        
+//        //feature must be inside fold x bounds
+//        if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   )){
+//            return false
+//        }
+//        
+//        //sort points by y
+//        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
+//            return (a.y < b.y) ? (a,b) : (b,a)
+//        }
+//        
+//        let sorted = pointsByY(self.startPoint!, self.endPoint!)
+//        
+//        // test whether the feature starts above minimum height & below maximum
+//        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
+//        
+//    }
+
+    func featureSpansFold(fold:Edge)->Bool
+    {
+        var fMin = min(fold.start.x, fold.end.x)
+        var fMax = max(fold.start.x, fold.end.x)
         
-        if(self.startPoint == nil ||  self.endPoint == nil){
-            return false
+        if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
+            
+            return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
-        
-        //feature must be inside fold x bounds
-        if(!(self.startPoint!.x > fold.start.x && self.endPoint!.x > fold.start.x  &&  self.startPoint!.x < fold.end.x && self.endPoint!.x < fold.end.x   )){
-            return false
-        }
-        
-        //sort points by y
-        func pointsByY(a:CGPoint,b:CGPoint)->(min:CGPoint,max:CGPoint){
-            return (a.y < b.y) ? (a,b) : (b,a)
-        }
-        
-        let sorted = pointsByY(self.startPoint!, self.endPoint!)
-        
-        // test whether the feature starts above minimum height & below maximum
-        return (sorted.min.y < fold.start.y  && sorted.max.y > fold.start.y)
-        
+        return false
     }
     
     func replaceFold(fold:Edge, folds:[Edge]){
