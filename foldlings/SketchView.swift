@@ -97,6 +97,8 @@ class SketchView: UIView {
         
     }
     
+    var savedOriginalHeights:[CGFloat] = []
+    
     func handleMoveFoldPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
@@ -109,6 +111,7 @@ class SketchView: UIView {
                     // keep track of change to dragged edges
                     sketch.draggedEdge = e
                     tappedF.deltaY = gesture.translationInView(self).y
+                    savedOriginalHeights = tappedF.uniqueFoldHeights()
                     println("init deltaY: \(tappedF.deltaY)")
                     
                     
@@ -137,9 +140,12 @@ class SketchView: UIView {
                 //end the drag by clearing tapped feature
                 if let e = sketch.draggedEdge{
                     if let shape = tappedF as? FreeForm{
+                        
+                        tappedF.deltaY = gesture.translationInView(self).y
+                        
                         let originalHeights = tappedF.uniqueFoldHeights()
                         //get current heights
-                        let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
+                        let heights = shape.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
                         // clear intersections & edges
                         shape.cachedEdges = []
                         shape.horizontalFolds = []
@@ -200,7 +206,7 @@ class SketchView: UIView {
                         forceRedraw()
                     }
                     else if let box = tappedF as? BoxFold{
-                        
+                        tappedF.deltaY = gesture.translationInView(self).y
                         boxFoldDragEdge(box)
 
                         sketch.tappedFeature?.activeOption = nil
@@ -224,16 +230,26 @@ class SketchView: UIView {
     func boxFoldDragEdge(tappedF:BoxFold){
         let originalHeights = tappedF.uniqueFoldHeights()
 //        originalHeights.map({$0 + tappedF.deltaY!})
-        let newHeights = tappedF.foldHeightsWithTransform(originalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
+
+        let newHeights = tappedF.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
 
         let deltaStart = originalHeights[0] - newHeights[0]
         let deltaEnd = originalHeights[2] - newHeights[2]
         
-        sketch.draggedEdge = Edge(start: sketch.draggedEdge!.start, end: CGPointMake(sketch.draggedEdge!.end.x, sketch.draggedEdge!.end.y + tappedF.deltaY!), path:sketch.draggedEdge!.path)
+        println(deltaStart)
+        println(deltaEnd)
+
+//        sketch.draggedEdge = Edge(start: CGPointMake(sketch.draggedEdge!.start.x,
+//            sketch.draggedEdge!.start.y + deltaStart),
+//            end: CGPointMake(sketch.draggedEdge!.end.x, sketch.draggedEdge!.end.y + deltaEnd),
+//            path: sketch.draggedEdge!.path
+//        )
 
         tappedF.startPoint! = CGPointMake(tappedF.startPoint!.x, tappedF.startPoint!.y - deltaStart)
         tappedF.endPoint! = CGPointMake(tappedF.endPoint!.x, tappedF.endPoint!.y - deltaEnd)
         tappedF.invalidateEdges()
+
+
     }
     
     func handleFreeFormPan(sender: AnyObject){
