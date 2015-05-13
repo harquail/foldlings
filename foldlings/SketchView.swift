@@ -110,6 +110,8 @@ class SketchView: UIView {
                     sketch.draggedEdge = e
                     tappedF.deltaY = gesture.translationInView(self).y
                     println("init deltaY: \(tappedF.deltaY)")
+                    
+                    
                 }
                 else{
                     println("No Edge Here...")
@@ -120,6 +122,12 @@ class SketchView: UIView {
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
                     println("delta: \(tappedF.deltaY)")
+                    
+                    //if boxfold, make new edges & invalidate
+                    if let box = tappedF as? BoxFold{
+                        boxFoldDragEdge(box)
+                    }
+                    
                     forceRedraw()
                 }
                 
@@ -193,22 +201,11 @@ class SketchView: UIView {
                     }
                     else if let box = tappedF as? BoxFold{
                         
-                        let originalHeights = tappedF.uniqueFoldHeights()
+                        boxFoldDragEdge(box)
 
-                        let newHeights = tappedF.foldHeightsWithTransform(originalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
-                        
-                        let deltaStart = originalHeights[0] - newHeights[0]
-                        let deltaEnd = originalHeights[2] - newHeights[2]
-
-                        
-
-                        box.startPoint! = CGPointMake(box.startPoint!.x, box.startPoint!.y - deltaStart)
-                        box.endPoint! = CGPointMake(box.endPoint!.x, box.endPoint!.y - deltaEnd)
-                        
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
 
-                        box.invalidateEdges()
 //                        self.sketch.getPlanes()
                         forceRedraw()
                         self.sketch.getPlanes()
@@ -222,6 +219,21 @@ class SketchView: UIView {
                 }
             }
         }
+    }
+    
+    func boxFoldDragEdge(tappedF:BoxFold){
+        let originalHeights = tappedF.uniqueFoldHeights()
+//        originalHeights.map({$0 + tappedF.deltaY!})
+        let newHeights = tappedF.foldHeightsWithTransform(originalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
+
+        let deltaStart = originalHeights[0] - newHeights[0]
+        let deltaEnd = originalHeights[2] - newHeights[2]
+        
+        sketch.draggedEdge = Edge(start: sketch.draggedEdge!.start, end: CGPointMake(sketch.draggedEdge!.end.x, sketch.draggedEdge!.end.y + tappedF.deltaY!), path:sketch.draggedEdge!.path)
+
+        tappedF.startPoint! = CGPointMake(tappedF.startPoint!.x, tappedF.startPoint!.y - deltaStart)
+        tappedF.endPoint! = CGPointMake(tappedF.endPoint!.x, tappedF.endPoint!.y - deltaEnd)
+        tappedF.invalidateEdges()
     }
     
     func handleFreeFormPan(sender: AnyObject){
