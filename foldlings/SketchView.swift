@@ -212,9 +212,10 @@ class SketchView: UIView {
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
 
-//                        self.sketch.getPlanes()
-                        forceRedraw()
+                        sketch.refreshFeatureEdges()
                         self.sketch.getPlanes()
+                        
+                        forceRedraw()
 
                         
                         println("box end")
@@ -229,26 +230,15 @@ class SketchView: UIView {
     
     func boxFoldDragEdge(tappedF:BoxFold){
         let originalHeights = tappedF.uniqueFoldHeights()
-//        originalHeights.map({$0 + tappedF.deltaY!})
 
         let newHeights = tappedF.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
 
         let deltaStart = originalHeights[0] - newHeights[0]
         let deltaEnd = originalHeights[2] - newHeights[2]
-        
-        println(deltaStart)
-        println(deltaEnd)
-
-//        sketch.draggedEdge = Edge(start: CGPointMake(sketch.draggedEdge!.start.x,
-//            sketch.draggedEdge!.start.y + deltaStart),
-//            end: CGPointMake(sketch.draggedEdge!.end.x, sketch.draggedEdge!.end.y + deltaEnd),
-//            path: sketch.draggedEdge!.path
-//        )
 
         tappedF.startPoint! = CGPointMake(tappedF.startPoint!.x, tappedF.startPoint!.y - deltaStart)
         tappedF.endPoint! = CGPointMake(tappedF.endPoint!.x, tappedF.endPoint!.y - deltaEnd)
         tappedF.invalidateEdges()
-
 
     }
     
@@ -256,7 +246,6 @@ class SketchView: UIView {
         
         let gesture = sender as! UIPanGestureRecognizer
         if(gesture.state == UIGestureRecognizerState.Began){
-            
             
             if(sketch.tappedFeature == nil){
                 // make a shape with touchpoint
