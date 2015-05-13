@@ -128,11 +128,9 @@ class SketchView: UIView {
                 
                 //end the drag by clearing tapped feature
                 if let e = sketch.draggedEdge{
-                    /// clear edges
                     if let shape = tappedF as? FreeForm{
-                        
                         let originalHeights = tappedF.uniqueFoldHeights()
-                        //get heights,
+                        //get current heights
                         let heights = shape.foldHeightsWithTransform(originalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
                         // clear intersections & edges
                         shape.cachedEdges = []
@@ -159,15 +157,11 @@ class SketchView: UIView {
                                     
                                 }
                                 AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
-                                
-                                //                            break
                             }
                             
                         }
                         
-                        
                         sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-                        
                         sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                         
                         sketch.refreshFeatureEdges()
@@ -184,7 +178,6 @@ class SketchView: UIView {
                             println("\n\n\n\n\n\n\n\nrejectees")
                             println(rejectees)
                             
-                            
                             return rejectees
                         }
                         
@@ -199,12 +192,33 @@ class SketchView: UIView {
                         forceRedraw()
                     }
                     else if let box = tappedF as? BoxFold{
-                       println("box end")
+                        
+                        let originalHeights = tappedF.uniqueFoldHeights()
+
+                        let newHeights = tappedF.foldHeightsWithTransform(originalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
+                        
+                        let deltaStart = originalHeights[0] - newHeights[0]
+                        let deltaEnd = originalHeights[2] - newHeights[2]
+
+                        
+
+                        box.startPoint! = CGPointMake(box.startPoint!.x, box.startPoint!.y - deltaStart)
+                        box.endPoint! = CGPointMake(box.endPoint!.x, box.endPoint!.y - deltaEnd)
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+
+                        box.invalidateEdges()
+//                        self.sketch.getPlanes()
+                        forceRedraw()
+                        self.sketch.getPlanes()
+
+                        
+                        println("box end")
                     }
                     else{
                         println("unexpected feature type")
                     }
-
                 }
             }
         }
@@ -412,28 +426,26 @@ class SketchView: UIView {
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
                 
-                var intersections = 0
+                var foldsCrossed = 0
                 for feature in sketch.features!{
                     
-                    // if spanning, set parent (but not children), because the feature has not been finalized
+                    // if spanning, set parent & diriving fold (but not children), because the feature has not been finalized
                     for fold in feature.horizontalFolds{
                         if(drawingFeature.featureSpansFold(fold)){
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            intersections++;
-//                            break;
+                            foldsCrossed++;
                         }
                     }
                 }
 
-                if(intersections != 1){
+                //box folds that span more than one fold are invalid
+                if(foldsCrossed > 1){
                     drawingFeature.drivingFold = nil
                     drawingFeature.parent = nil
                 }
                 
 
-                
-                // box folds have different behaviors if they span the driving edge
                 
                 drawingFeature.invalidateEdges()
                 
@@ -443,14 +455,9 @@ class SketchView: UIView {
         }
     }
     
-    
-    
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         self.touchesEnded(touches, withEvent: event)
     }
-    
-    
-    
     
     /// constructs a grayscale bitmap preview image of the sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage {
@@ -496,8 +503,6 @@ class SketchView: UIView {
                     }
                     
                     for feature in currentFeatures{
-                        
-
                         let shape = feature as? FreeForm
                         
                         //draw the tapped feature preview
