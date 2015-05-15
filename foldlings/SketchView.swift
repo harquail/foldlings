@@ -169,29 +169,38 @@ class SketchView: UIView {
                                     shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
                                     
                                 }
-                                AFMInfoBanner.showWithText("Failed to intesect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+                                
+                                println("Failed to intersect with fold at \(height)");
+                                
+                                AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
                             }
-                            
+                            else{
+                            println("success: \(height)")
+                            }
                         }
                         
                         sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
 //                        sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                         
-                        sketch.refreshFeatureEdges()
                         
 //                        func foldsToReject() -> [Edge]{
+//                           return []
+//                            
 //                            var rejectees:[Edge] = []
 //                            
 //                            if heights[0] < shape.topTruncations[0].start.y{
 //                                rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
+////                                println("rejected \(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]))")
 //                            }
 //                            
 //                            return rejectees
 //                        }
-                        
-                        //cleans up extra horizontal folds
+//                        
+////                        cleans up extra horizontal folds
 //                        sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
 //                        sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
+                        
+                        sketch.refreshFeatureEdges()
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil

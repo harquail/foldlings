@@ -38,6 +38,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         let gesture = sender as! UITapGestureRecognizer
         
         var touchPoint = gesture.locationInView(sketchView)
+        println("tapped at: \(touchPoint)")
         
         if let fs = sketchView.sketch.features{
             
