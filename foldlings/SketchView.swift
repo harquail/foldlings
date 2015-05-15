@@ -180,6 +180,7 @@ class SketchView: UIView {
                         }
                         
                         sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                        shape.addTabs(heights)
 //                        sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                         
                         

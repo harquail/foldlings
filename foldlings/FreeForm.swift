@@ -546,6 +546,17 @@ class FreeForm:FoldFeature{
     }
     
     
+    func addTabs(translatedHeights:[CGFloat]){
+        
+//        self.cachedEdges?.removeAll(keepCapacity: false)
+
+        //first, get rid of the top & bottom heights
+        self.horizontalFolds.removeLast()
+        self.horizontalFolds.removeAtIndex(0)
+
+        
+    }
+    
     func getTabs(translatedHeights:[CGFloat])->[Edge]{
         
         var tabs:[Edge] = []
