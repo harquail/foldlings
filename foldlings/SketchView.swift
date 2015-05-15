@@ -97,6 +97,7 @@ class SketchView: UIView {
         
     }
     
+    
     var savedOriginalHeights:[CGFloat] = []
     
     func handleMoveFoldPan(sender: AnyObject){
@@ -112,8 +113,6 @@ class SketchView: UIView {
                     sketch.draggedEdge = e
                     tappedF.deltaY = gesture.translationInView(self).y
                     savedOriginalHeights = tappedF.uniqueFoldHeights()
-                    println("init deltaY: \(tappedF.deltaY)")
-                    
                     
                 }
                 else{
@@ -183,14 +182,9 @@ class SketchView: UIView {
                         func foldsToReject() -> [Edge]{
                             var rejectees:[Edge] = []
                             
-                            println("\n\n\n\n\n\n\n\nbottom trunks")
-                            println(shape.bottomTruncations.count)
-                            
                             if heights[0] < shape.topTruncations[0].start.y{
                                 rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
                             }
-                            println("\n\n\n\n\n\n\n\nrejectees")
-                            println(rejectees)
                             
                             return rejectees
                         }
@@ -218,7 +212,6 @@ class SketchView: UIView {
                         forceRedraw()
 
                         
-                        println("box end")
                     }
                     else{
                         println("unexpected feature type")
