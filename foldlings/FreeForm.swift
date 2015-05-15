@@ -548,12 +548,15 @@ class FreeForm:FoldFeature{
     
     func addTabs(translatedHeights:[CGFloat]){
         
-//        self.cachedEdges?.removeAll(keepCapacity: false)
+        println("CURRENT TRANS HEIGHTS: \(translatedHeights)")
+        
+        println("CURRENT FOLDS: \(self.cachedEdges!.filter({(a:Edge) -> Bool in return a.kind == .Fold}))")
+        
+        self.cachedEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return a.kind == .Cut})
 
         //first, get rid of the top & bottom heights
         self.horizontalFolds.removeLast()
         self.horizontalFolds.removeAtIndex(0)
-
         
     }
     
