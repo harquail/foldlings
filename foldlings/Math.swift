@@ -25,3 +25,7 @@ func getAngle(edgeA: Edge, edgeB: Edge) -> CGFloat{
     return angle
     
 }
+// returns the average of two CGFloats
+func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
+    return CGFloat((a + b)/2.0)
+}

@@ -51,6 +51,10 @@ class Plane: Printable, Hashable
     var topEdge : Edge!
     var bottomEdge : Edge!
     
+    // mark if this plane is the master's feature top or bottom plane
+    var masterTop: Bool = false
+    var masterBottom: Bool = false
+    
     private var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
@@ -113,12 +117,18 @@ class Plane: Printable, Hashable
     
     //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
     /// the fold with minimum y height in a plane
-    func bottomFold(tab:Bool = true) {
-        /// this only applies to planes, not flaps or holes
-        // loop through horizontal edges 
+    func bottomEdge(tab:Bool = true) {
+        // loop through edges
         // if topEdge is not set then, set it 
         // else set bottomEdge
-        
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+    }
+    
+    func topEdge(tab:Bool = true) {
+        // loop through edges
+        // if topEdge is not set then, set it
+        // else set bottomEdge
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
 
     }
     

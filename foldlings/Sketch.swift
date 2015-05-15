@@ -236,6 +236,7 @@
                 {
                     //keep a fold count by plane to catch flaps and holes
                     var foldcount = 0
+                    
                     if start.dirty {
                         var p : [Edge] = []//plane
                         var isContained = contains(self.visited, start)
@@ -244,15 +245,29 @@
                             if start.kind == .Fold{
                                 foldcount++
                             }
+                            // set the start as top and bottom edge
+                            var topEdge : Edge = start
+                            var bottomEdge : Edge = start
+                            
                             self.visited.append(start)
                             var closest = self.getClosest(start)// get closest adjacent edge
                             
                             // check if twin has not been crossed and not in plane
                             while !CGPointEqualToPoint(closest.end, start.start) || contains(p, closest)
                             {   p.append(closest)
+                                
                                 if closest.kind == .Fold{
                                     foldcount++
                                 }
+                                //mark if this is a top edge here by comparing y's, this shold be the midpoint
+                                if(makeMid(closest.start.y, closest.end.y) < makeMid(topEdge.start.y, topEdge.end.y)) {
+                                    topEdge = closest
+                                }
+                                //mark if this is a bottom edge here by comparing y's, this shold be the midpoint
+                                if(makeMid(closest.start.y, closest.end.y) > makeMid(bottomEdge.start.y, bottomEdge.end.y)) {
+                                    bottomEdge = closest
+                                }
+
                                 self.visited.append(closest)
                                 closest = self.getClosest(closest)
                             }
@@ -264,7 +279,12 @@
                             //// if you didn't cross twin or if the edge is one point, make it a plane
                             if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                             {   var plane = Plane(edges: p)
-                                plane.feature = start.feature
+                                //set plane's feature make sure this is by top edge
+                                plane.feature = topEdge.feature
+                                //set plane's top and bottom edge
+                                plane.topEdge = topEdge
+                                plane.bottomEdge = bottomEdge
+                                
                                 self.planes.addPlane(plane, sketch: self, folds: foldcount)
 //                                println("\nplane complete\n")
 //                                println("\(plane)\n")

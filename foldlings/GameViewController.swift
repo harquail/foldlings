@@ -17,7 +17,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     var laserImage:UIImage!
     var svgString: String!
     var name: String!
-    var planes:CollectionOfPlanes = CollectionOfPlanes()
+    var planes:CollectionOfPlanes! //= CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
     
@@ -165,20 +165,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         
         // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = SCNLightTypeOmni
-        lightNode.light!.color = UIColor.whiteColor()
-        lightNode.light!.attenuationStartDistance = 100
-        lightNode.light!.attenuationEndDistance = 1000
-        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //scene.rootNode.addChildNode(lightNode)
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = SCNLightTypeAmbient
-        ambientLightNode.light!.color = UIColor.whiteColor()
-        scene.rootNode.addChildNode(ambientLightNode)
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        println(lightNode)
+//        lightNode.light!.type = SCNLightTypeOmni
+//        lightNode.light!.color = UIColor.whiteColor()
+//        lightNode.light!.attenuationStartDistance = 100
+//        lightNode.light!.attenuationEndDistance = 1000
+//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+//        scene.rootNode.addChildNode(lightNode)
+//        // create and add an ambient light to the scene
+//        let ambientLightNode = SCNNode()
+//        ambientLightNode.light = SCNLight()
+//        ambientLightNode.light!.type = SCNLightTypeAmbient
+//        ambientLightNode.light!.color = UIColor.whiteColor()
+//        scene.rootNode.addChildNode(ambientLightNode)
         
         scene.physicsWorld.gravity.y = 0.0
         
@@ -216,13 +217,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         visited = []
         notMyChild = [Int: [Plane]]()
-        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
+        println(planes.masterTop)
+        if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
         }
         
         
         // make bottomPlane manually
-        if var bottomPlane = planes.bottomPlane {
+        // get bottomPlane from planes list 
+        if var bottomPlane = planes.masterBottom {
             let bottomPlaneNode = bottomPlane.lazyNode()
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
             sceneSphere.addChildNode(masterSphere)
@@ -272,7 +275,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             notMyChild[recurseCount] = [Plane]()
         }
         //TODO: change this to mastercard feature
-        let bottom = planes.bottomPlane!
+        let bottom = planes.masterBottom
         
         // base case if bottom
         if plane == bottom {
@@ -387,7 +390,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             edge = plane.topEdge
         }
         
-        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, b:edge.end.x)), Float(edge.start.y), Float(0.0))
+        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, edge.end.x)), Float(edge.start.y), Float(0.0))
         let anchorStart = node.convertPosition(startPoint, toNode: nil)
         let masterSphere = makeSphere(atPoint: anchorStart)
         
@@ -415,9 +418,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     
-    func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
-        return CGFloat((a + b)/2.0)
-    }
+
     
 /***********************animation*************************/
     
