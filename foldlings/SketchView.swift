@@ -175,23 +175,23 @@ class SketchView: UIView {
                         }
                         
                         sketch.tappedFeature!.cachedEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-                        sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
+//                        sketch.tappedFeature!.cachedEdges?.extend(shape.getTabs(heights))
                         
                         sketch.refreshFeatureEdges()
                         
-                        func foldsToReject() -> [Edge]{
-                            var rejectees:[Edge] = []
-                            
-                            if heights[0] < shape.topTruncations[0].start.y{
-                                rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
-                            }
-                            
-                            return rejectees
-                        }
+//                        func foldsToReject() -> [Edge]{
+//                            var rejectees:[Edge] = []
+//                            
+//                            if heights[0] < shape.topTruncations[0].start.y{
+//                                rejectees.extend(sketch.tappedFeature!.horizontalFolds.filter({$0.start.y == heights[1]}))
+//                            }
+//                            
+//                            return rejectees
+//                        }
                         
                         //cleans up extra horizontal folds
-                        sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
-                        sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
+//                        sketch.tappedFeature!.cachedEdges = sketch.tappedFeature!.cachedEdges?.difference(foldsToReject())
+//                        sketch.tappedFeature!.horizontalFolds = sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
