@@ -568,10 +568,12 @@ class FreeForm:FoldFeature{
             rejectedFolds.extend(topEdges)
             
             //add tab edges
-            let tabEdges = cutsAndFoldsForTab(topEdges[0],up:true)
+            for edge in topEdges{
+            let tabEdges = cutsAndFoldsForTab(edge,up:true)
             self.cachedEdges?.extend(tabEdges)
-            self.horizontalFolds.removeAtIndex(0)
+            self.horizontalFolds.remove(edge)
             self.horizontalFolds.append(tabEdges[0])
+            }
 
         }
         // if there is a tab down
@@ -582,10 +584,12 @@ class FreeForm:FoldFeature{
             rejectedFolds.extend(bottomEdges)
             
             //add tab edges
-            let tabEdges = cutsAndFoldsForTab(bottomEdges[0],up:false)
-            self.cachedEdges?.extend(tabEdges)
-            self.horizontalFolds.removeLast()
-            self.horizontalFolds.append(tabEdges[0])
+            for edge in bottomEdges{
+                let tabEdges = cutsAndFoldsForTab(edge,up:false)
+                self.cachedEdges?.extend(tabEdges)
+                self.horizontalFolds.remove(edge)
+                self.horizontalFolds.append(tabEdges[0])
+            }
         }
 
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
