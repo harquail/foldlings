@@ -549,18 +549,13 @@ class FreeForm:FoldFeature{
     func addTabs(translatedHeights:[CGFloat],savedHeights:[CGFloat]){
         
         let originalHeights = uniqueFoldHeights()
-        
-
         var rejectedFolds:[Edge] = []
-        
+
         func addTab(#up:Bool){
         
-            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
+            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == (up ? originalHeights.first : originalHeights.last))})
             rejectedFolds.extend(topEdges)
             topEdges = topEdges.uniqueBy({$0.start})
-            
-            //add tab edges
-            println("top edges: \(topEdges)")
             
             func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
                 //draw to nearest saved height
@@ -570,9 +565,8 @@ class FreeForm:FoldFeature{
                 return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
             }
         
-            
             for edge in topEdges{
-                let tabEdges = cutsAndFoldsForTab(edge,up:true)
+                let tabEdges = cutsAndFoldsForTab(edge,up:up)
                 self.cachedEdges?.extend(tabEdges)
                 self.horizontalFolds.remove(edge)
                 self.horizontalFolds.append(tabEdges[0])
@@ -580,41 +574,13 @@ class FreeForm:FoldFeature{
 
         }
         
-        // #TODO: make this DRYer
         // if there is a tab up
         if translatedHeights.first < savedHeights.first{
-            
-            //remove unnecessary folds
-            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
-            rejectedFolds.extend(topEdges)
-            topEdges = topEdges.uniqueBy({$0.start})
-            
-            //add tab edges
-            println("top edges: \(topEdges)")
-            for edge in topEdges{
-            let tabEdges = cutsAndFoldsForTab(edge,up:true)
-            self.cachedEdges?.extend(tabEdges)
-            self.horizontalFolds.remove(edge)
-            self.horizontalFolds.append(tabEdges[0])
-            }
-
+            addTab(up:true)
         }
         // if there is a tab down
         if translatedHeights.last > savedHeights.last{
-            
-            //remove unnecessary folds
-            var bottomEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
-            rejectedFolds.extend(bottomEdges)
-            bottomEdges = bottomEdges.uniqueBy({$0.start})
-            
-            //add tab edges
-            println("bottom edges: \(bottomEdges)")
-            for edge in bottomEdges{
-                let tabEdges = cutsAndFoldsForTab(edge,up:false)
-                self.cachedEdges?.extend(tabEdges)
-                self.horizontalFolds.remove(edge)
-                self.horizontalFolds.append(tabEdges[0])
-            }
+            addTab(up:false)
         }
 
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
