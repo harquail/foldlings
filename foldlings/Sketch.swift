@@ -16,8 +16,14 @@
         // ************ Feature variables ****************
         var features:[FoldFeature] = [] //listOfCurrentFeatures
         var currentFeature:FoldFeature? //feature currently being drawn
+        
+        var tappedFeature:FoldFeature? //feature currently tapped (which should sometimes be drawn differently
+        
         var draggedEdge:Edge? //edge being dragged
         var masterFeature:MasterCard? //the master card feature for the sketch
+        
+        
+        
         
         //the folds that define a sketch
         //for now, cuts are in this array to

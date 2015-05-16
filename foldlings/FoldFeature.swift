@@ -109,10 +109,9 @@ class FoldFeature: NSObject, Printable
     
     //we might need separate functions for invalidating cuts & folds?
     //might also need a set of user-defined edges that we don't fuck with
-    // this removes cached edges, sets them all to nil
-    func invalidateEdges()
-    {
-        featureEdges = nil
+    func invalidateEdges(){
+        cachedEdges = nil
+        horizontalFolds = []
     }
     
     /// used for quickly testing whether features might overlap
@@ -183,6 +182,37 @@ class FoldFeature: NSObject, Printable
     }
     
     
+    /// the unique fold heights in the feature (ignores duplicates), modified by delta y
+    func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
+        
+        println("original heights: \(originalHeights)")
+        let draggedHeight = draggedEdge.start.y
+        println("dragged height: \(draggedHeight)")
+        var newHeights:[CGFloat] = []
+        
+        let draggedIndex = originalHeights.indexOf(draggedHeight)!
+        
+        switch (draggedIndex) {
+        case 0:
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]-deltaY!]
+        case 1:
+            //TODO: this is wrong
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1]+deltaY!,originalHeights[2]+deltaY!]
+        case 2:
+            newHeights = [originalHeights[0]-deltaY!,originalHeights[1],originalHeights[2]+deltaY!]
+        default:
+            newHeights = originalHeights
+        }
+
+        if(newHeights.first > masterFold.start.y || newHeights.last < masterFold.start.y){
+         // TODO: original heights is the wrong thing to return here
+            return originalHeights
+        }
+        else{
+            return newHeights
+        }
+    }
+
     func featureSpansFold(fold:Edge)->Bool
     {
         var fMin = min(fold.start.x, fold.end.x)
