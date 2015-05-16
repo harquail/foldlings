@@ -553,21 +553,43 @@ class FreeForm:FoldFeature{
 //        <[0] >[2]
         
         let originalHeights = uniqueFoldHeights()
+        func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
+            
+            //draw to nearest saved height
+            let translatedY = translatedHeights.minBy({(transY:CGFloat) in return  abs(referenceEdge.start.y - transY)})
+            
+            let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold)
+           return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
+        }
         
         var rejectedFolds:[Edge] = []
         if translatedHeights.first < savedHeights.first{
             
             //remove unnecessary folds
-            let topEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.start.y == originalHeights.first)})
+            let topEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
             rejectedFolds.extend(topEdges)
+            
+            let tabEdges = cutsAndFoldsForTab(topEdges[0],up:true)
+            self.cachedEdges?.extend(tabEdges)
+
             self.horizontalFolds.removeAtIndex(0)
+            self.horizontalFolds.append(tabEdges[0])
+
         }
         if translatedHeights.last > savedHeights.last{
             
             //remove unnecessary folds
-            let bottomEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.start.y == originalHeights.last)})
+            let bottomEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
             rejectedFolds.extend(bottomEdges)
+            
+            let tabEdges = cutsAndFoldsForTab(bottomEdges[0],up:false)
+            
+            self.cachedEdges?.extend(tabEdges)
+            
             self.horizontalFolds.removeLast()
+            self.horizontalFolds.append(tabEdges[0])
+
+            
         }
 
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
