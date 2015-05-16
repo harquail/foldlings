@@ -172,6 +172,7 @@ class SketchView: UIView {
             self.sketch.getPlanes()
             forceRedraw()
             
+            println(sketch.almostCoincidentEdgePoints())
             
         default:
             break
@@ -242,7 +243,7 @@ class SketchView: UIView {
                 if(drawingFeature.drivingFold != nil)
                 {
                     let drawParent = drawingFeature.parent!
-                    
+                                        
                     // splits the driving fold of the parent
                     // removes and adds edges to sketch
                     let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)

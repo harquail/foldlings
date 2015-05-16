@@ -26,6 +26,8 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
+        return "\nStart: \(start), End: \(end)"
+
         return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
         
     }
@@ -48,7 +50,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var kind = Kind.Cut
     var adjacency: [Edge] = []
     var isMaster = false
-    var colorOverride:UIColor? = nil
+    var colorOverride:UIColor? = getRandomColor(0.8)
     var feature:FoldFeature?
     
     enum Kind: String {
@@ -109,9 +111,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     /// makes a straight edge between two points, constructing the path as well
     class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind, feature: FoldFeature) -> Edge{
         let path = UIBezierPath()
-        path.moveToPoint(start)
-        path.addLineToPoint(end)
-        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
+        path.moveToPoint(round(start))
+        path.addLineToPoint(round(end))
+        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?

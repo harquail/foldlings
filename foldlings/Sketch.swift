@@ -416,24 +416,89 @@
             return false
         }
         
-        func healFoldsOccludedBy(feature:FreeForm){
+        //replaces edges to close the gap left by deleting a feature
+        func healFoldsOccludedBy(feature:FoldFeature){
             
-            var fragments:[Edge] = [];
+            /// get intersections with driving fold
+            let intercepts:[CGPoint]
+            if let shape = feature as? FreeForm{
+                intercepts  = shape.intersectionsWithDrivingFold
+            }
+            else if let box = feature as? BoxFold{
+                //calculate the intersection points with the driving fold
+                let pointOne = CGPointMake(box.startPoint!.x, feature.drivingFold!.start.y)
+                let pointTwo = CGPointMake(box.endPoint!.x, feature.drivingFold!.start.y)
+                
+                intercepts = [pointOne,pointTwo]
+            }
+            else{
+                intercepts = []
+            }
             
-            for edge in edges{
-                if(edge.start.y == feature.drivingFold!.start.y  && (feature.intersections.contains(edge.start)  || feature.intersections.contains(edge.end))) {
-                    fragments.append(edge)
+            
+            //internal edges are the edges between the intersections points inside the shape
+            //their endpoints will be used to find neightboring edges to "weld" together over a gap
+            var internalEdges:[Edge] = []
+            for (var i = 0; i<intercepts.count - 1; i+=2){
+                let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Cut, feature: feature)
+                internalEdges.append(e)
+            }
+            
+            //helper function to combine two edges into an edge that closes the gap between them & spans their length
+            func weldedFold(e:Edge,with:Edge)->Edge{
+                
+                // removes an edge from the feature & sketch
+                func exterminate(edge:Edge){
+                    feature.parent?.horizontalFolds.remove(edge)
+                    feature.parent?.featureEdges?.remove(edge)
+                    self.removeEdge(edge)
+                }
+                // the welded fold goes between the minimum and maximum x values at the given y height
+                let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: e.feature!)
+                
+                exterminate(e)
+                exterminate(e.twin)
+                exterminate(with)
+                exterminate(with.twin)
+                
+                return returnee
+            }
+            
+            //appends a fold to the feature & sketch
+            func appendFold(edge:Edge){
+                //TODO: THIS SHOULD BE INSERTED INTO ORDERED
+                feature.parent?.horizontalFolds.append(edge)
+                feature.parent?.featureEdges?.append(edge)
+                self.addEdge(edge)
+            }
+            
+            //for each internal edge (which spans a gap)
+            for edge in internalEdges{
+                
+                // get the pieces of the driving fold
+                var fragments = feature.parent!.horizontalFolds.filter(
+                    {(e:Edge)->Bool in
+                        return e.start.y == feature.drivingFold!.start.y
+                })
+                
+                // find driving fold edges that neighbor the internal edge
+                let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
+                let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
+                
+                //if we found a start & end edge, combine them together and append them to the feature
+                if startEdge != nil && endEdge != nil{
+                    let welded = weldedFold(startEdge!, endEdge!)
+                    appendFold(welded)
                 }
             }
             
-            for edge in fragments{
-                feature.parent?.horizontalFolds.remove(edge)
-                feature.parent?.featureEdges?.remove(edge)
-            }
         }
+        
+        
         // replaces one fold edge with an array of fold edges
         // that span the same distance
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
+            
             feature.horizontalFolds.remove(fold)
             feature.featureEdges?.remove(fold)
             removeEdge(fold)
@@ -488,6 +553,32 @@
             feature.parent!.children.remove(feature)
             // remove features from sketch.features
             self.features.remove(feature)
+
+            //if the feature has a driving fold, heal the gaps in the edges it leaves behind
+            if (feature.drivingFold != nil) {
+                self.healFoldsOccludedBy(feature)
+            }
+            getPlanes()
         }
         
-    }
+        
+        /// debugging function to find points very near each other
+        func almostCoincidentEdgePoints() -> [CGPoint:[CGPoint]]{
+        
+            var returnee = [CGPoint:[CGPoint]]()
+            var points:[CGPoint] = []
+
+            for edge in edges{
+                points.append(edge.start)
+                points.append(edge.end)
+            }
+            
+            for point in points{
+                let nearPoints = points.filter({ccpDistance($0, point) != 0.0 && ccpDistance($0, point) < 3.0})
+                if(nearPoints.count != 0){
+                returnee[point] = nearPoints
+                }
+            }
+            return returnee
+        }
+}
