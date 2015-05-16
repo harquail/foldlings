@@ -548,11 +548,8 @@ class FreeForm:FoldFeature{
     
     func addTabs(translatedHeights:[CGFloat],savedHeights:[CGFloat]){
         
-        println("translated heights: \(translatedHeights) \n\n saved heights: \(savedHeights)")
-
-//        <[0] >[2]
-        
         let originalHeights = uniqueFoldHeights()
+        
         func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
             
             //draw to nearest saved height
@@ -563,33 +560,32 @@ class FreeForm:FoldFeature{
         }
         
         var rejectedFolds:[Edge] = []
+        // if there is a tab up
         if translatedHeights.first < savedHeights.first{
             
             //remove unnecessary folds
-            let topEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
+            let topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
             rejectedFolds.extend(topEdges)
             
+            //add tab edges
             let tabEdges = cutsAndFoldsForTab(topEdges[0],up:true)
             self.cachedEdges?.extend(tabEdges)
-
             self.horizontalFolds.removeAtIndex(0)
             self.horizontalFolds.append(tabEdges[0])
 
         }
+        // if there is a tab down
         if translatedHeights.last > savedHeights.last{
             
             //remove unnecessary folds
-            let bottomEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
+            let bottomEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
             rejectedFolds.extend(bottomEdges)
             
+            //add tab edges
             let tabEdges = cutsAndFoldsForTab(bottomEdges[0],up:false)
-            
             self.cachedEdges?.extend(tabEdges)
-            
             self.horizontalFolds.removeLast()
             self.horizontalFolds.append(tabEdges[0])
-
-            
         }
 
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
