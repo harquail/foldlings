@@ -546,18 +546,31 @@ class FreeForm:FoldFeature{
     }
     
     
-    func addTabs(translatedHeights:[CGFloat]){
+    func addTabs(translatedHeights:[CGFloat],savedHeights:[CGFloat]){
         
-        let originalHeights = self.uniqueFoldHeights()
-        println("CURRENT HEIGHTS: \(originalHeights)")
-        let rejectedFolds = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.start.y == originalHeights[0] || a.start.y == originalHeights[2]) && a.kind == .Fold})
+        println("translated heights: \(translatedHeights) \n\n saved heights: \(savedHeights)")
+
+//        <[0] >[2]
         
+        let originalHeights = uniqueFoldHeights()
+        
+        var rejectedFolds:[Edge] = []
+        if translatedHeights.first < savedHeights.first{
+            
+            //remove unnecessary folds
+            let topEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.start.y == originalHeights.first)})
+            rejectedFolds.extend(topEdges)
+            self.horizontalFolds.removeAtIndex(0)
+        }
+        if translatedHeights.last > savedHeights.last{
+            
+            //remove unnecessary folds
+            let bottomEdges = self.cachedEdges!.filter({(a:Edge) -> Bool in return (a.start.y == originalHeights.last)})
+            rejectedFolds.extend(bottomEdges)
+            self.horizontalFolds.removeLast()
+        }
+
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
-        
-        //first, get rid of the top & bottom heights
-        self.horizontalFolds.removeLast()
-        self.horizontalFolds.removeAtIndex(0)
-        
     }
     
     func getTabs(translatedHeights:[CGFloat])->[Edge]{
