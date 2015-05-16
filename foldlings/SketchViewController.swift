@@ -40,8 +40,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         var touchPoint = gesture.locationInView(sketchView)
         println("tapped at: \(touchPoint)")
         
-        if let fs = sketchView.sketch.features{
-            
+        let fs = sketchView.sketch.features
+        
             //set tapped feature to nil, clearing any taps
             sketchView.sketch.tappedFeature = nil
             
@@ -104,8 +104,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
         case .MoveFolds:
-            sketchView.sketch.tappedFeature = feature
-            feature.activeOption = .MoveFolds;
+            break
+            //#TODO: FIXME
+//            sketchView.sketch.tappedFeature = feature
+//            feature.activeOption = .MoveFolds;
         }
         
     }

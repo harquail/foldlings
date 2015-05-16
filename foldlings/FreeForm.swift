@@ -568,13 +568,13 @@ class FreeForm:FoldFeature
                 //draw to nearest saved height
                 let translatedY = translatedHeights.minBy({(transY:CGFloat) in return  abs(referenceEdge.start.y - transY)})
 
-                let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold)
-                return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
+                let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold, feature:self)
+                return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut,feature:self),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut,feature:self)]
             }
         
             for edge in topEdges{
                 let tabEdges = cutsAndFoldsForTab(edge,up:up)
-                self.cachedEdges?.extend(tabEdges)
+                self.featureEdges?.extend(tabEdges)
                 self.horizontalFolds.remove(edge)
                 self.horizontalFolds.append(tabEdges[0])
             }
@@ -590,7 +590,7 @@ class FreeForm:FoldFeature
             addTab(up:false)
         }
 
-        self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
+        self.featureEdges = self.featureEdges?.difference(rejectedFolds)
     }
     
 }

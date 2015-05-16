@@ -110,7 +110,7 @@ class FoldFeature: NSObject, Printable
     //we might need separate functions for invalidating cuts & folds?
     //might also need a set of user-defined edges that we don't fuck with
     func invalidateEdges(){
-        cachedEdges = nil
+        featureEdges = nil
         horizontalFolds = []
     }
     
