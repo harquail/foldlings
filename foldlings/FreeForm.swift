@@ -550,18 +550,37 @@ class FreeForm:FoldFeature{
         
         let originalHeights = uniqueFoldHeights()
         
-        func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
+
+        var rejectedFolds:[Edge] = []
+        
+        func addTab(#up:Bool){
+        
+            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
+            rejectedFolds.extend(topEdges)
+            topEdges = topEdges.uniqueBy({$0.start})
             
-            //draw to nearest saved height
-            let translatedY = translatedHeights.minBy({(transY:CGFloat) in return  abs(referenceEdge.start.y - transY)})
+            //add tab edges
+            println("top edges: \(topEdges)")
             
-            let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold)
-           return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
+            func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
+                //draw to nearest saved height
+                let translatedY = translatedHeights.minBy({(transY:CGFloat) in return  abs(referenceEdge.start.y - transY)})
+
+                let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold)
+                return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
+            }
+        
+            
+            for edge in topEdges{
+                let tabEdges = cutsAndFoldsForTab(edge,up:true)
+                self.cachedEdges?.extend(tabEdges)
+                self.horizontalFolds.remove(edge)
+                self.horizontalFolds.append(tabEdges[0])
+            }
+
         }
         
         // #TODO: make this DRYer
-        // #TODO: this needs to filter out duplicate hoizontal folds
-        var rejectedFolds:[Edge] = []
         // if there is a tab up
         if translatedHeights.first < savedHeights.first{
             
@@ -599,78 +618,6 @@ class FreeForm:FoldFeature{
         }
 
         self.cachedEdges = self.cachedEdges?.difference(rejectedFolds)
-    }
-    
-    func getTabs(translatedHeights:[CGFloat])->[Edge]{
-        
-        var tabs:[Edge] = []
-        
-//        println("TOP DIFFERENCE:")
-//        println(translatedHeights[0] < originalHeights[0])
-//
-//        //compare first and last translated height to original heights
-        
-        func tabForEdge(e:Edge,displacement:CGFloat) -> [Edge] {
-            
-            // set direction
-//            let direction = up ? -1 : 1
-            
-            let start = e.start
-            let end = e.end
-            let newStart = CGPointMake(start.x, start.y + displacement)
-            let newEnd = CGPointMake(end.x, end.y + displacement)
-            
-            let startConnector = Edge.straightEdgeBetween(start, end: newStart, kind: .Cut)
-            let endConnector = Edge.straightEdgeBetween(end, end: newEnd, kind: .Cut)
-            let translatedFold = Edge.straightEdgeBetween(newStart, end: newEnd, kind: .Fold)
-            horizontalFolds.append(translatedFold)
-            
-            return [startConnector, endConnector, translatedFold]
-        }
-        
-        if translatedHeights[0] < topTruncations.first?.start.y{
-            
-            for fold in topTruncations{
-                tabs.extend(tabForEdge(fold, translatedHeights[0] - topTruncations.first!.start.y))
-                
-                //remove folds inside tabs
-                //this should have worked!
-//                cachedEdges?.remove(fold)
-//                horizontalFolds.remove(fold)
-                //here's the more expensive removal:
-//                cachedEdges?.reject({$0.start.y == self.topTruncations.first!.start.y})
-//                horizontalFolds.reject({$0.start.y == self.topTruncations.first!.start.y})
-            }
-            
-//            println("BEFORE")
-//            println(cachedEdges?.count)
-//            cachedEdges = cachedEdges?.difference(topTruncations)
-//            println("AFTER  ")
-//            println(cachedEdges?.count)
-//            horizontalFolds = horizontalFolds.difference(topTruncations)
-            
-        }
-        if translatedHeights[2] > bottomTruncations.first?.start.y{
-            
-            for fold in bottomTruncations{
-                tabs.extend(tabForEdge(fold,translatedHeights[2] - bottomTruncations.first!.start.y))
-
-//                cachedEdges?.remove(fold)
-//                horizontalFolds.remove(fold)
-            }
-            
-//            cachedEdges = cachedEdges?.difference(bottomTruncations)
-//            horizontalFolds = horizontalFolds.difference(bottomTruncations)
-
-
-//            println("bottom heights")
-        }
-        
-        
-//        println("BOTTOM DIFFERENCE:")
-//        println(translatedHeights[2] > originalHeights[2])
-
-        return tabs
     }
     
 }
