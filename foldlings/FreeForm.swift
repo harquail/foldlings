@@ -559,15 +559,19 @@ class FreeForm:FoldFeature{
            return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut)]
         }
         
+        // #TODO: make this DRYer
+        // #TODO: this needs to filter out duplicate hoizontal folds
         var rejectedFolds:[Edge] = []
         // if there is a tab up
         if translatedHeights.first < savedHeights.first{
             
             //remove unnecessary folds
-            let topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
+            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.first)})
             rejectedFolds.extend(topEdges)
+            topEdges = topEdges.uniqueBy({$0.start})
             
             //add tab edges
+            println("top edges: \(topEdges)")
             for edge in topEdges{
             let tabEdges = cutsAndFoldsForTab(edge,up:true)
             self.cachedEdges?.extend(tabEdges)
@@ -580,10 +584,12 @@ class FreeForm:FoldFeature{
         if translatedHeights.last > savedHeights.last{
             
             //remove unnecessary folds
-            let bottomEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
+            var bottomEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == originalHeights.last)})
             rejectedFolds.extend(bottomEdges)
+            bottomEdges = bottomEdges.uniqueBy({$0.start})
             
             //add tab edges
+            println("bottom edges: \(bottomEdges)")
             for edge in bottomEdges{
                 let tabEdges = cutsAndFoldsForTab(edge,up:false)
                 self.cachedEdges?.extend(tabEdges)
