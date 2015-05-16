@@ -117,6 +117,14 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //each time we leave the view, save the current sketch to s3
+        //TODO: probably want to remove this when releasing to many people.  This could be a lot of data
+        let uploader = SecretlyUploadtoS3()
+        uploader.uploadToS3(sketchView.bitmap(grayscale: false, circles: false),named:sketchView.sketch.name)
+    }
     
     // TODO: Should store index elsewhere, possibly in sketch
     @IBAction func CardsButtonClicked(sender: UIButton) {
