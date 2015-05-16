@@ -38,6 +38,9 @@ class FoldFeature: NSObject, Printable
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
+    var activeOption:FeatureOption?  // the operation being performed on this feature (eg. .MoveFold)
+    var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
+
     required init(coder aDecoder: NSCoder) {
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
@@ -172,6 +175,12 @@ class FoldFeature: NSObject, Printable
         return nil
     }
     
+    /// the unique fold heights in the feature (ignores duplicates)
+    func uniqueFoldHeights() -> [CGFloat]{
+        var uniquefolds = horizontalFolds.uniqueBy({$0.start.y})
+        uniquefolds.sort({$0.start.y < $1.start.y})
+        return uniquefolds.map({$0.start.y})
+    }
     
     
     func featureSpansFold(fold:Edge)->Bool

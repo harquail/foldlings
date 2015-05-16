@@ -16,10 +16,15 @@ class FreeForm:FoldFeature
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
     var cachedPath:UIBezierPath? = UIBezierPath()
     var closed = false
-    //the intrsection points calculated by featureSpansFold & used for occlusion
+    //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
+    //the top and bottom edges that truncate a shape
+    //these are not modified when folds are dragged, and are used to create tabs.
+    var topTruncations:[Edge] = []
+    var bottomTruncations:[Edge] = []
+
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -59,6 +64,7 @@ class FreeForm:FoldFeature
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -387,22 +393,15 @@ class FreeForm:FoldFeature
         
         if let ps = points{
             //for all intersections, if there are an even number
-            if(ps.count%2 == 0 && ps.count <= maxIntercepts){
-                var i = 0
+            if(ps.count>=2 && ps.count <= maxIntercepts){
                 var edgesToAdd:[Edge] = []
-                while(i<ps.count){
-                    if(ps.count>i+1){
+                for (var i = 0; i<ps.count-1; i++){
                         //try making a straight edge between the points
                         let edge = Edge.straightEdgeBetween(round(ps[i]), end: round(ps[i+1]), kind: .Fold, feature:self)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
-                            i += 2
-                            continue
                         }
-                    }
-                    //otherwise, try the next point
-                    i += 1
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded

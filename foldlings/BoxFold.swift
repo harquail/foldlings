@@ -139,4 +139,6 @@ override func tapOptions() -> [FeatureOption]?{
     return options
     
 
-}}
+}
+
+}
