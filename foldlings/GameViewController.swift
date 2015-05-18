@@ -36,7 +36,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     var visited: [Plane] = [Plane]()
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
-    var debugColor = false
+    var debugColor = true
     let debugColors:[UIColor] = [
         UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
         UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
@@ -265,9 +265,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         node.geometry?.firstMaterial = m
         
         //make sphere invisible
-        let transparentMaterial = SCNMaterial()
-        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = transparentMaterial
+//        let transparentMaterial = SCNMaterial()
+//        transparentMaterial.diffuse.contents = UIColor.clearColor()
+//        masterSphere.geometry?.firstMaterial = transparentMaterial
         
         // different based on orientation
         if hill {
@@ -276,7 +276,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
         }
         
-        
+        // append the adj list of the plane to 
+        // notMyChild in order to do special pruning
+        // so that planes of shared adjacency list 
+        // don't get calculated at the wrong level
+        // and their parents don't mess up
         var adj = planes.adjacency[plane]!
         visited.append(plane)
         notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
