@@ -325,7 +325,7 @@ class SketchView: UIView {
         
     }
     
-    //  !! NOT MERGED!!
+    //  MERGED
     //draws boxfolds and adds them to features if valid
     func handleBoxFoldPan(sender: AnyObject)
     {
@@ -390,6 +390,7 @@ class SketchView: UIView {
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature
             {
+                drawingFeature.invalidateEdges()
                 // makes the start point the top left point and sorts horizontal folds
                 drawingFeature.fixStartEndPoint()
                 
@@ -404,6 +405,11 @@ class SketchView: UIView {
                     sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
                     // add feature to sketch features and to parent's children
                     sketch.addFeatureToSketch(drawingFeature, parent: drawParent)
+                    
+                }
+                else{
+//                    sketch.removeFeatureFromSketch(drawingFeature)
+                    AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
                     
                 }
                 
