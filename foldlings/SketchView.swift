@@ -103,7 +103,7 @@ class SketchView: UIView {
     }
     
     var savedOriginalHeights:[CGFloat] = []
-    
+    ////// MERGED
     func handleMoveFoldPan(sender: AnyObject){
         
         let gesture = sender as! UIPanGestureRecognizer
@@ -219,7 +219,7 @@ class SketchView: UIView {
             }
         }
     }
-    
+    ////// MERGED
     func boxFoldDragEdge(tappedF:BoxFold){
         let originalHeights = tappedF.uniqueFoldHeights()
         
@@ -234,6 +234,7 @@ class SketchView: UIView {
         
     }
     
+    //  !! NOT MERGED!!
     // Draws Free-form Shape
     func handleFreeFormPan(sender: AnyObject)
     {
@@ -323,7 +324,7 @@ class SketchView: UIView {
         
     }
     
-    
+    //  !! NOT MERGED!!
     //draws boxfolds and adds them to features if valid
     func handleBoxFoldPan(sender: AnyObject)
     {
@@ -409,13 +410,13 @@ class SketchView: UIView {
             break
         }
     }
-    
+    ////// MERGED
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
         self.touchesEnded(touches, withEvent: event)
     }
 
-    
+    ////// MERGED
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
@@ -534,7 +535,7 @@ class SketchView: UIView {
         return tempIncremental
     }
     
-    
+    ////// MERGED
     /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
@@ -636,6 +637,19 @@ class SketchView: UIView {
     //    func setButtonBG(image:UIImage){
     //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     //    }
+    
+    func drawCircle(point: CGPoint) ->UIBezierPath
+    {
+        UIColor.redColor().setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
+    }
+    
+    func setButtonBG(image:UIImage){
+        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
+    }
     
     
     func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
