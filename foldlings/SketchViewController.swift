@@ -104,10 +104,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
         case .MoveFolds:
-            break
-            //#TODO: FIXME
-//            sketchView.sketch.tappedFeature = feature
-//            feature.activeOption = .MoveFolds;
+            sketchView.sketch.tappedFeature = feature
+            feature.activeOption = .MoveFolds;
         }
         
     }

@@ -241,42 +241,41 @@ class SketchView: UIView {
         
         //println("handle")
         let gesture = sender as! UIPanGestureRecognizer
-        
-        switch (gesture.state)
-        {
+        if sketch.tappedFeature == nil{
             
-        case UIGestureRecognizerState.Began:
-            // make a shape with touchpoint
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            var shape: FreeForm = FreeForm(start:touchPoint)
-            sketch.currentFeature = shape
-            sketch.currentFeature?.startPoint = gesture.locationInView(self)
-            shape.endPoint = touchPoint
-            //// DONE BEFORE, MERGE AFTER->>>>
-
-            
-        case UIGestureRecognizerState.Changed:
-            let shape = sketch.currentFeature as! FreeForm
-            // if it's been a few microseconds since we tried to add a point
-            let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
-            
-            if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
+            switch (gesture.state)
+            {
+                
+            case UIGestureRecognizerState.Began:
+                // make a shape with touchpoint
                 var touchPoint: CGPoint = gesture.locationInView(self)
+                var shape: FreeForm = FreeForm(start:touchPoint)
+                sketch.currentFeature = shape
+                sketch.currentFeature?.startPoint = gesture.locationInView(self)
                 shape.endPoint = touchPoint
-                //set the path to a curve through the points
-                path = shape.pathThroughTouchPoints()
+                
+            case UIGestureRecognizerState.Changed:
+                let shape = sketch.currentFeature as! FreeForm
+                // if it's been a few microseconds since we tried to add a point
+                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
+                
+                if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
+                    var touchPoint: CGPoint = gesture.locationInView(self)
+                    shape.endPoint = touchPoint
+                    //set the path to a curve through the points
+                    path = shape.pathThroughTouchPoints()
+                    shape.path = path
+                    forceRedraw()
+                }
+                
+            case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+                
+                let shape = sketch.currentFeature as! FreeForm
+                path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
                 shape.path = path
-                forceRedraw()
-            }
-            
-        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
-            
-            let shape = sketch.currentFeature as! FreeForm
-            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
-            shape.path = path
-            //reset path
-            path = UIBezierPath()
-
+                //reset path
+                path = UIBezierPath()
+                
                 //for feature in features -- check folds for spanning
                 outer: for feature in sketch.features
                 {
@@ -303,7 +302,6 @@ class SketchView: UIView {
                             
                         }
                     }
-                    
                 }
                 // if feature didn't span a fold, then make it a hole?
                 // find parent for hole
@@ -312,15 +310,16 @@ class SketchView: UIView {
                     shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
                 }
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
-            
-            sketch.currentFeature = nil
-            self.sketch.getPlanes()
-            forceRedraw()
-            
-            println(sketch.almostCoincidentEdgePoints())
-            
-        default:
-            break
+                
+                sketch.currentFeature = nil
+                self.sketch.getPlanes()
+                forceRedraw()
+                
+                println(sketch.almostCoincidentEdgePoints())
+                
+            default:
+                break
+            }
         }
         
     }
