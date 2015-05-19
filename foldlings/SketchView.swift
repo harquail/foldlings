@@ -238,6 +238,7 @@ class SketchView: UIView {
     // Draws Free-form Shape
     func handleFreeFormPan(sender: AnyObject)
     {
+        
         //println("handle")
         let gesture = sender as! UIPanGestureRecognizer
         
@@ -250,9 +251,9 @@ class SketchView: UIView {
             var shape: FreeForm = FreeForm(start:touchPoint)
             sketch.currentFeature = shape
             sketch.currentFeature?.startPoint = gesture.locationInView(self)
-            
             shape.endPoint = touchPoint
-            
+            //// DONE BEFORE, MERGE AFTER->>>>
+
             
         case UIGestureRecognizerState.Changed:
             let shape = sketch.currentFeature as! FreeForm
@@ -352,7 +353,8 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                /// what happens if I make this a while loop
+                
+                var foldsCrossed = 0
                 outer:for feature in sketch.features
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
@@ -362,11 +364,18 @@ class SketchView: UIView {
                         {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            break outer;
+                            foldsCrossed++;
+//                            break outer;
                         }
                     }
                 }
                 
+                
+                //box folds that span more than one fold are invalid
+                if(foldsCrossed > 1){
+                    drawingFeature.drivingFold = nil
+                    drawingFeature.parent = nil
+                }
                 // box folds have different behaviors if they span the driving edge
                 drawingFeature.invalidateEdges()
                 forceRedraw()
