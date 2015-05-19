@@ -56,6 +56,7 @@ class SketchView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = kLineWidth
+        // TODO: name should be set when creating sketch
         sketch = Sketch(at: 0, named:"placeholder")
         sketch.getPlanes()
         incrementalImage = bitmap(grayscale: false)
@@ -82,8 +83,8 @@ class SketchView: UIView {
         if(sketch.tappedFeature != nil){
             
             switch(sketch.tappedFeature!.activeOption!){
-//            case .MoveFolds:
-//                handleMoveFoldPan(sender)
+            case .MoveFolds:
+                handleMoveFoldPan(sender)
             default: break
             }
         }
@@ -98,6 +99,138 @@ class SketchView: UIView {
             }
         }
         
+        
+    }
+    
+    var savedOriginalHeights:[CGFloat] = []
+    
+    func handleMoveFoldPan(sender: AnyObject){
+        
+        let gesture = sender as! UIPanGestureRecognizer
+        if let tappedF = sketch.tappedFeature{
+            
+            if(gesture.state == UIGestureRecognizerState.Began){
+                //get the edge & nearest point to hit
+                let edge = tappedF.featureEdgeAtPoint(gesture.locationInView(self))
+                if let e = edge{
+                    // keep track of change to dragged edges
+                    sketch.draggedEdge = e
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    savedOriginalHeights = tappedF.uniqueFoldHeights()
+                    
+                }
+                else{
+                    println("No Edge Here...")
+                }
+            }
+            else if(gesture.state == UIGestureRecognizerState.Changed){
+                
+                if let e = sketch.draggedEdge{
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    println("delta: \(tappedF.deltaY)")
+                    
+                    //if boxfold, make new edges & invalidate
+                    if let box = tappedF as? BoxFold{
+                        boxFoldDragEdge(box)
+                    }
+                    
+                    forceRedraw()
+                }
+                
+            }
+            else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+                
+                //end the drag by clearing tapped feature
+                if let e = sketch.draggedEdge{
+                    if let shape = tappedF as? FreeForm{
+                        
+                        tappedF.deltaY = gesture.translationInView(self).y
+                        
+                        let originalHeights = tappedF.uniqueFoldHeights()
+                        //get current heights
+                        let heights = shape.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
+                        // clear intersections & edges
+                        shape.featureEdges = []
+                        shape.horizontalFolds = []
+                        //clear all intersections except those with driving fold
+                        shape.intersections = shape.intersectionsWithDrivingFold
+                        
+                        let shapePath = shape.path!
+                        
+                        for height in heights{
+                            //create
+                            
+                            let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut, feature: shape)
+                            
+                            
+                            
+                            let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
+                            if !success{
+                                
+                                for fold in shape.topTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                                }
+                                
+                                for fold in shape.bottomTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                                    
+                                }
+                                
+                                println("Failed to intersect with fold at \(height)");
+                                
+                                AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+                            }
+                            else{
+                                println("success: \(height)")
+                            }
+                        }
+                        
+                        sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                        shape.addTabs(heights,savedHeights: savedOriginalHeights)
+                        
+//                                                sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
+                        
+//                        sketch.refreshFeatureEdges()
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+                        
+                        self.sketch.getPlanes()
+                        forceRedraw()
+                    }
+                    else if let box = tappedF as? BoxFold{
+                        tappedF.deltaY = gesture.translationInView(self).y
+                        boxFoldDragEdge(box)
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+                        
+//                        sketch.refreshFeatureEdges()
+                        self.sketch.getPlanes()
+                        
+                        forceRedraw()
+                        
+                        
+                    }
+                    else{
+                        println("unexpected feature type")
+                    }
+                }
+            }
+        }
+    }
+    
+    func boxFoldDragEdge(tappedF:BoxFold){
+        let originalHeights = tappedF.uniqueFoldHeights()
+        
+        let newHeights = tappedF.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
+        
+        let deltaStart = originalHeights[0] - newHeights[0]
+        let deltaEnd = originalHeights[2] - newHeights[2]
+        
+        tappedF.startPoint! = CGPointMake(tappedF.startPoint!.x, tappedF.startPoint!.y - deltaStart)
+        tappedF.endPoint! = CGPointMake(tappedF.endPoint!.x, tappedF.endPoint!.y - deltaEnd)
+        tappedF.invalidateEdges()
         
     }
     

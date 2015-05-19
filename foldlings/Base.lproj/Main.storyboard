@@ -89,7 +89,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOa-MS-h7d">
-                                <rect key="frame" x="261" y="815" width="247" height="58"/>
+                                <rect key="frame" x="261" y="803" width="247" height="58"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
                                 <state key="normal" title="MAKE NEW">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
