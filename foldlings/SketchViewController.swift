@@ -103,6 +103,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .DeleteFeature :
             sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
+            self.sketchView.sketch.getPlanes()
         case .MoveFolds:
             sketchView.sketch.tappedFeature = feature
             feature.activeOption = .MoveFolds;

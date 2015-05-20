@@ -206,7 +206,8 @@ class SketchView: UIView {
                         tappedF.deltaY = gesture.translationInView(self).y
                         boxFoldDragEdge(box)
                         
-                        /// TODO: try removing the feature and readding it
+                        /// removing the feature and re-adding it
+//                        box.invalidateEdges()
                         sketch.removeFeatureFromSketch(box,healOnDelete:false)
                         sketch.addFeatureToSketch(box, parent: box.parent!)
                         

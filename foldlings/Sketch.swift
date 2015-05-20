@@ -544,7 +544,8 @@
         func removeFeatureFromSketch(feature: FoldFeature, healOnDelete:Bool=true){
             //remove children features
             for child in feature.children{
-                removeFeatureFromSketch(child)
+                //healing folds is expensive & not necessary for children
+                removeFeatureFromSketch(child, healOnDelete:false)
             }
             // remove all edges in feature
             let fEdges = feature.getEdges()
@@ -564,7 +565,7 @@
             if (feature.drivingFold != nil && healOnDelete) {
                 self.healFoldsOccludedBy(feature)
             }
-            getPlanes()
+//            getPlanes()
         }
         
         
