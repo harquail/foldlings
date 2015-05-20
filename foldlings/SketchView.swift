@@ -207,7 +207,7 @@ class SketchView: UIView {
                         
                         /// removing the feature and re-adding it
 //                        box.invalidateEdges()
-                        sketch.removeFeatureFromSketch(box,healOnDelete:false)
+                        sketch.removeFeatureFromSketch(box, healOnDelete: false)
                         sketch.addFeatureToSketch(box, parent: box.parent!)
                         
                         sketch.tappedFeature?.activeOption = nil

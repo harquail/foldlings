@@ -140,5 +140,17 @@ override func tapOptions() -> [FeatureOption]?{
     
 
 }
+    
+//converts a boxfold into a freeform shape
+func toFreeForm() -> FreeForm{
+    var shape = FreeForm(start: self.startPoint!)
+    
+    shape.path = UIBezierPath(rect: self.boundingBox()!)
+    shape.children = self.children
+    shape.parent = self.parent
+
+    
+    return shape
+}
 
 }
