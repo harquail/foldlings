@@ -285,12 +285,18 @@ class FreeForm:FoldFeature
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
 
+        println("PATH \(path)")
+        println("INTERSECTIONS \(intersections)")
+        
         var edges:[Edge] = []
         
         //create edges from split paths
         for p in paths{
+            println("PATH: \n \(p)")
             edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
         }
+        
+        println("\nEDGES!!!!!!\n \(edges)")
         return edges
     }
     

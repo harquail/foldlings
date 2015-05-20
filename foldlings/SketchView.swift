@@ -183,8 +183,10 @@ class SketchView: UIView {
                                 println("success: \(height)")
                             }
                         }
-                        
+                        println("JUST BEFORE FEATUREEDGES EXTEND")
+
                         sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
 //                                                sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
