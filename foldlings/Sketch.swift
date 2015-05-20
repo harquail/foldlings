@@ -541,7 +541,7 @@
         
         // removes any feature edges that aren't
         // already in the sketch and the parent/child 
-        func removeFeatureFromSketch(feature: FoldFeature){
+        func removeFeatureFromSketch(feature: FoldFeature, healOnDelete:Bool=true){
             //remove children features
             for child in feature.children{
                 removeFeatureFromSketch(child)
@@ -561,7 +561,7 @@
             self.features.remove(feature)
 
             //if the feature has a driving fold, heal the gaps in the edges it leaves behind
-            if (feature.drivingFold != nil) {
+            if (feature.drivingFold != nil && healOnDelete) {
                 self.healFoldsOccludedBy(feature)
             }
             getPlanes()

@@ -192,6 +192,10 @@ class SketchView: UIView {
                         
 //                        sketch.refreshFeatureEdges()
                         
+                        sketch.removeFeatureFromSketch(shape,healOnDelete:false)
+                        sketch.addFeatureToSketch(shape, parent: shape.parent!)
+
+                        
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
                         
@@ -202,8 +206,14 @@ class SketchView: UIView {
                         tappedF.deltaY = gesture.translationInView(self).y
                         boxFoldDragEdge(box)
                         
+                        /// TODO: try removing the feature and readding it
+                        sketch.removeFeatureFromSketch(box,healOnDelete:false)
+                        sketch.addFeatureToSketch(box, parent: box.parent!)
+                        
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
+                        
+
                         
 //                        sketch.refreshFeatureEdges()
                         self.sketch.getPlanes()
