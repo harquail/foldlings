@@ -50,6 +50,8 @@ class Plane: Printable, Hashable
     var feature:FoldFeature!
     var topEdge : Edge!
     var bottomEdge : Edge!
+    var parent : Plane!
+    var children : [Plane]!
     
     // mark if this plane is the master's feature top or bottom plane
     var masterTop: Bool = false

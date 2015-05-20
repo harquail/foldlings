@@ -44,41 +44,42 @@ class CollectionOfPlanes: Printable, Hashable {
     /// uses the fold type edges to determine adjacency
     func addPlane(plane:Plane, sketch:Sketch, folds: Int)
     {
+        println(folds)
         // dispatch_sync(planeAdjacencylockQueue) {
         if !contains(self.planes, plane)
         {
             if isCounterClockwise(plane.path)
             {
                 let color = plane.color
-                self.planes.append(plane)
-                //TODO: insert sorted by top edge of the plane
-                plane.feature.featurePlanes.append(plane)
-                //TODO: switch for types of plane based on foldcount, if statements might be better here
-                switch (folds)
-                {
-                    
-                case 0:
+                //self.planes.append(plane)
+                //insert sorted by top edge of the plane into planes list
+                planes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                //insert sorted by top edge of the plane into featurePlanes list
+                let feature = plane.feature
+                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                // if the plane has no folds, it is a hole
+                if folds < 1 {
                     // mark plane as hole
                     plane.kind = .Hole
-                    break
+                }
                     
-                case 1:
-                    // mark plane as flap
-                    plane.kind = .Flap
-                    // find fold (either bottom or top)
-                    //TODO: check top edge, check bottom edge, check which one is a fold
-                    let bottom = plane.bottomEdge
-                    if bottom.kind == .Fold{
-                        // mark as a top plane
+                else{
+                    // check for flaps, but ignore master card
+                    if folds == 1 && !plane.topEdge.isMaster{
+                        // mark plane as flap
+                        plane.kind = .Flap
+                        // find fold (either bottom or top)
+                        // check top edge, check bottom edge, check which one is a fold
+                        let bottom = plane.bottomEdge
+                        if bottom.kind == .Fold{
+                            // mark as a top plane
+                            
+                        }
+                        let top = plane.topEdge
+                        if top.kind == .Fold{
+                            // mark as a bottom plane
+                        }
                     }
-                    let top = plane.topEdge
-                    if top.kind == .Fold{
-                        // mark as a bottom plane
-                    }
-                    
-                    break
-                    
-                case 2:
                     
                     // mark plane as plane
                     plane.kind = .Plane
@@ -155,12 +156,9 @@ class CollectionOfPlanes: Printable, Hashable {
                                 }
                             }
                         }
-                        
                     }
-                    
-                default:
-                    break
                 }
+                
                 
             }
         }

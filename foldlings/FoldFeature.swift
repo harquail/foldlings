@@ -25,7 +25,7 @@ class FoldFeature: NSObject, Printable
 
     var featurePlanes:[Plane] = []
     //not used yet
-    var drawingPlanes:[Plane] = []
+    //var drawingPlanes:[Plane] = []
     
     
     var horizontalFolds:[Edge] = [] //list horizontal folds

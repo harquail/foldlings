@@ -39,7 +39,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
-    var debugColor = false
+    var debugColor = true
     let debugColors:[UIColor] = [
         UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
         UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
@@ -314,11 +314,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             m.diffuse.contents = plane.color
         }
         node.geometry?.firstMaterial = m
+        masterSphere.geometry?.firstMaterial = m
+
         
-        //make sphere invisible
-        let transparentMaterial = SCNMaterial()
-        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = transparentMaterial
+//        //make sphere invisible
+//        let transparentMaterial = SCNMaterial()
+//        transparentMaterial.diffuse.contents = UIColor.clearColor()
+//        masterSphere.geometry?.firstMaterial = transparentMaterial
         
         // different based on orientation
         if hill {
