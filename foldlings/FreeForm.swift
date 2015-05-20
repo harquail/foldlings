@@ -601,4 +601,13 @@ class FreeForm:FoldFeature
         self.featureEdges = self.featureEdges?.difference(rejectedFolds)
     }
     
+    
+    func shiftEdgeEndpoints(){
+        
+        if let edges = featureEdges{
+            for edge in edges{
+             println(edge)
+            }
+        }
+    }
 }
