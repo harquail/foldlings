@@ -307,6 +307,7 @@ class SketchView: UIView {
                             shape.truncateWithFolds()
                             //split paths at intersections
                             shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            shape.setTopBottomTruncations()
                             shape.parent = feature
                             break outer;
                             
