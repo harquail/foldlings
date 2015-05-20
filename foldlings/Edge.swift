@@ -203,11 +203,27 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
     func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
         let movedPoint = snapStart ? start : end
+        
+        
+        
         if(snapStart){
-            start = snapTo
+            
+            if(!(CGPointEqualToPoint(start,snapTo))){
+            
+                println("moved \(start) to \(snapTo)")
+                start = snapTo
+
+            }
+            
+            
         }
         else{
-            end = snapTo
+            
+            if(!(CGPointEqualToPoint(end,snapTo))){
+                
+                println("moved \(end) to \(snapTo)")
+                end = snapTo
+            }
         }
         //also have to do things to the path
         

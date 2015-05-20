@@ -608,6 +608,7 @@ class FreeForm:FoldFeature
         
         //first, snap Edge to intersections
         var snappablePoints = intersections.map({round($0)})
+//        snappablePoints.extend(intersectionsWithDrivingFold)
         snappablePoints.append(startPoint!)
         snappablePoints.append(endPoint!)
         // also need to take horizontal fold endpoints into account
@@ -620,7 +621,6 @@ class FreeForm:FoldFeature
         if let edges = featureEdges{
             for edge in edges{
                 let newStart = snappablePoints.minBy({ccpDistance($0,edge.start)})!
-                println("moved \(edge.start) to \(newStart)")
                 edge.snapStart(to: newStart)
                 edge.snapEnd(to: snappablePoints.minBy({ccpDistance($0,edge.end)})!)
             }
