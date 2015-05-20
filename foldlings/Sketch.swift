@@ -235,6 +235,7 @@
         /// does a traversal of all the edges to find all the planes
         func getPlanes()
         {
+            return;
            // dispatch_sync(edgeAdjacencylockQueue) {
                 //println("\ngetPlanes\n")
                 self.visited = []
