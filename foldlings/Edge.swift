@@ -210,6 +210,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             end = snapTo
         }
         //also have to do things to the path
+        
     }
 
     
