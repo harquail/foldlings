@@ -604,10 +604,21 @@ class FreeForm:FoldFeature
     
     func shiftEdgeEndpoints(){
         
+        //first, snap Edge to intersections
+        // also need to take horizontal fold endpoints into account
+        var snappablePoints = intersections.map({round($0)})
+        
         if let edges = featureEdges{
             for edge in edges{
-             println(edge)
+                let newStart = snappablePoints.minBy({ccpDistance($0,edge.start)})!
+                println("moved \(edge.start) to \(newStart)")
+                edge.snapStart(to: newStart)
+                edge.snapEnd(to: snappablePoints.minBy({ccpDistance($0,edge.end)})!)
             }
         }
+    }
+    
+    func snapEdgeToPoint (edge:Edge,point:CGPoint,snapTo:CGPoint) {
+    
     }
 }

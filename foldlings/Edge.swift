@@ -194,8 +194,23 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
     
+    func snapStart(#to:CGPoint){
+        snapToPoint(true,snapTo:to)
+    }
+    func snapEnd(#to:CGPoint){
+        snapToPoint(false,snapTo:to)
+    }
 
-    
+    func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
+        let movedPoint = snapStart ? start : end
+        if(snapStart){
+            start = snapTo
+        }
+        else{
+            end = snapTo
+        }
+        //also have to do things to the path
+    }
 
     
 }
