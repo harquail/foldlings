@@ -616,12 +616,27 @@ class FreeForm:FoldFeature
             snappablePoints.append(fold.end)
         }
 
-
+        
         if let edges = featureEdges{
             for edge in edges{
+                // TODO: check endpoint
                 let newStart = snappablePoints.minBy({ccpDistance($0,edge.start)})!
-                edge.snapStart(to: newStart)
-                edge.snapEnd(to: snappablePoints.minBy({ccpDistance($0,edge.end)})!)
+                
+                if (ccpDistance(edge.start,newStart) < 4){
+                    edge.snapStart(to: newStart)
+                }
+                else{
+                    snappablePoints.append(edge.start)
+                }
+                
+                let newEnd = snappablePoints.minBy({ccpDistance($0,edge.end)})!
+                if (ccpDistance(edge.end,newEnd) < 4){
+                    edge.snapEnd(to: newEnd)
+                    
+                }
+                else{
+                    snappablePoints.append(edge.end)
+                }
             }
         }
     }
