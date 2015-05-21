@@ -126,7 +126,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-                    println("delta: \(tappedF.deltaY)")
+//                    println("delta: \(tappedF.deltaY)")
                     
                     //if boxfold, make new edges & invalidate
                     if let box = tappedF as? BoxFold{
@@ -175,7 +175,7 @@ class SketchView: UIView {
                                     
                                 }
                                 
-                                println("Failed to intersect with fold at \(height)");
+//                                println("Failed to intersect with fold at \(height)");
                                 
                                 AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
                             }
@@ -183,10 +183,10 @@ class SketchView: UIView {
                                 println("success: \(height)")
                             }
                         }
-                        println("JUST BEFORE FEATUREEDGES EXTEND")
+//                        println("JUST BEFORE FEATUREEDGES EXTEND")
 
                         sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-                        println("ADD TABS")
+//                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
 //                                                sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
@@ -328,7 +328,7 @@ class SketchView: UIView {
                 self.sketch.getPlanes()
                 forceRedraw()
                 
-                println(sketch.almostCoincidentEdgePoints())
+//                println(sketch.almostCoincidentEdgePoints())
                 
             default:
                 break

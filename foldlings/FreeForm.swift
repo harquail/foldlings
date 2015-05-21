@@ -596,7 +596,6 @@ class FreeForm:FoldFeature
             addTab(up:false)
         }
 
-//        println("add")
         
         self.featureEdges = self.featureEdges?.difference(rejectedFolds)
     }

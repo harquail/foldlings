@@ -185,9 +185,9 @@ class FoldFeature: NSObject, Printable
     /// the unique fold heights in the feature (ignores duplicates), modified by delta y
     func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
         
-        println("original heights: \(originalHeights)")
+//        println("original heights: \(originalHeights)")
         let draggedHeight = draggedEdge.start.y
-        println("dragged height: \(draggedHeight)")
+//        println("dragged height: \(draggedHeight)")
         var newHeights:[CGFloat] = []
         
         let draggedIndex = originalHeights.indexOf(draggedHeight)!
