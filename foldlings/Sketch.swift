@@ -8,7 +8,7 @@
     import CoreGraphics
     import UIKit
     
-    class Sketch : NSObject  {
+    class Sketch : NSObject, Printable  {
         
         
         @IBOutlet var previewButton:UIButton?
@@ -58,6 +58,10 @@
             //insert master fold and make borders into cuts
             makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
             
+        }
+        
+        override var description: String {
+            return join(" | ", edges.map({$0.description}))
         }
         
         /// add an already-constructed edge

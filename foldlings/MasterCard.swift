@@ -63,6 +63,13 @@ class MasterCard:FoldFeature{
         
     }
     
+    
+    override func tapOptions() -> [FeatureOption]?{
+        
+        return [FeatureOption.PrintEdges]
+        
+    }
+    
     /// bounding box is start & end point
     override func boundingBox() -> CGRect? {
         return CGRectMake(startPoint!.x, startPoint!.y, endPoint!.x - startPoint!.x, endPoint!.y - startPoint!.y)
