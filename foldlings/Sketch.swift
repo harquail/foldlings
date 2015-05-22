@@ -406,7 +406,9 @@
         func isTopEdge(edge:Edge) -> Bool
         {
             if let masterF = masterFeature{
-                return masterF.startPoint!.y == edge.start.y
+                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
+                println("reached \(condition)")
+                return condition
             }
             return false
             
@@ -417,7 +419,10 @@
         {
             if let masterF = masterFeature{
                 if(masterF.endPoint != nil){
-                    return masterF.endPoint!.y == edge.start.y
+                    
+                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
+                    println("reached \(condition)")
+                    return condition
                 }
             }
             return false
