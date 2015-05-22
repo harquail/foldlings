@@ -382,7 +382,7 @@ class FreeForm:FoldFeature
     /// boxFolds can be deleted
     /// folds can be added only to leaves
     override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
+        var options:[FeatureOption] = super.tapOptions() ?? []
         options.append(.DeleteFeature)
         if(self.isLeaf() && horizontalFolds.count >= 3){
                 options.append(.MoveFolds);
@@ -622,7 +622,7 @@ class FreeForm:FoldFeature
                 // TODO: check endpoint
                 let newStart = snappablePoints.minBy({ccpDistance($0,edge.start)})!
                 
-                if (ccpDistance(edge.start,newStart) < 4){
+                if (ccpDistance(edge.start,newStart) < 2){
                     edge.snapStart(to: newStart)
                 }
                 else{
@@ -630,7 +630,7 @@ class FreeForm:FoldFeature
                 }
                 
                 let newEnd = snappablePoints.minBy({ccpDistance($0,edge.end)})!
-                if (ccpDistance(edge.end,newEnd) < 4){
+                if (ccpDistance(edge.end,newEnd) < 2){
                     edge.snapEnd(to: newEnd)
                     
                 }

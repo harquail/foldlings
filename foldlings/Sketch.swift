@@ -411,7 +411,6 @@
         {
             if let masterF = masterFeature{
                 let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
-                println("reached \(condition)")
                 return condition
             }
             return false
@@ -425,7 +424,6 @@
                 if(masterF.endPoint != nil){
                     
                     let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
-                    println("reached \(condition)")
                     return condition
                 }
             }
@@ -491,16 +489,20 @@
             //for each internal edge (which spans a gap)
             for edge in internalEdges{
                 
+                println("internal edge: \(edge)")
+                
                 // get the pieces of the driving fold
                 var fragments = feature.parent!.horizontalFolds.filter(
                     {(e:Edge)->Bool in
-                        return e.start.y == feature.drivingFold!.start.y
+                        return (abs(e.start.y - feature.drivingFold!.start.y) < 2)
                 })
                 
                 // find driving fold edges that neighbor the internal edge
                 let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
                 let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
                 
+                println("neighbors to internal edge: {{ \(startEdge), \(endEdge) }}")
+
                 //if we found a start & end edge, combine them together and append them to the feature
                 if startEdge != nil && endEdge != nil{
                     let welded = weldedFold(startEdge!, endEdge!)

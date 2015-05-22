@@ -108,6 +108,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             sketchView.sketch.tappedFeature = feature
             feature.activeOption = .MoveFolds;
         case .PrintEdges:
+            print(feature.featureEdges)
+        case .PrintPlanes:
+            print(feature.featurePlanes)
+        case .PrintSketch:
             print(sketchView.sketch)
         }
         

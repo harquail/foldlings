@@ -85,8 +85,8 @@ class FoldFeature: NSObject, Printable
     
     /// printable description is the object class & startPoint
     override var description: String
-        {
-            return "\(reflect(self).summary) \(startPoint!)"
+    {
+        return "\(reflect(self).summary) \(startPoint!)"
     }
     
     init(start:CGPoint)
@@ -171,7 +171,7 @@ class FoldFeature: NSObject, Printable
     /// modifications that can be made to the current feature
     func tapOptions() -> [FeatureOption]?
     {
-        return nil
+        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges]
     }
     
     /// the unique fold heights in the feature (ignores duplicates)
