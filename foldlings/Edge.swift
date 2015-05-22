@@ -77,8 +77,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     }
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
-        self.start = start
-        self.end = end
+        self.start = round(start)
+        self.end = round(end)
         self.path = path
     }
     
