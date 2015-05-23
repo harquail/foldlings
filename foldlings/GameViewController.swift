@@ -24,11 +24,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
-    let fourtyFiveDegrees = Float(0.25*M_PI)
     let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
-    let thirtyDegrees = Float(M_PI/6.0)
-    let thirtyDegreesNeg = Float(-M_PI/6.0)
-    let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
     var theOneSphere = SCNNode()
@@ -115,6 +111,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     // log svgs to s3
+    //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         let uploader = SecretlyUploadtoS3()

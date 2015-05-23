@@ -96,17 +96,21 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     /// do the thing specified by the option
     func handleTapOption(feature:FoldFeature, option:FeatureOption){
-        
         switch option{
         case .AddFolds :
             break
         case .DeleteFeature :
+            //delete feature and redraw
             sketchView.sketch.removeFeatureFromSketch(feature)
             self.sketchView.forceRedraw()
             self.sketchView.sketch.getPlanes()
         case .MoveFolds:
+            // toggle moveFolds on
             sketchView.sketch.tappedFeature = feature
             feature.activeOption = .MoveFolds;
+            
+        // debug cases
+        // #TODO: remove
         case .PrintEdges:
             print(feature.featureEdges)
         case .PrintPlanes:
@@ -132,7 +136,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         super.viewWillDisappear(animated)
         
         //each time we leave the view, save the current sketch to s3
-        //TODO: probably want to remove this when releasing to many people.  This could be a lot of data
+        //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
         let uploader = SecretlyUploadtoS3()
         uploader.uploadToS3(sketchView.bitmap(grayscale: false, circles: false),named:sketchView.sketch.name)
     }
@@ -147,12 +151,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
-//    @IBAction func FreeFormFeatureButtonClicked(sender:UIButton){
-//        //println("free form")
-//        sketchView.sketchMode = .FreeForm
-//    }
     
     //box fold button selected
     // #TODO: flurry logging here
@@ -199,9 +197,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let imgNew = img.copy() as! UIImage
             
             let viewController:GameViewController = segue.destinationViewController as! GameViewController
-//            
+
             viewController.setButtonBG(imgNew)
-            
+        
             viewController.laserImage = vew.bitmap(grayscale: true)
             viewController.svgString = vew.svgImage()
             viewController.planes = sketch.planes
@@ -214,7 +212,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @IBAction func unWindToSketchViewController(segue: UIStoryboardSegue) {
-        //nothing goes here
+        //nothing goes here, but this function can't be deleted
     }
     
     
