@@ -17,8 +17,9 @@ import UIKit
 import AssetsLibrary
 
 class SecretlyUploadtoS3 {
+
+    // uploads an image to s3
     func uploadToS3(image:UIImage,named:String){
-        
         
         func compressForUpload(original:UIImage, scale:CGFloat) -> UIImage
         {
@@ -35,48 +36,77 @@ class SecretlyUploadtoS3 {
             return compressedImage;
         }
         
-        // create a local image that we can use to upload to s3
-        var path:String = NSTemporaryDirectory().stringByAppendingPathComponent("image.png")
         // make the image smaller
         var imageData:NSData = UIImageJPEGRepresentation(compressForUpload(image,0.75),0.9)
-        imageData.writeToFile(path, atomically: true)
         
+        uploadDataToS3(imageData,named: named,fileType:"png")
         
-        // once the image is saved we can use the path to create a local fileurl
-        var url:NSURL = NSURL(fileURLWithPath: path)!
-        
-        // next we set up the S3 upload request manager
-       let uploadRequest = AWSS3TransferManagerUploadRequest()
-        // set the bucket
-        uploadRequest?.bucket = S3_BUCKET_NAME
-        // I want this image to be public to anyone to view it so I'm setting it to Public Read
-        uploadRequest?.ACL = AWSS3ObjectCannedACL.PublicRead
-        // set the image's name that will be used on the s3 server. I am also creating a folder to place the image in
-        uploadRequest?.key = "\(UIDevice.currentDevice().identifierForVendor.UUIDString)/\(named)-\(NSDate.timeIntervalSinceReferenceDate()).jpg"
-        // set the content type
-        uploadRequest?.contentType = "image/jpg"
-        // and finally set the body to the local file path
-        uploadRequest?.body = url;
+    }
     
+    // uploads an svg to s3
+    func uploadToS3(svg:String,named:String){
+            let svgData: NSData = svg.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+        uploadDataToS3(svgData,named:named,fileType:"svg")
+    }
+    
+    private func uploadDataToS3(data:NSData,named:String, fileType:String){
+    
+        var contentType:String
+        var contentExtension:String
         
-        // now the upload request is set up we can creat the transfermanger, the credentials are already set up in the app delegate
-        var transferManager:AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
-        // start the upload
-        transferManager.upload(uploadRequest).continueWithExecutor(BFExecutor.mainThreadExecutor(), withBlock:{ [unowned self]
-            task -> AnyObject in
-            
-            // once the uploadmanager finishes check if there were any errors
-            if(task.error != nil){
-                NSLog("%@", task.error);
-            }else{ // if there aren't any then the image is uploaded!
-                // this is the url of the image we just uploaded
-//                NSLog("https://s3.amazonaws.com/s3-demo-swift/foldername/image.png");
-            }
-            
-//            self.removeLoadingView()
-            return "all done";
-            })
+        switch(fileType){
+        case "png":
+            contentType = "image/jpg"
+            contentExtension = "jpg"
+        case "svg":
+            contentType = "image/svg+xml"
+            contentExtension = "svg"
+        default:
+            contentType = "unexpected"
+            contentExtension = "unexpected"
+        }
         
+    // create a local image that we can use to upload to s3
+    var path:String = NSTemporaryDirectory().stringByAppendingPathComponent("upload.\(fileType)")
+
+    data.writeToFile(path, atomically: true)
+    
+    // once the image is saved we can use the path to create a local fileurl
+    var url:NSURL = NSURL(fileURLWithPath: path)!
+    
+    // next we set up the S3 upload request manager
+    let uploadRequest = AWSS3TransferManagerUploadRequest()
+    // set the bucket
+    uploadRequest?.bucket = S3_BUCKET_NAME
+    // I want this image to be public to anyone to view it so I'm setting it to Public Read
+    uploadRequest?.ACL = AWSS3ObjectCannedACL.PublicRead
+    // set the image's name that will be used on the s3 server. I am also creating a folder to place the image in
+    uploadRequest?.key = "\(UIDevice.currentDevice().identifierForVendor.UUIDString)/\(named)-\(NSDate.timeIntervalSinceReferenceDate()).\(contentExtension)"
+    // set the content type
+    uploadRequest?.contentType = contentType
+    // and finally set the body to the local file path
+    uploadRequest?.body = url;
+    
+    
+    // now the upload request is set up we can creat the transfermanger, the credentials are already set up in the app delegate
+    var transferManager:AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
+    // start the upload
+    transferManager.upload(uploadRequest).continueWithExecutor(BFExecutor.mainThreadExecutor(), withBlock:{ [unowned self]
+    task -> AnyObject in
+    
+    // once the uploadmanager finishes check if there were any errors
+    if(task.error != nil){
+    NSLog("%@", task.error);
+    }else{ // if there aren't any then the image is uploaded!
+    // this is the url of the image we just uploaded
+//                    NSLog("https://s3.amazonaws.com/s3-demo-swift/foldername/image.png");
+    }
+    
+    //            self.removeLoadingView()
+    return "all done";
+    })
+    
+
     }
     
 }

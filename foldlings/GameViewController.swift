@@ -114,6 +114,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         makeScene()
     }
     
+    // log svgs to s3
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        let uploader = SecretlyUploadtoS3()
+        uploader.uploadToS3(svgString,named:"file")
+    }
+    
     func makeScene(){
         // create a new scene
         // create and add a camera to the scene
