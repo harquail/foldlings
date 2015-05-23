@@ -321,7 +321,7 @@ class SketchView: UIView {
                     shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
                 }
                 
-                shape.shiftEdgeEndpoints()
+//                shape.shiftEdgeEndpoints()
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
                 sketch.currentFeature = nil

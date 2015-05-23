@@ -364,8 +364,10 @@ class FreeForm:FoldFeature
         }
         else{
             
-            if let intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
-                
+            if var intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
+                intersects = intersects.map({(a:CGPoint) -> CGPoint in
+                    return CGPointMake(a.x, fold.start.y)
+                })
                 intersectionsWithDrivingFold = intersects
                 intersections += intersects
                 return true
