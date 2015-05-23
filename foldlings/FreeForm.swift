@@ -363,9 +363,9 @@ class FreeForm:FoldFeature
             return false
         }
         else{
-            
             if var intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
                 intersects = intersects.map({(a:CGPoint) -> CGPoint in
+                    // intersection points are at the same height as the fold they're intersecting with
                     return CGPointMake(a.x, fold.start.y)
                 })
                 intersectionsWithDrivingFold = intersects
