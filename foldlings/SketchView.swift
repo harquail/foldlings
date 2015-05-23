@@ -575,7 +575,7 @@ class SketchView: UIView {
             
         else
         {
-            edgekind = modeToEdgeKind(sketchMode)
+            edgekind = .Cut
             
             if(grayscale){color = Edge.getLaserColor(edgekind)}
             else{color = Edge.getColor(edgekind)}
@@ -672,19 +672,6 @@ class SketchView: UIView {
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    }
-    
-    
-    func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
-    {
-        switch sketchMode
-        {
-        case .Cut:
-            return Edge.Kind.Cut
-        default:
-            return Edge.Kind.Cut
-        }
-        
     }
     
     

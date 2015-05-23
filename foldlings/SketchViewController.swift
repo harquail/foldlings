@@ -96,6 +96,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     /// do the thing specified by the option
     func handleTapOption(feature:FoldFeature, option:FeatureOption){
+        
+        Flurry.logEvent("tap option: \(option.rawValue)")
+
         switch option{
         case .AddFolds :
             break
@@ -153,11 +156,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     //box fold button selected
-    // #TODO: flurry logging here
     @IBAction func boxFold(sender: UIBarButtonItem) {
         resetButtonImages()
         sketchView.sketchMode = .BoxFold
         sender.image =  UIImage(named:"box-fold-selected-icon")
+        Flurry.logEvent("box fold")
     }
     
     //box free-form selected
@@ -165,18 +168,21 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         resetButtonImages()
         sketchView.sketchMode = .FreeForm
         sender.image =  UIImage(named:"freeform-selected-icon")
+        Flurry.logEvent("free form")
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
         resetButtonImages()
         sketchView.sketchMode = .VFold
         sender.image =  UIImage(named:"vfold-selected-icon")
+        Flurry.logEvent("v fold")
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
         resetButtonImages()
         sketchView.sketchMode = .Polygon
         sender.image =  UIImage(named:"polygon-selected-icon")
+        Flurry.logEvent("polygon")
     }
     
     func resetButtonImages(){

@@ -61,12 +61,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     @IBAction func printButton (sender: UIButton){
-        Flurry.logEvent("shared print-out image")
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
-        Flurry.logEvent("shared laser image")
         popupSVGShare(svgString, xposition:100)
     }
     
@@ -74,6 +72,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
+        Flurry.logEvent("printed foldling svg")
+
         //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
@@ -94,6 +94,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     // creates mailView controller to send svg to user as attechment
     func sendMail(svgData: NSData) {
+        Flurry.logEvent("mailed foldling svg")
         var mailView = MFMailComposeViewController()
         mailView.mailComposeDelegate = self
         mailView.setSubject("Here is your Pop-up Card")
