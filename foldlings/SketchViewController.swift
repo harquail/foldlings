@@ -142,6 +142,12 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
         let uploader = SecretlyUploadtoS3()
         uploader.uploadToS3(sketchView.bitmap(grayscale: false, circles: false),named:sketchView.sketch.name)
+        
+        NSUserDefaults.standardUserDefaults().setObject(sketchView.sketchMode.rawValue, forKey: "mode")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        let hashed = NSUserDefaults.standardUserDefaults().objectForKey("mode") as! Int!
+        sketchView.sketchMode = SketchView.Mode(rawValue:"Cut")!
     }
     
     // TODO: Should store index elsewhere, possibly in sketch
@@ -221,5 +227,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         //nothing goes here, but this function can't be deleted
     }
     
+ 
     
 }

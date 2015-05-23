@@ -16,16 +16,16 @@ class SketchView: UIView {
     @IBOutlet var xButton: UIButton!
     
     //Drawing Modes
-    enum Mode {
-        case Erase
-        case Cut
-        case Mirror
-        case Track
-        case Slider
-        case BoxFold
-        case FreeForm
-        case VFold
-        case Polygon
+    enum Mode:String {
+        case Erase = "Erase"
+        case Cut = "Cut"
+        case Mirror = "Mirror"
+        case Track = "Track"
+        case Slider = "Slider"
+        case BoxFold = "BoxFold"
+        case FreeForm = "FreeForm"
+        case VFold = "VFold"
+        case Polygon = "Polygon"
         
     }
     
