@@ -13,12 +13,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     
     var names = ArchivedEdges.archivedSketchNames()
     var cells = [Int:FoldlingCell]()
-    
-    
-//    override init() {
-//        super.init()
-//        
-//    }
+    var tapped = false
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
@@ -28,6 +23,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     }
     
     override func reloadData() {
+        tapped = false
         super.reloadData()
         names = ArchivedEdges.archivedSketchNames()
     }
@@ -42,6 +38,8 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 return 0
             }
     }
+    
+    
     override func didMoveToSuperview() {
         self.reloadData()
     }
@@ -75,29 +73,19 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             return cell
     }
     
-    
     func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .Ended {
             for (index, cell) in cells{
                 
-                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
+                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender) && !tapped){
                     
-                    
-//                    (self.window?.rootViewController as! UINavigationController).visibleViewController.performSegueWithIdentifier("newSketchSegue", sender: self)
-
+                    tapped = true
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
                     vc.index = cell.index
                     vc.restoredFromSave = true
                     (self.window?.rootViewController as! UINavigationController).pushViewController(vc, animated: true)
-                    
-//                    vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-//
-//                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
-//                        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-//                        vc.sketchView.forceRedraw()
-//                    })
                     
                     Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]) as [NSObject : AnyObject])
                     println("Clicked: \(cell.label!.text)")
