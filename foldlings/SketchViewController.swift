@@ -133,6 +133,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
         sketchView.addGestureRecognizer(draggy)
         
+        let savedMode = NSUserDefaults.standardUserDefaults().objectForKey("mode") as? String ?? "Box Fold"
+        sketchView.sketchMode = SketchView.Mode(rawValue:savedMode) ?? .BoxFold
+        setSelectedImage(sketchView.sketchMode)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -146,8 +149,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         NSUserDefaults.standardUserDefaults().setObject(sketchView.sketchMode.rawValue, forKey: "mode")
         NSUserDefaults.standardUserDefaults().synchronize()
         
-        let hashed = NSUserDefaults.standardUserDefaults().objectForKey("mode") as! Int!
-        sketchView.sketchMode = SketchView.Mode(rawValue:"Cut")!
     }
     
     // TODO: Should store index elsewhere, possibly in sketch
@@ -160,35 +161,29 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    //////// !!! #TODO: ALSO SET MODE
     
     //box fold button selected
     @IBAction func boxFold(sender: UIBarButtonItem) {
-        resetButtonImages()
         sketchView.sketchMode = .BoxFold
-        sender.image =  UIImage(named:"box-fold-selected-icon")
-        Flurry.logEvent("box fold")
+        setSelectedImage(.BoxFold)
     }
     
     //box free-form selected
     @IBAction func freeForm(sender: UIBarButtonItem) {
-        resetButtonImages()
         sketchView.sketchMode = .FreeForm
-        sender.image =  UIImage(named:"freeform-selected-icon")
-        Flurry.logEvent("free form")
+        setSelectedImage(.FreeForm)
+
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
-        resetButtonImages()
         sketchView.sketchMode = .VFold
-        sender.image =  UIImage(named:"vfold-selected-icon")
-        Flurry.logEvent("v fold")
+       setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
-        resetButtonImages()
         sketchView.sketchMode = .Polygon
-        sender.image =  UIImage(named:"polygon-selected-icon")
-        Flurry.logEvent("polygon")
+        setSelectedImage(.Polygon)
     }
     
     func resetButtonImages(){
@@ -196,6 +191,24 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         v.image = UIImage(named:"vfold-icon")
         free.image = UIImage(named:"freeform-icon")
         polygon.image = UIImage(named:"polygon-icon")
+    }
+    
+    func setSelectedImage(mode:SketchView.Mode){
+        Flurry.logEvent("selected \(mode.rawValue)")
+        resetButtonImages()
+        switch (mode){
+        case .BoxFold:
+            box.image = UIImage(named:"box-fold-selected-icon")
+        case .FreeForm:
+            free.image = UIImage(named:"freeform-selected-icon")
+        case .VFold:
+            v.image =  UIImage(named:"vfold-selected-icon")
+        case .Polygon:
+            polygon.image =  UIImage(named:"polygon-selected-icon")
+        default:
+            break
+            
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
