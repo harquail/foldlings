@@ -1,19 +1,14 @@
-//
-//
 import Foundation
 import UIKit
-//import Armchair
 
 class SplashViewController: UIViewController, UIAlertViewDelegate {
-    
-    @IBOutlet var slider:UISwitch!
-    @IBOutlet var slider2:UISwitch!
+
     var sketchName = "place holder from splash"
     
     @IBOutlet var collectionOfFoldlings: CollectionOfFoldlings!
     
+    // show dialog box to name sketch
     @IBAction func newButtonPressed(sender: AnyObject) {
-        
         let alert = UIAlertView(title: "Sketch Name", message: "", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
         alert.tag = 1
@@ -25,8 +20,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         return true
     }
     
-    
-    
+    // when ok is pressed, on sketch naming dialog, make a new sketch
     func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
         if (alertView.tag == 1) {
             if (buttonIndex == 1) {
@@ -37,37 +31,18 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         }
     }
     
-    
+    // make a new sketch
     func transitionToFreshSketch(name:String){
         println("transitioned to fresh sketch")
         sketchName = name
         let story = UIStoryboard(name: "Main", bundle: nil)
         
-//        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
         self.performSegueWithIdentifier("newSketchSegue", sender: self)
-//        vc.CurrentLevel += 1;
-        
-        
-//        self.presentViewController(vc, animated: true, completion: {
-//            vc.sketchView.forceRedraw()
-//        })
-        
-//        if let archEdges = ArchivedEdges.archivedSketchNames(){
-//            let index = archEdges.count
-//            vc.sketchView.sketch.index = index + 1
-//            vc.sketchView.sketch.name = name
-//
-//            println(vc.sketchView.sketch.index)
-//            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]) as [NSObject : AnyObject])
-//        }else{
-//            vc.sketchView.sketch.index = 0
-//        }
-        
-//        self.navigationController?.pushViewController(vc, animated: true)
-
 
     }
     
+
+    // when moving to a new sketch
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "newSketchSegue") {
                 println("Sender \(sender)")
@@ -75,73 +50,25 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
             let viewController = segue.destinationViewController as! SketchViewController
             viewController.name = sketchName
             
+            // set index to one greater than last saved
             if let archEdges = ArchivedEdges.archivedSketchNames(){
                             let index = archEdges.count
                 viewController.index = index
             }
-            
-//            println(viewController.sketchView)
-//            viewController.sketchView.sketchMode = .VFold
 
         }
     }
     
-    func toggleMode(switcher:UISwitch,key:String){
-        var isOn = switcher.on
-        isOn = !isOn
-        Flurry.logEvent("\(key) toggled", withParameters: NSDictionary(dictionary: ["on":isOn]) as [NSObject : AnyObject])
-        switcher.setOn(isOn, animated: true)
-        NSUserDefaults.standardUserDefaults().setBool(isOn, forKey: key)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
-    
     override func viewDidLoad() {
-//        Armchair.showPromptIfNecessary()
-        let on:Bool = NSUserDefaults.standardUserDefaults().boolForKey("proMode")
-        slider?.setOn(on, animated: true)
-        
-        let on2:Bool = NSUserDefaults.standardUserDefaults().boolForKey("templateMode")
-        slider?.setOn(on2, animated: true)
-        
         super.viewDidLoad()
-        
         let names = ArchivedEdges.archivedSketchNames()
-        //create test sketches if we're not in template mode
-        if((names == nil || names!.count < 5)  && on2){
-            createTestSketches()
-        }
-        
     }
     
+    // refresh the cards
     override func viewDidAppear(animated: Bool) {
         collectionOfFoldlings.reloadData()
     }
-    
-    /// we probably have to store the screenshots of our test scenes somewhere, because we can't instantiate their views easily here
-    func createTestSketches(){
         
-        ArchivedEdges.removeAll()
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
-        
-        // this makes the pre-fab sketches
-        var localSketch:Sketch
-        for (var i = 0; i < 10; i++){
-            localSketch = Sketch(at: i, named: "Sketch \(i)")
-            let arch = ArchivedEdges(sketch:localSketch)
-            arch.save()
-        }
-        
-    }
-    
-    func makeSketch(num:Int){
-        
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
-        self.presentViewController(vc, animated: true, completion: nil)
-        
-        (vc.view as! SketchView).forceRedraw()
-    }
-    
     //hides nav bar on splash screen
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
