@@ -33,35 +33,31 @@ class FreeForm:FoldFeature
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        fatalError("init(coder:) has not been implemented")
-    }
+        
+        path = aDecoder.decodeObjectForKey("path") as? UIBezierPath
+        cachedPath = aDecoder.decodeObjectForKey("cachedPath") as? UIBezierPath
+        interpolationPoints = aDecoder.decodeObjectForKey("points") as! [AnyObject]
+        closed = aDecoder.decodeBoolForKey("closed")
+        intersections = convertToCGPoints((aDecoder.decodeObjectForKey("intersections") as! NSArray))
+        intersectionsWithDrivingFold =  convertToCGPoints((aDecoder.decodeObjectForKey("drivingIntersections") as! NSArray))
+        topTruncations = aDecoder.decodeObjectForKey("topTruncations") as! [Edge]
+        bottomTruncations = aDecoder.decodeObjectForKey("bottomTruncations") as! [Edge]
+        }
     
     
     override func encodeWithCoder(aCoder: NSCoder) {
         super.encodeWithCoder(aCoder)
-//        //startpoint
-//        //endpoint
-//        //        [coder encodeCGPoint:myPoint forKey:@"myPoint"];
-//        //children
-//        //drivingFold
-//        //parent
-//        //horizontalFolds
-//        //cachedEdges
-//        //validity
-//        println("encoded \(featureEdges)")
-//        
-//        if let point = startPoint{
-//            aCoder.encodeCGPoint(point, forKey: "startPoint")
-//        }
-//        if let point = endPoint{
-//            aCoder.encodeCGPoint(point, forKey: "endPoint")
-//        }
-//        aCoder.encodeObject(parent,forKey:"parent")
-//        aCoder.encodeObject(children, forKey:"children")
-//        aCoder.encodeObject(drivingFold, forKey:"drivingFold")
-//        aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
-//        aCoder.encodeObject(featureEdges,forKey:"cachedEdges")
-//        aCoder.encodeObject(state.rawValue,forKey:"state")
+    
+        aCoder.encodeObject(path, forKey: "path")
+        aCoder.encodeObject(interpolationPoints, forKey: "points")
+        aCoder.encodeObject(cachedPath, forKey: "cachedPath")
+        aCoder.encodeBool(closed, forKey: "closed")
+        //can't save raw cgpoint array
+        aCoder.encodeObject(convertToNSArray(intersectionsWithDrivingFold), forKey: "drivingIntersections")
+        aCoder.encodeObject(convertToNSArray(intersections), forKey: "intersections")
+        aCoder.encodeObject(topTruncations, forKey: "topTruncations")
+        aCoder.encodeObject(bottomTruncations, forKey: "bottomTruncations")
+
     }
     
     
