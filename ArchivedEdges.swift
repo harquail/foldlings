@@ -132,9 +132,10 @@ class ArchivedEdges : NSObject, NSCoding {
                 let sktch = Sketch(at:dex, named:sktchName)
                 for edge in unarchived.edges{
                     //add all folds and non-master cuts
-                    if !(edge.kind == Edge.Kind.Cut) || !edge.isMaster{
-                        sktch.addEdge(edge)
-                    }
+                    // #TODO: add unarchiving functionality here!!!
+//                    if !(edge.kind == Edge.Kind.Cut) || !edge.isMaster{
+//                        sktch.addEdge(edge)
+//                    }
                 }
                 return sktch
             }
