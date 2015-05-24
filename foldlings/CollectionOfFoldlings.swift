@@ -63,7 +63,7 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             cell.label!.text = cellName
             cell.label!.sizeToFit()
             cell.addGestureRecognizer(tapRecognizer)
-            cell.index = names!.count-1
+            cell.index = names!.count-1 - index
             
             var view = cell.contentView
             
