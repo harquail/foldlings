@@ -32,8 +32,38 @@ class FreeForm:FoldFeature
     }
     
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+//        fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    override func encodeWithCoder(aCoder: NSCoder) {
+        super.encodeWithCoder(aCoder)
+//        //startpoint
+//        //endpoint
+//        //        [coder encodeCGPoint:myPoint forKey:@"myPoint"];
+//        //children
+//        //drivingFold
+//        //parent
+//        //horizontalFolds
+//        //cachedEdges
+//        //validity
+//        println("encoded \(featureEdges)")
+//        
+//        if let point = startPoint{
+//            aCoder.encodeCGPoint(point, forKey: "startPoint")
+//        }
+//        if let point = endPoint{
+//            aCoder.encodeCGPoint(point, forKey: "endPoint")
+//        }
+//        aCoder.encodeObject(parent,forKey:"parent")
+//        aCoder.encodeObject(children, forKey:"children")
+//        aCoder.encodeObject(drivingFold, forKey:"drivingFold")
+//        aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
+//        aCoder.encodeObject(featureEdges,forKey:"cachedEdges")
+//        aCoder.encodeObject(state.rawValue,forKey:"state")
+    }
+    
     
     override func getEdges() -> [Edge] {
         
