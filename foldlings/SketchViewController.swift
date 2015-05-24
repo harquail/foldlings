@@ -154,6 +154,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         NSUserDefaults.standardUserDefaults().setObject(sketchView.sketchMode.rawValue, forKey: "mode")
         NSUserDefaults.standardUserDefaults().synchronize()
         
+        let arch = ArchivedEdges(sketch:sketchView.sketch)
+        ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
+        arch.save()
+        
     }
     
     // TODO: Should store index elsewhere, possibly in sketch
