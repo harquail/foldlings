@@ -70,6 +70,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "newSketchSegue") {
+                println("Sender \(sender)")
             
             let viewController = segue.destinationViewController as! SketchViewController
             viewController.name = sketchName

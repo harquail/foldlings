@@ -82,12 +82,22 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 
                 if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
                     
+                    
+//                    (self.window?.rootViewController as! UINavigationController).visibleViewController.performSegueWithIdentifier("newSketchSegue", sender: self)
+
+                    
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
-                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
-                        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-                        vc.sketchView.forceRedraw()
-                    })
+                    vc.index = cell.index
+                    vc.restoredFromSave = true
+                    (self.window?.rootViewController as! UINavigationController).pushViewController(vc, animated: true)
+                    
+//                    vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
+//
+//                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
+//                        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
+//                        vc.sketchView.forceRedraw()
+//                    })
                     
                     Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]) as [NSObject : AnyObject])
                     println("Clicked: \(cell.label!.text)")
