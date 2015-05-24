@@ -434,12 +434,10 @@
         
         //replaces edges to close the gap left by deleting a feature
         func healFoldsOccludedBy(feature:FoldFeature){
-            println("printed at: \(__FUNCTION__): \(__LINE__)")
             /// get intersections with driving fold
             let intercepts:[CGPoint]
             if let shape = feature as? FreeForm{
                 intercepts  = shape.intersectionsWithDrivingFold
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
             }
             else if let box = feature as? BoxFold{
                 //calculate the intersection points with the driving fold
@@ -452,7 +450,6 @@
                 intercepts = []
             }
             
-            println("printed at: \(__FUNCTION__): \(__LINE__)")
             //internal edges are the edges between the intersections points inside the shape
             //their endpoints will be used to find neightboring edges to "weld" together over a gap
             var internalEdges:[Edge] = []
@@ -460,22 +457,17 @@
                 let e = Edge.straightEdgeBetween(intercepts[i], end:intercepts[i+1], kind: .Cut, feature: feature)
                 internalEdges.append(e)
             }
-            println("printed at: \(__FUNCTION__): \(__LINE__)")
             //helper function to combine two edges into an edge that closes the gap between them & spans their length
             func weldedFold(e:Edge,with:Edge)->Edge{
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 // removes an edge from the feature & sketch
                 func exterminate(edge:Edge){
-                    println("printed at: \(__FUNCTION__): \(__LINE__)")
                     feature.parent?.horizontalFolds.remove(edge)
                     feature.parent?.featureEdges?.remove(edge)
                     self.removeEdge(edge)
                 }
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 // the welded fold goes between the minimum and maximum x values at the given y height
                 let returnee = Edge.straightEdgeBetween( CGPointMake(min(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), end: CGPointMake(max(e.start.x,e.end.x,with.start.x,with.end.x), e.start.y), kind: .Fold, feature: feature.parent ?? masterFeature!)
                 
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 exterminate(e)
                 exterminate(e.twin)
                 exterminate(with)
@@ -483,48 +475,32 @@
                 
                 return returnee
             }
-            println("printed at: \(__FUNCTION__): \(__LINE__)")
             //appends a fold to the feature & sketch
             func appendFold(edge:Edge){
                 //TODO: THIS SHOULD BE INSERTED INTO ORDERED
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 feature.parent?.horizontalFolds.append(edge)
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 feature.parent?.featureEdges?.append(edge)
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 self.addEdge(edge)
             }
             
             //for each internal edge (which spans a gap)
             for edge in internalEdges{
                 
-                println("internal edge: \(edge)")
                 
                 // get the pieces of the driving fold
                 var fragments = feature.parent!.horizontalFolds.filter(
                     {(e:Edge)->Bool in
                         return (abs(e.start.y - feature.drivingFold!.start.y) < 2)
                 })
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 // find driving fold edges that neighbor the internal edge
                 let startEdge = fragments.find({return $0.start == edge.start || $0.end == edge.start})
                 let endEdge = fragments.find({return $0.start == edge.end || $0.end == edge.end})
                 
-                println("neighbors to internal edge: {{ \(startEdge), \(endEdge) }}")
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
                 //if we found a start & end edge, combine them together and append them to the feature
                 if startEdge != nil && endEdge != nil{
-                    println("printed at: \(__FUNCTION__): \(__LINE__)")
-                    let e = startEdge!
-                    let e2 = endEdge!
-                    println("e: \(e)")
-                    println("e2: \(e2)")
-
                     let welded = weldedFold(startEdge!, endEdge!)
-                    println("printed at: \(__FUNCTION__): \(__LINE__)")
                     appendFold(welded)
                 }
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
             }
             
         }
