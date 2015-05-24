@@ -145,6 +145,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         if(restoredFromSave){
             sketchView.sketch = ArchivedEdges.loadSaved(dex: index)
+            sketchView.forceRedraw()
         }
     }
     

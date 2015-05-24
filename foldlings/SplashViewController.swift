@@ -74,6 +74,12 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
             
             let viewController = segue.destinationViewController as! SketchViewController
             viewController.name = sketchName
+            
+            if let archEdges = ArchivedEdges.archivedSketchNames(){
+                            let index = archEdges.count
+                viewController.index = index
+            }
+            
 //            println(viewController.sketchView)
 //            viewController.sketchView.sketchMode = .VFold
 
