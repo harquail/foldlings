@@ -9,6 +9,9 @@ import SceneKit
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
+    var index:Int = 0
+    var name:String = "placeholder"
+    
     @IBOutlet var box: UIBarButtonItem!
     @IBOutlet var free: UIBarButtonItem!
     @IBOutlet var v: UIBarButtonItem!
@@ -113,7 +116,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             feature.activeOption = .MoveFolds;
             
         // debug cases
-        // #TODO: remove
+        // #TODO: remove on release
         case .PrintEdges:
             print(feature.featureEdges)
         case .PrintPlanes:
@@ -132,6 +135,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         let draggy = UIPanGestureRecognizer(target: self,action: "handlePan:")
         sketchView.addGestureRecognizer(draggy)
+        sketchView.sketch.name = name
+        sketchView.sketch.index = index
         
         let savedMode = NSUserDefaults.standardUserDefaults().objectForKey("mode") as? String ?? "Box Fold"
         sketchView.sketchMode = SketchView.Mode(rawValue:savedMode) ?? .BoxFold
@@ -161,19 +166,16 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         sketchView.hideXCheck()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    //////// !!! #TODO: ALSO SET MODE
     
-    //box fold button selected
+    // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
-    //box free-form selected
     @IBAction func freeForm(sender: UIBarButtonItem) {
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
-
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {

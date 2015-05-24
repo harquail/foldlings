@@ -8,6 +8,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     @IBOutlet var slider:UISwitch!
     @IBOutlet var slider2:UISwitch!
+    var sketchName = "place holder from splash"
     
     @IBOutlet var collectionOfFoldlings: CollectionOfFoldlings!
     
@@ -38,26 +39,44 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
     
     
     func transitionToFreshSketch(name:String){
-        
         println("transitioned to fresh sketch")
-        //        collectionOfFoldlings.r
-        
+        sketchName = name
         let story = UIStoryboard(name: "Main", bundle: nil)
-        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
-        self.presentViewController(vc, animated: true, completion: {
-            vc.sketchView.forceRedraw()
-        })
+        
+//        let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
+        self.performSegueWithIdentifier("newSketchSegue", sender: self)
+//        vc.CurrentLevel += 1;
         
         
-        if let archEdges = ArchivedEdges.archivedSketchNames(){
-            
-            let index = archEdges.count
-            vc.sketchView.sketch.index = index + 1
-            vc.sketchView.sketch.name = name
-            println(vc.sketchView.sketch.index)
-            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]) as [NSObject : AnyObject])
-        }
+//        self.presentViewController(vc, animated: true, completion: {
+//            vc.sketchView.forceRedraw()
+//        })
+        
+//        if let archEdges = ArchivedEdges.archivedSketchNames(){
+//            let index = archEdges.count
+//            vc.sketchView.sketch.index = index + 1
+//            vc.sketchView.sketch.name = name
+//
+//            println(vc.sketchView.sketch.index)
+//            Flurry.logEvent("new sketch created", withParameters: NSDictionary(dictionary: ["named":name]) as [NSObject : AnyObject])
+//        }else{
+//            vc.sketchView.sketch.index = 0
+//        }
+        
+//        self.navigationController?.pushViewController(vc, animated: true)
 
+
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "newSketchSegue") {
+            
+            let viewController = segue.destinationViewController as! SketchViewController
+            viewController.name = sketchName
+//            println(viewController.sketchView)
+//            viewController.sketchView.sketchMode = .VFold
+
+        }
     }
     
     func toggleMode(switcher:UISwitch,key:String){

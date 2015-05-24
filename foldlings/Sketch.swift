@@ -48,6 +48,7 @@
         {
             index = at //index of where sketch is stored
             name = named // name of the sketch 
+            println("name of sketch \(name)")
             let screenSize: CGRect = UIScreen.mainScreen().bounds
             let screenWidth = screenSize.width
             let screenHeight = screenSize.height
@@ -61,7 +62,7 @@
         }
         
         override var description: String {
-            return join(" | ", edges.map({$0.description}))
+            return "{\(name),\(index)}" + join(" | ", edges.map({$0.description}))
         }
         
         /// add an already-constructed edge

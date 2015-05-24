@@ -96,7 +96,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="3LN-Qg-JOH" kind="push" id="pTr-zm-X2t"/>
+                                    <action selector="newButtonPressed:" destination="xNl-vj-y2i" eventType="touchUpInside" id="pnl-Ck-PYT"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -107,6 +107,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="collectionOfFoldlings" destination="STP-FZ-aLb" id="Fn2-3b-4Oo"/>
+                        <segue destination="3LN-Qg-JOH" kind="push" identifier="newSketchSegue" id="qZT-Ed-Er6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDS-hx-lid" userLabel="First Responder" sceneMemberID="firstResponder"/>

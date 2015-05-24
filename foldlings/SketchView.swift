@@ -14,6 +14,8 @@ class SketchView: UIView {
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var checkButton: UIButton!
     @IBOutlet var xButton: UIButton!
+    var name:String = "placeHolder"
+    var index:Int = 0
     
     //Drawing Modes
     enum Mode:String {
@@ -56,8 +58,7 @@ class SketchView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = kLineWidth
-        // TODO: name should be set when creating sketch
-        sketch = Sketch(at: 0, named:"placeholder")
+        sketch = Sketch(at: 0, named:"unitialized")
         sketch.getPlanes()
         incrementalImage = bitmap(grayscale: false)
         
