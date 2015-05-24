@@ -46,7 +46,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 let color = plane.color
                 //if !contains(self.planes, plane) {
                 self.planes.append(plane)
-                plane.feature.featurePlanes.append(plane)
+//                plane.feature.featurePlanes.append(plane)
                  //}
                 
                 
