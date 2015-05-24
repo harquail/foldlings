@@ -190,9 +190,6 @@ class SketchView: UIView {
 //                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
-//                                                sketch.tappedFeature!.horizontalFolds.difference(foldsToReject())
-                        
-//                        sketch.refreshFeatureEdges()
                         
                         sketch.removeFeatureFromSketch(shape,healOnDelete:false)
                         sketch.addFeatureToSketch(shape, parent: shape.parent!)

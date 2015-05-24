@@ -47,9 +47,9 @@ class FoldFeature: NSObject, Printable
         self.endPoint = aDecoder.decodeCGPointForKey("endPoint")
         self.children = (aDecoder.decodeObjectForKey("children") as? [FoldFeature])!
         self.parent = aDecoder.decodeObjectForKey("parent") as? FoldFeature
-        self.drivingFold = aDecoder.decodeObjectForKey("children") as? Edge
-        self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
-        self.featureEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
+        self.drivingFold = aDecoder.decodeObjectForKey("drivingFold") as? Edge
+        self.horizontalFolds = aDecoder.decodeObjectForKey("horizontalFolds") as! [Edge]
+        self.featureEdges = aDecoder.decodeObjectForKey("cachedEdges") as? [Edge]
         self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
     
@@ -64,6 +64,7 @@ class FoldFeature: NSObject, Printable
         //horizontalFolds
         //cachedEdges
         //validity
+        println("encoded \(featureEdges)")
         
         if let point = startPoint{
         aCoder.encodeCGPoint(point, forKey: "startPoint")

@@ -13,7 +13,8 @@ class ArchivedEdges : NSObject, NSCoding {
     var edges: [Edge] = []
     var names = [String]()
     var index = 0
-    
+    var features: [FoldFeature] = []
+
     
     class func initFromFile() -> NSDictionary
     {
@@ -47,6 +48,7 @@ class ArchivedEdges : NSObject, NSCoding {
         self.adj = sketch.adjacency
         self.edges = sketch.edges
         self.index = sketch.index
+        self.features = sketch.features
         if(index>=fetchNames().count){
             addName(sketch.name)
         }
@@ -55,44 +57,47 @@ class ArchivedEdges : NSObject, NSCoding {
     
     required init(coder aDecoder: NSCoder) {
         
-        var nsAdj  = aDecoder.decodeObjectForKey("adjs") as! Dictionary<NSValue,[Edge]>
-        var keys = nsAdj.keys.array
+//        var nsAdj  = aDecoder.decodeObjectForKey("adjs") as! Dictionary<NSValue,[Edge]>
+//        var keys = nsAdj.keys.array
         
-        adj.removeAll(keepCapacity: false)
+//        adj.removeAll(keepCapacity: false)
         
-        for key in keys {
-            adj[key.CGPointValue()] = nsAdj[key]
+//        for key in keys {
+//            adj[key.CGPointValue()] = nsAdj[key]
+//        }
+        
+        
+//        edges = aDecoder.decodeObjectForKey("edges") as! [Edge]
+        features = aDecoder.decodeObjectForKey("features") as! [FoldFeature]
+        for feature in features{
+            println(feature.featureEdges)
         }
-        
-        
-        edges = aDecoder.decodeObjectForKey("edges") as! [Edge]
-        
-        
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         
-        var keys = adj.keys.array as [CGPoint]
-        var nsKeys = Dictionary<NSValue,[Edge]>()
-        
-        for key in keys {
-            
-            nsKeys[NSValue(CGPoint: key)] = adj[key]
-            
-        }
-        
-        var foundTwins:[Edge] = [Edge]()
-        var foundEdges:[Edge] = [Edge]()
-        
-        for edge in edges{
-            if !foundTwins.contains(edge)  && !foundEdges.contains(edge) {
-                foundTwins.append(edge.twin)
-                foundEdges.append(edge)
-            }
-            
-        }
-        aCoder.encodeObject(nsKeys, forKey: "adjs")
-        aCoder.encodeObject (foundEdges, forKey: "edges")        
+//        var keys = adj.keys.array as [CGPoint]
+//        var nsKeys = Dictionary<NSValue,[Edge]>()
+//        
+//        for key in keys {
+//            
+//            nsKeys[NSValue(CGPoint: key)] = adj[key]
+//            
+//        }
+//        
+//        var foundTwins:[Edge] = [Edge]()
+//        var foundEdges:[Edge] = [Edge]()
+//        
+//        for edge in edges{
+//            if !foundTwins.contains(edge)  && !foundEdges.contains(edge) {
+//                foundTwins.append(edge.twin)
+//                foundEdges.append(edge)
+//            }
+//            
+//        }
+//        aCoder.encodeObject(nsKeys, forKey: "adjs")
+//        aCoder.encodeObject (foundEdges, forKey: "edges")
+        aCoder.encodeObject(features, forKey: "features")
     }
     
     func addName(name:String){
@@ -129,7 +134,20 @@ class ArchivedEdges : NSObject, NSCoding {
         if let data = NSUserDefaults.standardUserDefaults().objectForKey("achivedEdges\(dex)") as? NSData {
             if let unarchived = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ArchivedEdges{
                 let sktchName = unarchived.fetchNames()[dex]
-                let sktch = Sketch(at:dex, named:sktchName)
+                let sktch = Sketch(at:dex, named:sktchName, userOriginated:false)
+                for feature in unarchived.features{
+                   
+                    println("added \(feature)")
+                    if(feature is MasterCard){
+                        sktch.masterFeature = feature as! MasterCard
+                    }
+                    sktch.addFeatureToSketch(feature, parent: feature.parent ?? feature)
+
+//                    sktch.getPlanes()
+
+                }
+//                sktch.getPlanes()
+//                sktch.features = unarchived.features
                 for edge in unarchived.edges{
                     //add all folds and non-master cuts
                     // #TODO: add unarchiving functionality here!!!

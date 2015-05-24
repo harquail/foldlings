@@ -33,7 +33,7 @@
         var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
         var index:Int
         var name:String
-        var origin:Origin
+//        var origin:Origin
         var planes:CollectionOfPlanes = CollectionOfPlanes()
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
         
@@ -52,13 +52,14 @@
             let screenSize: CGRect = UIScreen.mainScreen().bounds
             let screenWidth = screenSize.width
             let screenHeight = screenSize.height
-            origin = userOriginated ? .UserCreated : .Sample
+//            origin = userOriginated ? .UserCreated : .Sample
             let scaleFactor = CGFloat(0.9)
             super.init()
             
+            if(userOriginated){
             //insert master fold and make borders into cuts
             makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
-            
+            }
         }
         
         override var description: String {
@@ -88,7 +89,7 @@
                 twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
             }
             else{
-                twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature!.parent)
+                twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: (feature?.parent ?? masterFeature!))
             }
             edge.twin = twin
             twin.twin = edge
