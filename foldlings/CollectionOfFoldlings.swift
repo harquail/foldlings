@@ -53,16 +53,17 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             
             let index = indexPath.row
-            let cellName = names![index]
+            // show cells in reverse order
+            let cellName = names![names!.count-1 - index]
             
-            if let archivedImage = ArchivedEdges.archivedImage(index){
+            if let archivedImage = ArchivedEdges.archivedImage(names!.count-1 - index){
                 cell.image?.image = archivedImage
             }
             
             cell.label!.text = cellName
             cell.label!.sizeToFit()
             cell.addGestureRecognizer(tapRecognizer)
-            cell.index = index
+            cell.index = names!.count-1
             
             var view = cell.contentView
             
