@@ -316,7 +316,7 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
+                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                 }
                 
 //                shape.shiftEdgeEndpoints()

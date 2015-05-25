@@ -243,6 +243,7 @@ class FoldFeature: NSObject, Printable
     
     // whether a feature contains a point — needs to be overridden by subclasses
     func containsPoint(point:CGPoint) -> Bool{
+        println("contains point called")
         return self.boundingBox()?.contains(point) ?? false
     }
 

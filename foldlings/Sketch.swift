@@ -404,9 +404,11 @@
             // are the children of a previous feature
             for feature in self.features.reverse(){
                 if (feature.containsPoint(point)){
+                    println("found feature: \(feature)")
                     return feature
                 }
             }
+            println("no feature here")
             return nil
         }
         

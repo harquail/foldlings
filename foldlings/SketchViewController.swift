@@ -43,59 +43,34 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         var touchPoint = gesture.locationInView(sketchView)
         println("tapped at: \(touchPoint)")
-        
-        let fs = sketchView.sketch.features
-        
-            //set tapped feature to nil, clearing any taps
-            sketchView.sketch.tappedFeature = nil
-        
-            // #TODO: replace with featureAt
-            // evaluate newer features first
-            // but maybe what we should really do is do depth first search
-            let fsBackwards = fs.reverse()
-            
-            for f in fsBackwards{
+
+        //set tapped feature to nil, clearing any taps
+        sketchView.sketch.tappedFeature = nil
+
+        // get tapped feature
+        if let f = self.sketchView.sketch.featureAt(point: touchPoint){
+            if let options = f.tapOptions(){
                 
-                //detect tapped feature
-                if(f.boundingBox()!.contains(touchPoint)){
+                //creates the menu with options
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                for option in options{
+                    // add a menu item with handler for each option
+                    alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
+                        self.handleTapOption(f, option: option)
+                    }))
                     
-                    // if freeform shape, reject points outside bounds
-                    if let freeForm = f as? FreeForm{
-                        if(!freeForm.path!.containsPoint(touchPoint)){
-                            continue
-                        }
-                    }
-                    
-                    if let options = f.tapOptions(){
-                        
-                        //creates the menu with options
-                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-                        
-                        for option in options{
-                            // add a menu item with handler for each option
-                            alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
-                                self.handleTapOption(f, option: option)
-                            }))
-                            
-                        }
-                        
-                        // presents menu at touchPoint
-                        alertController.popoverPresentationController?.sourceView = sketchView
-                        alertController.popoverPresentationController?.delegate = self
-                        alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
-                        alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        
-                    }
-                    
-                    
-                    sketchView.statusLabel.text = "TOUCHED FEATURE: \(f)"
-                    return
                 }
                 
+                // presents menu at touchPoint
+                alertController.popoverPresentationController?.sourceView = sketchView
+                alertController.popoverPresentationController?.delegate = self
+                alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
+                alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
             }
-            
-        sketchView.statusLabel.text = ""
+        }
     }
     
     
