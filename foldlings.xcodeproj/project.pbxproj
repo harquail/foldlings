@@ -152,6 +152,7 @@
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
+		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
@@ -1052,6 +1053,7 @@
 				F145829B1A79E89000760799 /* preview_button.png in Resources */,
 				F1AAFE171B01A99E0044AB00 /* cognito-identity-2014-06-30.json in Resources */,
 				F1BB8E1F1AF56A09006800CB /* freeform-icon.png in Resources */,
+				F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				F1AAFE231B01A99E0044AB00 /* sdb-2009-04-15.json in Resources */,
 				F1AAFE191B01A99E0044AB00 /* dynamodb-2012-08-10.json in Resources */,

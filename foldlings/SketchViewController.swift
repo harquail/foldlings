@@ -148,6 +148,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             sketchView.sketch.getPlanes()
             sketchView.forceRedraw()
         }
+        self.title = sketchView.sketch.name
+
     }
     
     override func viewWillDisappear(animated: Bool) {
