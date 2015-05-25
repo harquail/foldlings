@@ -1,5 +1,5 @@
 //
-//  FreeForm.swift
+//  d.swift
 //  foldlings
 //
 //  Created by nook on 3/24/15.
@@ -667,6 +667,13 @@ class FreeForm:FoldFeature
                 }
             }
         }
+    }
+    
+    override func containsPoint(point:CGPoint) -> Bool{
+        if (self.boundingBox()?.contains(point) ?? false){
+            return path?.containsPoint(point) ?? false
+        }
+        return false
     }
     
 }
