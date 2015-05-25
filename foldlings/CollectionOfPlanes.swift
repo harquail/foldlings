@@ -51,36 +51,56 @@ class CollectionOfPlanes: Printable, Hashable {
             if isCounterClockwise(plane.path)
             {
                 let color = plane.color
-                //self.planes.append(plane)
                 //insert sorted by top edge of the plane into planes list
                 planes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                 //insert sorted by top edge of the plane into featurePlanes list
                 let feature = plane.feature
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                
+                
                 // if the plane has no folds, it is a hole
                 if folds < 1 {
                     // mark plane as hole
                     plane.kind = .Hole
+                    // TODO: Mark the parent plane here? and add it to parents children
+                    return
                 }
                     
                 else{
                     // check for flaps, but ignore master card
-                    if folds == 1 && !plane.topEdge.isMaster{
+                    if folds == 1 && !plane.topEdge.isMaster
+                    {
                         // mark plane as flap
                         plane.kind = .Flap
                         // find fold (either bottom or top)
                         // check top edge, check bottom edge, check which one is a fold
                         let bottom = plane.bottomEdge
                         if bottom.kind == .Fold{
-                            // mark as a top plane
-                            
+                            // set parent plane
+                            if (bottom.twin.plane != nil){
+                                let parent = bottom.twin.plane
+                                plane.parent = parent
+                                parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                            }
+                            //if the plane doesn't exist yet, put this in the adjacency list
                         }
+                        
                         let top = plane.topEdge
                         if top.kind == .Fold{
-                            // mark as a bottom plane
+                            // set parent plane
+                            if (top.twin.plane != nil){
+                                let parent = top.twin.plane
+                                plane.parent = parent
+                                parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                                
+                            }
+                            //if the plane doesn't exist yet, put this in the adjacency list
+                            
                         }
+                        return
                     }
                     
+                    // if not a flap, or a hole, then it is a plane
                     // mark plane as plane
                     plane.kind = .Plane
                     
@@ -100,6 +120,13 @@ class CollectionOfPlanes: Printable, Hashable {
                     }
                     
                     // for regular planes
+                    // TODO:just have to check top and bottom edges
+                    // they should be folds
+                    // check if the twin.plane exists for top edge
+                    // if it does exist add plane to twin's children
+                    // if it doesn't exist add plane to adjacency list or check feature then once feature appears in adjacency check for the plane?
+                    // check if the twin.plane exists for bottom,
+                    // maybe have a look up for edge and plane??
                     for edge in plane.edges
                     {
                         edge.dirty = false //mark it as clean
@@ -164,6 +191,126 @@ class CollectionOfPlanes: Printable, Hashable {
         }
     }
     
+    func linkPlanes(planelist: [Plane]){
+        
+        //println("planelist: \(planelist)\n")
+        for (i, plane) in enumerate(planelist){
+            if isCounterClockwise(plane.path)
+            {
+                
+                let color = plane.color
+                //insert sorted by top edge of the plane into planes list
+                planes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                //insert sorted by top edge of the plane into featurePlanes list
+//                let feature = plane.feature
+//                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                
+                let bottom = plane.bottomEdge
+                let top = plane.topEdge
+                
+
+                // println("\nplane and fold count: [\(plane)] : \(plane.foldcount)\n")
+                println(i)
+                println("\n TopEdge and fold count: [\(plane.topEdge)] : \(plane.foldcount)\n")
+                
+                
+                //TODO: Switch might be better here
+                
+                if plane.foldcount < 1{
+                    // no folds is a hole
+                    plane.kind = .Hole
+                }
+                    
+                else if plane.foldcount == 1
+                {
+                    println("flap")
+                    // one fold is a flap
+                    plane.kind = .Flap
+                    // find fold (either bottom or top)
+                    // check top edge, check bottom edge, check which one is a fold
+                    
+                    // check if master
+                    if top.isMaster
+                    {
+                        //if topEdge isn't a fold then it is masterTop
+                        if top.kind != .Fold{
+                            plane.masterTop = true
+                            //masterTop = plane
+                        }
+                            // else, it is masterBottom
+                        else{
+                            plane.masterBottom = true
+                            //masterBottom = plane
+                        }
+                        continue
+                    }
+                        
+                    else if bottom.kind == .Fold
+                    {
+                        println("bottom flap")
+                        // set parent plane
+                        let parent = bottom.twin.plane
+                        plane.parent = parent
+                        // insert into parent's children
+                        parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                    }
+                        
+                    else if top.kind == .Fold
+                    {
+                        // set parent plane
+                        let parent = top.twin.plane
+                        plane.parent = parent
+                        // insert into parent's children
+                        parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                    }
+                    else
+                    {
+                        println("detecting flap fold has failed")
+                    }
+                }
+                    
+                else
+                {
+                    // more than one fold is a flap
+                    plane.kind = .Plane
+                    println("plane")
+
+                    // check if master
+                    if top.isMaster
+                    {
+                        //if topEdge isn't a fold then it is masterTop
+                        if top.kind != .Fold{
+                            plane.masterTop = true
+                            //masterTop = plane
+                        }
+                            // else, it is masterBottom
+                        else{
+                            plane.masterBottom = true
+                            //masterBottom = plane
+                        }
+                        continue
+                    }
+                    
+                    // set the parent and the children
+//                    let top = plane.topEdge
+                    else if top.kind == .Fold
+                    {
+                        // set parent plane
+                        let parent = top.twin.plane
+                        plane.parent = parent
+                        // insert into parent's children
+                        parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                    }
+                    else
+                    {
+                        println("oh fuck, probs have to keep track of folds in planes")
+                    }
+                    
+                    
+                }
+            }
+        }
+    }
     
     
     /// remove a plane and set dirty on edges

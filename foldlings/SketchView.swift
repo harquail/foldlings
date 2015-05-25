@@ -169,7 +169,7 @@ class SketchView: UIView {
             sketch.addFeatureToSketch(shape, parent: shape.parent!)
             
             sketch.currentFeature = nil
-            self.sketch.getPlanes()
+            //self.sketch.getPlanes()
             forceRedraw()
             
             
@@ -254,7 +254,7 @@ class SketchView: UIView {
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                sketch.getPlanes()
+                //sketch.getPlanes()
                 forceRedraw()
             }
             
@@ -342,17 +342,17 @@ class SketchView: UIView {
                 }
                 
 //                // all edges
-                for e in sketch.edges
-                {
-                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                    
-                    // don't draw twin edges
-                    if(!twinsOfVisited.contains(e))
-                    {
-                        e.path.stroke()
-                        twinsOfVisited.append(e.twin)
-                    }
-                }
+//                for e in sketch.edges
+//                {
+//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+//                    
+//                    // don't draw twin edges
+//                    if(!twinsOfVisited.contains(e))
+//                    {
+//                        e.path.stroke()
+//                        twinsOfVisited.append(e.twin)
+//                    }
+//                }
             }
                 
                 // if grayscale
@@ -461,6 +461,7 @@ class SketchView: UIView {
                 edgesVisited.append($0.twin)
                 edgesVisited.append($0)
                 // if it is a fold then create dash stroke
+                // TODO: Set orientation here and change the stroke based on mountain or valley
                 if $0.kind == .Fold
                 {
                     return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
