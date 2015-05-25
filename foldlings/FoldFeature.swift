@@ -231,14 +231,19 @@ class FoldFeature: NSObject, Printable
         return featurePlanes
     }
     
+//    
+//    // makes a straight path between two points
+//    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
+//        let path = UIBezierPath()
+//        path.moveToPoint(start)
+//        path.addLineToPoint(end)
+//        
+//        return path
+//    }
     
-    // makes a straight path between two points
-    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
-        let path = UIBezierPath()
-        path.moveToPoint(start)
-        path.addLineToPoint(end)
-        
-        return path
+    // whether a feature contains a point — needs to be overridden by subclasses
+    func containsPoint(point:CGPoint) -> Bool{
+        return self.boundingBox()?.contains(point) ?? false
     }
 
 }

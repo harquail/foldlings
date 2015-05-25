@@ -48,7 +48,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
             //set tapped feature to nil, clearing any taps
             sketchView.sketch.tappedFeature = nil
-            
+        
+            // #TODO: replace with featureAt
             // evaluate newer features first
             // but maybe what we should really do is do depth first search
             let fsBackwards = fs.reverse()

@@ -92,7 +92,7 @@ class ArchivedEdges : NSObject, NSCoding {
                     println("added \(feature)")
                     //set the master feature
                     if(feature is MasterCard){
-                        sktch.masterFeature = feature as! MasterCard
+                        sktch.masterFeature = feature as? MasterCard //this will always succeed
                     }
                     // add features
                     sktch.addFeatureToSketch(feature, parent: feature.parent ?? feature)
