@@ -64,14 +64,11 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         let names = ArchivedEdges.archivedSketchNames()
     }
     
-    // refresh the cards
-    override func viewDidAppear(animated: Bool) {
-        collectionOfFoldlings.reloadData()
-    }
-        
     //hides nav bar on splash screen
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        // refresh the cards
+        collectionOfFoldlings.reloadData()
         super.viewWillAppear(animated)
     }
     
