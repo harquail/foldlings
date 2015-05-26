@@ -412,6 +412,10 @@
             return nil
         }
         
+        // features whose bounds overlap with a feature
+        func featuresIntersecting(comparisonFeature:FoldFeature) -> [FoldFeature]{
+            return features.filter({CGRectIntersectsRect($0.boundingBox()!, comparisonFeature.boundingBox()!)})
+        }
         
         /// check bounds for drawing
         func checkInBounds(point: CGPoint) -> Bool
