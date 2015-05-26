@@ -224,6 +224,10 @@ class CollectionOfPlanes: Printable, Hashable {
                     // no folds is a hole
                     plane.kind = .Hole
                     // this plane's parent is it's feature parent fyi
+                    plane.parent = top.twin.plane
+                    // insert into parent's children
+                    plane.parent.children.append(plane)
+                    
                     
                 case 1:
                     // find fold (either bottom or top)
