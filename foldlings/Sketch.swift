@@ -612,4 +612,16 @@
             }
             return returnee
         }
+        
+        // deal with intersections between features
+        func intersect(feature:FoldFeature,with:[FoldFeature]){
+            
+            // get edge intersections
+            // split all edges at intersections (add intersection points one at a time, then do all the intersections at the end
+            // remove edges internal to the main feature
+            // modify sketch as needed
+            
+            
+        }
+        
 }
