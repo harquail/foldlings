@@ -180,9 +180,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let imgNew = img.copy() as! UIImage
             
             let viewController:GameViewController = segue.destinationViewController as! GameViewController
-//            
-            viewController.setButtonBG(imgNew)
             
+            viewController.setButtonBG(imgNew)
             viewController.laserImage = view.bitmap(grayscale: true)
             viewController.svgString = view.svgImage()
             viewController.planes = sketch.planes

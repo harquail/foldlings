@@ -210,11 +210,12 @@ class CollectionOfPlanes: Printable, Hashable {
                 let top = plane.topEdge
                 
                 //insert sorted by top edge of the plane into featurePlanes list
-                plane.edges.map({$0.feature = top.feature})
+                plane.feature = top.feature
+                let feature = plane.feature
+                plane.edges.map({$0.feature = feature})
                 
-//                let feature = plane.feature
-//                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
-
+                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                
                 let foldCount = plane.foldcount
                 
                 switch(foldCount)
@@ -222,6 +223,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 case 0:
                     // no folds is a hole
                     plane.kind = .Hole
+                    // this plane's parent is it's feature parent fyi
                     
                 case 1:
                     // find fold (either bottom or top)
@@ -229,18 +231,18 @@ class CollectionOfPlanes: Printable, Hashable {
                     
                     // one fold is a flap
                     plane.kind = .Flap
-
+                    
                     // check if master
                     if top.isMaster
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{plane.masterTop = true}//masterTop = plane
                             
-                        // else, it is masterBottom
+                            // else, it is masterBottom
                         else{plane.masterBottom = true}//masterBottom = plane
                         
                     }
-                    
+                        
                     else if bottom.kind == .Fold
                     {
                         // set parent plane
@@ -272,10 +274,10 @@ class CollectionOfPlanes: Printable, Hashable {
                             
                             // else, it is masterBottom
                         else{plane.masterBottom = true}//masterBottom = plane
-
+                        
                     }
-//
-//                    // set the parent and the children
+                        
+                        // set the parent and the children
                     else if top.kind == .Fold
                     {
                         // set parent plane
