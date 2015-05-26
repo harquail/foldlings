@@ -320,6 +320,9 @@ class SketchView: UIView {
                 }
                 
 //                shape.shiftEdgeEndpoints()
+                
+                println(sketch.featuresIntersecting(shape))
+                
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
                 sketch.currentFeature = nil

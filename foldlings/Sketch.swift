@@ -414,7 +414,11 @@
         
         // features whose bounds overlap with a feature
         func featuresIntersecting(comparisonFeature:FoldFeature) -> [FoldFeature]{
-            return features.filter({CGRectIntersectsRect($0.boundingBox()!, comparisonFeature.boundingBox()!)})
+            var intersecting = features.filter({CGRectIntersectsRect($0.boundingBox()!, comparisonFeature.boundingBox()!)})
+            // ignore parent
+            // in the future, intersection with parent might be generalized, replacing splitFoldByOcclusion
+            intersecting.remove(comparisonFeature.parent!)
+            return intersecting
         }
         
         /// check bounds for drawing
@@ -526,6 +530,7 @@
         
         // replaces one fold edge with an array of fold edges
         // that span the same distance
+        // TODO: replace cuts
         func replaceFold(feature: FoldFeature, fold:Edge, folds:[Edge]){
             
             feature.horizontalFolds.remove(fold)
