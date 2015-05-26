@@ -193,26 +193,26 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // main loop for defining plane things
         // add each plane to the scene
-        for (i, plane) in enumerate(planes.planes) {
-            
-            plane.clearNode()
-            
-            var parent = sceneSphere
-            // if plane is a hole, its parent should be the plane that contains it
-            // TODO: use parent feature and plane for holes
-            if(plane.kind == Plane.Kind.Hole) {
-                //TODO: should depend on parent feature 
-                let parentPlane = plane.containerPlane(planes.planes)
-                
-                if parentPlane != nil{
-                    let n = plane.lazyNode()
-                    n.transform = SCNMatrix4Identity
-                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
-                    parent = parentPlane!.lazyNode()
-                    parent.addChildNode(n)
-                }
-            }
-        }
+//        for (i, plane) in enumerate(planes.planes) {
+////            
+//            plane.clearNode()
+//            
+//            var parent = sceneSphere
+//            // if plane is a hole, its parent should be the plane that contains it
+//            // TODO: use parent feature and plane for holes
+//            if(plane.kind == Plane.Kind.Hole) {
+//                //TODO: should depend on parent feature 
+//                let parentPlane = plane.containerPlane(planes.planes)
+//                
+//                if parentPlane != nil{
+//                    let n = plane.lazyNode()
+//                    n.transform = SCNMatrix4Identity
+//                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
+//                    parent = parentPlane!.lazyNode()
+//                    parent.addChildNode(n)
+//                }
+//            }
+       // }
         
         
         visited = []
