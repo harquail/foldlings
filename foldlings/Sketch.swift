@@ -229,7 +229,7 @@
             println("\ngetPlanes\n")
             println("\nedges: \(self.edges)")
             self.visited = []
-            
+            planelist = []
             for (i, start) in enumerate(self.edges)//traverse edges
             {
                 //keep a fold count by plane to catch flaps and holes
@@ -281,9 +281,6 @@
                         if !closest.crossed || CGPointEqualToPoint(start.start, start.end)
                         {   var plane = Plane(edges: p)
                             
-                            //set plane's feature make sure this is by top edge
-                            plane.feature = topEdge.feature
-                            
                             //set plane's top and bottom edge
                             plane.topEdge = topEdge
                             plane.bottomEdge = bottomEdge
@@ -291,6 +288,7 @@
                             //set foldcount
                             plane.foldcount = foldcount
                             
+                            plane.edges.map({$0.plane = plane})
                             // add planes to planelist
                             planelist.append(plane)
                             
