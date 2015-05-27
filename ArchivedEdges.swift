@@ -40,9 +40,9 @@ class ArchivedEdges : NSObject, NSCoding {
     
     required init(coder aDecoder: NSCoder) {
         features = aDecoder.decodeObjectForKey("features") as! [FoldFeature]
-        for feature in features{
-            println(feature.featureEdges)
-        }
+//        for feature in features{
+//            println(feature.featureEdges)
+//        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
