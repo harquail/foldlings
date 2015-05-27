@@ -203,10 +203,9 @@ class FreeForm:FoldFeature
             default: println("unexpected")
             }
         }
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
-        ///CRASH AFTER
 
-       // #TODO: brung back
+        //TODO: path.center() is NOT the centroid — it's the center of the bounding box
+        // but maybe that's good enough
 //        //reject paths whose center point is outside the truncated shape
 //        for p in returnee{
 //            //get top and bottom folds
@@ -319,8 +318,13 @@ class FreeForm:FoldFeature
         
         //create edges from split paths
         for p in paths{
-//            println("PATH: \n \(p)")
-            edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
+            
+            // check greater less than greater than top truncations heights
+            // findCentroid(p)
+            if(true){
+            let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
+                edges.append(e)
+            }
         }
         
 //        println("\nEDGES!!!!!!\n \(edges)")

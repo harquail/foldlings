@@ -330,8 +330,8 @@ class SketchView: UIView {
                 sketch.currentFeature = nil
                 self.sketch.getPlanes()
                 forceRedraw()
-                
-//                println(sketch.almostCoincidentEdgePoints())
+                println("\\ ALMOST COINCIDENT: \\")
+                println(sketch.almostCoincidentEdgePoints())
                 
             default:
                 break
