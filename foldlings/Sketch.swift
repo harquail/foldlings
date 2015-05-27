@@ -545,6 +545,21 @@
             folds.map({self.addEdge($0)})
         }
         
+        func replaceCut(feature: FoldFeature, cut:Edge, cuts:[Edge]){
+            
+//            feature.horizontalFolds.remove(fold)
+            feature.featureEdges?.remove(cut)
+            removeEdge(cut)
+            
+//            for fold in folds{
+//                feature.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+//            }
+            
+            feature.featureEdges?.extend(cuts)
+            cuts.map({self.addEdge($0)})
+        }
+
+        
         // add any feature edges that aren't
         // already in the sketch 
         // create edges, if there are none
@@ -644,15 +659,39 @@
                 else if (w is BoxFold){
                     
                 }
-                else if (w is FreeForm){
+                else if let w = w as? FreeForm{
                     if let es = w.featureEdges, let outsidePath = feature.path{
                     for e in es {
                         let ints = PathIntersections.intersectionsBetween(e.path, path2: outsidePath)
                         if(ints != nil){
-                            var paths = feature.pathSplitByPoints((w as! FreeForm).path!,breakers: ints!)
-                            println("\(paths.count)")
+                            var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
+                            var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
+                            
+                            var cuts:[Edge] = []
+                            //create edges from split paths
+                            for p in occludedPaths{
+                                //            println("PATH: \n \(p)")
+                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
+                            }
+                            cuts = cuts.filter({!(feature.containsPoint($0.path.center()))})
+                            replaceCut(w, cut: e, cuts:cuts)
+                            
+                            cuts = []
+                            //create edges from split paths
+                            for p in occluderPaths{
+                                //            println("PATH: \n \(p)")
+                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
+                            }
+                            replaceCut(feature, cut: e, cuts:cuts)
+                            
+                            //TODO:fix
+                            removeFeatureFromSketch(w, healOnDelete: false)
+                            addFeatureToSketch(w, parent: w.parent ?? masterFeature!)
+                            println("\(occluderPaths.count)")
+                            println("\(occludedPaths.count)")
 
-                            println("\((w as! FreeForm).path!.firstPoint())")
+
+//                            println("\((w as! FreeForm).path!.firstPoint())")
                             println("\(w) intersections: \(ints)")
                         }
                     }
