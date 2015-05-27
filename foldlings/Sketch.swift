@@ -614,10 +614,48 @@
         }
         
         // deal with intersections between features
-        func intersect(feature:FoldFeature,with:[FoldFeature]){
+        func intersect(feature:FreeForm,with:[FoldFeature]){
+            
+            
+//            var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+//            
+//            println("PATH \(path)")
+//            println("INTERSECTIONS \(intersections)")
+//            
+//            var edges:[Edge] = []
+//            
+//            //create edges from split paths
+//            for p in paths{
+//                println("PATH: \n \(p)")
+//                edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
+//            }
+//            
+//            println("\nEDGES!!!!!!\n \(edges)")
+//            return edges
+
+            
+//            
+            for w in with{
+                
+                let intersectedFeature:FreeForm
+                if (w is MasterCard){
+                    
+                }
+                else if (w is BoxFold){
+                    
+                }
+                else if (w is FreeForm){
+                    
+                    for edge in feature.featureEdges!{
+                        let intersections = PathIntersections.intersectionsBetween(edge.path, path2: feature.path!)
+                        var paths = feature.pathSplitByPoints((w as! FreeForm).path!,breakers: intersections!)
+                    }
+                }
+            }
             
             // get edge intersections
             // split all edges at intersections (add intersection points one at a time, then do all the intersections at the end
+            // only need to convert box folds if their cuts are occluded
             // remove edges internal to the main feature
             // modify sketch as needed
             
