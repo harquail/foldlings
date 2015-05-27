@@ -645,10 +645,12 @@
                     
                 }
                 else if (w is FreeForm){
-                    
-                    for edge in feature.featureEdges!{
-                        let intersections = PathIntersections.intersectionsBetween(edge.path, path2: feature.path!)
-                        var paths = feature.pathSplitByPoints((w as! FreeForm).path!,breakers: intersections!)
+                    if let es = w.featureEdges, let outsidePath = feature.path{
+                    for e in es {
+                        let ints = PathIntersections.intersectionsBetween(e.path, path2: outsidePath)
+                        var paths = feature.pathSplitByPoints((w as! FreeForm).path!,breakers: ints!)
+                        println("intersections: \(ints)")
+                    }
                     }
                 }
             }
