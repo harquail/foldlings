@@ -323,10 +323,10 @@ class SketchView: UIView {
                 
                 let intersectingFs = sketch.featuresIntersecting(shape)
                 
-                sketch.intersect(shape, with: intersectingFs)
-                
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
+                sketch.intersect(shape, with: intersectingFs)
+
                 sketch.currentFeature = nil
                 self.sketch.getPlanes()
                 forceRedraw()

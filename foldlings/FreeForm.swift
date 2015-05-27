@@ -205,18 +205,19 @@ class FreeForm:FoldFeature
         }
 //        println("printed at: \(__FUNCTION__): \(__LINE__)")
         ///CRASH AFTER
-        
-        //reject paths whose center point is outside the truncated shape
-        for p in returnee{
-            //get top and bottom folds
-            let maxFold = horizontalFolds.last
-            let minFold = horizontalFolds.first
 
-            //discard paths whose centroid is above or below top & bottom folds
-            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
-                returnee.remove(p)
-            }
-        }
+       // #TODO: brung back
+//        //reject paths whose center point is outside the truncated shape
+//        for p in returnee{
+//            //get top and bottom folds
+//            let maxFold = horizontalFolds.last
+//            let minFold = horizontalFolds.first
+//
+//            //discard paths whose centroid is above or below top & bottom folds
+//            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
+//                returnee.remove(p)
+//            }
+//        }
         return returnee
     }
     

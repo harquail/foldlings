@@ -12,7 +12,7 @@ class SplashViewController: UIViewController, UIAlertViewDelegate {
         let alert = UIAlertView(title: "Sketch Name", message: "", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
         alert.tag = 1
-        alert.show()
+        alert.show() 
     }
     
     // hide status bar
