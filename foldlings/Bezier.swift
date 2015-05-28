@@ -35,35 +35,24 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 
 func pointNearCenterOf(path:UIBezierPath) -> CGPoint{
     
-//    var ps:[CGPoint] = [CGPointZero]
-//    var ps:UnsafePointer<CGPoint>
-//    var ps:CGPoint[](ps[0])
- //   var points: NSPointArray
-//    var ps: Array<CGPoint>
-    // allocate enough room for 4 point
+    // allocate enough room for 4 points per element
     var ps:UnsafeMutablePointer<CGPoint> = UnsafeMutablePointer<CGPoint>.alloc(4)
+    var psPrev:UnsafeMutablePointer<CGPoint> = UnsafeMutablePointer<CGPoint>.alloc(4)
     let centerElement = path.elementAtIndex(path.elementCount()/2, associatedPoints: ps)
-//    let centerElement = path.elementAtIndex(path.elementCount()/2)
-    
-    switch centerElement.type.value{
-    
-    case kCGPathElementMoveToPoint.value:
-            return centerElement.points[0]
-    case kCGPathElementAddCurveToPoint.value:
-            break
-    case kCGPathElementAddQuadCurveToPoint.value:
-            println("quad curve lol")
-            break
-    case kCGPathElementAddLineToPoint.value:
-        //TODO: wrong
-        return CGPointMake(centerElement.points[0].x, centerElement.points[1].y)
-            break
-    default:
-            break
-    }
-    
+    let prevElement = path.elementAtIndex((path.elementCount()/2) - 1, associatedPoints: psPrev)
+
+    let a = psPrev[0]
+    let b = ps[0]
+    let c = ps[1]
+    let d = ps[2]
+    //get the point at t = halfway
+    let centerPoint = bezierInterpolation(CGFloat(0.5), a, b, c, d)
+
+    // free stuff, cause we used an unsafe pointer
     ps.dealloc(4)
-    return CGPointZero
+    psPrev.dealloc(4)
+
+    return centerPoint
     
 }
 

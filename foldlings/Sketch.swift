@@ -672,7 +672,7 @@
                                     //            println("PATH: \n \(p)")
                                     cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
                                 }
-                                cuts = cuts.filter({!(feature.containsPoint($0.path.center()))})
+                                cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
                                 replaceCut(w, cut: e, cuts:cuts)
                                 
                                 cuts = []
@@ -684,6 +684,9 @@
                                 replaceCut(feature, cut: e, cuts:cuts)
                                 
                                 //TODO:fix
+                        
+
+                                
                                 
                                 println("\(occluderPaths.count)")
                                 println("\(occludedPaths.count)")
