@@ -226,8 +226,8 @@
         func getPlanes()
         {
             // dispatch_sync(edgeAdjacencylockQueue) {
-            println("\ngetPlanes\n")
-            println("\nedges: \(self.edges)")
+            //println("\ngetPlanes\n")
+            //println("\nedges: \(self.edges)")
             self.visited = []
             planelist = []
             for (i, start) in enumerate(self.edges)//traverse edges

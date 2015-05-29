@@ -11,7 +11,7 @@ import Foundation
 import MessageUI
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
-
+    
     /*************image variables***********/
     var bgImage:UIImage!
     var laserImage:UIImage!
@@ -36,7 +36,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
-    var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
+    //var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
     var debugColor = true
@@ -165,21 +165,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         
         // create and add a light to the scene
-//        let lightNode = SCNNode()
-//        lightNode.light = SCNLight()
-//        println(lightNode)
-//        lightNode.light!.type = SCNLightTypeOmni
-//        lightNode.light!.color = UIColor.whiteColor()
-//        lightNode.light!.attenuationStartDistance = 100
-//        lightNode.light!.attenuationEndDistance = 1000
-//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        scene.rootNode.addChildNode(lightNode)
-//        // create and add an ambient light to the scene
-//        let ambientLightNode = SCNNode()
-//        ambientLightNode.light = SCNLight()
-//        ambientLightNode.light!.type = SCNLightTypeAmbient
-//        ambientLightNode.light!.color = UIColor.whiteColor()
-//        scene.rootNode.addChildNode(ambientLightNode)
+        //        let lightNode = SCNNode()
+        //        lightNode.light = SCNLight()
+        //        println(lightNode)
+        //        lightNode.light!.type = SCNLightTypeOmni
+        //        lightNode.light!.color = UIColor.whiteColor()
+        //        lightNode.light!.attenuationStartDistance = 100
+        //        lightNode.light!.attenuationEndDistance = 1000
+        //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        //        scene.rootNode.addChildNode(lightNode)
+        //        // create and add an ambient light to the scene
+        //        let ambientLightNode = SCNNode()
+        //        ambientLightNode.light = SCNLight()
+        //        ambientLightNode.light!.type = SCNLightTypeAmbient
+        //        ambientLightNode.light!.color = UIColor.whiteColor()
+        //        scene.rootNode.addChildNode(ambientLightNode)
         
         scene.physicsWorld.gravity.y = 0.0
         
@@ -193,38 +193,38 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // main loop for defining plane things
         // add each plane to the scene
-//        for (i, plane) in enumerate(planes.planes) {
-////            
-//            plane.clearNode()
-//            
-//            var parent = sceneSphere
-//            // if plane is a hole, its parent should be the plane that contains it
-//            // TODO: use parent feature and plane for holes
-//            if(plane.kind == Plane.Kind.Hole) {
-//                //TODO: should depend on parent feature 
-//                let parentPlane = plane.containerPlane(planes.planes)
-//                
-//                if parentPlane != nil{
-//                    let n = plane.lazyNode()
-//                    n.transform = SCNMatrix4Identity
-//                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
-//                    parent = parentPlane!.lazyNode()
-//                    parent.addChildNode(n)
-//                }
-//            }
-       // }
+        //        for (i, plane) in enumerate(planes.planes) {
+        ////
+        //            plane.clearNode()
+        //
+        //            var parent = sceneSphere
+        //            // if plane is a hole, its parent should be the plane that contains it
+        //            // TODO: use parent feature and plane for holes
+        //            if(plane.kind == Plane.Kind.Hole) {
+        //                //TODO: should depend on parent feature
+        //                let parentPlane = plane.containerPlane(planes.planes)
+        //
+        //                if parentPlane != nil{
+        //                    let n = plane.lazyNode()
+        //                    n.transform = SCNMatrix4Identity
+        //                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
+        //                    parent = parentPlane!.lazyNode()
+        //                    parent.addChildNode(n)
+        //                }
+        //            }
+        // }
         
         
         visited = []
-        notMyChild = [Int: [Plane]]()
-        println(planes.masterTop)
-        if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
+        //notMyChild = [Int: [Plane]]()
+        //printTree(planes.masterTop)
+        if var topPlaneSphere = makePlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
         }
         
         
         // make bottomPlane manually
-        // get bottomPlane from planes list 
+        // get bottomPlane from planes list
         if var bottomPlane = planes.masterBottom {
             let bottomPlaneNode = bottomPlane.lazyNode()
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
@@ -265,20 +265,103 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
     }
     
+    func printTree(plane: Plane){
+        println("parent: \(plane.topEdge)")
+        println("children")
+        plane.children.map({println($0.topEdge)})
+        for p in plane.children{
+            printTree(p)
+        }
+    }
+
+    
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
     //TODO: Use feature's parenting schema and planes to create the tree faster
-    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
+    //    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
+    //    {
+    //        if notMyChild[recurseCount] == nil {
+    //            notMyChild[recurseCount] = [Plane]()
+    //        }
+    //        //TODO: change this to mastercard feature
+    //        let bottom = planes.masterBottom
+    //
+    //        // base case if bottom
+    //        if plane == bottom {
+    //            //            println("bottomed out")
+    //            return nil
+    //        }
+    //        // base case already visited or going back up
+    //        if contains(visited, plane) {
+    //            //            println("already been here")
+    //            return nil
+    //        }
+    //        // base case going back up
+    //        if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
+    //            //            println("belongs to prev")
+    //            return nil
+    //        }
+    //
+    //
+    //        // functionality here
+    //        var node = plane.lazyNode()
+    //
+    //        if(plane.kind != .Hole){
+    //            node.addAnimation(fadeIn(), forKey: "fade in")
+    //        }
+    //
+    //        var useBottom = (recurseCount == 0)
+    //        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
+    //        plane.masterSphere = masterSphere
+    //        masterSphere.addChildNode(node)
+    //        undoParentTranslate(masterSphere, child: node)
+    //
+    //        let m = SCNMaterial()
+    //        if debugColor {
+    //            m.diffuse.contents = debugColors[recurseCount]
+    //        } else {
+    //            m.diffuse.contents = plane.color
+    //        }
+    //        node.geometry?.firstMaterial = m
+    //        masterSphere.geometry?.firstMaterial = m
+    //
+    //
+    ////        //make sphere invisible
+    ////        let transparentMaterial = SCNMaterial()
+    ////        transparentMaterial.diffuse.contents = UIColor.clearColor()
+    ////        masterSphere.geometry?.firstMaterial = transparentMaterial
+    //
+    //        // different based on orientation
+    //        if hill {
+    //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+    //        } else {
+    //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+    //        }
+    //
+    //
+    //        var adj = planes.adjacency[plane]!
+    //        visited.append(plane)
+    //        notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+    //        // loop through the adj starting with top plane
+    //        for p in adj
+    //        {
+    //            let rc = recurseCount + 1
+    //            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
+    //                // child hasn't reached bottom so do something to it
+    //                masterSphere.addChildNode(childSphere)
+    //                undoParentTranslate(masterSphere, child: childSphere)
+    //            }
+    //        }
+    //        //        println("recurse level: \(recurseCount)")
+    //        return masterSphere
+    //   }
+    
+    func makePlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
     {
-        if notMyChild[recurseCount] == nil {
-            notMyChild[recurseCount] = [Plane]()
-        }
-        //TODO: change this to mastercard feature
-        let bottom = planes.masterBottom
         
         // base case if bottom
-        if plane == bottom {
+        if plane.masterBottom {
             //            println("bottomed out")
             return nil
         }
@@ -287,13 +370,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             //            println("already been here")
             return nil
         }
-        // base case going back up
-        if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
-            //            println("belongs to prev")
-            return nil
-        }
         
-        
+        println("\(recurseCount) : \(plane.topEdge)")
         // functionality here
         var node = plane.lazyNode()
         
@@ -315,12 +393,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         node.geometry?.firstMaterial = m
         masterSphere.geometry?.firstMaterial = m
-
         
-//        //make sphere invisible
-//        let transparentMaterial = SCNMaterial()
-//        transparentMaterial.diffuse.contents = UIColor.clearColor()
-//        masterSphere.geometry?.firstMaterial = transparentMaterial
+        
+        //        //make sphere invisible
+        //        let transparentMaterial = SCNMaterial()
+        //        transparentMaterial.diffuse.contents = UIColor.clearColor()
+        //        masterSphere.geometry?.firstMaterial = transparentMaterial
         
         // different based on orientation
         if hill {
@@ -330,14 +408,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         
-        var adj = planes.adjacency[plane]!
+        var children = plane.children
         visited.append(plane)
-        notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+        //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
         // loop through the adj starting with top plane
-        for p in adj
+        for p in children
         {
             let rc = recurseCount + 1
-            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
+            if let childSphere = makePlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
                 undoParentTranslate(masterSphere, child: childSphere)
@@ -345,8 +423,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         //        println("recurse level: \(recurseCount)")
         return masterSphere
+        
+        
     }
-
     
     ///returns a list from dict including all previous levels up to but including the one
     func flattenUntil(adj: [Int:[Plane]], level:Int) -> [Plane] {
@@ -359,6 +438,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         return list
     }
+    
     
     //
     func showNodePivot(node:SCNNode) {
@@ -383,7 +463,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         var edge:Edge
         
-        ////TODO: check to make sure that edges are both folds 
+        ////TODO: check to make sure that edges are both folds
         if(bottom){
             edge = plane.bottomEdge
         }
@@ -420,9 +500,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     
-
     
-/***********************animation*************************/
+    
+    /***********************animation*************************/
     
     /// back and forth rotation animation
     /// this is magical
@@ -458,7 +538,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         fadeIn.toValue = 1.0;
         return fadeIn
     }
-
+    
     
     
     

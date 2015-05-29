@@ -194,9 +194,11 @@ class CollectionOfPlanes: Printable, Hashable {
 //        }
 //    }
     
+    //This builds a graph of planes from a list of planes
+    // based on the topfold
     func linkPlanes(planelist: [Plane])
     {
-        println("planelist count: \(planelist.count)")
+       // println("planelist count: \(planelist.count)")
         
         for (i, plane) in enumerate(planelist)
         {
@@ -252,7 +254,6 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.masterBottom = true
                             masterBottom = plane
                         }
-                        
                     }
                         
                     else if bottom.kind == .Fold
@@ -262,6 +263,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         plane.parent = parent
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                        
                     }
                         
                     else if top.kind == .Fold
@@ -276,7 +278,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     
                 default:
                     
-                    // more than one fold is a flap
+                    // more than one fold is a plane
                     plane.kind = .Plane
                     // check if master
                     if top.isMaster
@@ -288,6 +290,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         }
                             
                             // else, it is masterBottom
+                            // just set this parent specifically
                         else
                         {
                             plane.masterBottom = true
@@ -296,11 +299,15 @@ class CollectionOfPlanes: Printable, Hashable {
                     }
                         
                         // set the parent and the children
+                        // make sure that this doesn't include MasterBottom
                     else if top.kind == .Fold
                     {
                         // set parent plane
                         let parent = top.twin.plane
+                        
                         plane.parent = parent
+//                        println("plane: \(plane.topEdge)")
+//                        println("parent: \(parent!.topEdge)")
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                     }
@@ -320,8 +327,8 @@ class CollectionOfPlanes: Printable, Hashable {
             edge.plane = nil
         }
         
-        println("masterTop: \(masterTop)")
-        println("masterbottom: \(masterBottom)")
+//        println("masterTop: \(masterTop)")
+//        println("masterbottom: \(masterBottom)")
         
         if plane.masterTop { self.masterTop = nil }
         if plane.masterBottom { self.masterBottom = nil }
@@ -340,7 +347,9 @@ class CollectionOfPlanes: Printable, Hashable {
 //        }
 //        
 //        self.adjacency[plane] = nil
-        plane.parent.children.remove(plane)
+        if plane.parent != nil {
+            plane.parent.children.remove(plane)
+        }
         self.planes.remove(plane)
         
         // }
