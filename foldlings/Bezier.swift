@@ -33,6 +33,7 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 
 }
 
+/// returns a point near the center of a bezier path
 func pointNearCenterOf(path:UIBezierPath) -> CGPoint{
     
     // allocate enough room for 4 points per element
@@ -98,7 +99,7 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
         }
         switch path.count-i {
         case 4:
-            npath.addCurveToPoint(path[i+3], controlPoint1: path[i+1], controlPoint2: path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+            npath.addCurveToPoint(path[i+3], controlPoint1: path[i+1], controlPoint2:   path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
             break
         case 3:
             npath.addCurveToPoint(path[path.count-1], controlPoint1: path[path.count-2], controlPoint2: path[path.count-3])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
