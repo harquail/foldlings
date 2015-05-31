@@ -38,15 +38,18 @@ class FoldFeature: NSObject, Printable
     var startPoint:CGPoint?
     var endPoint:CGPoint?
     
+    var activeOption:FeatureOption?  // the operation being performed on this feature (eg. .MoveFold)
+    var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
+
     required init(coder aDecoder: NSCoder) {
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
         self.endPoint = aDecoder.decodeCGPointForKey("endPoint")
         self.children = (aDecoder.decodeObjectForKey("children") as? [FoldFeature])!
         self.parent = aDecoder.decodeObjectForKey("parent") as? FoldFeature
-        self.drivingFold = aDecoder.decodeObjectForKey("children") as? Edge
-        self.horizontalFolds = aDecoder.decodeObjectForKey("children") as! [Edge]
-        self.featureEdges = aDecoder.decodeObjectForKey("children") as? [Edge]
+        self.drivingFold = aDecoder.decodeObjectForKey("drivingFold") as? Edge
+        self.horizontalFolds = aDecoder.decodeObjectForKey("horizontalFolds") as! [Edge]
+        self.featureEdges = aDecoder.decodeObjectForKey("cachedEdges") as? [Edge]
         self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
     
@@ -61,6 +64,7 @@ class FoldFeature: NSObject, Printable
         //horizontalFolds
         //cachedEdges
         //validity
+        println("encoded \(featureEdges)")
         
         if let point = startPoint{
         aCoder.encodeCGPoint(point, forKey: "startPoint")
@@ -82,8 +86,8 @@ class FoldFeature: NSObject, Printable
     
     /// printable description is the object class & startPoint
     override var description: String
-        {
-            return "\(reflect(self).summary) \(startPoint!)"
+    {
+        return "\(reflect(self).summary) \(startPoint!)"
     }
     
     init(start:CGPoint)
@@ -106,10 +110,9 @@ class FoldFeature: NSObject, Printable
     
     //we might need separate functions for invalidating cuts & folds?
     //might also need a set of user-defined edges that we don't fuck with
-    // this removes cached edges, sets them all to nil
-    func invalidateEdges()
-    {
+    func invalidateEdges(){
         featureEdges = nil
+        horizontalFolds = []
     }
     
     /// used for quickly testing whether features might overlap
@@ -169,11 +172,48 @@ class FoldFeature: NSObject, Printable
     /// modifications that can be made to the current feature
     func tapOptions() -> [FeatureOption]?
     {
-        return nil
+        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges]
+    }
+    
+    /// the unique fold heights in the feature (ignores duplicates)
+    func uniqueFoldHeights() -> [CGFloat]{
+        var uniquefolds = horizontalFolds.uniqueBy({$0.start.y})
+        uniquefolds.sort({$0.start.y < $1.start.y})
+        return uniquefolds.map({$0.start.y})
     }
     
     
-    
+    /// the unique fold heights in the feature (ignores duplicates), modified by delta y
+    func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
+        
+//        println("original heights: \(originalHeights)")
+        let draggedHeight = draggedEdge.start.y
+//        println("dragged height: \(draggedHeight)")
+        var newHeights:[CGFloat] = []
+        
+        let draggedIndex = originalHeights.indexOf(draggedHeight)!
+        
+        switch (draggedIndex) {
+        case 0:
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1],originalHeights[2]-deltaY!]
+        case 1:
+            //TODO: this is wrong
+            newHeights = [originalHeights[0]+deltaY!,originalHeights[1]+deltaY!,originalHeights[2]+deltaY!]
+        case 2:
+            newHeights = [originalHeights[0]-deltaY!,originalHeights[1],originalHeights[2]+deltaY!]
+        default:
+            newHeights = originalHeights
+        }
+
+        if(newHeights.first > masterFold.start.y || newHeights.last < masterFold.start.y){
+         // TODO: original heights is the wrong thing to return here
+            return originalHeights
+        }
+        else{
+            return newHeights
+        }
+    }
+
     func featureSpansFold(fold:Edge)->Bool
     {
         var fMin = min(fold.start.x, fold.end.x)

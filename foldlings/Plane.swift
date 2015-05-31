@@ -17,11 +17,11 @@ func == (lhs: Plane, rhs: Plane) -> Bool
 class Plane: Printable, Hashable
 {
     var description: String {
-        return "\n".join(edges.map({ "\($0)" }))
+        return "\(self.kind.rawValue), \(self.orientation.rawValue)" + join("|",edges.map({$0.description}))
     }
     
     var hashValue: Int { get {
-        return description.hashValue
+        return join("|",edges.map({$0.description})).hashValue
         }
     }
     
@@ -39,7 +39,7 @@ class Plane: Printable, Hashable
     
     var kind = Kind.Hole
     var orientation = Orientation.Horizontal
-    var color = getRandomColor(1.0)
+    var color = getRandomColor(0.5)
 //    var color : UIColor { get{
 //        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
 //        }
@@ -152,6 +152,7 @@ class Plane: Printable, Hashable
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
+    /// #TODO: this should also check for and fix intersecting paths
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
 
         let elements = path.getPathElements()

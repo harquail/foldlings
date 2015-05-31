@@ -13,7 +13,7 @@ func == (lhs: CollectionOfPlanes, rhs: CollectionOfPlanes) -> Bool {
 }
 
 /// set this to false to turn off plane edge coloring
-var kOverrideColor = false
+var kOverrideColor = true
 
 class CollectionOfPlanes: Printable, Hashable {
     var description: String {
@@ -46,7 +46,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 let color = plane.color
                 //if !contains(self.planes, plane) {
                 self.planes.append(plane)
-                plane.feature.featurePlanes.append(plane)
+//                plane.feature.featurePlanes.append(plane)
                  //}
                 
                 

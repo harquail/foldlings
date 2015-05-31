@@ -24,11 +24,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
-    let fourtyFiveDegrees = Float(0.25*M_PI)
     let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
-    let thirtyDegrees = Float(M_PI/6.0)
-    let thirtyDegreesNeg = Float(-M_PI/6.0)
-    let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
     var theOneSphere = SCNNode()
@@ -65,12 +61,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     @IBAction func printButton (sender: UIButton){
-        Flurry.logEvent("shared print-out image")
         popupShare(bgImage, xposition:273)
     }
     
     @IBAction func laserButton (sender: UIButton){
-        Flurry.logEvent("shared laser image")
         popupSVGShare(svgString, xposition:100)
     }
     
@@ -78,6 +72,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
+        Flurry.logEvent("printed foldling svg")
+
         //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
@@ -98,6 +94,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     // creates mailView controller to send svg to user as attechment
     func sendMail(svgData: NSData) {
+        Flurry.logEvent("mailed foldling svg")
         var mailView = MFMailComposeViewController()
         mailView.mailComposeDelegate = self
         mailView.setSubject("Here is your Pop-up Card")
@@ -112,6 +109,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     override func viewDidLoad() {
         super.viewDidLoad()
         makeScene()
+    }
+    
+    // log svgs to s3
+    //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        let uploader = SecretlyUploadtoS3()
+        uploader.uploadToS3(svgString,named:"file")
     }
     
     func makeScene(){
@@ -435,7 +440,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         if (segue.identifier == "backtoSketchSegue") {
             
             let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
-//            viewController.sketchView.setButtonBG(previewImage())
             
         }
     }

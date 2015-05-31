@@ -25,3 +25,10 @@ func getAngle(edgeA: Edge, edgeB: Edge) -> CGFloat{
     return angle
     
 }
+
+
+// rounds a cgpoint
+ func round(point:CGPoint) -> CGPoint{
+//    return point
+    return CGPointMake(round(point.x), round(point.y))
+}

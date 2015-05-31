@@ -103,8 +103,9 @@ class BoxFold:FoldFeature{
     // for box folds, this always creates two folds
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
-        let start = edge.start
-        let end = edge.end
+        
+        let start = [edge.start,edge.end].minBy({$0.x})!
+        let end = [edge.start,edge.end].maxBy({$0.x})!
         var returnee = [Edge]()
         
         //make two pieces between the end points of the split fold and the place the intersect with box fold
@@ -129,7 +130,7 @@ class BoxFold:FoldFeature{
 /// boxFolds can be deleted
 /// folds can be added only to leaves
 override func tapOptions() -> [FeatureOption]?{
-    var options:[FeatureOption] = []
+    var options:[FeatureOption] = super.tapOptions() ?? []
     options.append(.DeleteFeature)
     if(self.isLeaf()){
         options.append(.MoveFolds);
@@ -138,4 +139,18 @@ override func tapOptions() -> [FeatureOption]?{
     return options
     
 
-}}
+}
+    
+//converts a boxfold into a freeform shape
+func toFreeForm() -> FreeForm{
+    var shape = FreeForm(start: self.startPoint!)
+    
+    shape.path = UIBezierPath(rect: self.boundingBox()!)
+    shape.children = self.children
+    shape.parent = self.parent
+
+    
+    return shape
+}
+
+}

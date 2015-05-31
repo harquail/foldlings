@@ -93,6 +93,36 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
+		F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF11B01A9500044AB00 /* AWSCore.framework */; };
+		F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF21B01A9500044AB00 /* AWSS3.framework */; };
+		F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF51B01A9730044AB00 /* Bolts.framework */; };
+		F1AAFDFE1B01A9730044AB00 /* FMDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF61B01A9730044AB00 /* FMDB.framework */; };
+		F1AAFDFF1B01A9730044AB00 /* GZIP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF71B01A9730044AB00 /* GZIP.framework */; };
+		F1AAFE001B01A9730044AB00 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF81B01A9730044AB00 /* Mantle.framework */; };
+		F1AAFE011B01A9730044AB00 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF91B01A9730044AB00 /* Reachability.framework */; };
+		F1AAFE021B01A9730044AB00 /* TMCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDFA1B01A9730044AB00 /* TMCache.framework */; };
+		F1AAFE031B01A9730044AB00 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDFB1B01A9730044AB00 /* UICKeyChainStore.framework */; };
+		F1AAFE041B01A9730044AB00 /* XMLDictionary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDFC1B01A9730044AB00 /* XMLDictionary.framework */; };
+		F1AAFE161B01A99E0044AB00 /* autoscaling-2011-01-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE051B01A99E0044AB00 /* autoscaling-2011-01-01.json */; };
+		F1AAFE171B01A99E0044AB00 /* cognito-identity-2014-06-30.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE061B01A99E0044AB00 /* cognito-identity-2014-06-30.json */; };
+		F1AAFE181B01A99E0044AB00 /* cognito-sync-2014-06-30.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE071B01A99E0044AB00 /* cognito-sync-2014-06-30.json */; };
+		F1AAFE191B01A99E0044AB00 /* dynamodb-2012-08-10.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE081B01A99E0044AB00 /* dynamodb-2012-08-10.json */; };
+		F1AAFE1A1B01A99E0044AB00 /* ec2-2014-09-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE091B01A99E0044AB00 /* ec2-2014-09-01.json */; };
+		F1AAFE1B1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0A1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json */; };
+		F1AAFE1C1B01A99E0044AB00 /* email-2010-12-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0B1B01A99E0044AB00 /* email-2010-12-01.json */; };
+		F1AAFE1D1B01A99E0044AB00 /* kinesis-2013-12-02.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0C1B01A99E0044AB00 /* kinesis-2013-12-02.json */; };
+		F1AAFE1E1B01A99E0044AB00 /* lambda-2015-03-31.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0D1B01A99E0044AB00 /* lambda-2015-03-31.json */; };
+		F1AAFE1F1B01A99E0044AB00 /* machinelearning-2014-12-12.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0E1B01A99E0044AB00 /* machinelearning-2014-12-12.json */; };
+		F1AAFE201B01A99E0044AB00 /* mobileanalytics-2014-06-30.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE0F1B01A99E0044AB00 /* mobileanalytics-2014-06-30.json */; };
+		F1AAFE211B01A99E0044AB00 /* monitoring-2010-08-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE101B01A99E0044AB00 /* monitoring-2010-08-01.json */; };
+		F1AAFE221B01A99E0044AB00 /* s3-2006-03-01.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE111B01A99E0044AB00 /* s3-2006-03-01.json */; };
+		F1AAFE231B01A99E0044AB00 /* sdb-2009-04-15.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE121B01A99E0044AB00 /* sdb-2009-04-15.json */; };
+		F1AAFE241B01A99E0044AB00 /* sns-2010-03-31.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE131B01A99E0044AB00 /* sns-2010-03-31.json */; };
+		F1AAFE251B01A99E0044AB00 /* sqs-2012-11-05.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE141B01A99E0044AB00 /* sqs-2012-11-05.json */; };
+		F1AAFE261B01A99E0044AB00 /* sts-2011-06-15.json in Resources */ = {isa = PBXBuildFile; fileRef = F1AAFE151B01A99E0044AB00 /* sts-2011-06-15.json */; };
+		F1AAFE281B01A9C60044AB00 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFE271B01A9C60044AB00 /* libsqlite3.dylib */; };
+		F1AAFE2A1B01A9CE0044AB00 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFE291B01A9CE0044AB00 /* libz.dylib */; };
+		F1AAFE2C1B01ADE70044AB00 /* SecretlyUploadtoS3.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAFE2B1B01ADE70044AB00 /* SecretlyUploadtoS3.swift */; };
 		F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */; };
 		F1AD3D3E1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AD3D3C1AD4BBEB00B55D2C /* UIBezierPath+Interpolation.m */; };
 		F1B58D581A2B933A00DF08B7 /* CollectionOfFoldlings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */; };
@@ -122,6 +152,7 @@
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
+		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
@@ -313,6 +344,36 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
+		F1AAFDF11B01A9500044AB00 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
+		F1AAFDF21B01A9500044AB00 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
+		F1AAFDF51B01A9730044AB00 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		F1AAFDF61B01A9730044AB00 /* FMDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FMDB.framework; sourceTree = "<group>"; };
+		F1AAFDF71B01A9730044AB00 /* GZIP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GZIP.framework; sourceTree = "<group>"; };
+		F1AAFDF81B01A9730044AB00 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mantle.framework; sourceTree = "<group>"; };
+		F1AAFDF91B01A9730044AB00 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reachability.framework; sourceTree = "<group>"; };
+		F1AAFDFA1B01A9730044AB00 /* TMCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TMCache.framework; sourceTree = "<group>"; };
+		F1AAFDFB1B01A9730044AB00 /* UICKeyChainStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UICKeyChainStore.framework; sourceTree = "<group>"; };
+		F1AAFDFC1B01A9730044AB00 /* XMLDictionary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XMLDictionary.framework; sourceTree = "<group>"; };
+		F1AAFE051B01A99E0044AB00 /* autoscaling-2011-01-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "autoscaling-2011-01-01.json"; sourceTree = "<group>"; };
+		F1AAFE061B01A99E0044AB00 /* cognito-identity-2014-06-30.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cognito-identity-2014-06-30.json"; sourceTree = "<group>"; };
+		F1AAFE071B01A99E0044AB00 /* cognito-sync-2014-06-30.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cognito-sync-2014-06-30.json"; sourceTree = "<group>"; };
+		F1AAFE081B01A99E0044AB00 /* dynamodb-2012-08-10.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "dynamodb-2012-08-10.json"; sourceTree = "<group>"; };
+		F1AAFE091B01A99E0044AB00 /* ec2-2014-09-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ec2-2014-09-01.json"; sourceTree = "<group>"; };
+		F1AAFE0A1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "elasticloadbalancing-2012-06-01.json"; sourceTree = "<group>"; };
+		F1AAFE0B1B01A99E0044AB00 /* email-2010-12-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "email-2010-12-01.json"; sourceTree = "<group>"; };
+		F1AAFE0C1B01A99E0044AB00 /* kinesis-2013-12-02.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "kinesis-2013-12-02.json"; sourceTree = "<group>"; };
+		F1AAFE0D1B01A99E0044AB00 /* lambda-2015-03-31.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "lambda-2015-03-31.json"; sourceTree = "<group>"; };
+		F1AAFE0E1B01A99E0044AB00 /* machinelearning-2014-12-12.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "machinelearning-2014-12-12.json"; sourceTree = "<group>"; };
+		F1AAFE0F1B01A99E0044AB00 /* mobileanalytics-2014-06-30.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "mobileanalytics-2014-06-30.json"; sourceTree = "<group>"; };
+		F1AAFE101B01A99E0044AB00 /* monitoring-2010-08-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "monitoring-2010-08-01.json"; sourceTree = "<group>"; };
+		F1AAFE111B01A99E0044AB00 /* s3-2006-03-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "s3-2006-03-01.json"; sourceTree = "<group>"; };
+		F1AAFE121B01A99E0044AB00 /* sdb-2009-04-15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sdb-2009-04-15.json"; sourceTree = "<group>"; };
+		F1AAFE131B01A99E0044AB00 /* sns-2010-03-31.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sns-2010-03-31.json"; sourceTree = "<group>"; };
+		F1AAFE141B01A99E0044AB00 /* sqs-2012-11-05.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sqs-2012-11-05.json"; sourceTree = "<group>"; };
+		F1AAFE151B01A99E0044AB00 /* sts-2011-06-15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sts-2011-06-15.json"; sourceTree = "<group>"; };
+		F1AAFE271B01A9C60044AB00 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		F1AAFE291B01A9CE0044AB00 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		F1AAFE2B1B01ADE70044AB00 /* SecretlyUploadtoS3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretlyUploadtoS3.swift; sourceTree = "<group>"; };
 		F1AD3D381AD4BBEB00B55D2C /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		F1AD3D391AD4BBEB00B55D2C /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		F1AD3D3A1AD4BBEB00B55D2C /* Curve Interpolation-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Curve Interpolation-Prefix.pch"; sourceTree = "<group>"; };
@@ -393,12 +454,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
+				F1AAFE2A1B01A9CE0044AB00 /* libz.dylib in Frameworks */,
+				F1AAFE281B01A9C60044AB00 /* libsqlite3.dylib in Frameworks */,
 				F1F9CBDD1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a in Frameworks */,
+				F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */,
 				F1F9CBD91AF49A8A00213C3E /* libPods-AFMInfoBanner.a in Frameworks */,
+				F1AAFE011B01A9730044AB00 /* Reachability.framework in Frameworks */,
+				F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */,
+				F1AAFE021B01A9730044AB00 /* TMCache.framework in Frameworks */,
 				F1F9CBDB1AF49A8A00213C3E /* libPods-UAAppReviewManager.a in Frameworks */,
+				F1AAFDFE1B01A9730044AB00 /* FMDB.framework in Frameworks */,
+				F1AAFDFF1B01A9730044AB00 /* GZIP.framework in Frameworks */,
 				F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */,
 				F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */,
-				F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */,
+				F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */,
+				F1AAFE031B01A9730044AB00 /* UICKeyChainStore.framework in Frameworks */,
+				F1AAFE041B01A9730044AB00 /* XMLDictionary.framework in Frameworks */,
+				F1AAFE001B01A9730044AB00 /* Mantle.framework in Frameworks */,
 				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
 				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
 				C9279D3050C81795A52ED5DD /* libPods.a in Frameworks */,
@@ -418,6 +491,8 @@
 		165FC34A891412DCA9DCF30F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1AAFE291B01A9CE0044AB00 /* libz.dylib */,
+				F1AAFE271B01A9C60044AB00 /* libsqlite3.dylib */,
 				F1F9CBDC1AF49B3900213C3E /* libPods-CVKHierarchySearcher.a */,
 				F1F9CBD61AF49A8A00213C3E /* libPods-AFMInfoBanner.a */,
 				F1F9CBD71AF49A8A00213C3E /* libPods-CVKHierarchySearcher.a */,
@@ -430,6 +505,7 @@
 		225094E31A0C5B8500E754CA /* External */ = {
 			isa = PBXGroup;
 			children = (
+				F1AAFE2D1B01AE590044AB00 /* AmazonS3 */,
 				F1BE6A8F1AC1F12B00B99C8F /* pathIntersection */,
 				F160F3B81A31463900B469CA /* Flurry */,
 				22C0D68B1A059C2A00D521CA /* UIBezierPath+OBAdditions.h */,
@@ -700,6 +776,7 @@
 				F17C93CF19E24BEC00BB77F1 /* art.scnassets */,
 				F13AD4E71ABF549F00372898 /* Fold Features */,
 				8874A7111A05B61F00F78283 /* Plane.swift */,
+				F1AAFE2B1B01ADE70044AB00 /* SecretlyUploadtoS3.swift */,
 				220750F01A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift */,
 				F17C93D319E24BEC00BB77F1 /* Main.storyboard */,
 				F1B9AE771A06A64B00265AAE /* Archivist.swift */,
@@ -742,6 +819,40 @@
 				F17C93E419E24BEC00BB77F1 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F1AAFE2D1B01AE590044AB00 /* AmazonS3 */ = {
+			isa = PBXGroup;
+			children = (
+				F1AAFE051B01A99E0044AB00 /* autoscaling-2011-01-01.json */,
+				F1AAFE061B01A99E0044AB00 /* cognito-identity-2014-06-30.json */,
+				F1AAFE071B01A99E0044AB00 /* cognito-sync-2014-06-30.json */,
+				F1AAFE081B01A99E0044AB00 /* dynamodb-2012-08-10.json */,
+				F1AAFE091B01A99E0044AB00 /* ec2-2014-09-01.json */,
+				F1AAFE0A1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json */,
+				F1AAFE0B1B01A99E0044AB00 /* email-2010-12-01.json */,
+				F1AAFE0C1B01A99E0044AB00 /* kinesis-2013-12-02.json */,
+				F1AAFE0D1B01A99E0044AB00 /* lambda-2015-03-31.json */,
+				F1AAFE0E1B01A99E0044AB00 /* machinelearning-2014-12-12.json */,
+				F1AAFE0F1B01A99E0044AB00 /* mobileanalytics-2014-06-30.json */,
+				F1AAFE101B01A99E0044AB00 /* monitoring-2010-08-01.json */,
+				F1AAFE111B01A99E0044AB00 /* s3-2006-03-01.json */,
+				F1AAFE121B01A99E0044AB00 /* sdb-2009-04-15.json */,
+				F1AAFE131B01A99E0044AB00 /* sns-2010-03-31.json */,
+				F1AAFE141B01A99E0044AB00 /* sqs-2012-11-05.json */,
+				F1AAFE151B01A99E0044AB00 /* sts-2011-06-15.json */,
+				F1AAFDF51B01A9730044AB00 /* Bolts.framework */,
+				F1AAFDF61B01A9730044AB00 /* FMDB.framework */,
+				F1AAFDF71B01A9730044AB00 /* GZIP.framework */,
+				F1AAFDF81B01A9730044AB00 /* Mantle.framework */,
+				F1AAFDF91B01A9730044AB00 /* Reachability.framework */,
+				F1AAFDFA1B01A9730044AB00 /* TMCache.framework */,
+				F1AAFDFB1B01A9730044AB00 /* UICKeyChainStore.framework */,
+				F1AAFDFC1B01A9730044AB00 /* XMLDictionary.framework */,
+				F1AAFDF11B01A9500044AB00 /* AWSCore.framework */,
+				F1AAFDF21B01A9500044AB00 /* AWSS3.framework */,
+			);
+			name = AmazonS3;
 			sourceTree = "<group>";
 		};
 		F1BE6A5F1AC1EF4900B99C8F /* ANImageBitmapRep */ = {
@@ -933,25 +1044,37 @@
 				F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */,
 				F145829C1A79E89000760799 /* slider_button.png in Resources */,
 				F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */,
+				F1AAFE1D1B01A99E0044AB00 /* kinesis-2013-12-02.json in Resources */,
 				22C3F4AE19F332B700857C82 /* foldlingslogo1.jpg in Resources */,
+				F1AAFE211B01A99E0044AB00 /* monitoring-2010-08-01.json in Resources */,
+				F1AAFE251B01A99E0044AB00 /* sqs-2012-11-05.json in Resources */,
+				F1AAFE221B01A99E0044AB00 /* s3-2006-03-01.json in Resources */,
 				F1BB8E211AF56A09006800CB /* polygon-icon.png in Resources */,
 				F145829B1A79E89000760799 /* preview_button.png in Resources */,
+				F1AAFE171B01A99E0044AB00 /* cognito-identity-2014-06-30.json in Resources */,
 				F1BB8E1F1AF56A09006800CB /* freeform-icon.png in Resources */,
+				F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
+				F1AAFE231B01A99E0044AB00 /* sdb-2009-04-15.json in Resources */,
+				F1AAFE191B01A99E0044AB00 /* dynamodb-2012-08-10.json in Resources */,
 				F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */,
 				F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				F16673BD1ACE3F5700243D70 /* Info.plist in Resources */,
+				F1AAFE261B01A99E0044AB00 /* sts-2011-06-15.json in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
 				F1BB8E2B1AF56F7E006800CB /* polygon-selected-icon.png in Resources */,
 				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
 				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
+				F1AAFE1A1B01A99E0044AB00 /* ec2-2014-09-01.json in Resources */,
 				F1BB8E201AF56A09006800CB /* vfold-icon.png in Resources */,
+				F1AAFE1C1B01A99E0044AB00 /* email-2010-12-01.json in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
 				F1BB8E2C1AF56F7E006800CB /* box-fold-selected-icon.png in Resources */,
 				F1BB8E291AF56F7E006800CB /* freeform-selected-icon.png in Resources */,
+				F1AAFE181B01A99E0044AB00 /* cognito-sync-2014-06-30.json in Resources */,
 				F1EB375E1AE4A1AD007DCEC5 /* Info.plist in Resources */,
 				F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */,
 				22C3F4B919F33B4F00857C82 /* fold.png in Resources */,
@@ -959,14 +1082,20 @@
 				F1824ED11A19E525008B0F66 /* first.png in Resources */,
 				F11B552119FDFCE200169A07 /* fold_logo.png in Resources */,
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
+				F1AAFE201B01A99E0044AB00 /* mobileanalytics-2014-06-30.json in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+				F1AAFE1E1B01A99E0044AB00 /* lambda-2015-03-31.json in Resources */,
 				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
+				F1AAFE1B1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
+				F1AAFE161B01A99E0044AB00 /* autoscaling-2011-01-01.json in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
+				F1AAFE241B01A99E0044AB00 /* sns-2010-03-31.json in Resources */,
 				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
 				F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */,
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
+				F1AAFE1F1B01A99E0044AB00 /* machinelearning-2014-12-12.json in Resources */,
 				F145829D1A79E89000760799 /* track_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1035,6 +1164,7 @@
 				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
 				F1EB37641AE4A1AD007DCEC5 /* String.swift in Sources */,
 				F14D844E1AC26321004CCD67 /* FreeForm.swift in Sources */,
+				F1AAFE2C1B01ADE70044AB00 /* SecretlyUploadtoS3.swift in Sources */,
 				F1EB375F1AE4A1AD007DCEC5 /* Int.swift in Sources */,
 				22198BEA1A007B9D00FCEDD1 /* Constants.swift in Sources */,
 				F16673C51ACE3F5700243D70 /* UIBezierPath+NSOSX.m in Sources */,
@@ -1257,6 +1387,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = foldlings/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1294,6 +1425,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = foldlings/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
