@@ -218,7 +218,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         visited = []
         //notMyChild = [Int: [Plane]]()
         //printTree(planes.masterTop)
-        if var topPlaneSphere = makePlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
+        if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
         }
         
@@ -273,113 +273,33 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             printTree(p)
         }
     }
-
+    
     
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
-    //TODO: Use feature's parenting schema and planes to create the tree faster
-    //    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
-    //    {
-    //        if notMyChild[recurseCount] == nil {
-    //            notMyChild[recurseCount] = [Plane]()
-    //        }
-    //        //TODO: change this to mastercard feature
-    //        let bottom = planes.masterBottom
-    //
-    //        // base case if bottom
-    //        if plane == bottom {
-    //            //            println("bottomed out")
-    //            return nil
-    //        }
-    //        // base case already visited or going back up
-    //        if contains(visited, plane) {
-    //            //            println("already been here")
-    //            return nil
-    //        }
-    //        // base case going back up
-    //        if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
-    //            //            println("belongs to prev")
-    //            return nil
-    //        }
-    //
-    //
-    //        // functionality here
-    //        var node = plane.lazyNode()
-    //
-    //        if(plane.kind != .Hole){
-    //            node.addAnimation(fadeIn(), forKey: "fade in")
-    //        }
-    //
-    //        var useBottom = (recurseCount == 0)
-    //        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
-    //        plane.masterSphere = masterSphere
-    //        masterSphere.addChildNode(node)
-    //        undoParentTranslate(masterSphere, child: node)
-    //
-    //        let m = SCNMaterial()
-    //        if debugColor {
-    //            m.diffuse.contents = debugColors[recurseCount]
-    //        } else {
-    //            m.diffuse.contents = plane.color
-    //        }
-    //        node.geometry?.firstMaterial = m
-    //        masterSphere.geometry?.firstMaterial = m
-    //
-    //
-    ////        //make sphere invisible
-    ////        let transparentMaterial = SCNMaterial()
-    ////        transparentMaterial.diffuse.contents = UIColor.clearColor()
-    ////        masterSphere.geometry?.firstMaterial = transparentMaterial
-    //
-    //        // different based on orientation
-    //        if hill {
-    //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-    //        } else {
-    //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-    //        }
-    //
-    //
-    //        var adj = planes.adjacency[plane]!
-    //        visited.append(plane)
-    //        notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
-    //        // loop through the adj starting with top plane
-    //        for p in adj
-    //        {
-    //            let rc = recurseCount + 1
-    //            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
-    //                // child hasn't reached bottom so do something to it
-    //                masterSphere.addChildNode(childSphere)
-    //                undoParentTranslate(masterSphere, child: childSphere)
-    //            }
-    //        }
-    //        //        println("recurse level: \(recurseCount)")
-    //        return masterSphere
-    //   }
-    
-    func makePlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
+    func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
     {
         
         // base case if bottom
         if plane.masterBottom {
-            //            println("bottomed out")
             return nil
         }
         // base case already visited or going back up
         if contains(visited, plane) {
-            //            println("already been here")
             return nil
         }
         
-        println("\(recurseCount) : \(plane.topEdge)")
-        // functionality here
+        //println("\(recurseCount) : \(plane.topEdge)")
+        
         var node = plane.lazyNode()
         
+        // add fade-in key for holes
         if(plane.kind != .Hole){
             node.addAnimation(fadeIn(), forKey: "fade in")
         }
         
-        var useBottom = (recurseCount == 0)
+        var useBottom = (recurseCount == 0)//check if we hit top plane
         let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
         plane.masterSphere = masterSphere
         masterSphere.addChildNode(node)
@@ -415,13 +335,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         for p in children
         {
             let rc = recurseCount + 1
-            if let childSphere = makePlaneTree(p, hill:!hill, recurseCount:rc) {
+            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
                 undoParentTranslate(masterSphere, child: childSphere)
             }
         }
-        //        println("recurse level: \(recurseCount)")
         return masterSphere
         
         
@@ -458,16 +377,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
     }
     
-    // TODO: use features here in the functions called here
+    // this determines the parent sphere for the plane
     private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
         
         var edge:Edge
         
-        ////TODO: check to make sure that edges are both folds
-        if(bottom){
+        if(bottom){// TODO:confused
+            println("bottom/top: \(plane.topEdge)")
             edge = plane.bottomEdge
         }
-            //put check in for no top fold
         else{
             edge = plane.topEdge
         }
