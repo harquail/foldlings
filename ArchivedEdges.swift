@@ -40,9 +40,9 @@ class ArchivedEdges : NSObject, NSCoding {
     
     required init(coder aDecoder: NSCoder) {
         features = aDecoder.decodeObjectForKey("features") as! [FoldFeature]
-        for feature in features{
-            println(feature.featureEdges)
-        }
+//        for feature in features{
+//            println(feature.featureEdges)
+//        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -89,7 +89,7 @@ class ArchivedEdges : NSObject, NSCoding {
                 let sktch = Sketch(at:dex, named:sktchName, userOriginated:false)
                 for feature in unarchived.features{
                    
-                    println("added \(feature)")
+                    //println("added \(feature)")
                     //set the master feature
                     if(feature is MasterCard){
                         sktch.masterFeature = feature as! MasterCard

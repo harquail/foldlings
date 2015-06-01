@@ -392,7 +392,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         var edge:Edge
         
         if(bottom){// TODO:confused
-            println("bottom/top: \(plane.topEdge)")
+            //println("bottom/top: \(plane.topEdge)")
             edge = plane.bottomEdge
         }
         else{

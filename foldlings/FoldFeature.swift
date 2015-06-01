@@ -64,7 +64,7 @@ class FoldFeature: NSObject, Printable
         //horizontalFolds
         //cachedEdges
         //validity
-        println("encoded \(featureEdges)")
+        //println("encoded \(featureEdges)")
         
         if let point = startPoint{
         aCoder.encodeCGPoint(point, forKey: "startPoint")
