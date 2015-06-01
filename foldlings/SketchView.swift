@@ -319,7 +319,7 @@ class SketchView: UIView {
                     shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                 }
                 
-//                shape.shiftEdgeEndpoints()
+                shape.shiftEdgeEndpoints()
                 
                 let intersectingFs = sketch.featuresIntersecting(shape)
                 
