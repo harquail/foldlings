@@ -39,12 +39,9 @@ class Plane: Printable, Hashable
     }
     
     var kind = Kind.Hole
-    var orientation = Orientation.Horizontal
+    var orientation = Orientation.Vertical
     var color = getRandomColor(0.5)
-//    var color : UIColor { get{
-//        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
-//        }
-//        }
+    //var color = getOrientaionColor(self.orientation)
     var edges : [Edge]!
     var path = UIBezierPath()
     var feature:FoldFeature!
@@ -224,6 +221,7 @@ class Plane: Printable, Hashable
         return outPath
     }
     
+
     func hasEdge(edge:Edge) -> Bool
     {
         return self.edges.contains(edge)

@@ -301,8 +301,8 @@
                             
                             plane.edges.map({$0.plane = plane})
                             // add planes to planelist
-                            planelist.append(plane)
-                            
+                            //planelist.append(plane)
+                            planelist.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                             //self.planes.addPlane(plane, sketch: self, folds: foldcount)
                             //                                println("\nplane complete\n")
                             //                                println("\(plane)\n")

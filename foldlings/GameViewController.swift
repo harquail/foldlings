@@ -39,7 +39,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     //var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
-    var debugColor = true
+    var debugColor = false
     let debugColors:[UIColor] = [
         UIColor(hue: 1.0, saturation: 1.0, brightness: 1.0, alpha: 0.8),
         UIColor(hue: 1.0, saturation: 0.75, brightness: 1.0, alpha: 0.8),
@@ -199,30 +199,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         //sceneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
         sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
-        
-        // main loop for defining plane things
-        // add each plane to the scene
-        //        for (i, plane) in enumerate(planes.planes) {
-        ////
-        //            plane.clearNode()
-        //
-        //            var parent = sceneSphere
-        //            // if plane is a hole, its parent should be the plane that contains it
-        //            // TODO: use parent feature and plane for holes
-        //            if(plane.kind == Plane.Kind.Hole) {
-        //                //TODO: should depend on parent feature
-        //                let parentPlane = plane.containerPlane(planes.planes)
-        //
-        //                if parentPlane != nil{
-        //                    let n = plane.lazyNode()
-        //                    n.transform = SCNMatrix4Identity
-        //                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
-        //                    parent = parentPlane!.lazyNode()
-        //                    parent.addChildNode(n)
-        //                }
-        //            }
-        // }
-        
         
         visited = []
         //notMyChild = [Int: [Plane]]()

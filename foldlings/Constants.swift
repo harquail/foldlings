@@ -34,7 +34,7 @@ func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
     let startTime = CFAbsoluteTimeGetCurrent()
     operation()
     let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-    println("Time ela psed for \(title): \(timeElapsed) s")
+    println("Time elapsed for \(title): \(timeElapsed) s")
 }
 
 
@@ -45,3 +45,11 @@ func getSmartRandomColor(alpha:CGFloat, horizontal: Bool) -> UIColor{
     return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: alpha)
 }
 
+func getOrientationColor(horizontal: Bool) -> UIColor{
+    if horizontal{
+        return UIColor(red:0.4, green:0.2, blue:0.4, alpha:0.8)
+
+    }
+    return UIColor(red:0.2, green:0.4, blue:0.4, alpha:0.8)
+    
+}

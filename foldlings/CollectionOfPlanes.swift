@@ -204,9 +204,10 @@ class CollectionOfPlanes: Printable, Hashable {
         {
             if isCounterClockwise(plane.path)
             {
-                let color = plane.color
+                //let color = plane.color
                 //insert sorted by top edge of the plane into planes list
-                planes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+//                planes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                planes.append(plane)
                 
                 let bottom = plane.bottomEdge
                 let top = plane.topEdge
@@ -287,6 +288,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         if top.kind != .Fold{
                             plane.masterTop = true
                             masterTop = plane
+                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
                         }
                             
                             // else, it is masterBottom
@@ -295,6 +297,9 @@ class CollectionOfPlanes: Printable, Hashable {
                         {
                             plane.masterBottom = true
                             masterBottom = plane
+                            plane.orientation = .Horizontal
+                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
+
                         }
                     }
                         
@@ -306,10 +311,20 @@ class CollectionOfPlanes: Printable, Hashable {
                         let parent = top.twin.plane
                         
                         plane.parent = parent
+
 //                        println("plane: \(plane.topEdge)")
 //                        println("parent: \(parent!.topEdge)")
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
+                        
+                        // if the parent is .Vertical,
+                        //change the orientation of the plane to .Horizontal
+                        if parent!.orientation == .Vertical {
+                            plane.orientation = .Horizontal
+                        }
+                        
+                        plane.color = getOrientationColor(plane.orientation == .Horizontal)
+
                     }
                     
                 }
