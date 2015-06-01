@@ -281,60 +281,56 @@ class SketchView: UIView {
                 let shape = sketch.currentFeature as! FreeForm
                 path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
                 shape.path = path
-                forceRedraw()
-            }
-            
-        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
-            
-            let shape = sketch.currentFeature as! FreeForm
-            path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
-            shape.path = path
-            //reset path
-            path = UIBezierPath()
-            
-            //for feature in features -- check folds for spanning
-            outer: for feature in sketch.features
-            {
-                for fold in feature.horizontalFolds
+                //reset path
+                path = UIBezierPath()
+                
+                //for feature in features -- check folds for spanning
+                outer: for feature in sketch.features
                 {
-                    if(shape.featureSpansFold(fold))
+                    for fold in feature.horizontalFolds
                     {
-                        shape.drivingFold = fold
-                        shape.parent = feature
-                        //set parents if the fold spans driving
-                        shape.parent!.children.append(shape)
-                        
-                        //fragments are the pieces of the fold created splitFoldByOcclusion
-                        let fragments = shape.splitFoldByOcclusion(fold)
-                        sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
-                        //set cached edges
-                        shape.featureEdges = []
-                        //create truncated folds
-                        shape.truncateWithFolds()
-                        //split paths at intersections
-                        shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
-                        shape.parent = feature
-                        break outer;
-                        
+                        if(shape.featureSpansFold(fold))
+                        {
+                            shape.drivingFold = fold
+                            shape.parent = feature
+                            //set parents if the fold spans driving
+                            shape.parent!.children.append(shape)
+                            
+                            //fragments are the pieces of the fold created splitFoldByOcclusion
+                            let fragments = shape.splitFoldByOcclusion(fold)
+                            sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
+                            //set cached edges
+                            shape.featureEdges = []
+                            //create truncated folds
+                            shape.truncateWithFolds()
+                            //split paths at intersections
+                            shape.featureEdges!.extend(shape.freeFormEdgesSplitByIntersections())
+                            shape.setTopBottomTruncations()
+                            shape.parent = feature
+                            break outer;
+                            
+                        }
                     }
                 }
+                // if feature didn't span a fold, then make it a hole?
+                // find parent for hole
+                if shape.parent == nil
+                {
+                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
+                }
                 
+//                shape.shiftEdgeEndpoints()
+                sketch.addFeatureToSketch(shape, parent: shape.parent!)
+                
+                sketch.currentFeature = nil
+                self.sketch.getPlanes()
+                forceRedraw()
+                
+//                println(sketch.almostCoincidentEdgePoints())
+                
+            default:
+                break
             }
-            // if feature didn't span a fold, then make it a hole?
-            // find parent for hole
-            if shape.parent == nil
-            {
-                shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
-            }
-            sketch.addFeatureToSketch(shape, parent: shape.parent!)
-            
-            sketch.currentFeature = nil
-            //self.sketch.getPlanes()
-            forceRedraw()
-            
-            
-        default:
-            break
         }
         
     }
@@ -478,24 +474,58 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 //iterate through features and draw them
                 var currentFeatures = sketch.features
-                //  add most recent feature if it exists
-                if(sketch.currentFeature != nil)
-                {
-                    currentFeatures.append(sketch.currentFeature!)
-                }
-                
-                for feature in currentFeatures
-                {
-                    if(feature.startPoint != nil && feature.endPoint != nil)
-                    {
-                        let edges = feature.getEdges()
-                        for e in edges
-                        {
-                            setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                            e.path.stroke()
-                            
-                        }
+
+                if sketch.features.count > 0{
+                    
+                    if(sketch.currentFeature != nil){
+                        currentFeatures.append(sketch.currentFeature!)
+                    }
+                    
+                    for feature in currentFeatures{
+                        let shape = feature as? FreeForm
                         
+                        //draw the tapped feature preview
+                        if (feature == sketch.tappedFeature && shape != nil){
+                            
+                            /// TODO: only for free-form
+                            let invertedPath = UIBezierPath(rect: CGRectInfinite)
+                            
+                            let pathAroundFeature = shape!.path!
+                            invertedPath.appendPath(pathAroundFeature)
+                            
+                            let context =  UIGraphicsGetCurrentContext()
+                            CGContextSaveGState(context);
+                            
+                            CGContextAddPath(context, invertedPath.CGPath);
+                            let boundingRect = CGContextGetClipBoundingBox(context);
+                            
+                            CGContextAddRect(context, boundingRect);
+                            CGContextEOClip(context)
+                            
+                            let foldHeights = feature.foldHeightsWithTransform(feature.uniqueFoldHeights(), draggedEdge: sketch.draggedEdge!, masterFold: feature.drivingFold!)
+                            
+                            for height in foldHeights{
+                                let edge = Edge.straightEdgeBetween(CGPointMake(sketch.masterFeature!.startPoint!.x, height), end: CGPointMake(sketch.masterFeature!.endPoint!.x, height), kind: .Fold, feature:feature)
+                                setPathStyle(edge.path, edge:edge, grayscale:grayscale).setStroke()
+                                edge.path.stroke()
+                            }
+                            
+                            CGContextRestoreGState(context);
+                            
+                            //draw path
+                            setPathStyle(pathAroundFeature, edge:nil, grayscale:grayscale).setStroke()
+                            pathAroundFeature.stroke()
+                        }
+                        else{
+                            if(feature.startPoint != nil && feature.endPoint != nil){
+                                let edges = feature.getEdges()
+                                for e in edges
+                                {
+                                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                                    e.path.stroke()
+                                }
+                            }
+                        }
                     }
                 }
                 
@@ -620,28 +650,23 @@ class SketchView: UIView {
                 // TODO: Set orientation here and change the stroke based on mountain or valley
                 if $0.kind == .Fold
                 {
-                    edgesVisited.append($0.twin)
-                    edgesVisited.append($0)
-                    // if it is a fold then create dash stroke
-                    if $0.kind == .Fold
-                    {
-                        return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
-                    }
-                    // if not, normal stroke
-                    return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                 }
-                return ""
-            })
-            
-            //add closing tags
-            paths.append("\n</g>\n</svg>")
-            
-            // concatenate all the paths into one string and
-            // insert beginning tags for svg file
-            let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
-            
-            return svgString
-        }
+                // if not, normal stroke
+                return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            }
+            return ""
+        })
+        
+        //add closing tags
+        paths.append("\n</g>\n</svg>")
+        
+        // concatenate all the paths into one string and
+        // insert beginning tags for svg file
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
+        
+        return svgString
+    }
     
     
     //    func setButtonBG(image:UIImage){

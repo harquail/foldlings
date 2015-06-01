@@ -50,7 +50,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var kind = Kind.Cut
     var adjacency: [Edge] = []
     var isMaster = false
-    var colorOverride:UIColor? = getRandomColor(0.8)
+    var colorOverride:UIColor?
     var feature:FoldFeature?
     
     enum Kind: String {

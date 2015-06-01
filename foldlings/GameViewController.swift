@@ -25,7 +25,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
+    let fourtyFiveDegrees = Float(0.25*M_PI)
     let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
+    let thirtyDegrees = Float(M_PI/6.0)
+    let thirtyDegreesNeg = Float(-M_PI/6.0)
+    let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
     /*****************scene variables*****************/
@@ -421,8 +425,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         sphereNode.position = atPoint
         inNode.addChildNode(sphereNode)
     }
-    
-    
     
     
     /***********************animation*************************/
