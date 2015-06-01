@@ -10,8 +10,6 @@ running foldlings
 3) create a file called APIKeysAndOtherSecrets.swift, with API keys from Flurry and Amazon.  These features can also be disabled if logging is not desired
 
 Example file:
-     //  APIKeysAndOtherSecrets.swift
-     //  foldlings
 
      import Foundation
 
