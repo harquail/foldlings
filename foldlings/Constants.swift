@@ -23,7 +23,7 @@ func getRandomColor(alpha:CGFloat) -> UIColor{
 }
 
 func getRandomGray(alpha:CGFloat) -> UIColor{
-//    return UIColor.blackColor()
+//    return UIColor.whiteColor()
     
     var randomHue:CGFloat =  1 - CGFloat(drand48())/1.3
     return UIColor(red: randomHue, green: randomHue, blue: randomHue, alpha: alpha)

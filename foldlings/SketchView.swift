@@ -14,18 +14,20 @@ class SketchView: UIView {
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var checkButton: UIButton!
     @IBOutlet var xButton: UIButton!
+    var name:String = "placeHolder"
+    var index:Int = 0
     
     //Drawing Modes
-    enum Mode {
-        case Erase
-        case Cut
-        case Mirror
-        case Track
-        case Slider
-        case BoxFold
-        case FreeForm
-        case VFold
-        case Polygon
+    enum Mode:String {
+        case Erase = "Erase"
+        case Cut = "Cut"
+        case Mirror = "Mirror"
+        case Track = "Track"
+        case Slider = "Slider"
+        case BoxFold = "BoxFold"
+        case FreeForm = "FreeForm"
+        case VFold = "VFold"
+        case Polygon = "Polygon"
         
     }
     
@@ -56,7 +58,7 @@ class SketchView: UIView {
         self.backgroundColor = UIColor.whiteColor()
         path = UIBezierPath()
         path.lineWidth = kLineWidth
-        sketch = Sketch(at: 0, named:"placeholder")
+        sketch = Sketch(at: 0, named:"unitialized")
         sketch.getPlanes()
         incrementalImage = bitmap(grayscale: false)
         
@@ -78,48 +80,206 @@ class SketchView: UIView {
         
     }
     
-    //Determine which feature you are drawing
-    func handlePan(sender: AnyObject)
-    {
-        switch (sketchMode)
-        {
-        case .BoxFold:
-            handleBoxFoldPan(sender)
-        case .FreeForm:
-            handleFreeFormPan(sender)
-        default:
-            break
+    func handlePan(sender: AnyObject) {
+        if(sketch.tappedFeature != nil){
+            
+            switch(sketch.tappedFeature!.activeOption!){
+            case .MoveFolds:
+                handleMoveFoldPan(sender)
+            default: break
+            }
         }
+        else{
+            switch (sketchMode) {
+            case .BoxFold:
+                handleBoxFoldPan(sender)
+            case .FreeForm:
+                handleFreeFormPan(sender)
+            default:
+                break
+            }
+        }
+        
+        
+    }
+    
+    var savedOriginalHeights:[CGFloat] = []
+    func handleMoveFoldPan(sender: AnyObject){
+        
+        let gesture = sender as! UIPanGestureRecognizer
+        if let tappedF = sketch.tappedFeature{
+            
+            if(gesture.state == UIGestureRecognizerState.Began){
+                //get the edge & nearest point to hit
+                let edge = tappedF.featureEdgeAtPoint(gesture.locationInView(self))
+                if let e = edge{
+                    // keep track of change to dragged edges
+                    sketch.draggedEdge = e
+                    tappedF.deltaY = gesture.translationInView(self).y
+                    savedOriginalHeights = tappedF.uniqueFoldHeights()
+                    
+                }
+                else{
+                    println("No Edge Here...")
+                }
+            }
+            else if(gesture.state == UIGestureRecognizerState.Changed){
+                
+                if let e = sketch.draggedEdge{
+                    tappedF.deltaY = gesture.translationInView(self).y
+//                    println("delta: \(tappedF.deltaY)")
+                    
+                    //if boxfold, make new edges & invalidate
+                    if let box = tappedF as? BoxFold{
+                        boxFoldDragEdge(box)
+                    }
+                    
+                    forceRedraw()
+                }
+                
+            }
+            else if(gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled){
+                
+                //end the drag by clearing tapped feature
+                if let e = sketch.draggedEdge{
+                    if let shape = tappedF as? FreeForm{
+                        
+                        tappedF.deltaY = gesture.translationInView(self).y
+                        
+                        let originalHeights = tappedF.uniqueFoldHeights()
+                        //get current heights
+                        let heights = shape.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: e, masterFold: tappedF.drivingFold!)
+                        // clear intersections & edges
+                        shape.featureEdges = []
+                        shape.horizontalFolds = []
+                        //clear all intersections except those with driving fold
+                        shape.intersections = shape.intersectionsWithDrivingFold
+                        
+                        let shapePath = shape.path!
+                        
+                        for height in heights{
+                            //create
+                            
+                            let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut, feature: shape)
+                            
+                            
+                            
+                            let success = shape.tryIntersectionTruncation(testEdge.path,testPathTwo: shapePath)
+                            if !success{
+                                
+                                for fold in shape.topTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                                }
+                                
+                                for fold in shape.bottomTruncations{
+                                    shape.tryIntersectionTruncation(fold.path,testPathTwo: shapePath)
+                                    
+                                }
+                                
+//                                println("Failed to intersect with fold at \(height)");
+                                
+                                AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+                            }
+                            else{
+                                println("success: \(height)")
+                            }
+                        }
+//                        println("JUST BEFORE FEATUREEDGES EXTEND")
+
+                        sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
+//                        println("ADD TABS")
+                        shape.addTabs(heights,savedHeights: savedOriginalHeights)
+                        
+                        
+                        sketch.removeFeatureFromSketch(shape,healOnDelete:false)
+                        sketch.addFeatureToSketch(shape, parent: shape.parent!)
+
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+                        
+                        self.sketch.getPlanes()
+                        forceRedraw()
+                    }
+                    else if let box = tappedF as? BoxFold{
+                        tappedF.deltaY = gesture.translationInView(self).y
+                        boxFoldDragEdge(box)
+                        
+                        /// removing the feature and re-adding it
+//                        box.invalidateEdges()
+                        sketch.removeFeatureFromSketch(box, healOnDelete: false)
+                        sketch.addFeatureToSketch(box, parent: box.parent!)
+                        
+                        sketch.tappedFeature?.activeOption = nil
+                        sketch.tappedFeature = nil
+                        
+
+                        
+//                        sketch.refreshFeatureEdges()
+                        self.sketch.getPlanes()
+                        
+                        forceRedraw()
+                        
+                        
+                    }
+                    else{
+                        println("unexpected feature type")
+                    }
+                }
+            }
+        }
+    }
+    func boxFoldDragEdge(tappedF:BoxFold){
+        let originalHeights = tappedF.uniqueFoldHeights()
+        
+        let newHeights = tappedF.foldHeightsWithTransform(savedOriginalHeights, draggedEdge: sketch.draggedEdge!, masterFold: tappedF.drivingFold!);
+        
+        let deltaStart = originalHeights[0] - newHeights[0]
+        let deltaEnd = originalHeights[2] - newHeights[2]
+        
+        tappedF.startPoint! = CGPointMake(tappedF.startPoint!.x, tappedF.startPoint!.y - deltaStart)
+        tappedF.endPoint! = CGPointMake(tappedF.endPoint!.x, tappedF.endPoint!.y - deltaEnd)
+        tappedF.invalidateEdges()
+        
     }
     
     // Draws Free-form Shape
     func handleFreeFormPan(sender: AnyObject)
     {
+        
         //println("handle")
         let gesture = sender as! UIPanGestureRecognizer
-        
-        switch (gesture.state)
-        {
+        if sketch.tappedFeature == nil{
             
-        case UIGestureRecognizerState.Began:
-            // make a shape with touchpoint
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            var shape: FreeForm = FreeForm(start:touchPoint)
-            sketch.currentFeature = shape
-            sketch.currentFeature?.startPoint = gesture.locationInView(self)
-            
-            shape.endPoint = touchPoint
-            
-            
-        case UIGestureRecognizerState.Changed:
-            let shape = sketch.currentFeature as! FreeForm
-            let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
-            
-            if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
+            switch (gesture.state)
+            {
+                
+            case UIGestureRecognizerState.Began:
+                // make a shape with touchpoint
                 var touchPoint: CGPoint = gesture.locationInView(self)
+                var shape: FreeForm = FreeForm(start:touchPoint)
+                sketch.currentFeature = shape
+                sketch.currentFeature?.startPoint = gesture.locationInView(self)
                 shape.endPoint = touchPoint
-                //set the path to a curve through the points
-                path = shape.pathThroughTouchPoints()
+                
+            case UIGestureRecognizerState.Changed:
+                let shape = sketch.currentFeature as! FreeForm
+                // if it's been a few microseconds since we tried to add a point
+                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
+                
+                if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
+                    var touchPoint: CGPoint = gesture.locationInView(self)
+                    shape.endPoint = touchPoint
+                    //set the path to a curve through the points
+                    path = shape.pathThroughTouchPoints()
+                    shape.path = path
+                    forceRedraw()
+                }
+                
+            case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+                
+                let shape = sketch.currentFeature as! FreeForm
+                path = UIBezierPath.interpolateCGPointsWithCatmullRom(shape.interpolationPoints, closed: true, alpha: 1)
                 shape.path = path
                 forceRedraw()
             }
@@ -176,8 +336,8 @@ class SketchView: UIView {
         default:
             break
         }
+        
     }
-    
     
     //draws boxfolds and adds them to features if valid
     func handleBoxFoldPan(sender: AnyObject)
@@ -206,7 +366,8 @@ class SketchView: UIView {
                 //for feature in features -- check folds for spanning
                 drawingFeature.drivingFold = nil
                 drawingFeature.parent = nil
-                /// what happens if I make this a while loop
+                
+                var foldsCrossed = 0
                 outer:for feature in sketch.features
                 {
                     // if spanning, set parent (but not children), because the feature has not been finalized
@@ -216,11 +377,18 @@ class SketchView: UIView {
                         {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
-                            break outer;
+                            foldsCrossed++;
+//                            break outer;
                         }
                     }
                 }
                 
+                
+                //box folds that span more than one fold are invalid
+                if(foldsCrossed > 1){
+                    drawingFeature.drivingFold = nil
+                    drawingFeature.parent = nil
+                }
                 // box folds have different behaviors if they span the driving edge
                 drawingFeature.invalidateEdges()
                 forceRedraw()
@@ -235,6 +403,7 @@ class SketchView: UIView {
             //if feature spans fold, sets the drawing feature's driving fold and parent
             if let drawingFeature = sketch.currentFeature
             {
+                drawingFeature.invalidateEdges()
                 // makes the start point the top left point and sorts horizontal folds
                 drawingFeature.fixStartEndPoint()
                 
@@ -251,6 +420,11 @@ class SketchView: UIView {
                     sketch.addFeatureToSketch(drawingFeature, parent: drawParent)
                     
                 }
+                else{
+//                    sketch.removeFeatureFromSketch(drawingFeature)
+                    AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
+                    
+                }
                 
                 //clear the current feature
                 sketch.currentFeature = nil
@@ -264,26 +438,11 @@ class SketchView: UIView {
             break
         }
     }
-    
-    /// erase hitpoint edge
-    /// needs to be refactored for features
-    //    func erase(touchPoint: CGPoint)
-    //    {
-    //        if var feature = sketch.planeHitTest(touchPoint)?.feature
-    //        {
-    //            if feature.parent != nil {
-    //                sketch.removeFeatureFromSketch(feature)
-    //                sketch.getPlanes()
-    //                forceRedraw()
-    //            }
-    //        }
-    //    }
-    
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
         self.touchesEnded(touches, withEvent: event)
     }
-    
+
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
@@ -317,7 +476,6 @@ class SketchView: UIView {
                 }
                 
                 var twinsOfVisited = [Edge]()
-                
                 //iterate through features and draw them
                 var currentFeatures = sketch.features
                 //  add most recent feature if it exists
@@ -381,7 +539,6 @@ class SketchView: UIView {
         return tempIncremental
     }
     
-    
     /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
     {
@@ -398,7 +555,7 @@ class SketchView: UIView {
             
         else
         {
-            edgekind = modeToEdgeKind(sketchMode)
+            edgekind = .Cut
             
             if(grayscale){color = Edge.getLaserColor(edgekind)}
             else{color = Edge.getColor(edgekind)}
@@ -415,8 +572,7 @@ class SketchView: UIView {
         path.lineWidth=kLineWidth
         return color
     }
-    
-    
+
     
     func forceRedraw()
     {
@@ -464,41 +620,45 @@ class SketchView: UIView {
                 // TODO: Set orientation here and change the stroke based on mountain or valley
                 if $0.kind == .Fold
                 {
-                    return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    edgesVisited.append($0.twin)
+                    edgesVisited.append($0)
+                    // if it is a fold then create dash stroke
+                    if $0.kind == .Fold
+                    {
+                        return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    }
+                    // if not, normal stroke
+                    return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                 }
-                // if not, normal stroke
-                return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
-            }
-            return ""
-        })
-        
-        //add closing tags
-        paths.append("\n</g>\n</svg>")
-        
-        // concatenate all the paths into one string and
-        // insert beginning tags for svg file
-        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
-        
-        return svgString
-    }
-    
+                return ""
+            })
+            
+            //add closing tags
+            paths.append("\n</g>\n</svg>")
+            
+            // concatenate all the paths into one string and
+            // insert beginning tags for svg file
+            let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
+            
+            return svgString
+        }
     
     
     //    func setButtonBG(image:UIImage){
     //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     //    }
     
-    
-    func modeToEdgeKind(sketchMode: Mode) -> Edge.Kind
+    func drawCircle(point: CGPoint) ->UIBezierPath
     {
-        switch sketchMode
-        {
-        case .Cut:
-            return Edge.Kind.Cut
-        default:
-            return Edge.Kind.Cut
-        }
-        
+        UIColor.redColor().setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
+    }
+    
+    func setButtonBG(image:UIImage){
+        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
     }
     
     
