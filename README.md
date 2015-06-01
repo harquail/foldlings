@@ -6,7 +6,9 @@ Crafting a 3D paper pop-up can be a lot of fun for the whole family, but designi
 running foldlings
 ========
 1) run pod install
+
 2) open the foldlings.xcworkspace
+
 3) create a file called APIKeysAndOtherSecrets.swift, with API keys from Flurry and Amazon.  These features can also be disabled if logging is not desired
 
 Example file:
