@@ -35,7 +35,6 @@ extension Array {
         
         let index = self.insertionIndexOf(x, isOrderedBefore: ordering)
         
-        println("i: \(index)")
         self.insert(x, atIndex: index)
     }
 }

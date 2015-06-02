@@ -220,12 +220,6 @@ class CollectionOfPlanes: Printable, Hashable {
                 println(feature)
                 
                 plane.edges.map({$0.feature = feature})
-                
-                
-                println("plane: \(plane)")
-                println("feature: \(feature)")
-                println("feature plane: \(feature.featurePlanes)")
-
 
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                 
