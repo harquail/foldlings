@@ -33,7 +33,7 @@
         var adjacency : [CGPoint : [Edge]] = [CGPoint : [Edge]]()  // a doubly connected edge list wooot! by start vertex
         var index:Int
         var name:String
-//        var origin:Origin
+        //        var origin:Origin
         var planes:CollectionOfPlanes = CollectionOfPlanes()
         var drawingBounds: CGRect = CGRectMake(0, 0, 0, 0)
         var planelist : [Plane] = []
@@ -52,13 +52,13 @@
             let screenSize: CGRect = UIScreen.mainScreen().bounds
             let screenWidth = screenSize.width
             let screenHeight = screenSize.height
-//            origin = userOriginated ? .UserCreated : .Sample
+            //            origin = userOriginated ? .UserCreated : .Sample
             let scaleFactor = CGFloat(0.9)
             super.init()
             
             if(userOriginated){
-            //insert master fold and make borders into cuts
-            makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
+                //insert master fold and make borders into cuts
+                makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
             }
         }
         
@@ -438,32 +438,50 @@
             return self.drawingBounds.contains(point)
         }
         
+        // determines whether the edge is a Hill edge
+        // or not (a Valley edge
+        func isHill(edge: Edge) -> Bool
+        {
+            // check plane orientation
+            let plane = edge.plane
+            if plane!.orientation == .Vertical
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane!.topEdge)
+            }
+            else if plane!.orientation == .Horizontal
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane!.topEdge)
+            }
+            return false
+        }
         // use the master card feature to find top edge
         // this is used to find top plane
         // TODO: refactor so that it checks a plane instead of edges
         // might be better living in plane
-        func isTopEdge(edge:Edge) -> Bool
-        {
-            if let masterF = masterFeature{
-                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
-                return condition
-            }
-            return false
-            
-            
-        }
-        
-        func isBottomEdge(edge:Edge) -> Bool
-        {
-            if let masterF = masterFeature{
-                if(masterF.endPoint != nil){
-                    
-                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
-                    return condition
-                }
-            }
-            return false
-        }
+        //        func isTopEdge(edge:Edge) -> Bool
+        //        {
+        //            if let masterF = masterFeature{
+        //                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
+        //                return condition
+        //            }
+        //            return false
+        //
+        //
+        //        }
+        //
+        //        func isBottomEdge(edge:Edge) -> Bool
+        //        {
+        //            if let masterF = masterFeature{
+        //                if(masterF.endPoint != nil){
+        //
+        //                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
+        //                    return condition
+        //                }
+        //            }
+        //            return false
+        //        }
         
         //replaces edges to close the gap left by deleting a feature
         func healFoldsOccludedBy(feature:FoldFeature){
@@ -579,7 +597,7 @@
         }
         
         // removes any feature edges that aren't
-        // already in the sketch and the parent/child 
+        // already in the sketch and the parent/child
         func removeFeatureFromSketch(feature: FoldFeature, healOnDelete:Bool = true){
             //remove children features
             for child in feature.children{
@@ -595,7 +613,7 @@
             feature.parent!.children.remove(feature)
             // remove features from sketch.features
             self.features.remove(feature)
-
+            
             //if the feature has a driving fold, heal the gaps in the edges it leaves behind
             if (feature.drivingFold != nil && healOnDelete) {
                 self.healFoldsOccludedBy(feature)
@@ -606,10 +624,10 @@
         
         /// debugging function to find points very near each other
         func almostCoincidentEdgePoints() -> [CGPoint:[CGPoint]]{
-        
+            
             var returnee = [CGPoint:[CGPoint]]()
             var points:[CGPoint] = []
-
+            
             for edge in edges{
                 points.append(edge.start)
                 points.append(edge.end)
@@ -618,9 +636,9 @@
             for point in points{
                 let nearPoints = points.filter({ccpDistance($0, point) != 0.0 && ccpDistance($0, point) < 3.0})
                 if(nearPoints.count != 0){
-                returnee[point] = nearPoints
+                    returnee[point] = nearPoints
                 }
             }
             return returnee
         }
-}
+    }

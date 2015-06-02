@@ -127,7 +127,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-//                    println("delta: \(tappedF.deltaY)")
+                    //                    println("delta: \(tappedF.deltaY)")
                     
                     //if boxfold, make new edges & invalidate
                     if let box = tappedF as? BoxFold{
@@ -176,7 +176,7 @@ class SketchView: UIView {
                                     
                                 }
                                 
-//                                println("Failed to intersect with fold at \(height)");
+                                //                                println("Failed to intersect with fold at \(height)");
                                 
                                 AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
                             }
@@ -184,16 +184,16 @@ class SketchView: UIView {
                                 println("success: \(height)")
                             }
                         }
-//                        println("JUST BEFORE FEATUREEDGES EXTEND")
-
+                        //                        println("JUST BEFORE FEATUREEDGES EXTEND")
+                        
                         sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-//                        println("ADD TABS")
+                        //                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
                         
                         sketch.removeFeatureFromSketch(shape,healOnDelete:false)
                         sketch.addFeatureToSketch(shape, parent: shape.parent!)
-
+                        
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
@@ -206,16 +206,16 @@ class SketchView: UIView {
                         boxFoldDragEdge(box)
                         
                         /// removing the feature and re-adding it
-//                        box.invalidateEdges()
+                        //                        box.invalidateEdges()
                         sketch.removeFeatureFromSketch(box, healOnDelete: false)
                         sketch.addFeatureToSketch(box, parent: box.parent!)
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
                         
-
                         
-//                        sketch.refreshFeatureEdges()
+                        
+                        //                        sketch.refreshFeatureEdges()
                         self.sketch.getPlanes()
                         
                         forceRedraw()
@@ -319,14 +319,14 @@ class SketchView: UIView {
                     shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
                 }
                 
-//                shape.shiftEdgeEndpoints()
+                //                shape.shiftEdgeEndpoints()
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
                 sketch.currentFeature = nil
                 self.sketch.getPlanes()
                 forceRedraw()
                 
-//                println(sketch.almostCoincidentEdgePoints())
+                //                println(sketch.almostCoincidentEdgePoints())
                 
             default:
                 break
@@ -374,7 +374,7 @@ class SketchView: UIView {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             foldsCrossed++;
-//                            break outer;
+                            //                            break outer;
                         }
                     }
                 }
@@ -417,7 +417,7 @@ class SketchView: UIView {
                     
                 }
                 else{
-//                    sketch.removeFeatureFromSketch(drawingFeature)
+                    //                    sketch.removeFeatureFromSketch(drawingFeature)
                     AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
                     
                 }
@@ -438,7 +438,7 @@ class SketchView: UIView {
     {
         self.touchesEnded(touches, withEvent: event)
     }
-
+    
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
@@ -474,7 +474,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 //iterate through features and draw them
                 var currentFeatures = sketch.features
-
+                
                 if sketch.features.count > 0{
                     
                     if(sketch.currentFeature != nil){
@@ -529,18 +529,18 @@ class SketchView: UIView {
                     }
                 }
                 
-//                // all edges
-//                for e in sketch.edges
-//                {
-//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-//                    
-//                    // don't draw twin edges
-//                    if(!twinsOfVisited.contains(e))
-//                    {
-//                        e.path.stroke()
-//                        twinsOfVisited.append(e.twin)
-//                    }
-//                }
+                //                // all edges
+                //                for e in sketch.edges
+                //                {
+                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                //
+                //                    // don't draw twin edges
+                //                    if(!twinsOfVisited.contains(e))
+                //                    {
+                //                        e.path.stroke()
+                //                        twinsOfVisited.append(e.twin)
+                //                    }
+                //                }
             }
                 
                 // if grayscale
@@ -602,7 +602,7 @@ class SketchView: UIView {
         path.lineWidth=kLineWidth
         return color
     }
-
+    
     
     func forceRedraw()
     {
@@ -647,10 +647,14 @@ class SketchView: UIView {
                 edgesVisited.append($0.twin)
                 edgesVisited.append($0)
                 // if it is a fold then create dash stroke
-                // TODO: Set orientation here and change the stroke based on mountain or valley
+                // 4, 5 for mountain.  2, 10 for valley
                 if $0.kind == .Fold
                 {
-                    return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    if (self.sketch.isHill($0)){
+                        return "\n<path stroke-dasharray=\"20,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    }
+                    return "\n<path stroke-dasharray=\"20,10,7,5,7,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+
                 }
                 // if not, normal stroke
                 return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
