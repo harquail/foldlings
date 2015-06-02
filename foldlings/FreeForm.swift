@@ -91,7 +91,7 @@ class FreeForm:FoldFeature
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+//        
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -129,7 +129,7 @@ class FreeForm:FoldFeature
                 
             }
         }
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+//        
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
             
@@ -204,7 +204,7 @@ class FreeForm:FoldFeature
             default: println("unexpected")
             }
         }
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+//        
         ///CRASH AFTER
         
         //reject paths whose center point is outside the truncated shape

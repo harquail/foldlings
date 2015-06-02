@@ -218,9 +218,9 @@ class CollectionOfPlanes: Printable, Hashable {
                 let feature = plane.feature
                 //TODO: Mark edges as clean
                 println(feature)
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
+                
                 plane.edges.map({$0.feature = feature})
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
+                
                 
                 println("plane: \(plane)")
                 println("feature: \(feature)")
@@ -228,7 +228,7 @@ class CollectionOfPlanes: Printable, Hashable {
 
 
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
-                println("printed at: \(__FUNCTION__): \(__LINE__)")
+                
 
                 let foldCount = plane.foldcount
                 
@@ -271,7 +271,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         // set parent plane
                         let parent = bottom.twin.plane
-                        println("printed at: \(__FUNCTION__): \(__LINE__)")
+                        
 
                         plane.parent = parent
                         // insert into parent's children
@@ -281,7 +281,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         
                     else if top.kind == .Fold
                     {
-                        println("printed at: \(__FUNCTION__): \(__LINE__)")
+                        
 
                         // set parent plane
                         let parent = top.twin.plane
@@ -300,7 +300,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{
-                            println("printed at: \(__FUNCTION__): \(__LINE__)")
+                            
 
                             plane.masterTop = true
                             masterTop = plane
@@ -311,7 +311,7 @@ class CollectionOfPlanes: Printable, Hashable {
                             // just set this parent specifically
                         else
                         {
-                            println("printed at: \(__FUNCTION__): \(__LINE__)")
+                            
 
                             plane.masterBottom = true
                             masterBottom = plane
@@ -329,13 +329,13 @@ class CollectionOfPlanes: Printable, Hashable {
                         let parent = top.twin.plane
                         
                         plane.parent = parent
-                        println("printed at: \(__FUNCTION__): \(__LINE__)")
+                        
 
 //                        println("plane: \(plane.topEdge)")
 //                        println("parent: \(parent!.topEdge)")
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
-                        println("printed at: \(__FUNCTION__): \(__LINE__)")
+                        
 
                         // if the parent is .Vertical,
                         //change the orientation of the plane to .Horizontal
