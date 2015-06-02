@@ -2,8 +2,8 @@
 //  DrawView.swift
 //  foldlings
 //
-//
-//
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import UIKit
 

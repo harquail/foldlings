@@ -1,11 +1,11 @@
 //
 //  Array+InsertionIntoSorted.swift
-//  foldlings
+// foldlings
 //
-//let newElement = "c"
-//let index = myArray.insertionIndexOf(newElement) { $0 < $1 } // Or: myArray.indexOf(c, <)
-//myArray.insert(newElement, atIndex: index)
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
+
 
 import Foundation
 
