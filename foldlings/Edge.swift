@@ -59,7 +59,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case Fold = "Fold"
         case Cut = "Cut"
     }
-    
+    // TODO: create enum for hill or valley
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
