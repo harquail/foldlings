@@ -4,6 +4,7 @@
 // Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
 // All Rights Reserved
 
+//a sketch is a collection of cuts & folds
 import Foundation
 import CoreGraphics
 import UIKit
@@ -438,32 +439,50 @@ class Sketch : NSObject, Printable  {
         return self.drawingBounds.contains(point)
     }
     
+    // determines whether the edge is a Hill edge
+    // or not (a Valley edge
+    func isHill(edge: Edge) -> Bool
+    {
+        // check plane orientation
+        let plane = edge.plane
+        if plane!.orientation == .Vertical
+        {
+            // check whether top edge or bottom edge
+            return (edge == plane!.topEdge)
+        }
+        else if plane!.orientation == .Horizontal
+        {
+            // check whether top edge or bottom edge
+            return (edge == plane!.topEdge)
+        }
+        return false
+    }
     // use the master card feature to find top edge
     // this is used to find top plane
     // TODO: refactor so that it checks a plane instead of edges
     // might be better living in plane
-    func isTopEdge(edge:Edge) -> Bool
-    {
-        if let masterF = masterFeature{
-            let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
-            return condition
-        }
-        return false
-        
-        
-    }
-    
-    func isBottomEdge(edge:Edge) -> Bool
-    {
-        if let masterF = masterFeature{
-            if(masterF.endPoint != nil){
-                
-                let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
-                return condition
-            }
-        }
-        return false
-    }
+    //        func isTopEdge(edge:Edge) -> Bool
+    //        {
+    //            if let masterF = masterFeature{
+    //                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
+    //                return condition
+    //            }
+    //            return false
+    //
+    //
+    //        }
+    //
+    //        func isBottomEdge(edge:Edge) -> Bool
+    //        {
+    //            if let masterF = masterFeature{
+    //                if(masterF.endPoint != nil){
+    //
+    //                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
+    //                    return condition
+    //                }
+    //            }
+    //            return false
+    //        }
     
     //replaces edges to close the gap left by deleting a feature
     func healFoldsOccludedBy(feature:FoldFeature){
