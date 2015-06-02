@@ -32,7 +32,10 @@ extension Array {
     
     // inserts an element into an ordered array
     mutating func insertIntoOrdered(x: T, ordering: (T, T) -> Bool){
+        println("printed at: \(__FUNCTION__): \(__LINE__)")
         let index = self.insertionIndexOf(x, isOrderedBefore: ordering)
+        println("printed at: \(__FUNCTION__): \(__LINE__)")
+        println("i: \(index)")
         self.insert(x, atIndex: index)
     }
 }
