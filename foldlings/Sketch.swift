@@ -534,32 +534,6 @@ class Sketch : NSObject, Printable  {
             feature.parent?.featureEdges?.append(edge)
             self.addEdge(edge)
         }
-        // use the master card feature to find top edge
-        // this is used to find top plane
-        // TODO: refactor so that it checks a plane instead of edges
-        // might be better living in plane
-        //        func isTopEdge(edge:Edge) -> Bool
-        //        {
-        //            if let masterF = masterFeature{
-        //                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
-        //                return condition
-        //            }
-        //            return false
-        //
-        //
-        //        }
-        //
-        //        func isBottomEdge(edge:Edge) -> Bool
-        //        {
-        //            if let masterF = masterFeature{
-        //                if(masterF.endPoint != nil){
-        //
-        //                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
-        //                    return condition
-        //                }
-        //            }
-        //            return false
-        //        }
         
         //for each internal edge (which spans a gap)
         for edge in internalEdges{
