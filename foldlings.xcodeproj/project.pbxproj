@@ -69,7 +69,6 @@
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
-		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
 		F16673BD1ACE3F5700243D70 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A41ACE3F5700243D70 /* Info.plist */; };
 		F16673BE1ACE3F5700243D70 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673A61ACE3F5700243D70 /* JRSwizzle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A71ACE3F5700243D70 /* PerformanceBezier-Info.plist */; };
@@ -301,7 +300,6 @@
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F16673A41ACE3F5700243D70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F16673A51ACE3F5700243D70 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		F16673A61ACE3F5700243D70 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
@@ -768,7 +766,6 @@
 			children = (
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
-				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
@@ -1208,7 +1205,6 @@
 				F16673C21ACE3F5700243D70 /* UIBezierPath+Description.m in Sources */,
 				F1BE6A821AC1EF4A00B99C8F /* UIImage+ANImageBitmapRep.m in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
-				F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */,
 				F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */,
 				F1BE6A7E1AC1EF4A00B99C8F /* ANImageBitmapRep.m in Sources */,
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
