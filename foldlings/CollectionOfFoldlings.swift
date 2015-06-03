@@ -2,9 +2,8 @@
 //  CollectionOfFoldlings.swift
 //  foldlings
 //
-//  Created by nook on 11/30/14.
-//  Copyright (c) 2014 nook. All rights reserved.
-//
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import UIKit

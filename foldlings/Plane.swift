@@ -1,8 +1,9 @@
 //
-//  Plane.swift
-//  foldlings
+// Plane.swift
+// foldlings
 //
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import CoreGraphics
@@ -28,6 +29,7 @@ class Plane: Printable, Hashable
     enum Kind: String {
         case Hole = "Hole"
         case Plane = "Plane"
+        case Flap = "Flap"
     }
     
     
@@ -38,19 +40,28 @@ class Plane: Printable, Hashable
     }
     
     var kind = Kind.Hole
-    var orientation = Orientation.Horizontal
+    var orientation = Orientation.Vertical
     var color = getRandomColor(0.5)
-//    var color : UIColor { get{
-//        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
-//        }
-//        }
+    //var color = getOrientaionColor(self.orientation)
     var edges : [Edge]!
     var path = UIBezierPath()
     var feature:FoldFeature!
+    var topEdge : Edge!
+    var bottomEdge : Edge!
+    var parent : Plane!
+    var children : [Plane] = []
+    var foldcount : Int!
+    
+    
+    // mark if this plane is the master's feature top or bottom plane
+    var masterTop: Bool = false
+    var masterBottom: Bool = false
+    
     private var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
+    
     
     
     init()
@@ -108,6 +119,21 @@ class Plane: Printable, Hashable
     
     //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
     /// the fold with minimum y height in a plane
+    func bottomEdge(tab:Bool = true) {
+        // loop through edges
+        // if topEdge is not set then, set it 
+        // else set bottomEdge
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+    }
+    
+    func topEdge(tab:Bool = true) {
+        // loop through edges
+        // if topEdge is not set then, set it
+        // else set bottomEdge
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+
+    }
+    
     func bottomFold(tab:Bool = true) -> Edge? {
         
         var minEdge:Edge? = nil
@@ -152,7 +178,7 @@ class Plane: Printable, Hashable
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
-    /// #TODO: this should also check for and fix intersecting paths
+    //TODO: Look into this for weirdness in the path 
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
 
         let elements = path.getPathElements()
@@ -196,12 +222,15 @@ class Plane: Printable, Hashable
         return outPath
     }
     
+
     func hasEdge(edge:Edge) -> Bool
     {
         return self.edges.contains(edge)
     }
     
     //check if edge is in the plane
+    // to find the parent of the plane 
+    // just use twin's plane? for the fold 
     //TODO: change this to return parent or find where this is called
     func containerPlane(planes:[Plane]) -> Plane? {
         

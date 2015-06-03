@@ -1,7 +1,7 @@
+// foldlings
 //
-//  Use this file to import your target's public headers that you would like to expose to Swift.
-//
-
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 
 #import "UIBezierPath+OBAdditions.h"

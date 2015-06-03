@@ -1,7 +1,9 @@
 //
 //  Edge.swift
-//  foldlings
 //
+// foldlings
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import CoreGraphics
@@ -50,14 +52,14 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var kind = Kind.Cut
     var adjacency: [Edge] = []
     var isMaster = false
-    var colorOverride:UIColor? = getRandomColor(0.8)
+    var colorOverride:UIColor?
     var feature:FoldFeature?
     
     enum Kind: String {
         case Fold = "Fold"
         case Cut = "Cut"
     }
-    
+    // TODO: create enum for hill or valley
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
@@ -97,6 +99,10 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
+        
+        self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
+        self.adjacency = aDecoder.decodeObjectForKey("adj") as! [Edge]
+        self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
 
     }
     
@@ -106,6 +112,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+        
+        aCoder.encodeObject(self.twin, forKey: "twin")
+        aCoder.encodeObject(self.adjacency, forKey: "adj")
+        aCoder.encodeObject(self.feature, forKey: "feature")
+
     }
     
     /// makes a straight edge between two points, constructing the path as well

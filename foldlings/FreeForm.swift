@@ -5,6 +5,10 @@
 //  Created by nook on 3/24/15.
 //  Copyright (c) 2015 nook. All rights reserved.
 //
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
+
 
 import Foundation
 
@@ -90,7 +94,7 @@ class FreeForm:FoldFeature
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+//        
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -128,7 +132,7 @@ class FreeForm:FoldFeature
                 
             }
         }
-//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+//        
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
             
@@ -446,7 +450,6 @@ class FreeForm:FoldFeature
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-                    println("added fold");
                     
                     for fold in edgesToAdd{
                         self.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})

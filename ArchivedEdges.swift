@@ -1,8 +1,9 @@
 //
 //  ArchiviedEdges.swift
-//  foldlings
+// foldlings
 //
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 
@@ -89,7 +90,7 @@ class ArchivedEdges : NSObject, NSCoding {
                 let sktch = Sketch(at:dex, named:sktchName, userOriginated:false)
                 for feature in unarchived.features{
                    
-                    println("added \(feature)")
+                    //println("added \(feature)")
                     //set the master feature
                     if(feature is MasterCard){
                         sktch.masterFeature = feature as? MasterCard //this will always succeed

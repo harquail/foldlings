@@ -2,8 +2,8 @@
 //  DrawView.swift
 //  foldlings
 //
-//
-//
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import UIKit
 
@@ -127,7 +127,7 @@ class SketchView: UIView {
                 
                 if let e = sketch.draggedEdge{
                     tappedF.deltaY = gesture.translationInView(self).y
-//                    println("delta: \(tappedF.deltaY)")
+                    //                    println("delta: \(tappedF.deltaY)")
                     
                     //if boxfold, make new edges & invalidate
                     if let box = tappedF as? BoxFold{
@@ -176,7 +176,7 @@ class SketchView: UIView {
                                     
                                 }
                                 
-//                                println("Failed to intersect with fold at \(height)");
+                                //                                println("Failed to intersect with fold at \(height)");
                                 
                                 AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
                             }
@@ -184,16 +184,16 @@ class SketchView: UIView {
                                 println("success: \(height)")
                             }
                         }
-//                        println("JUST BEFORE FEATUREEDGES EXTEND")
-
+                        //                        println("JUST BEFORE FEATUREEDGES EXTEND")
+                        
                         sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-//                        println("ADD TABS")
+                        //                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
                         
                         sketch.removeFeatureFromSketch(shape,healOnDelete:false)
                         sketch.addFeatureToSketch(shape, parent: shape.parent!)
-
+                        
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
@@ -206,16 +206,16 @@ class SketchView: UIView {
                         boxFoldDragEdge(box)
                         
                         /// removing the feature and re-adding it
-//                        box.invalidateEdges()
+                        //                        box.invalidateEdges()
                         sketch.removeFeatureFromSketch(box, healOnDelete: false)
                         sketch.addFeatureToSketch(box, parent: box.parent!)
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
                         
-
                         
-//                        sketch.refreshFeatureEdges()
+                        
+                        //                        sketch.refreshFeatureEdges()
                         self.sketch.getPlanes()
                         
                         forceRedraw()
@@ -379,7 +379,7 @@ class SketchView: UIView {
                             drawingFeature.drivingFold = fold
                             drawingFeature.parent = feature
                             foldsCrossed++;
-//                            break outer;
+                            //                            break outer;
                         }
                     }
                 }
@@ -422,14 +422,14 @@ class SketchView: UIView {
                     
                 }
                 else{
-//                    sketch.removeFeatureFromSketch(drawingFeature)
+                    //                    sketch.removeFeatureFromSketch(drawingFeature)
                     AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
                     
                 }
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                sketch.getPlanes()
+                //sketch.getPlanes()
                 forceRedraw()
             }
             
@@ -443,7 +443,7 @@ class SketchView: UIView {
     {
         self.touchesEnded(touches, withEvent: event)
     }
-
+    
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
@@ -479,7 +479,7 @@ class SketchView: UIView {
                 var twinsOfVisited = [Edge]()
                 //iterate through features and draw them
                 var currentFeatures = sketch.features
-
+                
                 if sketch.features.count > 0{
                     
                     if(sketch.currentFeature != nil){
@@ -534,6 +534,18 @@ class SketchView: UIView {
                     }
                 }
                 
+                //                // all edges
+                //                for e in sketch.edges
+                //                {
+                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+                //
+                //                    // don't draw twin edges
+                //                    if(!twinsOfVisited.contains(e))
+                //                    {
+                //                        e.path.stroke()
+                //                        twinsOfVisited.append(e.twin)
+                //                    }
+                //                }
             }
                 
                 // if grayscale
@@ -595,7 +607,7 @@ class SketchView: UIView {
         path.lineWidth=kLineWidth
         return color
     }
-
+    
     
     func forceRedraw()
     {
@@ -626,38 +638,44 @@ class SketchView: UIView {
         //        }
         
     }
-        //This function creates the contents of the SVG file
-        // converts CGPaths into SVG path and organizes
-        // it in correct xml format
-        func svgImage() -> String
-        {
-            var edgesVisited:[Edge] = []
-            
-            var paths:[String] = sketch.edges.map({
-                if(!edgesVisited.contains($0))
+    
+    //This function creates the contents of the SVG file
+    // converts CGPaths into SVG path and organizes
+    // it in correct xml format
+    func svgImage() -> String
+    {
+        var edgesVisited:[Edge] = []
+        
+        var paths:[String] = sketch.edges.map({
+            if(!edgesVisited.contains($0))
+            {
+                edgesVisited.append($0.twin)
+                edgesVisited.append($0)
+                // if it is a fold then create dash stroke
+                // 4, 5 for mountain.  2, 10 for valley
+                if $0.kind == .Fold
                 {
-                    edgesVisited.append($0.twin)
-                    edgesVisited.append($0)
-                    // if it is a fold then create dash stroke
-                    if $0.kind == .Fold
-                    {
-                        return "\n<path stroke-dasharray=\"10,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    if (self.sketch.isHill($0)){
+                        return "\n<path stroke-dasharray=\"20,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                     }
-                    // if not, normal stroke
-                    return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+                    return "\n<path stroke-dasharray=\"20,10,7,5,7,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+
                 }
-                return ""
-            })
-            
-            //add closing tags
-            paths.append("\n</g>\n</svg>")
-            
-            // concatenate all the paths into one string and
-            // insert beginning tags for svg file
-            let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
-            
-            return svgString
-        }
+                // if not, normal stroke
+                return "\n<path d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
+            }
+            return ""
+        })
+        
+        //add closing tags
+        paths.append("\n</g>\n</svg>")
+        
+        // concatenate all the paths into one string and
+        // insert beginning tags for svg file
+        let svgString = paths.reduce("<svg version=\"1.1\" \nbaseProfile=\"full\" \nheight=\" \(self.bounds.height)\" width=\"\(self.bounds.width)\"\nxmlns=\"http://www.w3.org/2000/svg\"> \n<g fill=\"none\" stroke=\"black\" stroke-width=\".1\">") { $0 + $1 }
+        
+        return svgString
+    }
     
     
     //    func setButtonBG(image:UIImage){

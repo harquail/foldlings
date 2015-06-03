@@ -1,10 +1,11 @@
 //
 //  FoldFeature.swift
-//  foldlings
+// foldlings
 //
-//  Created by nook on 2/20/15.
-//  Copyright (c) 2015 nook. All rights reserved.
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
+
 
 import Foundation
 
@@ -25,7 +26,7 @@ class FoldFeature: NSObject, Printable
 
     var featurePlanes:[Plane] = []
     //not used yet
-    var drawingPlanes:[Plane] = []
+    //var drawingPlanes:[Plane] = []
     
     
     var horizontalFolds:[Edge] = [] //list horizontal folds
@@ -64,7 +65,7 @@ class FoldFeature: NSObject, Printable
         //horizontalFolds
         //cachedEdges
         //validity
-        println("encoded \(featureEdges)")
+        //println("encoded \(featureEdges)")
         
         if let point = startPoint{
         aCoder.encodeCGPoint(point, forKey: "startPoint")

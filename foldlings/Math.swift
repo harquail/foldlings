@@ -1,8 +1,9 @@
 ////
 ////  Math.swift
-////  foldlings
-////
-////
+// foldlings
+//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 
 func square(a: CGFloat) -> CGFloat{
@@ -24,6 +25,10 @@ func getAngle(edgeA: Edge, edgeB: Edge) -> CGFloat{
     
     return angle
     
+}
+// returns the average of two CGFloats
+func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
+    return CGFloat((a + b)/2.0)
 }
 
 

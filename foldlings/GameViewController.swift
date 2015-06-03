@@ -1,8 +1,9 @@
 //
 //  GameViewController.swift
-//  foldlings
+// foldlings
 //
-//
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import UIKit
 import QuartzCore
@@ -11,12 +12,13 @@ import Foundation
 import MessageUI
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
-
+    
     /*************image variables***********/
     var bgImage:UIImage!
     var laserImage:UIImage!
     var svgString: String!
-    var planes:CollectionOfPlanes = CollectionOfPlanes()
+    var name: String!
+    var planes:CollectionOfPlanes! //= CollectionOfPlanes()
     var parentButton = UIButton()
     let scene = SCNScene()
     
@@ -24,13 +26,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let zeroDegrees =  Float(0.0*M_PI)
     let ninetyDegrees = Float(0.5*M_PI)
     let ninetyDegreesNeg = Float(-0.5*M_PI)
+    let fourtyFiveDegrees = Float(0.25*M_PI)
     let fourtyFiveDegreesNeg = Float(-0.25*M_PI)
+    let thirtyDegrees = Float(M_PI/6.0)
+    let thirtyDegreesNeg = Float(-M_PI/6.0)
+    let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
     
-    var theOneSphere = SCNNode()
+    /*****************scene variables*****************/
+    var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
-    var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
+    //var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
     var debugColor = false
@@ -99,11 +106,49 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         mailView.mailComposeDelegate = self
         mailView.setSubject("Here is your Pop-up Card")
         mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
-        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"file.svg")
+        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"\(name).svg")
         
         presentViewController(mailView, animated: true, completion: nil)
     }
     
+    // hide status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "backtoSketchSegue") {
+            
+            let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
+            //            viewController.sketchView.setButtonBG(previewImage())
+            
+        }
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // sets preview button image
+    func setButtonBG(image:UIImage){
+        bgImage = image;
+    }
+    
+    func previewImage() -> UIImage{
+        // TODO: clear other buttons here too
+        self.backToSketchButton.alpha = 0
+        
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
+        view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
+        var img = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return img
+    }
     /**************************Create the 3d scene***********************/
     
     override func viewDidLoad() {
@@ -128,68 +173,48 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        
-//        // create and add a light to the scene
-//        let lightNode = SCNNode()
-//        lightNode.light = SCNLight()
-//        lightNode.light!.type = SCNLightTypeOmni
-//        lightNode.light!.color = UIColor.whiteColor()
-//        lightNode.light!.attenuationStartDistance = 100
-//        lightNode.light!.attenuationEndDistance = 1000
-//        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-//        //scene.rootNode.addChildNode(lightNode)
-//        // create and add an ambient light to the scene
-//        let ambientLightNode = SCNNode()
-//        ambientLightNode.light = SCNLight()
-//        ambientLightNode.light!.type = SCNLightTypeAmbient
-//        ambientLightNode.light!.color = UIColor.whiteColor()
-//        scene.rootNode.addChildNode(ambientLightNode)
-//        
-//        scene.physicsWorld.gravity.y = 0.0
         
-        //create the OneShpere
-        scene.rootNode.addChildNode(theOneSphere)
-        theOneSphere.position.y = theOneSphere.position.y + 4.0
+        // create and add a light to the scene
+        //        let lightNode = SCNNode()
+        //        lightNode.light = SCNLight()
+        //        println(lightNode)
+        //        lightNode.light!.type = SCNLightTypeOmni
+        //        lightNode.light!.color = UIColor.whiteColor()
+        //        lightNode.light!.attenuationStartDistance = 100
+        //        lightNode.light!.attenuationEndDistance = 1000
+        //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        //        scene.rootNode.addChildNode(lightNode)
+        //        // create and add an ambient light to the scene
+        //        let ambientLightNode = SCNNode()
+        //        ambientLightNode.light = SCNLight()
+        //        ambientLightNode.light!.type = SCNLightTypeAmbient
+        //        ambientLightNode.light!.color = UIColor.whiteColor()
+        //        scene.rootNode.addChildNode(ambientLightNode)
+        
+        scene.physicsWorld.gravity.y = 0.0
+        
+        //create the sceneShpere
+        scene.rootNode.addChildNode(sceneSphere)
+        sceneSphere.position.y = sceneSphere.position.y + 4.0
         
         
-        //theOneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
-        theOneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
-        
-        // main loop for defining plane things
-        // add each plane to the scene
-        for (i, plane) in enumerate(planes.planes) {
-            
-            plane.clearNode()
-            
-            var parent = theOneSphere
-            // if plane is a hole, its parent should be the plane that contains it
-            if(plane.kind == Plane.Kind.Hole) {
-                //TODO: should depend on parent feature 
-                let parentPlane = plane.containerPlane(planes.planes)
-                
-                if parentPlane != nil{
-                    let n = plane.lazyNode()
-                    n.transform = SCNMatrix4Identity
-                    n.scale = SCNVector3Make(1.0, 1.0, 1.0)
-                    parent = parentPlane!.lazyNode()
-                    parent.addChildNode(n)
-                }
-            }
-        }
-        
+        //sceneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
+        sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
         
         visited = []
-        notMyChild = [Int: [Plane]]()
-        if var topPlaneSphere = createPlaneTree(planes.topPlane!, hill: false, recurseCount: 0) {
-            theOneSphere.addChildNode(topPlaneSphere)
+        //notMyChild = [Int: [Plane]]()
+        //printTree(planes.masterTop)
+        if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
+            sceneSphere.addChildNode(topPlaneSphere)
         }
         
         
         // make bottomPlane manually
-        if var bottomPlane = planes.bottomPlane {
+        // get bottomPlane from planes list
+        if var bottomPlane = planes.masterBottom {
             let bottomPlaneNode = bottomPlane.lazyNode()
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-            theOneSphere.addChildNode(masterSphere)
+            sceneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode)
             undoParentTranslate(masterSphere, child: bottomPlaneNode)
             bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
@@ -226,42 +251,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
     }
     
+    func printTree(plane: Plane){
+        println("parent: \(plane.topEdge)")
+        println("children")
+        plane.children.map({println($0.topEdge)})
+        for p in plane.children{
+            printTree(p)
+        }
+    }
+    
+    
     
     // if plane is second plane, don't add physics body
     // walk tree, save path, record fold and hill or valley, place hinge into visited
-    //TODO: Use feature's parenting schema and planes to create the tree faster
-    func createPlaneTree(plane: Plane, hill:Bool, recurseCount:Int) -> SCNNode?
+    func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
     {
-        if notMyChild[recurseCount] == nil {
-            notMyChild[recurseCount] = [Plane]()
-        }
-        let bottom = planes.bottomPlane!
         
         // base case if bottom
-        if plane == bottom {
-            //            println("bottomed out")
+        if plane.masterBottom {
             return nil
         }
         // base case already visited or going back up
         if contains(visited, plane) {
-            //            println("already been here")
-            return nil
-        }
-        // base case going back up
-        if flattenUntil(notMyChild, level: recurseCount).contains(plane) {
-            //            println("belongs to prev")
             return nil
         }
         
+        //println("\(recurseCount) : \(plane.topEdge)")
         
-        // functionality here
         var node = plane.lazyNode()
         
+        // add fade-in key for holes
         if(plane.kind != .Hole){
             node.addAnimation(fadeIn(), forKey: "fade in")
         }
         
-        var useBottom = (recurseCount == 0)
+        var useBottom = (recurseCount == 0)//check if we hit top plane
         let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
         plane.masterSphere = masterSphere
         masterSphere.addChildNode(node)
@@ -274,11 +298,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             m.diffuse.contents = plane.color
         }
         node.geometry?.firstMaterial = m
+        masterSphere.geometry?.firstMaterial = m
         
-        //make sphere invisible
-        let transparentMaterial = SCNMaterial()
-        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = transparentMaterial
+        
+        //        //make sphere invisible
+        //        let transparentMaterial = SCNMaterial()
+        //        transparentMaterial.diffuse.contents = UIColor.clearColor()
+        //        masterSphere.geometry?.firstMaterial = transparentMaterial
         
         // different based on orientation
         if hill {
@@ -288,11 +314,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         
-        var adj = planes.adjacency[plane]!
+        var children = plane.children
         visited.append(plane)
-        notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+        //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
         // loop through the adj starting with top plane
-        for p in adj
+        for p in children
         {
             let rc = recurseCount + 1
             if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
@@ -301,18 +327,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
                 undoParentTranslate(masterSphere, child: childSphere)
             }
         }
-        //        println("recurse level: \(recurseCount)")
         return masterSphere
-    }
-    
-    
-    /// fade in animation makes it less jarring
-    func fadeIn() -> CABasicAnimation{
-        var fadeIn = CABasicAnimation(keyPath:"opacity");
-        fadeIn.duration = 2.0;
-        fadeIn.fromValue = 0.0;
-        fadeIn.toValue = 1.0;
-        return fadeIn
+        
+        
     }
     
     ///returns a list from dict including all previous levels up to but including the one
@@ -327,6 +344,67 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         return list
     }
     
+    
+    //
+    func showNodePivot(node:SCNNode) {
+        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+        
+    }
+    
+    /// function to show plane corners and shows how to get the anchor points
+    func showPlaneCorners(plane:Plane, node:SCNNode) {
+        for edge in plane.edges {
+            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
+            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
+            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
+            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
+        }
+    }
+    
+    // this determines the parent sphere for the plane
+    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
+        
+        var edge:Edge
+        
+        if(bottom){// TODO:confused
+            //println("bottom/top: \(plane.topEdge)")
+            edge = plane.bottomEdge
+        }
+        else{
+            edge = plane.topEdge
+        }
+        
+        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, edge.end.x)), Float(edge.start.y), Float(0.0))
+        let anchorStart = node.convertPosition(startPoint, toNode: nil)
+        let masterSphere = makeSphere(atPoint: anchorStart)
+        
+        let m = SCNMaterial()
+        m.diffuse.contents = UIColor.clearColor()
+        masterSphere.geometry?.firstMaterial = m
+        
+        return masterSphere
+    }
+    
+    ///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+        sphereNode.position = atPoint
+        return sphereNode
+    }
+    
+    ///makes a little sphere at the given point in world space
+    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
+        let sphereGeometry = SCNSphere(radius: 0.15)
+        let sphereNode = SCNNode(geometry: sphereGeometry)
+        sphereNode.position = atPoint
+        inNode.addChildNode(sphereNode)
+    }
+    
+    
+    /***********************animation*************************/
     
     /// back and forth rotation animation
     /// this is magical
@@ -354,111 +432,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    /// fade in animation makes it less jarring
+    func fadeIn() -> CABasicAnimation{
+        var fadeIn = CABasicAnimation(keyPath:"opacity");
+        fadeIn.duration = 2.0;
+        fadeIn.fromValue = 0.0;
+        fadeIn.toValue = 1.0;
+        return fadeIn
     }
     
-    // sets preview button image
-    func setButtonBG(image:UIImage){
-        bgImage = image;
-    }
-    
-    func previewImage() -> UIImage{
-        // TODO: clear other buttons here too
-        self.backToSketchButton.alpha = 0
-        
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, true, 0.0);
-        view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates: true)
-        var img = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return img
-    }
-    
-    
-    func showNodePivot(node:SCNNode) {
-        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
-        
-    }
-    
-    
-    /// function to show plane corners and shows how to get the anchor points
-    func showPlaneCorners(plane:Plane, node:SCNNode) {
-        for edge in plane.edges {
-            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
-            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
-            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
-            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
-        }
-    }
-    
-    // TODO: use features here in the functions called here
-    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
-        
-        var edge:Edge
-        
-        if(bottom){
-            edge = plane.bottomFold()!
-        }
-            //put check in for no top fold
-        else{
-            edge = plane.topFold()!
-        }
-        
-        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, b:edge.end.x)), Float(edge.start.y), Float(0.0))
-        let anchorStart = node.convertPosition(startPoint, toNode: nil)
-        let masterSphere = makeSphere(atPoint: anchorStart)
-        
-        let m = SCNMaterial()
-        m.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = m
-        
-        return masterSphere
-    }
-    
-    
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        return sphereNode
-    }
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        inNode.addChildNode(sphereNode)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "backtoSketchSegue") {
-            
-            let viewController:SketchViewController = segue.destinationViewController as! SketchViewController
-            
-        }
-    }
-    
-    func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
-        return CGFloat((a + b)/2.0)
-    }
-    
-    // hide status bar
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-    
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-
     
     
     

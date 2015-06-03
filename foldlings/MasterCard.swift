@@ -1,10 +1,10 @@
 //
 //  MasterCard.swift
-//  foldlings
+// foldlings
 //
-//  Created by nook on 3/22/15.
-//  Copyright (c) 2015 nook. All rights reserved.
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
 
 import Foundation
 
