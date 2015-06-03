@@ -35,7 +35,7 @@
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
-		F13811961B1E87780075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */; };
+		F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
@@ -240,7 +240,7 @@
 		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CGPoint.swift; path = ../CGPoint.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
-		F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+		F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
 		F13AD4E81ABF78D100372898 /* MasterCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCard.swift; sourceTree = "<group>"; };
 		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
@@ -769,7 +769,7 @@
 		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
 			isa = PBXGroup;
 			children = (
-				F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */,
+				F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */,
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
@@ -1202,7 +1202,7 @@
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				F1EB37591AE4A1AD007DCEC5 /* Character.swift in Sources */,
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
-				F13811961B1E87780075DB2A /* APIKeysAndOtherSecrets.swift in Sources */,
+				F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */,
 				F1EB375B1AE4A1AD007DCEC5 /* Double.swift in Sources */,
 				F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */,
 				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,
