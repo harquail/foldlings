@@ -340,24 +340,26 @@ class Sketch : NSObject, Printable  {
             }
         }
         
-        
-//        /// look through edges and return vertex in the hit distance if found
-//        func vertexHitTest(point:CGPoint) -> CGPoint?
-//        {
-//            var np:CGPoint?
-//            var minDist = CGFloat.max
-//            for (k,v) in adjacency
-//            {
-//                var d = CGPointGetDistance(k, point)
-//                if d < minDist
-//                {
-//                    np = k
-//                    minDist = d
-//                }
-//            }
-//            
-//            return (minDist < kHitTestRadius*1.5) ? np : nil
-//        }
+        // if no other edges in adjacency, return twin
+        closest.crossed = true
+        return closest
+    }
+    
+    
+    /// look through edges and return vertex in the hit distance if found
+    func vertexHitTest(point:CGPoint) -> CGPoint?
+    {
+        var np:CGPoint?
+        var minDist = CGFloat.max
+        for (k,v) in adjacency
+        {
+            var d = CGPointGetDistance(k, point)
+            if d < minDist
+            {
+                np = k
+                minDist = d
+            }
+        }
         
         return (minDist < kHitTestRadius*1.5) ? np : nil
     }
@@ -387,7 +389,9 @@ class Sketch : NSObject, Printable  {
                 r = (edge, np)
             }
         }
-        
+        return r
+    }
+    
 //        
 //        /// returns a list of edges if any of then intersect the given shape
 //        /// DO not call with an unclosed path
@@ -450,8 +454,21 @@ class Sketch : NSObject, Printable  {
             return intersecting
         }
         
-        /// check bounds for drawing
-        func checkInBounds(point: CGPoint) -> Bool
+    
+    
+    /// check bounds for drawing
+    func checkInBounds(point: CGPoint) -> Bool
+    {
+        return self.drawingBounds.contains(point)
+    }
+    
+    // determines whether the edge is a Hill edge
+    // or not (a Valley edge
+    func isHill(edge: Edge) -> Bool
+    {
+        // check plane orientation
+        let plane = edge.plane
+        if plane!.orientation == .Vertical
         {
             // check whether top edge or bottom edge
             return (edge == plane!.topEdge)
@@ -576,6 +593,10 @@ class Sketch : NSObject, Printable  {
             feature.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
         }
         
+        feature.featureEdges?.extend(folds)
+        folds.map({self.addEdge($0)})
+    }
+    
         func replaceCut(feature: FoldFeature, cut:Edge, cuts:[Edge]){
             
 //            feature.horizontalFolds.remove(fold)
@@ -588,13 +609,20 @@ class Sketch : NSObject, Printable  {
             
             feature.featureEdges?.extend(cuts)
             cuts.map({self.addEdge($0)})
-        }
+    }
 
-        
-        // add any feature edges that aren't
-        // already in the sketch 
-        // create edges, if there are none
-        func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature)
+    
+    
+    // add any feature edges that aren't
+    // already in the sketch
+    // create edges, if there are none
+    func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature)
+    {
+        // get the edges
+        let fEdges = feature.getEdges()
+        // set edges for feature, for freeform
+        feature.featureEdges = fEdges
+        for edge in fEdges
         {
             if (!self.edges.contains(edge))// and if twin has a feature
             {
@@ -651,6 +679,9 @@ class Sketch : NSObject, Printable  {
                 returnee[point] = nearPoints
             }
         }
+        return returnee
+    }
+
         
         // deal with intersections between features
         func intersect(feature:FreeForm,with:[FoldFeature]){
@@ -734,6 +765,7 @@ class Sketch : NSObject, Printable  {
             // modify sketch as needed
             
             
-        }
-        
 }
+}
+
+

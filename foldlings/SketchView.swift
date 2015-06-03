@@ -333,6 +333,8 @@ class SketchView: UIView {
                 println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
                 
+                //                println(sketch.almostCoincidentEdgePoints())
+                
             default:
                 break
             }

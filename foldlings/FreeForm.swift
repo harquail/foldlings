@@ -1,9 +1,6 @@
 //
-//  d.swift
-//  foldlings
-//
-//  Created by nook on 3/24/15.
-//  Copyright (c) 2015 nook. All rights reserved.
+// FreeForm.swift
+// foldlings
 //
 // Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
 // All Rights Reserved
@@ -207,6 +204,7 @@ class FreeForm:FoldFeature
             default: println("unexpected")
             }
         }
+
 
         //TODO: path.center() is NOT the centroid — it's the center of the bounding box
         // but maybe that's good enough
