@@ -211,12 +211,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // make bottomPlane manually
         // get bottomPlane from planes list
         if var bottomPlane = planes.masterBottom {
-            let bottomPlaneNode = bottomPlane.lazyNode()
-            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
+            //  put a check here for !nil node
+            var bottomPlaneNode = bottomPlane.node
+            var translate = false
+
+            if bottomPlane.node == nil{
+            bottomPlaneNode = bottomPlane.makeNode()
+            }
+            
+            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
             sceneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode)
-            undoParentTranslate(masterSphere, child: bottomPlaneNode)
-            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
+            masterSphere.addChildNode(bottomPlaneNode!)
+            if (translate){
+            undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+            }
+            bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
         }
         
         // retrieve the SCNView
@@ -265,6 +274,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     // walk tree, save path, record fold and hill or valley, place hinge into visited
     func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
     {
+        var translate = false
         
         // base case if bottom
         if plane.masterBottom {
@@ -276,19 +286,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         //println("\(recurseCount) : \(plane.topEdge)")
+        // put a check here for !nil node
+        var node = plane.node
         
-        var node = plane.lazyNode()
+        if plane.node == nil{
+        node = plane.makeNode()
+        translate = true
+        }
+        
         
         // add fade-in key for holes
         if(plane.kind != .Hole){
-            node.addAnimation(fadeIn(), forKey: "fade in")
+            node!.addAnimation(fadeIn(), forKey: "fade in")
         }
         
         var useBottom = (recurseCount == 0)//check if we hit top plane
-        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
+        let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
         plane.masterSphere = masterSphere
-        masterSphere.addChildNode(node)
-        undoParentTranslate(masterSphere, child: node)
+        masterSphere.addChildNode(node!)
+        
+        if (translate){
+        undoParentTranslate(masterSphere, child: node!)
+        }
         
         let m = SCNMaterial()
         if debugColor {
@@ -296,7 +315,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         } else {
             m.diffuse.contents = plane.color
         }
-        node.geometry?.firstMaterial = m
+        node!.geometry?.firstMaterial = m
         masterSphere.geometry?.firstMaterial = m
         
         
@@ -323,7 +342,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
+                if (translate){
                 undoParentTranslate(masterSphere, child: childSphere)
+                }
             }
         }
         return masterSphere

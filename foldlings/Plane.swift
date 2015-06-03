@@ -56,7 +56,7 @@ class Plane: Printable, Hashable
     var masterTop: Bool = false
     var masterBottom: Bool = false
     
-    private var node:SCNNode? = nil
+    var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
@@ -80,11 +80,11 @@ class Plane: Printable, Hashable
     }
     
     /// makes an SCNNode by extruding the UIBezierPath
-    func lazyNode() -> SCNNode{
+    func makeNode() -> SCNNode{
         
-        if node == nil
-        {
-            
+//        if node == nil
+//        {
+        
             // make the node
             node = SCNNode()
             var shape = SCNShape(path: path, extrusionDepth: 5)
@@ -112,62 +112,62 @@ class Plane: Printable, Hashable
             // move node to where the camera can see it
             node!.position = transformToCamera
             node!.scale = scaleToCamera
-        }
+//        }
         return node!
     }
     
     //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
     /// the fold with minimum y height in a plane
-    func bottomEdge(tab:Bool = true) {
-        // loop through edges
-        // if topEdge is not set then, set it 
-        // else set bottomEdge
-        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
-    }
-    
-    func topEdge(tab:Bool = true) {
-        // loop through edges
-        // if topEdge is not set then, set it
-        // else set bottomEdge
-        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
-
-    }
-    
-    func bottomFold(tab:Bool = true) -> Edge? {
-        
-        var minEdge:Edge? = nil
-        
-        var minY:CGFloat = 0.0
-        for edge in edges {
-            if(edge.kind ==  .Fold ) {
-                if(edge.start.y > minY) {
-                    minEdge = edge
-                    minY = edge.start.y
-                }
-            }
-        }
-        
-        return minEdge
-    }
-    
-    /// the fold with maximum y height in a plane
-    // TODO: Topfold based on ordered horizontal folds???
-    func topFold(tab:Bool = true) -> Edge? {
-        
-        var maxEdge:Edge? = nil
-        
-        var maxY:CGFloat = CGFloat.max
-        for edge in edges {
-            if(edge.kind == .Fold ) {
-                if(edge.start.y < maxY) {
-                    maxEdge = edge
-                    maxY = edge.start.y
-                }
-            }
-        }
-                
-        return maxEdge
-    }
+//    func bottomEdge(tab:Bool = true) {
+//        // loop through edges
+//        // if topEdge is not set then, set it 
+//        // else set bottomEdge
+//        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+//    }
+//    
+//    func topEdge(tab:Bool = true) {
+//        // loop through edges
+//        // if topEdge is not set then, set it
+//        // else set bottomEdge
+//        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+//
+//    }
+//
+//    func bottomFold(tab:Bool = true) -> Edge? {
+//        
+//        var minEdge:Edge? = nil
+//        
+//        var minY:CGFloat = 0.0
+//        for edge in edges {
+//            if(edge.kind ==  .Fold ) {
+//                if(edge.start.y > minY) {
+//                    minEdge = edge
+//                    minY = edge.start.y
+//                }
+//            }
+//        }
+//        
+//        return minEdge
+//    }
+//    
+//    /// the fold with maximum y height in a plane
+//    // TODO: Topfold based on ordered horizontal folds???
+//    func topFold(tab:Bool = true) -> Edge? {
+//        
+//        var maxEdge:Edge? = nil
+//        
+//        var maxY:CGFloat = CGFloat.max
+//        for edge in edges {
+//            if(edge.kind == .Fold ) {
+//                if(edge.start.y < maxY) {
+//                    maxEdge = edge
+//                    maxY = edge.start.y
+//                }
+//            }
+//        }
+//                
+//        return maxEdge
+//    }
     
     /// close the path and remove MoveToPoint instructions
     func sanitizePath(){
@@ -231,23 +231,23 @@ class Plane: Printable, Hashable
     // to find the parent of the plane 
     // just use twin's plane? for the fold 
     //TODO: change this to return parent or find where this is called
-    func containerPlane(planes:[Plane]) -> Plane? {
-        
-        for (i,potentialParent) in enumerate(planes){
-            
-            //skip it if we're testing against ourselves
-            if potentialParent == self {
-                continue
-            }
-            //TODO: use filter here
-            for edge in self.edges{
-                if(potentialParent.path.containsPoint(edge.start)){
-                    return potentialParent
-                }
-            }
-        }
-        return nil
-    }
+//    func containerPlane(planes:[Plane]) -> Plane? {
+//        
+//        for (i,potentialParent) in enumerate(planes){
+//            
+//            //skip it if we're testing against ourselves
+//            if potentialParent == self {
+//                continue
+//            }
+//            //TODO: use filter here
+//            for edge in self.edges{
+//                if(potentialParent.path.containsPoint(edge.start)){
+//                    return potentialParent
+//                }
+//            }
+//        }
+//        return nil
+//    }
     
     
 }
