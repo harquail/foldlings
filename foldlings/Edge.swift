@@ -99,6 +99,10 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
+        
+        self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
+        self.adjacency = aDecoder.decodeObjectForKey("adj") as! [Edge]
+        self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
 
     }
     
@@ -108,6 +112,11 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+        
+        aCoder.encodeObject(self.twin, forKey: "twin")
+        aCoder.encodeObject(self.adjacency, forKey: "adj")
+        aCoder.encodeObject(self.feature, forKey: "feature")
+
     }
     
     /// makes a straight edge between two points, constructing the path as well

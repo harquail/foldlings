@@ -217,10 +217,13 @@ class CollectionOfPlanes: Printable, Hashable {
                 plane.feature = top.feature
                 let feature = plane.feature
                 //TODO: Mark edges as clean
-                plane.edges.map({$0.feature = feature})
+                println(feature)
                 
+                plane.edges.map({$0.feature = feature})
+
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                 
+
                 let foldCount = plane.foldcount
                 
                 switch(foldCount)
@@ -262,6 +265,8 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         // set parent plane
                         let parent = bottom.twin.plane
+                        
+
                         plane.parent = parent
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
@@ -270,6 +275,8 @@ class CollectionOfPlanes: Printable, Hashable {
                         
                     else if top.kind == .Fold
                     {
+                        
+
                         // set parent plane
                         let parent = top.twin.plane
                         plane.parent = parent
@@ -287,6 +294,8 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{
+                            
+
                             plane.masterTop = true
                             masterTop = plane
                             plane.color = getOrientationColor(plane.orientation == .Horizontal)
@@ -296,6 +305,8 @@ class CollectionOfPlanes: Printable, Hashable {
                             // just set this parent specifically
                         else
                         {
+                            
+
                             plane.masterBottom = true
                             masterBottom = plane
                             plane.orientation = .Horizontal
@@ -303,7 +314,7 @@ class CollectionOfPlanes: Printable, Hashable {
 
                         }
                     }
-                        
+
                         // set the parent and the children
                         // make sure that this doesn't include MasterBottom
                     else if top.kind == .Fold
@@ -312,12 +323,14 @@ class CollectionOfPlanes: Printable, Hashable {
                         let parent = top.twin.plane
                         
                         plane.parent = parent
+                        
 
 //                        println("plane: \(plane.topEdge)")
 //                        println("parent: \(parent!.topEdge)")
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                         
+
                         // if the parent is .Vertical,
                         //change the orientation of the plane to .Horizontal
                         if parent!.orientation == .Vertical {
