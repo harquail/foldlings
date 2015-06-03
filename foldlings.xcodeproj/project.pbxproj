@@ -93,7 +93,7 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
-		F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LISCENCE */; };
+		F18EC9541B1D4F3700987BF6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LICENSE */; };
 		F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF11B01A9500044AB00 /* AWSCore.framework */; };
 		F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF21B01A9500044AB00 /* AWSS3.framework */; };
 		F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF51B01A9730044AB00 /* Bolts.framework */; };
@@ -345,7 +345,7 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
-		F18EC9531B1D4F3700987BF6 /* LISCENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LISCENCE; sourceTree = "<group>"; };
+		F18EC9531B1D4F3700987BF6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F1AAFDF11B01A9500044AB00 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
 		F1AAFDF21B01A9500044AB00 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		F1AAFDF51B01A9730044AB00 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -744,7 +744,7 @@
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
-				F18EC9531B1D4F3700987BF6 /* LISCENCE */,
+				F18EC9531B1D4F3700987BF6 /* LICENSE */,
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
 				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
 				F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */,
@@ -1093,7 +1093,7 @@
 				F1AAFE1B1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				F1AAFE161B01A99E0044AB00 /* autoscaling-2011-01-01.json in Resources */,
-				F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */,
+				F18EC9541B1D4F3700987BF6 /* LICENSE in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
 				F1AAFE241B01A99E0044AB00 /* sns-2010-03-31.json in Resources */,
 				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
