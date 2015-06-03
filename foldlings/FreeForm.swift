@@ -1,24 +1,31 @@
 //
-//  FreeForm.swift
-//  foldlings
+// FreeForm.swift
+// foldlings
 //
-//  Created by nook on 3/24/15.
-//  Copyright (c) 2015 nook. All rights reserved.
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
+
 
 import Foundation
 
-class FreeForm:FoldFeature{
+class FreeForm:FoldFeature
+{
     
     var path: UIBezierPath?
     var interpolationPoints:[AnyObject] = []
     var lastUpdated:NSDate = NSDate(timeIntervalSinceNow: 0)
     var cachedPath:UIBezierPath? = UIBezierPath()
     var closed = false
-    //the intrsection points calculated by featureSpansFold & used for occlusion
+    //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     var intersections:[CGPoint] = []
     
+    //the top and bottom edges that truncate a shape
+    //these are not modified when folds are dragged, and are used to create tabs.
+    var topTruncations:[Edge] = []
+    var bottomTruncations:[Edge] = []
+
     
     override init(start: CGPoint) {
         super.init(start: start)
@@ -26,30 +33,57 @@ class FreeForm:FoldFeature{
     }
     
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        
+        path = aDecoder.decodeObjectForKey("path") as? UIBezierPath
+        cachedPath = aDecoder.decodeObjectForKey("cachedPath") as? UIBezierPath
+        interpolationPoints = aDecoder.decodeObjectForKey("points") as! [AnyObject]
+        closed = aDecoder.decodeBoolForKey("closed")
+        intersections = convertToCGPoints((aDecoder.decodeObjectForKey("intersections") as! NSArray))
+        intersectionsWithDrivingFold =  convertToCGPoints((aDecoder.decodeObjectForKey("drivingIntersections") as! NSArray))
+        topTruncations = aDecoder.decodeObjectForKey("topTruncations") as! [Edge]
+        bottomTruncations = aDecoder.decodeObjectForKey("bottomTruncations") as! [Edge]
+        }
+    
+    
+    override func encodeWithCoder(aCoder: NSCoder) {
+        super.encodeWithCoder(aCoder)
+    
+        aCoder.encodeObject(path, forKey: "path")
+        aCoder.encodeObject(interpolationPoints, forKey: "points")
+        aCoder.encodeObject(cachedPath, forKey: "cachedPath")
+        aCoder.encodeBool(closed, forKey: "closed")
+        //can't save raw cgpoint array
+        aCoder.encodeObject(convertToNSArray(intersectionsWithDrivingFold), forKey: "drivingIntersections")
+        aCoder.encodeObject(convertToNSArray(intersections), forKey: "intersections")
+        aCoder.encodeObject(topTruncations, forKey: "topTruncations")
+        aCoder.encodeObject(bottomTruncations, forKey: "bottomTruncations")
+
     }
+    
     
     override func getEdges() -> [Edge] {
         
         //if there are cached edges, return them
-        if let cache = cachedEdges {
+        if let cache = featureEdges {
             return cache
         }
         
         if let p = path{
-            
-            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false)
-            
+            let edge = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
             return [edge]
         }
+            // else create a straight edge
         else{
-            return [Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut)]
+            //TODO: this looks suspiscious
+            let edge = Edge.straightEdgeBetween(startPoint!, end: CGPointZero, kind: .Cut, feature: self)
+            return [edge]
         }
     }
     
     //splits a bezierpath composed of cubic curves at intersection points
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
-        
+
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
         
@@ -57,6 +91,7 @@ class FreeForm:FoldFeature{
         var returnee:[UIBezierPath] = []
         returnee.append(UIBezierPath())
         
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         // first, find the closest element to each intersection point
         for var i = 0; i < Int(path.elementCount()); i++ {
             let el = path.elementAtIndex(i)
@@ -94,7 +129,7 @@ class FreeForm:FoldFeature{
                 
             }
         }
-        
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
         //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
         for var i = 0; i < Int(path.elementCount()); i++ {
             
@@ -139,7 +174,7 @@ class FreeForm:FoldFeature{
                 cgObj.points =  convertToNSArray([el.points[0],el.points[1],el.points[2]]) as [AnyObject]
                 
                 for (i,split) in enumerate(splittingPointsForElement){
-
+                    
                     // split the curve at t
                     let newCurves = splitCubicCurveAtT(prevPoint,originalCurve: cgObj,t: Float(split.t))
                     
@@ -169,13 +204,15 @@ class FreeForm:FoldFeature{
             default: println("unexpected")
             }
         }
+//        println("printed at: \(__FUNCTION__): \(__LINE__)")
+        ///CRASH AFTER
         
         //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
-            let maxFold = self.horizontalFolds.maxBy({$0.start.y})
-            let minFold = self.horizontalFolds.minBy({$0.start.y})
-            
+            let maxFold = horizontalFolds.last
+            let minFold = horizontalFolds.first
+
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 returnee.remove(p)
@@ -218,12 +255,14 @@ class FreeForm:FoldFeature{
             }
             
             //recurse with new t values, decremented recursion value, and everything else the same
+            
             return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
         }
         else{
             // base case: return the average of the t values of the two closest points
+            
             return (startT + endT)/2
         }
     }
@@ -265,22 +304,26 @@ class FreeForm:FoldFeature{
         let leg2 = CGPathElementObj(type: kCGPathElementAddCurveToPoint, points: convertToNSArray([b2,c2,d2]) as [AnyObject])
         
         return (leg1,leg2)
-        //        return
     }
     
     /// this function should be called exactly once, when the feature is created at the end of a pan gesture
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
-//        println(intersections)
         /// splits the path into multiple edges based on intersection points
-        var paths = pathSplitByPoints(path!,breakers: intersections)
+        var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+
+        println("PATH \(path)")
+        println("INTERSECTIONS \(intersections)")
+        
         var edges:[Edge] = []
         
         //create edges from split paths
         for p in paths{
-            edges.append(Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false))
+            println("PATH: \n \(p)")
+            edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
         }
         
+        println("\nEDGES!!!!!!\n \(edges)")
         return edges
     }
     
@@ -304,7 +347,7 @@ class FreeForm:FoldFeature{
                     closed = true
             }
             
-            //if ther are enough points, draw a full curve
+            //if there are enough points, draw a full curve
             if(interpolationPoints.count > 3){
                 let path = UIBezierPath()
                 
@@ -342,18 +385,16 @@ class FreeForm:FoldFeature{
         //first, test if y value is within cgrect ys
         let lineRect = CGRectMake(fold.start.x,fold.start.y,fold.end.x - fold.start.x,1)
         
-//        if(self.boundingBox() == nil){
-//            return false
-//        }
-        
         //if the line does not intersect the bezier's bounding box, the fold can't span it
         if(!CGRectIntersectsRect(self.boundingBox()!,lineRect)){
             return false
         }
         else{
-            
-            if let intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
-                
+            if var intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.path!){
+                intersects = intersects.map({(a:CGPoint) -> CGPoint in
+                    // intersection points are at the same height as the fold they're intersecting with
+                    return CGPointMake(a.x, fold.start.y)
+                })
                 intersectionsWithDrivingFold = intersects
                 intersections += intersects
                 return true
@@ -370,9 +411,9 @@ class FreeForm:FoldFeature{
     /// boxFolds can be deleted
     /// folds can be added only to leaves
     override func tapOptions() -> [FeatureOption]?{
-        var options:[FeatureOption] = []
+        var options:[FeatureOption] = super.tapOptions() ?? []
         options.append(.DeleteFeature)
-        if(self.isLeaf()){
+        if(self.isLeaf() && horizontalFolds.count >= 3){
                 options.append(.MoveFolds);
           }
         
@@ -381,51 +422,48 @@ class FreeForm:FoldFeature{
     }
     
     // attempt to truncate testpathtwo with testpathone, which should be a line.  maxIntercepts indicates how many intersection points are allowed
-    private func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
+    func tryIntersectionTruncation(testPathOne:UIBezierPath,testPathTwo:UIBezierPath, maxIntercepts:Int = 100) -> Bool{
         
         var points = PathIntersections.intersectionsBetween(testPathOne, path2: testPathTwo)
         
         if let ps = points{
             //for all intersections, if there are an even number
-            if(ps.count%2 == 0 && ps.count <= maxIntercepts){
-                var i = 0
+            if(ps.count>=2 && ps.count <= maxIntercepts){
                 var edgesToAdd:[Edge] = []
-                while(i<ps.count){
-                    if(ps.count>i+1){
+                for (var i = 0; i<ps.count-1; i++){
                         //try making a straight edge between the points
-                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold)
+                        let edge = Edge.straightEdgeBetween(round(ps[i]), end: round(ps[i+1]), kind: .Fold, feature:self)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
-                            i += 2
-                            continue
                         }
-                    }
-                    //otherwise, try the next point
-                    i += 1
                 }
                 
                 //if there are edges to add, add them, and return that the trucation succeeded
                 if(edgesToAdd.count>0){
                     intersections.extend(ps)
-//                    println("added fold");
-                    self.horizontalFolds.extend(edgesToAdd)
-                    self.cachedEdges!.extend(edgesToAdd)
+                    
+                    for fold in edgesToAdd{
+                        self.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+                    }
+                    self.featureEdges!.extend(edgesToAdd)
                     return true
                 }
             }
         }
+        
+//        println("Failed with points: \(points)")
         return false
     }
-    
     /// creates intersections with top, bottom and middle folds; also creates horizontal folds
-    func truncateWithFolds(){
+    func truncateWithFolds()
+    {
         
-        if let driver = drivingFold, p = path{
-            
+        if let driver = drivingFold, p = path
+        {
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
-            var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
             
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
@@ -448,7 +486,7 @@ class FreeForm:FoldFeature{
             }
             
             /// TOP FOLD
-            let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut)
+            let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
             
             scanLine = scanLineStartingAtTop
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
@@ -464,7 +502,7 @@ class FreeForm:FoldFeature{
             }
             
             // BOTTOM FOLD
-            let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut)
+            let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut, feature: self)
             scanLine = scanLineStartingAtBottom
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
             if let bottom = truncate(-5,2,box!.origin.y + box!.height - 50){
@@ -486,8 +524,8 @@ class FreeForm:FoldFeature{
             
             let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
             if(!middleFolds){
-                println("FAILED INTERSECTION POINTS: \(intersections)");
-//                println("\(intersectionsWithDrivingFold)");
+//                println("FAILED INTERSECTION POINTS: \(intersections)");
+                //                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
@@ -497,36 +535,138 @@ class FreeForm:FoldFeature{
             //            self.cachedEdges!.append(midLine)
         }
     }
-    
     //split folds around intersections with driving fold
-    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge]
+    {
         
         let start = edge.start
         let end = edge.end
         var returnee = [Edge]()
         
-        if intersectionsWithDrivingFold.count == 0{
+        if intersectionsWithDrivingFold.count == 0
+        {
             return [edge]
         }
         
-        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold)
+        
+        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold, feature:self.parent!)
         returnee.append(firstPiece)
         
         var brushTip = intersectionsWithDrivingFold[0]
         
         //skip every other point, so we don't make edges inside shape
-        for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2){
-            
+        for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2)
+        {
             brushTip = intersectionsWithDrivingFold[i]
             let brushTipTranslated = CGPointMake(intersectionsWithDrivingFold[i+1].x,brushTip.y)
-            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold)
+            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold, feature: self.parent!)
             returnee.append(piece)
         }
         
-        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold)
+        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold, feature: self.parent!)
         returnee.append(finalPiece)
         return returnee
     }
     
+    // sets top & bottom truncations based on fold height
+    // TODO: like claimedges, this should probably be done differently
+    func setTopBottomTruncations(){
+        let heights = uniqueFoldHeights()
+        
+        for fold in horizontalFolds{
+            if fold.start.y == heights.first!
+            {
+                topTruncations.append(fold)
+            }
+            else if fold.start.y == heights.last!
+            {
+                bottomTruncations.append(fold)
+            }
+            
+        }
+    }
+    
+    
+    func addTabs(translatedHeights:[CGFloat],savedHeights:[CGFloat]){
+        
+        let originalHeights = uniqueFoldHeights()
+        var rejectedFolds:[Edge] = []
+
+        func addTab(#up:Bool){
+        
+            var topEdges = self.horizontalFolds.filter({(a:Edge) -> Bool in return (a.kind == .Fold && a.start.y == (up ? originalHeights.first : originalHeights.last))})
+            rejectedFolds.extend(topEdges)
+            topEdges = topEdges.uniqueBy({$0.start})
+            
+            func cutsAndFoldsForTab(referenceEdge:Edge,#up:Bool) -> [Edge]{
+                //draw to nearest saved height
+                let translatedY = translatedHeights.minBy({(transY:CGFloat) in return  abs(referenceEdge.start.y - transY)})
+
+                let fold = Edge.straightEdgeBetween(CGPointMake(referenceEdge.start.x, translatedY!), end: CGPointMake(referenceEdge.end.x, translatedY!), kind: .Fold, feature:self)
+                return [fold, Edge.straightEdgeBetween(fold.start, end: referenceEdge.start, kind: .Cut,feature:self),Edge.straightEdgeBetween(fold.end, end: referenceEdge.end, kind: .Cut,feature:self)]
+            }
+        
+            for edge in topEdges{
+                let tabEdges = cutsAndFoldsForTab(edge,up:up)
+                self.featureEdges?.extend(tabEdges)
+                self.horizontalFolds.remove(edge)
+                self.horizontalFolds.append(tabEdges[0])
+            }
+
+        }
+        
+        // if there is a tab up
+        if translatedHeights.first < savedHeights.first{
+            addTab(up:true)
+        }
+        // if there is a tab down
+        if translatedHeights.last > savedHeights.last{
+            addTab(up:false)
+        }
+
+        
+        self.featureEdges = self.featureEdges?.difference(rejectedFolds)
+    }
+    
+    
+    func shiftEdgeEndpoints(){
+        
+        println("\n\nstartPoint: \(startPoint) | endPoint: \(endPoint)")
+        
+        //first, snap Edge to intersections
+        var snappablePoints = intersections.map({round($0)})
+//        snappablePoints.extend(intersectionsWithDrivingFold)
+        snappablePoints.append(startPoint!)
+        snappablePoints.append(endPoint!)
+        // also need to take horizontal fold endpoints into account
+        for fold in horizontalFolds{
+            snappablePoints.append(fold.start)
+            snappablePoints.append(fold.end)
+        }
+
+        
+        if let edges = featureEdges{
+            for edge in edges{
+                // TODO: check endpoint
+                let newStart = snappablePoints.minBy({ccpDistance($0,edge.start)})!
+                
+                if (ccpDistance(edge.start,newStart) < 2){
+                    edge.snapStart(to: newStart)
+                }
+                else{
+                    snappablePoints.append(edge.start)
+                }
+                
+                let newEnd = snappablePoints.minBy({ccpDistance($0,edge.end)})!
+                if (ccpDistance(edge.end,newEnd) < 2){
+                    edge.snapEnd(to: newEnd)
+                    
+                }
+                else{
+                    snappablePoints.append(edge.end)
+                }
+            }
+        }
+    }
     
 }

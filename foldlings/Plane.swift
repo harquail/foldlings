@@ -1,8 +1,9 @@
 //
-//  Plane.swift
-//  foldlings
+// Plane.swift
+// foldlings
 //
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import CoreGraphics
@@ -17,17 +18,18 @@ func == (lhs: Plane, rhs: Plane) -> Bool
 class Plane: Printable, Hashable
 {
     var description: String {
-        return "\n".join(edges.map({ "\($0)" }))
+        return "\(self.kind.rawValue), \(self.orientation.rawValue)" + join("|",edges.map({$0.description}))
     }
     
     var hashValue: Int { get {
-        return description.hashValue
+        return join("|",edges.map({$0.description})).hashValue
         }
     }
     
     enum Kind: String {
         case Hole = "Hole"
         case Plane = "Plane"
+        case Flap = "Flap"
     }
     
     
@@ -38,18 +40,28 @@ class Plane: Printable, Hashable
     }
     
     var kind = Kind.Hole
-    var orientation = Orientation.Horizontal
-    var color = getRandomGray(0.9)
-//    var color : UIColor { get{
-//        return orientation == .Horizontal ? getRandomColor(0.8): getRandomColor(0.8)
-//        }
-//        }
+    var orientation = Orientation.Vertical
+    var color = getRandomColor(0.5)
+    //var color = getOrientaionColor(self.orientation)
     var edges : [Edge]!
     var path = UIBezierPath()
+    var feature:FoldFeature!
+    var topEdge : Edge!
+    var bottomEdge : Edge!
+    var parent : Plane!
+    var children : [Plane] = []
+    var foldcount : Int!
+    
+    
+    // mark if this plane is the master's feature top or bottom plane
+    var masterTop: Bool = false
+    var masterBottom: Bool = false
+    
     private var node:SCNNode? = nil
     var masterSphere:SCNNode? = nil
     let transformToCamera = SCNVector3Make(-3.9, +5, -4.5)
     let scaleToCamera = SCNVector3Make(0.01, -0.01, 0.01)
+    
     
     
     init()
@@ -60,11 +72,7 @@ class Plane: Printable, Hashable
     init(edges : [Edge])
     {
         self.edges = edges
-        
-        for (i,e) in enumerate(edges){
-            path.appendPath(e.path)
-        }
-        
+        edges.map({self.path.appendPath($0.path)})// create one path for all edges
         self.sanitizePath()
     }
     
@@ -80,11 +88,11 @@ class Plane: Printable, Hashable
             
             // make the node
             node = SCNNode()
-            var shape = SCNShape(path: path/*.bezierPathByFlatteningPath*/, extrusionDepth: 5)
+            var shape = SCNShape(path: path, extrusionDepth: 5)
             
             let material = SCNMaterial()
             
-            // holes are black, and extruded to prevent z-fighting
+            // holes are white, and extruded to prevent z-fighting
             if(self.kind == .Hole){
                 shape = SCNShape(path: path, extrusionDepth: 5.5)
                 material.diffuse.contents = UIColor.whiteColor()
@@ -109,10 +117,23 @@ class Plane: Printable, Hashable
         return node!
     }
     
-    
-    
-    
+    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
     /// the fold with minimum y height in a plane
+    func bottomEdge(tab:Bool = true) {
+        // loop through edges
+        // if topEdge is not set then, set it 
+        // else set bottomEdge
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+    }
+    
+    func topEdge(tab:Bool = true) {
+        // loop through edges
+        // if topEdge is not set then, set it
+        // else set bottomEdge
+        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
+
+    }
+    
     func bottomFold(tab:Bool = true) -> Edge? {
         
         var minEdge:Edge? = nil
@@ -126,10 +147,12 @@ class Plane: Printable, Hashable
                 }
             }
         }
+        
         return minEdge
     }
     
     /// the fold with maximum y height in a plane
+    // TODO: Topfold based on ordered horizontal folds???
     func topFold(tab:Bool = true) -> Edge? {
         
         var maxEdge:Edge? = nil
@@ -143,7 +166,7 @@ class Plane: Printable, Hashable
                 }
             }
         }
-        
+                
         return maxEdge
     }
     
@@ -155,6 +178,7 @@ class Plane: Printable, Hashable
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
+    //TODO: Look into this for weirdness in the path 
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
 
         let elements = path.getPathElements()
@@ -194,17 +218,20 @@ class Plane: Printable, Hashable
             }
         }
         outPath.closePath()
-        //makes 3d land more forgiving
-        outPath.flatness = 4.0
-//        outPath.miterLimit = 10;
+        outPath.flatness = 3.0;
         return outPath
     }
     
+
     func hasEdge(edge:Edge) -> Bool
     {
         return self.edges.contains(edge)
     }
     
+    //check if edge is in the plane
+    // to find the parent of the plane 
+    // just use twin's plane? for the fold 
+    //TODO: change this to return parent or find where this is called
     func containerPlane(planes:[Plane]) -> Plane? {
         
         for (i,potentialParent) in enumerate(planes){
@@ -213,7 +240,7 @@ class Plane: Printable, Hashable
             if potentialParent == self {
                 continue
             }
-            
+            //TODO: use filter here
             for edge in self.edges{
                 if(potentialParent.path.containsPoint(edge.start)){
                     return potentialParent

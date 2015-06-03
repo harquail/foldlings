@@ -1,10 +1,10 @@
 //
 //  MasterCard.swift
-//  foldlings
+// foldlings
 //
-//  Created by nook on 3/22/15.
-//  Copyright (c) 2015 nook. All rights reserved.
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
 
 import Foundation
 
@@ -23,47 +23,50 @@ class MasterCard:FoldFeature{
     //   ---------------E
     //        bottom
     
+    
+    
     override func getEdges()->[Edge]{
         
-        if let returnee = cachedEdges {
-//            println("MASTER: cache hit")
+        //if mastercard has already been created, return edges
+        if let returnee = featureEdges {
             return returnee
         }
 //        println("MASTER: cache miss")
 
         
-        let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut)
-        let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
+        //if the mastercard hasn't been created then create the mastercard
+        let top = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut, feature: self)
+        let bottom = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut, feature: self)
         let midPointDist = (endPoint!.y - startPoint!.y)/2
-        let l0 = Edge.straightEdgeBetween(startPoint!, end: CGPointMake(startPoint!.x, startPoint!.y + midPointDist), kind: .Cut)
-        let l1 = Edge.straightEdgeBetween(l0.end, end: CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut)
-        let r1 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x,endPoint!.y-midPointDist), kind: .Cut)
-        let r0 = Edge.straightEdgeBetween(r1.end, end: CGPointMake(endPoint!.x,startPoint!.y), kind: .Cut)
+        let l0 = Edge.straightEdgeBetween(startPoint!, end: CGPointMake(startPoint!.x, startPoint!.y + midPointDist), kind: .Cut, feature: self)
+        let l1 = Edge.straightEdgeBetween(l0.end, end: CGPointMake(startPoint!.x, endPoint!.y), kind: .Cut, feature: self)
+        let r1 = Edge.straightEdgeBetween(endPoint!, end: CGPointMake(endPoint!.x,endPoint!.y-midPointDist), kind: .Cut, feature: self)
+        let r0 = Edge.straightEdgeBetween(r1.end, end: CGPointMake(endPoint!.x,startPoint!.y), kind: .Cut, feature: self)
         
+        //set edges in feature
         var returnee = [top,bottom,l0,l1,r0,r1]
         // if there are no children, then we just need to draw a single fold
         // maybe we don't want master here after all, but for now the only horizontal folds are the driving edge
-        let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold)
-//        horizontalFolds = [top,bottom]
-        
-//        let fragments = edgeSplitByChildren(master)
-    
-//        for fragment in fragments{
-//            returnee.append(fragment)
-//            horizontalFolds.append(fragment)
-//        }
+        let master = Edge.straightEdgeBetween(l0.end, end:r1.end, kind: .Fold, feature: self)
+
         
         returnee.append(master)
         horizontalFolds = [master]
 //        
         
-        for edge in returnee{
-            edge.isMaster = true
-        }
-        
-        cachedEdges = returnee
-        claimEdges()
+        returnee.map({$0.isMaster = true})
+        //set feature edges
+        featureEdges = returnee
+        //assign edges to feature 
+        //claimEdges()
         return returnee
+        
+    }
+    
+    
+    override func tapOptions() -> [FeatureOption]?{
+        
+        return [FeatureOption.PrintSketch]
         
     }
     

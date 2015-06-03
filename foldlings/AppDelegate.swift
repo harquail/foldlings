@@ -1,8 +1,9 @@
 //
 //  AppDelegate.swift
-//  foldlings
+// foldlings
 //
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import UIKit
 //import Armchair
@@ -20,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Flurry.startSession(KEY_FLURRY)
 //        Armchair.appID(APP_STORE_ID)
 //        Armchair.debugEnabled(true)
+        
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: COGNITO_IDENTITY_POOL)
+        let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+        
         return true
     }
 

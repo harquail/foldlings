@@ -1,8 +1,9 @@
 //
 //  Path.swift
-//  foldlings
+// foldlings
 //
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import CoreGraphics
@@ -15,6 +16,11 @@ let kBezierIncrements:CGFloat = 0.5
 func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
+    // if a staright line, just return endpoint 
+    if elements.count <= 2{
+        return path.lastPoint()
+    }
+    
     let points = getSubdivisions(elements, increments:25)
     var npoint:CGPoint = CGPointZero
     
@@ -261,8 +267,6 @@ func subdivide(points:[CGPoint], increments:CGFloat = kBezierIncrements) -> [CGP
             let point = bezierInterpolation(t,points[0],points[1],points[2],points[3])
             npoints.append(point);
         }
-    case 3:
-        println("3");
     case 2:
         let start = points[0]
         let end = points[1]

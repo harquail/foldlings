@@ -2,9 +2,8 @@
 //  CollectionOfFoldlings.swift
 //  foldlings
 //
-//  Created by nook on 11/30/14.
-//  Copyright (c) 2014 nook. All rights reserved.
-//
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import UIKit
@@ -13,22 +12,17 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
     
     var names = ArchivedEdges.archivedSketchNames()
     var cells = [Int:FoldlingCell]()
-    
-    
-//    override init() {
-//        super.init()
-//        
-//    }
+    var tapped = false
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
         self.dataSource = self
         self.delegate = self
-        //invalidate sketches once every second
         
     }
     
     override func reloadData() {
+        tapped = false
         super.reloadData()
         names = ArchivedEdges.archivedSketchNames()
     }
@@ -43,6 +37,8 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
                 return 0
             }
     }
+    
+    
     override func didMoveToSuperview() {
         self.reloadData()
     }
@@ -56,16 +52,17 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             
             let index = indexPath.row
-            let cellName = names![index]
+            // show cells in reverse order
+            let cellName = names![names!.count-1 - index]
             
-            if let archivedImage = ArchivedEdges.archivedImage(index){
+            if let archivedImage = ArchivedEdges.archivedImage(names!.count-1 - index){
                 cell.image?.image = archivedImage
             }
             
             cell.label!.text = cellName
             cell.label!.sizeToFit()
             cell.addGestureRecognizer(tapRecognizer)
-            cell.index = index
+            cell.index = names!.count-1 - index
             
             var view = cell.contentView
             
@@ -76,19 +73,19 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
             return cell
     }
     
-    
     func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .Ended {
             for (index, cell) in cells{
                 
-                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender)){
+                if(cell.gestureRecognizers != nil && cell.gestureRecognizers!.contains(sender) && !tapped){
+                    
+                    tapped = true
                     
                     let story = UIStoryboard(name: "Main", bundle: nil)
                     let vc = story.instantiateViewControllerWithIdentifier("sketchView") as! SketchViewController
-                    self.window?.rootViewController?.presentViewController(vc, animated: true, completion: {
-                        vc.sketchView.sketch = ArchivedEdges.loadSaved(dex: cell.index)
-                        vc.sketchView.forceRedraw()
-                    })
+                    vc.index = cell.index
+                    vc.restoredFromSave = true
+                    (self.window?.rootViewController as! UINavigationController).pushViewController(vc, animated: true)
                     
                     Flurry.logEvent("opened foldling", withParameters: NSDictionary(dictionary: ["named":cell.label!.text!]) as [NSObject : AnyObject])
                     println("Clicked: \(cell.label!.text)")

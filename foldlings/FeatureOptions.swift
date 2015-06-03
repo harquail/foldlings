@@ -1,10 +1,11 @@
 //
-//  FeatureOptions.swift
-//  foldlings
+// FeatureOptions.swift
+// foldlings
 //
-//  Created by nook on 3/31/15.
-//  Copyright (c) 2015 nook. All rights reserved.
-//
+// Copyright (c) 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
+
+
 
 import Foundation
 
@@ -13,4 +14,8 @@ enum FeatureOption:String {
     case AddFolds = "Add Folds"
     case MoveFolds = "Drag Folds"
     case DeleteFeature = "Delete"
+    case PrintSketch = "Print Sketch"
+    case PrintEdges = "Print Edges"
+    case PrintPlanes = "Print Planes"
+
 }

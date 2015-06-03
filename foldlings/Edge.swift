@@ -1,7 +1,9 @@
 //
 //  Edge.swift
-//  foldlings
 //
+// foldlings
+// © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
+// All Rights Reserved
 
 import Foundation
 import CoreGraphics
@@ -26,7 +28,9 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-        return "Start: \(start), End: \(end), \n \(kind.rawValue)"
+        return "\nStart: \(start), End: \(end)"
+
+        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
         
     }
     
@@ -40,12 +44,22 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var plane:Plane?
     var dirty = true //if the edge is dirty it'll be reevaluated for planes
     var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
+   
+    
+    var start: CGPoint
+    var end: CGPoint
+    var path = UIBezierPath()
+    var kind = Kind.Cut
+    var adjacency: [Edge] = []
+    var isMaster = false
+    var colorOverride:UIColor?
+    var feature:FoldFeature?
     
     enum Kind: String {
         case Fold = "Fold"
         case Cut = "Cut"
     }
-    
+    // TODO: create enum for hill or valley
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
@@ -64,26 +78,18 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         static var Cut:UIColor = UIColor.blackColor()
     }
     
-    var start: CGPoint
-    var end: CGPoint
-    var path = UIBezierPath()
-    var kind = Kind.Cut
-    var adjacency: [Edge] = []
-    var isMaster = false
-    var colorOverride:UIColor? = nil
-    // the feature the edge is part of
-    var feature:FoldFeature?
-    
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
-        self.start = start
-        self.end = end
+        self.start = round(start)
+        self.end = round(end)
         self.path = path
     }
     
-    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
         self.isMaster = isMaster
+        self.feature = feature
+
     }
     
     
@@ -93,9 +99,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
+
     }
-    
-    
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeCGPoint(start, forKey: "start")
@@ -105,11 +110,18 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
     }
     
+    /// makes a straight edge between two points, constructing the path as well
+    class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind, feature: FoldFeature) -> Edge{
+        let path = UIBezierPath()
+        path.moveToPoint(round(start))
+        path.addLineToPoint(round(end))
+        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
+    }
+    
+    // creates a copy of path?
     class func tapTargetForPath(path:UIBezierPath, radius: CGFloat)->UIBezierPath{
-        
         let tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, nil, radius, path.lineCapStyle, path.lineJoinStyle, path.miterLimit)
         let tapTarget = UIBezierPath(CGPath: tapTargetPath)
-        
         return tapTarget
         
     }
@@ -120,7 +132,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         let tapTarget = Edge.tapTargetForPath(path, radius: radius).CGPath
         if  CGPathContainsPoint(tapTarget, nil, point, false)
         {
-            
             np = getNearestPointOnPath(point, path)
         }
         return np
@@ -185,17 +196,40 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
     
-    /// makes a straight edge between two points, constructing the path as well
-    class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind) -> Edge{
-        
-        let path = UIBezierPath()
-        path.moveToPoint(start)
-        path.addLineToPoint(end)
-        let edge = Edge(start: start, end: end, path: path, kind:kind)
-        
-        return edge
+    func snapStart(#to:CGPoint){
+        snapToPoint(true,snapTo:to)
     }
-    
+    func snapEnd(#to:CGPoint){
+        snapToPoint(false,snapTo:to)
+    }
+
+    func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
+        let movedPoint = snapStart ? start : end
+        
+        
+        
+        if(snapStart){
+            
+            if(!(CGPointEqualToPoint(start,snapTo))){
+            
+                println("moved \(start) to \(snapTo)")
+                start = snapTo
+
+            }
+            
+            
+        }
+        else{
+            
+            if(!(CGPointEqualToPoint(end,snapTo))){
+                
+                println("moved \(end) to \(snapTo)")
+                end = snapTo
+            }
+        }
+        //also have to do things to the path
+        
+    }
 
     
 }
