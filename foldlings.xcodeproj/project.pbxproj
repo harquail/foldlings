@@ -69,7 +69,6 @@
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
-		F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */; };
 		F16673BD1ACE3F5700243D70 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A41ACE3F5700243D70 /* Info.plist */; };
 		F16673BE1ACE3F5700243D70 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673A61ACE3F5700243D70 /* JRSwizzle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F16673A71ACE3F5700243D70 /* PerformanceBezier-Info.plist */; };
@@ -93,6 +92,8 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
+		F18EC9501B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */; };
+		F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LISCENCE */; };
 		F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF11B01A9500044AB00 /* AWSCore.framework */; };
 		F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF21B01A9500044AB00 /* AWSS3.framework */; };
 		F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF51B01A9730044AB00 /* Bolts.framework */; };
@@ -301,7 +302,6 @@
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F160F3BE1A31474800B469CA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F16673A41ACE3F5700243D70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F16673A51ACE3F5700243D70 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		F16673A61ACE3F5700243D70 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
@@ -344,6 +344,8 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
+		F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+		F18EC9531B1D4F3700987BF6 /* LISCENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LISCENCE; sourceTree = "<group>"; };
 		F1AAFDF11B01A9500044AB00 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
 		F1AAFDF21B01A9500044AB00 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		F1AAFDF51B01A9730044AB00 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -742,6 +744,7 @@
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
+				F18EC9531B1D4F3700987BF6 /* LISCENCE */,
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
 				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
 				F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */,
@@ -766,9 +769,9 @@
 		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
 			isa = PBXGroup;
 			children = (
+				F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */,
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
-				F160F3C01A31499B00B469CA /* APIKeysAndOtherSecrets.swift */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
@@ -1003,7 +1006,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = nook;
+				ORGANIZATIONNAME = "Marissa Allen, Nook Harquail, Tim Tregubov.  All Rights Reserved";
 				TargetAttributes = {
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -1090,6 +1093,7 @@
 				F1AAFE1B1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				F1AAFE161B01A99E0044AB00 /* autoscaling-2011-01-01.json in Resources */,
+				F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
 				F1AAFE241B01A99E0044AB00 /* sns-2010-03-31.json in Resources */,
 				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
@@ -1170,6 +1174,7 @@
 				F16673C51ACE3F5700243D70 /* UIBezierPath+NSOSX.m in Sources */,
 				F1BE6A891AC1EF4A00B99C8F /* ANPathBitmap.m in Sources */,
 				F16673C31ACE3F5700243D70 /* UIBezierPath+Equals.m in Sources */,
+				F18EC9501B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift in Sources */,
 				F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */,
 				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
 				F1BE6A861AC1EF4A00B99C8F /* BitmapCropManipulator.m in Sources */,
@@ -1208,7 +1213,6 @@
 				F16673C21ACE3F5700243D70 /* UIBezierPath+Description.m in Sources */,
 				F1BE6A821AC1EF4A00B99C8F /* UIImage+ANImageBitmapRep.m in Sources */,
 				F1B9AE781A06A64B00265AAE /* Archivist.swift in Sources */,
-				F160F3C11A31499B00B469CA /* APIKeysAndOtherSecrets.swift in Sources */,
 				F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */,
 				F1BE6A7E1AC1EF4A00B99C8F /* ANImageBitmapRep.m in Sources */,
 				F153BBAC1A1EAED50029FDF2 /* NSData+Base64Additions.m in Sources */,
