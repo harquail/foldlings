@@ -599,14 +599,9 @@ class Sketch : NSObject, Printable  {
     
         func replaceCut(feature: FoldFeature, cut:Edge, cuts:[Edge]){
             
-//            feature.horizontalFolds.remove(fold)
             feature.featureEdges?.remove(cut)
             removeEdge(cut)
-            
-//            for fold in folds{
-//                feature.horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
-//            }
-            
+
             feature.featureEdges?.extend(cuts)
             cuts.map({self.addEdge($0)})
     }
@@ -682,7 +677,14 @@ class Sketch : NSObject, Printable  {
         return returnee
     }
 
-        
+    
+    // get edge intersections
+    // split all edges at intersections (add intersection points one at a time, then do all the intersections at the end
+    // only need to convert box folds if their cuts are occluded
+    // remove edges internal to the main feature
+    // modify sketch as needed
+    
+    
         // deal with intersections between features
         func intersect(feature:FreeForm,with:[FoldFeature]){
             
@@ -728,6 +730,7 @@ class Sketch : NSObject, Printable  {
                                     //            println("PATH: \n \(p)")
                                     cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
                                 }
+                                // remove cuts 
                                 cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
                                 replaceCut(w, cut: e, cuts:cuts)
                                 
@@ -758,12 +761,7 @@ class Sketch : NSObject, Printable  {
 //                addFeatureToSketch(w, parent: w.parent ?? masterFeature!)
             }
             
-            // get edge intersections
-            // split all edges at intersections (add intersection points one at a time, then do all the intersections at the end
-            // only need to convert box folds if their cuts are occluded
-            // remove edges internal to the main feature
-            // modify sketch as needed
-            
+
             
 }
 }
