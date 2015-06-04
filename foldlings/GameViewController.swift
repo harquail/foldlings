@@ -223,9 +223,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
             sceneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode!)
-            if (translate){
-            undoParentTranslate(masterSphere, child: bottomPlaneNode!)
-            }
             bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
         }
         

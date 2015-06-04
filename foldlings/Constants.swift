@@ -47,10 +47,19 @@ func getSmartRandomColor(alpha:CGFloat, horizontal: Bool) -> UIColor{
 }
 
 func getOrientationColor(horizontal: Bool) -> UIColor{
+    var warmColors: [UIColor] = [UIColor.redColor(), UIColor.yellowColor(), UIColor.magentaColor(), UIColor.orangeColor()]
+    var coolColors: [UIColor] = [UIColor.greenColor(), UIColor.blueColor(), UIColor.cyanColor(), UIColor.purpleColor()]
+    
+    var rIndex: Int = Int(arc4random_uniform(3))
+    
+    var randomRed:CGFloat = CGFloat(drand48())
+    var randomGreen:CGFloat = CGFloat(drand48())
+    var randomBlue:CGFloat = CGFloat(drand48())
+    
     if horizontal{
-        return UIColor(red:0.4, green:0.2, blue:0.4, alpha:0.8)
+        return warmColors[rIndex]
 
     }
-    return UIColor(red:0.2, green:0.4, blue:0.4, alpha:0.8)
+    return coolColors[rIndex]
     
 }

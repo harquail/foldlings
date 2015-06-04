@@ -300,13 +300,13 @@ class Sketch : NSObject, Printable  {
                         //set foldcount
                         plane.foldcount = foldcount
                         
+                        //set plane for edges
                         plane.edges.map({$0.plane = plane})
+                        
                         // add planes to planelist
-                        //planelist.append(plane)
                         planelist.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
-                        //self.planes.addPlane(plane, sketch: self, folds: foldcount)
-                        //                                println("\nplane complete\n")
-                        //                                println("\(plane)\n")
+                        // println("\nplane complete\n")
+                        // println("\(plane)\n")
                     }
                     closest.crossed = false
                 }
@@ -457,32 +457,7 @@ class Sketch : NSObject, Printable  {
         }
         return false
     }
-    // use the master card feature to find top edge
-    // this is used to find top plane
-    // TODO: refactor so that it checks a plane instead of edges
-    // might be better living in plane
-    //        func isTopEdge(edge:Edge) -> Bool
-    //        {
-    //            if let masterF = masterFeature{
-    //                let condition = abs(masterF.startPoint!.y - edge.start.y) < 2
-    //                return condition
-    //            }
-    //            return false
-    //
-    //
-    //        }
-    //
-    //        func isBottomEdge(edge:Edge) -> Bool
-    //        {
-    //            if let masterF = masterFeature{
-    //                if(masterF.endPoint != nil){
-    //
-    //                    let condition = abs(masterF.endPoint!.y - edge.start.y) < 2
-    //                    return condition
-    //                }
-    //            }
-    //            return false
-    //        }
+
     
     //replaces edges to close the gap left by deleting a feature
     func healFoldsOccludedBy(feature:FoldFeature){
