@@ -246,5 +246,13 @@ class FoldFeature: NSObject, Printable
     func containsPoint(point:CGPoint) -> Bool{
         return self.boundingBox()?.contains(point) ?? false
     }
+    
+    // returns edges that are less than the minimum length
+    func tooShortEdges() -> [Edge]{
+        
+        return featureEdges?.filter({$0.length() < kMinLineLength}) ?? []
+    }
+    
+    
 
 }

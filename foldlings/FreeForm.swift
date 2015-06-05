@@ -206,11 +206,12 @@ class FreeForm:FoldFeature
         }
 
 
-        //TODO: path.center() is NOT the centroid — it's the center of the bounding box
-        // but maybe that's good enough
+
 //        //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
+            
+            /// TODO: crashes here
             let maxFold = horizontalFolds.last
             let minFold = horizontalFolds.first
 

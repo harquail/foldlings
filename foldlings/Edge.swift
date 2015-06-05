@@ -239,4 +239,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     }
 
     
+    func length() -> CGFloat{
+        return ccpDistance(start, end)
+    }
+    
 }
