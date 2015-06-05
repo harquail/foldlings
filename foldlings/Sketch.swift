@@ -732,6 +732,32 @@ class Sketch : NSObject, Printable  {
                                 }
                                 // remove cuts 
                                 cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
+                                
+                                
+                                let maxFold = w.horizontalFolds.last
+                                let minFold = w.horizontalFolds.last
+                                
+                                println("MAX FOLD : \(maxFold)")
+                                println("MIN FOLD : \(minFold)")
+
+                                cuts = cuts.filter({pointNearCenterOf($0.path).y <= maxFold!.start.y && pointNearCenterOf($0.path).y >= minFold!.start.y})
+
+                                
+                                //        //reject paths whose center point is outside the truncated shape
+                                //        for p in returnee{
+                                //            //get top and bottom folds
+                                //            let maxFold = horizontalFolds.last
+                                //            let minFold = horizontalFolds.first
+                                //
+                                //            //discard paths whose centroid is above or below top & bottom folds
+                                //            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
+                                //                returnee.remove(p)
+                                //            }
+                                //        }
+                                
+                                //discard edges outside truncated feature
+//                                cuts = cuts.filter({$0.path != nil})
+                                
                                 replaceCut(w, cut: e, cuts:cuts)
                                 
                                 cuts = []
