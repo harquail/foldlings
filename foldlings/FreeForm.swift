@@ -207,18 +207,24 @@ class FreeForm:FoldFeature
 
 
 
-//        //reject paths whose center point is outside the truncated shape
+        return returnee
+    }
+    
+    func filterPathsOutsideBounds(paths:[UIBezierPath]) -> [UIBezierPath]{
+        var returnee = paths
+        //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
             
             /// TODO: crashes here
             let maxFold = horizontalFolds.last
             let minFold = horizontalFolds.first
-
+            
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 returnee.remove(p)
             }
+            
         }
         return returnee
     }
@@ -313,9 +319,7 @@ class FreeForm:FoldFeature
         
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
-
-//        println("PATH \(path)")
-//        println("INTERSECTIONS \(intersections)")
+        paths = filterPathsOutsideBounds(paths)
         
         var edges:[Edge] = []
         
@@ -324,10 +328,10 @@ class FreeForm:FoldFeature
             
             // check greater less than greater than top truncations heights
             // findCentroid(p)
-            if(true){
+//            if(true){
             let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
                 edges.append(e)
-            }
+//            }
         }
         
 //        println("\nEDGES!!!!!!\n \(edges)")

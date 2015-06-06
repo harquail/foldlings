@@ -656,7 +656,6 @@ class Sketch : NSObject, Printable  {
         getPlanes()
     }
     
-    
     /// debugging function to find points very near each other
     func almostCoincidentEdgePoints() -> [CGPoint:[CGPoint]]{
         
@@ -676,120 +675,103 @@ class Sketch : NSObject, Printable  {
         }
         return returnee
     }
-
     
     // get edge intersections
     // split all edges at intersections (add intersection points one at a time, then do all the intersections at the end
     // only need to convert box folds if their cuts are occluded
     // remove edges internal to the main feature
     // modify sketch as needed
-    
-    
-        // deal with intersections between features
-        func intersect(feature:FreeForm,with:[FoldFeature]){
-            
-            
-//            var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
-//            
-//            println("PATH \(path)")
-//            println("INTERSECTIONS \(intersections)")
-//            
-//            var edges:[Edge] = []
-//            
-//            //create edges from split paths
-//            for p in paths{
-//                println("PATH: \n \(p)")
-//                edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
-//            }
-//            
-//            println("\nEDGES!!!!!!\n \(edges)")
-//            return edges
+    // deal with intersections between features
+    func intersect(feature:FreeForm,with:[FoldFeature]){
+        //            var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+        //
+        //            println("PATH \(path)")
+        //            println("INTERSECTIONS \(intersections)")
+        //
+        //            var edges:[Edge] = []
+        //
+        //            //create edges from split paths
+        //            for p in paths{
+        //                println("PATH: \n \(p)")
+        //                edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
+        //            }
+        //
+        //            println("\nEDGES!!!!!!\n \(edges)")
+        //            return edges
 
+        for w in with{
             
-            //
-            for w in with{
+            let intersectedFeature:FreeForm
+            if (w is MasterCard){
                 
-                let intersectedFeature:FreeForm
-                if (w is MasterCard){
-                    
-                }
-                else if (w is BoxFold){
-                    
-                }
-                else if let w = w as? FreeForm{
-                    if let es = w.featureEdges, let outsidePath = feature.path{
-                        for e in es {
-                            let ints = PathIntersections.intersectionsBetween(e.path, path2: outsidePath)
-                            if(ints != nil){
-                                var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
-                                var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
-                                
-                                var cuts:[Edge] = []
-                                //create edges from split paths
-                                for p in occludedPaths{
-                                    //            println("PATH: \n \(p)")
-                                    cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
-                                }
-                                // remove cuts 
-                                cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
-                                
-                                
-                                let maxFold = w.horizontalFolds.last
-                                let minFold = w.horizontalFolds.last
-                                
-                                println("MAX FOLD : \(maxFold)")
-                                println("MIN FOLD : \(minFold)")
-
-                                cuts = cuts.filter({pointNearCenterOf($0.path).y <= maxFold!.start.y && pointNearCenterOf($0.path).y >= minFold!.start.y})
-
-                                
-                                //        //reject paths whose center point is outside the truncated shape
-                                //        for p in returnee{
-                                //            //get top and bottom folds
-                                //            let maxFold = horizontalFolds.last
-                                //            let minFold = horizontalFolds.first
-                                //
-                                //            //discard paths whose centroid is above or below top & bottom folds
-                                //            if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
-                                //                returnee.remove(p)
-                                //            }
-                                //        }
-                                
-                                //discard edges outside truncated feature
-//                                cuts = cuts.filter({$0.path != nil})
-                                
-                                replaceCut(w, cut: e, cuts:cuts)
-                                
-                                cuts = []
-                                //create edges from split paths
-                                for p in occluderPaths{
-                                    //            println("PATH: \n \(p)")
-                                    cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
-                                }
-                                replaceCut(feature, cut: e, cuts:cuts)
-                                
-                                //TODO:fix
-                        
-
-                                
-                                
-                                println("\(occluderPaths.count)")
-                                println("\(occludedPaths.count)")
-                                
-                                
-                                //                            println("\((w as! FreeForm).path!.firstPoint())")
-                                println("\(w) intersections: \(ints)")
+            }
+            else if (w is BoxFold){
+                
+            }
+            else if let w = w as? FreeForm{
+                if let es = w.featureEdges, let outsidePath = feature.path{
+                    for e in es {
+                        let ints = PathIntersections.intersectionsBetween(e.path, path2: outsidePath)
+                        if(ints != nil){
+                            var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
+                            var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
+                            
+                            var cuts:[Edge] = []
+                            //create edges from split paths
+                            for p in occludedPaths{
+                                //            println("PATH: \n \(p)")
+                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
                             }
+                            // remove cuts
+                            cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
+                            
+                            
+//                            let maxFold = w.horizontalFolds.last
+//                            let minFold = w.horizontalFolds.last
+//                            
+//                            println("MAX FOLD : \(maxFold)")
+//                            println("MIN FOLD : \(minFold)")
+//                            
+//                            cuts = cuts.filter({pointNearCenterOf($0.path).y <= maxFold!.start.y && pointNearCenterOf($0.path).y >= minFold!.start.y})
+                            
+                            
+//                                    //reject paths whose center point is outside the truncated shape
+//                                    for p in returnee{
+//                                        //get top and bottom folds
+//                                        let maxFold = horizontalFolds.last
+//                                        let minFold = horizontalFolds.first
+//                            
+//                                        //discard paths whose centroid is above or below top & bottom folds
+//                                        if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
+//                                            returnee.remove(p)
+//                                        }
+//                                    }
+                            
+                            //discard edges outside truncated feature
+                            //                                cuts = cuts.filter({$0.path != nil})
+                            
+                            replaceCut(w, cut: e, cuts:cuts)
+                            
+                            cuts = []
+                            //create edges from split paths
+                            for p in occluderPaths{
+                                //            println("PATH: \n \(p)")
+                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
+                            }
+                            replaceCut(feature, cut: e, cuts:cuts)
+                            
+                            //TODO:fix
+                            
+                            println("\(occluderPaths.count)")
+                            println("\(occludedPaths.count)")
+                            
+                            println("\(w) intersections: \(ints)")
                         }
                     }
                 }
-//                removeFeatureFromSketch(w, healOnDelete: false)
-//                addFeatureToSketch(w, parent: w.parent ?? masterFeature!)
             }
-            
-
-            
-}
+        }
+    }
 }
 
 

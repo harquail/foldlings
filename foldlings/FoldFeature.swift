@@ -232,7 +232,6 @@ class FoldFeature: NSObject, Printable
         return featurePlanes
     }
     
-//    
 //    // makes a straight path between two points
 //    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
 //        let path = UIBezierPath()
@@ -249,10 +248,6 @@ class FoldFeature: NSObject, Printable
     
     // returns edges that are less than the minimum length
     func tooShortEdges() -> [Edge]{
-        
         return featureEdges?.filter({$0.length() < kMinLineLength}) ?? []
     }
-    
-    
-
 }
