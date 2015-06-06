@@ -300,6 +300,8 @@ class Sketch : NSObject, Printable  {
                         plane.foldcount = foldcount
                         
                         plane.edges.map({$0.plane = plane})
+             
+                        
                         // add planes to planelist
                         //planelist.append(plane)
                         planelist.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})

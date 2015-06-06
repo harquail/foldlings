@@ -532,6 +532,14 @@ class SketchView: UIView {
                                 }
                             }
                         }
+                        
+                        if let shape = feature as? FreeForm{
+                            for point in shape.intersections{
+                                drawCircle(point, color:UIColor.blueColor())
+                            }
+                            
+                        }
+                        
                     }
                 }
                 
@@ -554,7 +562,7 @@ class SketchView: UIView {
             {
                 for e in sketch.edges
                 {
-                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                 }
                 
@@ -574,6 +582,17 @@ class SketchView: UIView {
         
         return tempIncremental
     }
+    
+    
+    func drawCircle(point: CGPoint, color:UIColor = UIColor.redColor()) ->UIBezierPath
+    {
+        color.setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
+    }
+    
     
     /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
@@ -679,18 +698,7 @@ class SketchView: UIView {
     }
     
     
-    //    func setButtonBG(image:UIImage){
-    //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    //    }
-    
-    func drawCircle(point: CGPoint) ->UIBezierPath
-    {
-        UIColor.redColor().setStroke()
-        let c = UIBezierPath()
-        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
-        c.stroke()
-        return c
-    }
+
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)

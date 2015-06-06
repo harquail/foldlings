@@ -81,6 +81,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = round(start)
         self.end = round(end)
         self.path = path
+        self.colorOverride = getRandomColor(0.8)
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
@@ -189,6 +190,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func getColor() -> UIColor
     {
         if self.colorOverride != nil {
+            println(">>>>> overrode COLOR")
             return self.colorOverride!
         } else {
             return Edge.getColor(self.kind)
