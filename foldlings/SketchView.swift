@@ -494,7 +494,6 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature && shape != nil){
                             
-                            /// TODO: only for free-form
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
                             
                             let pathAroundFeature = shape!.path!

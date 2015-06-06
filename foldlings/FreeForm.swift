@@ -216,7 +216,6 @@ class FreeForm:FoldFeature
         for p in returnee{
             //get top and bottom folds
             
-            /// TODO: crashes here
             let maxFold = horizontalFolds.last
             let minFold = horizontalFolds.first
             
@@ -235,7 +234,7 @@ class FreeForm:FoldFeature
     {
         
         //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
-        let maxRecursionDepth = 4
+        let maxRecursionDepth = 3
         return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     

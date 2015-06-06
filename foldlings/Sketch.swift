@@ -550,9 +550,8 @@ class Sketch : NSObject, Printable  {
             return returnee
         }
         //appends a fold to the feature & sketch
-        func appendFold(edge:Edge){
-            //TODO: THIS SHOULD BE INSERTED INTO ORDERED
-            feature.parent?.horizontalFolds.append(edge)
+        func appendFold(edge:Edge){            
+            feature.parent?.horizontalFolds.insertIntoOrdered(edge, ordering: {$0.start.y < $1.start.y})
             feature.parent?.featureEdges?.append(edge)
             self.addEdge(edge)
         }

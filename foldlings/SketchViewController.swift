@@ -146,18 +146,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         arch.save()
         
     }
-//    
-//    // TODO: Should store index elsewhere, possibly in sketch
-//    @IBAction func CardsButtonClicked(sender: UIButton) {
-//        Flurry.logEvent("moved to 3d land")
-//        
-//        let arch = ArchivedEdges(sketch:sketchView.sketch)
-//        ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
-//        arch.save()
-//        sketchView.hideXCheck()
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
+
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
         sketchView.sketchMode = .BoxFold
