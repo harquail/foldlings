@@ -237,8 +237,8 @@ class Sketch : NSObject, Printable  {
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
-        println(">> got planes")
-        return;
+        println(">> getting planes")
+//        return;
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
@@ -315,6 +315,7 @@ class Sketch : NSObject, Printable  {
         }
         // }
         self.planes.linkPlanes(planelist)
+        println(">> got planes")
     }
     
     
@@ -712,16 +713,25 @@ class Sketch : NSObject, Printable  {
                 if let es = w.featureEdges, let outsidePath = feature.path{
                     for e in es {
                         let ints = PathIntersections.intersectionsBetween(e.path, path2: outsidePath)
+                        w.intersections.extend(ints ?? [])
                         if(ints != nil){
-                            var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
+                            
+                            // TODO: NO! USE EDGES
+//                            var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
+                            var occludedPaths = feature.pathSplitByPoints(e.path, breakers: ints!)
+
                             var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
                             
                             var cuts:[Edge] = []
+                           
                             //create edges from split paths
                             for p in occludedPaths{
                                 //            println("PATH: \n \(p)")
                                 cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
                             }
+                            
+                            
+                            
                             // remove cuts
                             cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
                             

@@ -190,7 +190,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func getColor() -> UIColor
     {
         if self.colorOverride != nil {
-            println(">>>>> overrode COLOR")
             return self.colorOverride!
         } else {
             return Edge.getColor(self.kind)
@@ -213,19 +212,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
     func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
         let movedPoint = snapStart ? start : end
-        
-        
-        
+
         if(snapStart){
-            
             if(!(CGPointEqualToPoint(start,snapTo))){
-            
                 println("moved \(start) to \(snapTo)")
                 start = snapTo
-
             }
-            
-            
         }
         else{
             
