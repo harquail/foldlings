@@ -722,18 +722,16 @@ class Sketch : NSObject, Printable  {
 
                             var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
                             
-                            var cuts:[Edge] = []
+                            var splitEdges:[Edge] = []
                            
                             //create edges from split paths
                             for p in occludedPaths{
                                 //            println("PATH: \n \(p)")
-                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
+                                splitEdges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: e.kind, isMaster: false, feature: w))
                             }
                             
-                            
-                            
                             // remove cuts
-                            cuts = cuts.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
+                            splitEdges = splitEdges.filter({!(feature.containsPoint(pointNearCenterOf($0.path)))})
                             
                             
 //                            let maxFold = w.horizontalFolds.last
@@ -760,16 +758,28 @@ class Sketch : NSObject, Printable  {
                             //discard edges outside truncated feature
                             //                                cuts = cuts.filter({$0.path != nil})
                             
-                            replaceCut(w, cut: e, cuts:cuts)
+                            if (e.kind == .Cut){
+                            replaceCut(w, cut: e, cuts:splitEdges)
+                            }
+                            else{
+                            replaceFold(w, fold: e, folds:splitEdges)
+                            }
                             
-                            cuts = []
+                            splitEdges = []
                             //create edges from split paths
                             for p in occluderPaths{
                                 //            println("PATH: \n \(p)")
-                                cuts.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: w))
+                                splitEdges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: e.kind, isMaster: false, feature: w))
                             }
-                            replaceCut(feature, cut: e, cuts:cuts)
                             
+                            
+                            if (e.kind == .Cut){
+                                replaceCut(feature, cut: e, cuts:splitEdges)
+                            }
+                            else{
+                                replaceFold(feature, fold: e, folds:splitEdges)
+                            }
+                                                        
                             //TODO:fix
                             
                             println("\(occluderPaths.count)")
