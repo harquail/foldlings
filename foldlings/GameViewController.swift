@@ -11,7 +11,7 @@ import SceneKit
 import Foundation
 import MessageUI
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
+class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate {
     
     /*************image variables***********/
     var bgImage:UIImage!
@@ -55,7 +55,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         UIColor(hue: 0.5, saturation: 0.0, brightness: 1.0, alpha: 0.8)
     ]
     
-    /*****************buttons*****************/
+    /*****************buttons and gestures*****************/
     
     @IBOutlet var backToSketchButton: UIButton!
     
@@ -75,12 +75,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         popupSVGShare(svgString, xposition:100)
     }
     
+
     
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
         Flurry.logEvent("printed foldling svg")
-
+        
         //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
@@ -149,20 +150,36 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         UIGraphicsEndImageContext();
         return img
     }
-    /**************************Create the 3d scene***********************/
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        makeScene()
-    }
     
     // log svgs to s3
     //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         let uploader = SecretlyUploadtoS3()
-        uploader.uploadToS3(svgString,named:"file")
+        uploader.uploadToS3(svgString,named:"\(name)")
     }
+    
+    var pinch: UIPinchGestureRecognizer!
+    
+    @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer) {
+        println("ouch!")
+        println(recognizer.velocity)
+    }
+    
+    /**************************Create the 3d scene***********************/
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
+        pinch.delegate = self
+        view.addGestureRecognizer(pinch)
+        
+        
+
+        makeScene()
+    }
+
     
     func makeScene(){
         // create a new scene
@@ -215,14 +232,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             //  put a check here for !nil node
             var bottomPlaneNode = bottomPlane.node
             var translate = false
-
+            
             if bottomPlane.node == nil{
-            bottomPlaneNode = bottomPlane.makeNode()
+                bottomPlaneNode = bottomPlane.makeNode()
+                translate = true
             }
             
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
             sceneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode!)
+            if (translate){
+                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+            }
             bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
         }
         
@@ -288,8 +309,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         var node = plane.node
         
         if plane.node == nil{
-        node = plane.makeNode()
-        translate = true
+            node = plane.makeNode()
+            translate = true
         }
         
         
@@ -304,7 +325,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         masterSphere.addChildNode(node!)
         
         if (translate){
-        undoParentTranslate(masterSphere, child: node!)
+            undoParentTranslate(masterSphere, child: node!)
         }
         
         let m = SCNMaterial()
@@ -341,7 +362,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
                 if (translate){
-                undoParentTranslate(masterSphere, child: childSphere)
+                    undoParentTranslate(masterSphere, child: childSphere)
                 }
             }
         }

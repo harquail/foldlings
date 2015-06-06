@@ -211,7 +211,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             
             if(!(CGPointEqualToPoint(start,snapTo))){
             
-                println("moved \(start) to \(snapTo)")
+                //println("moved \(start) to \(snapTo)")
                 start = snapTo
 
             }
@@ -222,7 +222,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             
             if(!(CGPointEqualToPoint(end,snapTo))){
                 
-                println("moved \(end) to \(snapTo)")
+                //println("moved \(end) to \(snapTo)")
                 end = snapTo
             }
         }
