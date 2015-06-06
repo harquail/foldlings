@@ -237,11 +237,8 @@ class Sketch : NSObject, Printable  {
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
-//        println(">> got planes")
-//        return;
-        // dispatch_sync(edgeAdjacencylockQueue) {
-        //println("\ngetPlanes\n")
-        //println("\nedges: \(self.edges)")
+        println(">> got planes")
+        return;
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
@@ -777,3 +774,4 @@ class Sketch : NSObject, Printable  {
 }
 
 
+//
