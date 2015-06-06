@@ -86,8 +86,9 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .DeleteFeature :
             //delete feature and redraw
             sketchView.sketch.removeFeatureFromSketch(feature)
-            self.sketchView.forceRedraw()
             self.sketchView.sketch.getPlanes()
+            self.sketchView.forceRedraw()
+
         case .MoveFolds:
             // toggle moveFolds on
             sketchView.sketch.tappedFeature = feature

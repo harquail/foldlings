@@ -237,6 +237,8 @@ class Sketch : NSObject, Printable  {
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
+//        println(">> got planes")
+//        return;
         // dispatch_sync(edgeAdjacencylockQueue) {
         //println("\ngetPlanes\n")
         //println("\nedges: \(self.edges)")
@@ -653,7 +655,7 @@ class Sketch : NSObject, Printable  {
         if (feature.drivingFold != nil && healOnDelete) {
             self.healFoldsOccludedBy(feature)
         }
-        getPlanes()
+//        getPlanes()
     }
     
     /// debugging function to find points very near each other
