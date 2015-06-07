@@ -125,6 +125,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(feature.featurePlanes)
         case .PrintSketch:
             print(sketchView.sketch)
+        case .MovePoints:
+            println("implement move points")
         }
         
     }

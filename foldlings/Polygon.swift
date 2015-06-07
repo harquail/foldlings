@@ -46,4 +46,24 @@ class Polygon:FoldFeature{
         return nil
     }
     
+    func movePolyPoint(from:CGPoint, to:CGPoint) {
+    
+    }
+    
+
+    override func tapOptions() -> [FeatureOption]?{
+        var options:[FeatureOption] = super.tapOptions() ?? []
+        
+        options.append(.DeleteFeature)
+        
+        if(self.isLeaf() && horizontalFolds.count >= 3){
+            options.append(.MoveFolds);
+        }
+        
+        options.append(.MovePoints)
+
+        return options
+        
+    }
+    
 }
