@@ -19,7 +19,6 @@ class Polygon:FoldFeature{
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
-        return UIBezierPath()
         var ps = points
     
         //return nil if we can't draw a path
@@ -97,6 +96,10 @@ class Polygon:FoldFeature{
 
         return options
         
+    }
+    
+    override func containsPoint(point: CGPoint) -> Bool {
+        return path?.containsPoint(point) ?? false
     }
     
 }

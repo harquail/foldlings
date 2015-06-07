@@ -469,7 +469,7 @@ class SketchView: UIView {
         if(poly.pointClosesPoly(touchPoint)){
             poly.addPoint(touchPoint)
             sketch.addFeatureToSketch(sketch.currentFeature!, parent: sketch.masterFeature!)
-////            sketch.currentFeature = nil
+            sketch.currentFeature = nil
             sketch.getPlanes()
         }
         else{
