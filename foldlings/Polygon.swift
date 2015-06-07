@@ -3,7 +3,7 @@
 //  foldlings
 //
 //  Created by nook on 6/7/15.
-//  Copyright (c) 2015 Marissa Allen, Nook Harquail, Tim Tregubov.  All Rights Reserved. All rights reserved.
+//  Copyright (c) 2015 Marissa Allen, Nook Harquail, Tim Tregubov.  All Rights Reserved.
 //
 
 import Foundation
@@ -14,7 +14,8 @@ class Polygon:FoldFeature{
     var points:[CGPoint] = []
     //the path through the points
     var path: UIBezierPath?
-    
+    //the intersection points calculated by featureSpansFold & used for occlusion
+    var intersectionsWithDrivingFold:[CGPoint] = []
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
@@ -34,6 +35,15 @@ class Polygon:FoldFeature{
         polyPath.closePath()
         
         return polyPath
+    }
+    
+    // set intersections here
+    override func featureSpansFold(fold: Edge) -> Bool {
+        return false
+    }
+    
+    func polyPointAt(point:CGPoint) -> CGPoint?{
+        return nil
     }
     
 }
