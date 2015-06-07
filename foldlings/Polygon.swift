@@ -32,6 +32,7 @@ class Polygon:FoldFeature{
         polyPath.moveToPoint(ps.shift()!)
         // draw lines between the remaining points
         points.map({polyPath.addLineToPoint($0)})
+        
 //        polyPath.closePath()
         
         return polyPath
@@ -47,7 +48,14 @@ class Polygon:FoldFeature{
     }
     
     func addPoint(point:CGPoint){
-        points.append(point)
+        var p = point
+        
+        if(pointClosesPoly(p)){
+            p = points[0]
+        }
+        
+        points.append(p)
+        
         path = Polygon.pathThroughPolygonPoints(points)
         
         if(points.count>1){
@@ -58,7 +66,17 @@ class Polygon:FoldFeature{
             featureEdges = []
         }
  
-        endPoint = point
+        
+        endPoint = p
+    }
+    
+    func pointClosesPoly(point:CGPoint) -> Bool{
+        
+        if(points.isEmpty){
+        return false
+        }
+        
+        return ccpDistance(points[0], point) < kHitTestRadius
     }
     
     func movePolyPoint(from:CGPoint, to:CGPoint) {

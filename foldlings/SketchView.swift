@@ -460,13 +460,22 @@ class SketchView: UIView {
     func handlePolygonTap(sender: AnyObject)
     {
         var touchPoint: CGPoint = sender.locationInView(self)
-
+//
         if sketch.currentFeature == nil{
             sketch.currentFeature = Polygon(start:touchPoint)
         }
         var poly = sketch.currentFeature as! Polygon
-        poly.addPoint(touchPoint)
-        path = poly.path
+//        path = poly.path
+        if(poly.pointClosesPoly(touchPoint)){
+            poly.addPoint(touchPoint)
+            sketch.addFeatureToSketch(sketch.currentFeature!, parent: sketch.masterFeature!)
+////            sketch.currentFeature = nil
+            sketch.getPlanes()
+        }
+        else{
+            poly.addPoint(touchPoint)
+        }
+//
         forceRedraw()
         println("tappity")
     }
