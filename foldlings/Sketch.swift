@@ -719,7 +719,6 @@ class Sketch : NSObject, Printable  {
                             // TODO: NO! USE EDGES
 //                            var occludedPaths = feature.pathSplitByPoints(w.path!,breakers: ints!)
                             var occludedPaths = feature.pathSplitByPoints(e.path, breakers: ints!)
-
                             var occluderPaths = feature.pathSplitByPoints(outsidePath,breakers: ints!)
                             
                             var splitEdges:[Edge] = []
@@ -779,9 +778,7 @@ class Sketch : NSObject, Printable  {
                             else{
                                 replaceFold(feature, fold: e, folds:splitEdges)
                             }
-                                                        
-                            //TODO:fix
-                            
+                                                                                    
                             println("\(occluderPaths.count)")
                             println("\(occludedPaths.count)")
                             

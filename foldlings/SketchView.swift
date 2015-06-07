@@ -263,7 +263,7 @@ class SketchView: UIView {
                 shape.endPoint = touchPoint
                 
             case UIGestureRecognizerState.Changed:
-                let shape = sketch.currentFeature as! FreeForm
+                    let shape = sketch.currentFeature as! FreeForm
                 // if it's been a few microseconds since we tried to add a point
                 let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
                 
@@ -319,7 +319,7 @@ class SketchView: UIView {
                     shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                 }
                 
-                shape.shiftEdgeEndpoints()
+//                shape.shiftEdgeEndpoints()
                 
                 let intersectingFs = sketch.featuresIntersecting(shape)
                 
