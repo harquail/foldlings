@@ -14,7 +14,7 @@ func == (lhs: CollectionOfPlanes, rhs: CollectionOfPlanes) -> Bool {
 }
 
 /// set this to false to turn off plane edge coloring
-var kOverrideColor = false
+var kOverrideColor = true
 
 class CollectionOfPlanes: Printable, Hashable {
     var description: String {
@@ -313,6 +313,8 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.color = getOrientationColor(plane.orientation == .Horizontal)
 
                         }
+                        
+
                     }
 
                         // set the parent and the children

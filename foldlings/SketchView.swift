@@ -263,7 +263,7 @@ class SketchView: UIView {
                 shape.endPoint = touchPoint
                 
             case UIGestureRecognizerState.Changed:
-                let shape = sketch.currentFeature as! FreeForm
+                    let shape = sketch.currentFeature as! FreeForm
                 // if it's been a few microseconds since we tried to add a point
                 let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
                 
@@ -316,15 +316,22 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
+                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                 }
                 
-                //                shape.shiftEdgeEndpoints()
+//                shape.shiftEdgeEndpoints()
+                
+                let intersectingFs = sketch.featuresIntersecting(shape)
+                
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
+                sketch.intersect(shape, with: intersectingFs)
+
                 sketch.currentFeature = nil
                 self.sketch.getPlanes()
                 forceRedraw()
+                println("\\ ALMOST COINCIDENT: \\")
+                println(sketch.almostCoincidentEdgePoints())
                 
                 //                println(sketch.almostCoincidentEdgePoints())
                 
@@ -487,7 +494,6 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature && shape != nil){
                             
-                            /// TODO: only for free-form
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
                             
                             let pathAroundFeature = shape!.path!
@@ -526,6 +532,14 @@ class SketchView: UIView {
                                 }
                             }
                         }
+                        
+                        if let shape = feature as? FreeForm{
+                            for point in shape.intersections{
+                                drawCircle(point, color:UIColor.blueColor())
+                            }
+                            
+                        }
+                        
                     }
                 }
                 
@@ -548,7 +562,7 @@ class SketchView: UIView {
             {
                 for e in sketch.edges
                 {
-                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                 }
                 
@@ -568,6 +582,17 @@ class SketchView: UIView {
         
         return tempIncremental
     }
+    
+    
+    func drawCircle(point: CGPoint, color:UIColor = UIColor.redColor()) ->UIBezierPath
+    {
+        color.setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
+    }
+    
     
     /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
@@ -673,18 +698,7 @@ class SketchView: UIView {
     }
     
     
-    //    func setButtonBG(image:UIImage){
-    //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    //    }
-    
-    func drawCircle(point: CGPoint) ->UIBezierPath
-    {
-        UIColor.redColor().setStroke()
-        let c = UIBezierPath()
-        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
-        c.stroke()
-        return c
-    }
+
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)

@@ -204,19 +204,26 @@ class FreeForm:FoldFeature
             default: println("unexpected")
             }
         }
-//        
-        ///CRASH AFTER
-        
+
+
+
+        return returnee
+    }
+    
+    func filterPathsOutsideBounds(paths:[UIBezierPath]) -> [UIBezierPath]{
+        var returnee = paths
         //reject paths whose center point is outside the truncated shape
         for p in returnee{
             //get top and bottom folds
+            
             let maxFold = horizontalFolds.last
             let minFold = horizontalFolds.first
-
+            
             //discard paths whose centroid is above or below top & bottom folds
             if(p.center().y > maxFold!.start.y || p.center().y < minFold!.start.y ){
                 returnee.remove(p)
             }
+            
         }
         return returnee
     }
@@ -227,7 +234,7 @@ class FreeForm:FoldFeature
     {
         
         //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
-        let maxRecursionDepth = 4
+        let maxRecursionDepth = 3
         return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     
@@ -311,14 +318,22 @@ class FreeForm:FoldFeature
         
         /// splits the path into multiple edges based on intersection points
         var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+        paths = filterPathsOutsideBounds(paths)
         
         var edges:[Edge] = []
         
         //create edges from split paths
         for p in paths{
-            edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
+            
+            // check greater less than greater than top truncations heights
+            // findCentroid(p)
+//            if(true){
+            let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
+                edges.append(e)
+//            }
         }
         
+//        println("\nEDGES!!!!!!\n \(edges)")
         return edges
     }
     
@@ -662,6 +677,13 @@ class FreeForm:FoldFeature
                 }
             }
         }
+    }
+    
+    override func containsPoint(point:CGPoint) -> Bool{
+        if (self.boundingBox()?.contains(point) ?? false){
+            return path?.containsPoint(point) ?? false
+        }
+        return false
     }
     
 }

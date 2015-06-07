@@ -17,6 +17,7 @@ func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
     // if a staright line, just return endpoint 
+    // TODO: maybe should return center point rather than endpoint
     if elements.count <= 2{
         return path.lastPoint()
     }
@@ -32,6 +33,33 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     return npoint
 
 }
+
+/// returns a point near the center of a bezier path
+func pointNearCenterOf(path:UIBezierPath) -> CGPoint{
+    
+    // allocate enough room for 4 points per element
+    var ps:UnsafeMutablePointer<CGPoint> = UnsafeMutablePointer<CGPoint>.alloc(4)
+    var psPrev:UnsafeMutablePointer<CGPoint> = UnsafeMutablePointer<CGPoint>.alloc(4)
+    let centerElement = path.elementAtIndex(path.elementCount()/2, associatedPoints: ps)
+    let prevElement = path.elementAtIndex((path.elementCount()/2) - 1, associatedPoints: psPrev)
+
+    let a = psPrev[0]
+    let b = ps[0]
+    let c = ps[1]
+    let d = ps[2]
+    //get the point at t = halfway
+    let centerPoint = bezierInterpolation(CGFloat(0.5), a, b, c, d)
+
+    // free stuff, cause we used an unsafe pointer
+    ps.dealloc(4)
+    psPrev.dealloc(4)
+
+    return centerPoint
+    
+}
+
+// TODO: average cgpoints
+
 
 
 /// is the path given drawn in counterclockwise winding order
@@ -72,7 +100,7 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
         }
         switch path.count-i {
         case 4:
-            npath.addCurveToPoint(path[i+3], controlPoint1: path[i+1], controlPoint2: path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
+            npath.addCurveToPoint(path[i+3], controlPoint1: path[i+1], controlPoint2:   path[i+2])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
             break
         case 3:
             npath.addCurveToPoint(path[path.count-1], controlPoint1: path[path.count-2], controlPoint2: path[path.count-3])// add a cubic Bezier from pt[0] to pt[3], with control points pt[1] and pt[2]
@@ -347,48 +375,48 @@ func findControlPoint(path:UIBezierPath)-> CGPoint
     var CPoint:CGPoint = els[1].points[0].CGPointValue()
     return CPoint
 }
-
-// find the max x and y of all the points and put it into a point
-func calculateBounds(points: [CGPoint]) ->CGPoint{
-    var newX:[CGFloat] = points.map({$0.x})
-    var newY:[CGFloat] = points.map({$0.y})
-    return CGPointMake(maxElement(newX), maxElement(newY))
-}
-// gets a point on the line close to the start point
-// to be used to calculate the vector for angles
-// look at cases whether els has 2 or 4 points
-// then run through bezierInterpolation with the point and
-// take min and max  x and y to figure out bounds
-// generate t from these values 
-// return the makeCGPoint 
-func getFirstPoint(path:UIBezierPath)-> CGPoint
-{
-    var increments: CGFloat = 25.0
-    let elements = path.getPathElements()
-    let els = elements as! [CGPathElementObj]
-    var points : [CGPoint] = els[1].points.map({$0.CGPointValue()})
-    var point = CGPoint()
-    
-    switch points.count {
-    case 4:
-        let bounds:CGPoint = calculateBounds(points)
-        let length = max(bounds.x, bounds.y)
-        let t = increments / length
-        point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
-        
-        
-    case 2:
-        let start = points[0]
-        let end = points[1]
-        let length = CGPointGetDistance(start, end)
-        let ste = (end.x - start.x, end.y - start.y)
-        let t = increments / length
-            point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
-        
-    default:
-        break
-    }
-    return point
-}
+//
+//// find the max x and y of all the points and put it into a point
+//func calculateBounds(points: [CGPoint]) ->CGPoint{
+//    var newX:[CGFloat] = points.map({$0.x})
+//    var newY:[CGFloat] = points.map({$0.y})
+//    return CGPointMake(maxElement(newX), maxElement(newY))
+//}
+//// gets a point on the line close to the start point
+//// to be used to calculate the vector for angles
+//// look at cases whether els has 2 or 4 points
+//// then run through bezierInterpolation with the point and
+//// take min and max  x and y to figure out bounds
+//// generate t from these values 
+//// return the makeCGPoint 
+//func getFirstPoint(path:UIBezierPath)-> CGPoint
+//{
+//    var increments: CGFloat = 25.0
+//    let elements = path.getPathElements()
+//    let els = elements as! [CGPathElementObj]
+//    var points : [CGPoint] = els[1].points.map({$0.CGPointValue()})
+//    var point = CGPoint()
+//    
+//    switch points.count {
+//    case 4:
+//        let bounds:CGPoint = calculateBounds(points)
+//        let length = max(bounds.x, bounds.y)
+//        let t = increments / length
+//        point = CGPointMake(bezierInterpolation(t, points[0].x, points[1].x, points[2].x, points[3].x), bezierInterpolation(t, points[0].y, points[1].y, points[2].y, points[3].y));
+//        
+//        
+//    case 2:
+//        let start = points[0]
+//        let end = points[1]
+//        let length = CGPointGetDistance(start, end)
+//        let ste = (end.x - start.x, end.y - start.y)
+//        let t = increments / length
+//            point = CGPointMake(start.x + ste.0*t, start.y + ste.1*t );
+//        
+//    default:
+//        break
+//    }
+//    return point
+//}
 
 
