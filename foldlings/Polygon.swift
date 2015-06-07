@@ -19,7 +19,7 @@ class Polygon:FoldFeature{
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
-        
+        return UIBezierPath()
         var ps = points
     
         //return nil if we can't draw a path
@@ -32,7 +32,7 @@ class Polygon:FoldFeature{
         polyPath.moveToPoint(ps.shift()!)
         // draw lines between the remaining points
         points.map({polyPath.addLineToPoint($0)})
-        polyPath.closePath()
+//        polyPath.closePath()
         
         return polyPath
     }
@@ -49,6 +49,16 @@ class Polygon:FoldFeature{
     func addPoint(point:CGPoint){
         points.append(point)
         path = Polygon.pathThroughPolygonPoints(points)
+        
+        if(points.count>1){
+        featureEdges?.append(Edge.straightEdgeBetween(points[points.count - 2], end: points.last!, kind: .Cut, feature: self))
+            println(featureEdges)
+        }
+        else{
+            featureEdges = []
+        }
+ 
+        endPoint = point
     }
     
     func movePolyPoint(from:CGPoint, to:CGPoint) {
