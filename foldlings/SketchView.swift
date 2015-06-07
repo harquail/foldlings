@@ -441,6 +441,37 @@ class SketchView: UIView {
             break
         }
     }
+    
+    // returns whether tap was dealt with
+    func handleTap(sender:AnyObject) -> Bool
+    {
+        
+        if(sketchMode == .Polygon){
+            handlePolygonTap(sender)
+            return true
+        }
+        else{
+        return false
+        }
+    }
+    
+    // tap to add point to polygon
+    // returns whether tap was dealt with
+    func handlePolygonTap(sender: AnyObject)
+    {
+        var touchPoint: CGPoint = sender.locationInView(self)
+
+        if sketch.currentFeature == nil{
+            sketch.currentFeature = Polygon(start:touchPoint)
+        }
+        var poly = sketch.currentFeature as! Polygon
+        poly.addPoint(touchPoint)
+        path = poly.path
+        forceRedraw()
+        println("tappity")
+    }
+
+    
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
         self.touchesEnded(touches, withEvent: event)

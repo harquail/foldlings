@@ -46,6 +46,11 @@ class Polygon:FoldFeature{
         return nil
     }
     
+    func addPoint(point:CGPoint){
+        points.append(point)
+        path = Polygon.pathThroughPolygonPoints(points)
+    }
+    
     func movePolyPoint(from:CGPoint, to:CGPoint) {
     
     }

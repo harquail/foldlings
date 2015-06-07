@@ -40,14 +40,18 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @IBAction func handleTap(sender: AnyObject) {
-        let gesture = sender as! UITapGestureRecognizer
-        
-        var touchPoint = gesture.locationInView(sketchView)
-        println("tapped at: \(touchPoint)")
-
         //set tapped feature to nil, clearing any taps
         sketchView.sketch.tappedFeature = nil
 
+        /// handle polygon taps here, then continue if it didn't happen
+        if (sketchView.handleTap(sender)){
+            return
+        }
+        
+        let gesture = sender as! UITapGestureRecognizer
+        var touchPoint = gesture.locationInView(sketchView)
+        println("tapped at: \(touchPoint)")
+        
         // get tapped feature
         if let f = self.sketchView.sketch.featureAt(point: touchPoint){
             if let options = f.tapOptions(){
@@ -80,6 +84,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         Flurry.logEvent("tap option: \(option.rawValue)")
 
+        
         switch option{
         case .AddFolds :
             break
