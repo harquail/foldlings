@@ -39,7 +39,7 @@ class Polygon:FoldFeature{
     
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
-        let ints = intersectionWithStraightEdge(fold)
+        let ints = intersectionWithStraightEdge(fold).ps
         if((ints.count > 0) && (ints.count % 2 == 0)){
             return true
         }
@@ -52,7 +52,7 @@ class Polygon:FoldFeature{
     }
     
     func truncateWithFolds(){
-        
+        // TODO:
         if let driver = drivingFold
         {
             let box = self.boundingBox()
@@ -72,13 +72,20 @@ class Polygon:FoldFeature{
                     
                     let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
                     
-                    //TODO: need to make edge here
-                    if(!ints.isEmpty){
-                        return ints[0].y
+                    if(!ints.ps.isEmpty){
+                        return ints.ps[0].y
                     }
+                    
+                    //TODO: need to make edge here
+//                    for i,e in enumerate(ints.es){
+//                        splitCutAt(ints.ps[i])
+//                    }
+                    
                 }
                 return nil
             }
+            
+
 //
             /// TOP FOLD
             let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
@@ -117,21 +124,29 @@ class Polygon:FoldFeature{
             // scanline is at the bottom fold position, so we just move it up by masterdist
             scanLine.path.applyTransform(moveToCenter)
             
-//            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
-//            if(!middleFolds){
+            scanLine.start = CGPointApplyAffineTransform(scanLine.start, moveToCenter)
+            scanLine.end = CGPointApplyAffineTransform(scanLine.end, moveToCenter)
+            
+            let middleFolds = truncate(6,100,driver.start.y-masterdist)
+            if(middleFolds == nil){
 //                //                println("FAILED INTERSECTION POINTS: \(intersections)");
 //                //                println("\(intersectionsWithDrivingFold)");
-//                self.state = .Invalid
-//                println("FAILED TO INTERSECT WITH MIDDLE")
-//            }
+                self.state = .Invalid
+                println("FAILED TO INTERSECT WITH MIDDLE")
+            }
             //            // add a fold between those intersection points
-            //            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
-            //            self.horizontalFolds.append(midLine)
-            //            self.cachedEdges!.append(midLine)
+//                        let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+//                        self.horizontalFolds.append(midLine)
+//                        self.cachedEdges!.append(midLine)
         }
 //
     }
     
+    private func splitCutAt(point:CGPoint){
+        
+    }
+    
+    // need to SET intswithdriving prior to calling this!!
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         let start = edge.start
         let end = edge.end
@@ -171,18 +186,21 @@ class Polygon:FoldFeature{
         return nil
     }
     
-    private func intersectionWithStraightEdge(edge:Edge) -> [CGPoint]{
+    private func intersectionWithStraightEdge(edge:Edge) -> (ps:[CGPoint],es:[Edge]){
         var intersections:[CGPoint] = []
+        var intersectedEdges:[Edge] = []
+
         for e in featureEdges ?? []{
             let p = ccpPointOfSegmentIntersection(edge.start, edge.end, e.start, e.end)
             // everything that is not CGPointZero is a valid intersection
             if p != CGPointZero{
                 println("int : \(p)")
                 intersections.append(p)
-                intersectionsWithDrivingFold.append(p)
+                intersectedEdges.append(e)
+//                intersectionsWithDrivingFold.append(p)
             }
         }
-        return intersections
+        return (intersections,intersectedEdges)
     }
     
     func addPoint(point:CGPoint){

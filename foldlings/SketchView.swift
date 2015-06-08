@@ -614,7 +614,7 @@ class SketchView: UIView {
                                 drawCircle(point, color:UIColor.grayColor())
                             }
                             //draw intersections
-                            for point in poly.intersectionsWithDrivingFold{
+                            for point in poly.intersections{
                                 drawCircle(point, color:UIColor.redColor())
                             }
                             

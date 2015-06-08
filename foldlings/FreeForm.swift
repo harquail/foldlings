@@ -539,10 +539,6 @@ class FreeForm:FoldFeature
                 self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
-            //            // add a fold between those intersection points
-            //            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
-            //            self.horizontalFolds.append(midLine)
-            //            self.cachedEdges!.append(midLine)
         }
     }
     //split folds around intersections with driving fold
