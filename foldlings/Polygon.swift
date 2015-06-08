@@ -47,6 +47,91 @@ class Polygon:FoldFeature{
         
     }
     
+    override func boundingBox() -> CGRect? {
+        return self.path?.bounds ?? nil
+    }
+    
+    func truncateWithFolds(){
+        
+        if let driver = drivingFold
+        {
+            let box = self.boundingBox()
+            // scan line is the line we use for intersection testing
+            var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
+//
+            var yTop:CGFloat = 0;
+            var yBottom:CGFloat = 0;
+//
+            //hop defines the amount to move each time through the loop, intercepts is the maximum number of accepatable intercepts, endSearchAtY is the
+            func truncate(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> CGFloat?{
+//
+                //move scanline to find bottom intersection point until we are close to limit
+                while(abs(scanLine.path.firstPoint().y - endSearchAtY) > 20 ){
+//
+                    var moveDown = CGAffineTransformMakeTranslation(0, hop);
+                    
+                    let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
+                    
+                    //TODO: need to make edge here
+                    if(!ints.isEmpty){
+                        return ints[0].y
+                    }
+                }
+                return nil
+            }
+//
+            /// TOP FOLD
+            let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
+//
+            scanLine = scanLineStartingAtTop
+            //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
+            if let top = truncate(5,2,box!.origin.y+50){
+                yTop = top
+            }
+            else{
+                scanLine = scanLineStartingAtTop
+                if let top = truncate(5 ,100,driver.start.y){
+                    yTop = top
+                }
+
+            }
+
+            // BOTTOM FOLD
+            let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut, feature: self)
+            scanLine = scanLineStartingAtBottom
+            //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
+            if let bottom = truncate(-5,2,box!.origin.y + box!.height - 50){
+                yBottom = bottom
+            }
+            else{
+                scanLine = scanLineStartingAtBottom
+                if let bottom = truncate(-5,100,driver.start.y){
+                    yBottom = bottom
+                }
+            }
+//
+//            //MIDDLE FOLD
+            //move scan line to position that will make the shape fold to 90º
+            let masterdist = yTop - driver.start.y
+            let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
+            // scanline is at the bottom fold position, so we just move it up by masterdist
+            scanLine.path.applyTransform(moveToCenter)
+            
+//            let middleFolds = tryIntersectionTruncation(scanLine.path,testPathTwo: self.path!)
+//            if(!middleFolds){
+//                //                println("FAILED INTERSECTION POINTS: \(intersections)");
+//                //                println("\(intersectionsWithDrivingFold)");
+//                self.state = .Invalid
+//                println("FAILED TO INTERSECT WITH MIDDLE")
+//            }
+            //            // add a fold between those intersection points
+            //            let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
+            //            self.horizontalFolds.append(midLine)
+            //            self.cachedEdges!.append(midLine)
+        }
+//
+    }
+    
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         let start = edge.start
         let end = edge.end

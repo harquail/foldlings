@@ -496,8 +496,8 @@ class SketchView: UIView {
                     //split folds
                     let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
                     sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
-                   
-
+                    
+                    poly.truncateWithFolds()
                     
                     println(poly.intersectionsWithDrivingFold)
                     break outer;
