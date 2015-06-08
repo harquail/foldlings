@@ -488,15 +488,16 @@ class SketchView: UIView {
             {
                 if(poly.featureSpansFold(fold))
                 {
-                    println("\n\n * POLYGON SPANNED FOLD *\n\n")
-
                     poly.drivingFold = fold
                     poly.parent = feature
-                    //set parents if the fold spans driving
+                    //set parent if the fold spans driving
                     poly.parent!.children.append(poly)
                     
-                    //    sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
-                    poly.parent = feature
+                    //split folds
+                    let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
+                    sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
+                   
+
                     
                     println(poly.intersectionsWithDrivingFold)
                     break outer;

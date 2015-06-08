@@ -39,13 +39,47 @@ class Polygon:FoldFeature{
     
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
-       
         let ints = intersectionWithStraightEdge(fold)
         if((ints.count > 0) && (ints.count % 2 == 0)){
             return true
         }
         return false
         
+    }
+    
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+        let start = edge.start
+        let end = edge.end
+        var returnee = [Edge]()
+        
+        if intersectionsWithDrivingFold.count == 0
+        {
+            return [edge]
+        }
+        
+        intersectionsWithDrivingFold.sort (
+            {(a:CGPoint, b:CGPoint) -> Bool in
+                return (a.x < b.x)
+            }
+        )
+        
+        let firstPiece = Edge.straightEdgeBetween(start, end: intersectionsWithDrivingFold.first!, kind: .Fold, feature:self.parent!)
+        returnee.append(firstPiece)
+        
+        var brushTip = intersectionsWithDrivingFold[0]
+        
+        //skip every other point, so we don't make edges inside shape
+        for (var i = 1; i < intersectionsWithDrivingFold.count-1; i+=2)
+        {
+            brushTip = intersectionsWithDrivingFold[i]
+            let brushTipTranslated = CGPointMake(intersectionsWithDrivingFold[i+1].x,brushTip.y)
+            let piece = Edge.straightEdgeBetween(brushTip, end: brushTipTranslated, kind: .Fold, feature: self.parent!)
+            returnee.append(piece)
+        }
+        
+        let finalPiece = Edge.straightEdgeBetween(intersectionsWithDrivingFold.last!, end: end, kind: .Fold, feature: self.parent!)
+        returnee.append(finalPiece)
+        return returnee
     }
     
     func polyPointAt(point:CGPoint) -> CGPoint?{
