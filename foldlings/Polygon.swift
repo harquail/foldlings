@@ -78,12 +78,19 @@ class Polygon:FoldFeature{
                     
                     let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
                     
+
+                    
                     if(!ints.ps.isEmpty){
                         
                         // split cuts
                         for (i,e) in enumerate(ints.es){
                             splitCut(e, at: (ints.ps[i]))
                         }
+                        
+//                        for point in ints {
+                            let fold = Edge.straightEdgeBetween(ints.ps[0], end:ints.ps[1], kind:.Fold, feature:self)
+                            addFold(fold)
+//                        }
                         
                         return ints.ps[0].y
                     }
@@ -160,7 +167,11 @@ class Polygon:FoldFeature{
 
     }
     
-    // need to SET intswithdriving prior to calling this!!
+    private func addFold(fold:Edge){
+        featureEdges?.append(fold)
+        horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+    }
+    
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         let start = edge.start
         let end = edge.end
