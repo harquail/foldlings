@@ -141,7 +141,7 @@ class Polygon:FoldFeature{
             scanLine.start = CGPointApplyAffineTransform(scanLine.start, moveToCenter)
             scanLine.end = CGPointApplyAffineTransform(scanLine.end, moveToCenter)
             
-            let middleFolds = truncate(6,100,driver.start.y-masterdist)
+            let middleFolds = truncate(0,100,driver.start.y-masterdist)
             if(middleFolds == nil){
 //                //                println("FAILED INTERSECTION POINTS: \(intersections)");
 //                //                println("\(intersectionsWithDrivingFold)");
