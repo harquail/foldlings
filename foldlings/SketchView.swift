@@ -468,9 +468,7 @@ class SketchView: UIView {
 //        path = poly.path
         if(poly.pointClosesPoly(touchPoint)){
             poly.addPoint(touchPoint)
-            sketch.addFeatureToSketch(sketch.currentFeature!, parent: sketch.masterFeature!)
-            sketch.currentFeature = nil
-            sketch.getPlanes()
+            finishPolygon(poly)
         }
         else{
             poly.addPoint(touchPoint)
@@ -478,6 +476,33 @@ class SketchView: UIView {
 //
         forceRedraw()
         println("tappity")
+    }
+
+    func finishPolygon(poly:Polygon){
+        
+        println("finish poly!")
+        outer: for feature in sketch.features
+        {
+            for fold in feature.horizontalFolds
+            {
+                if(poly.featureSpansFold(fold))
+                {
+                    poly.drivingFold = fold
+                    poly.parent = feature
+                    //set parents if the fold spans driving
+                    poly.parent!.children.append(poly)
+                    
+                    //    sketch.replaceFold(shape.parent!, fold: fold, folds: fragments)
+                    poly.parent = feature
+                    
+                    println(poly.intersectionsWithDrivingFold)
+                    break outer;
+                }
+            }
+        }
+        
+        sketch.addFeatureToSketch(poly, parent: poly.parent ?? sketch.masterFeature!)
+        sketch.currentFeature = nil
     }
 
     
@@ -580,12 +605,15 @@ class SketchView: UIView {
                             
                         }
                         else if let poly = feature as? Polygon{
-                        
-                                //draw control points
-                                for point in poly.points{
-                                    drawCircle(point, color:UIColor.grayColor())
-                                }
-                                
+                            //draw control points
+                            for point in poly.points{
+                                drawCircle(point, color:UIColor.grayColor())
+                            }
+                            //draw intersections
+                            for point in poly.intersectionsWithDrivingFold{
+                                drawCircle(point, color:UIColor.redColor())
+                            }
+                            
                         }
                         
                     }

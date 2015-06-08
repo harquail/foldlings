@@ -39,11 +39,31 @@ class Polygon:FoldFeature{
     
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
+
+        let ints = intersectionWithStraightEdge(fold)
+        if(ints.count % 2 == 0){
+            
+            return true
+        }
         return false
+        
     }
     
     func polyPointAt(point:CGPoint) -> CGPoint?{
         return nil
+    }
+    
+    private func intersectionWithStraightEdge(edge:Edge) -> [CGPoint]{
+        var intersections:[CGPoint] = []
+        for e in featureEdges ?? []{
+            let p = ccpPointOfSegmentIntersection(edge.start, edge.end, e.start, e.end)
+            // everything that is not CGPointZero is a valid intersection
+            if p != CGPointZero{
+                intersections.append(p)
+                intersectionsWithDrivingFold.append(p)
+            }
+        }
+        return intersections
     }
     
     func addPoint(point:CGPoint){
