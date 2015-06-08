@@ -291,6 +291,7 @@ class SketchView: UIView {
                     {
                         if(shape.featureSpansFold(fold))
                         {
+                            
                             shape.drivingFold = fold
                             shape.parent = feature
                             //set parents if the fold spans driving
@@ -487,6 +488,8 @@ class SketchView: UIView {
             {
                 if(poly.featureSpansFold(fold))
                 {
+                    println("\n\n * POLYGON SPANNED FOLD *\n\n")
+
                     poly.drivingFold = fold
                     poly.parent = feature
                     //set parents if the fold spans driving

@@ -39,10 +39,9 @@ class Polygon:FoldFeature{
     
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
-
+       
         let ints = intersectionWithStraightEdge(fold)
-        if(ints.count % 2 == 0){
-            
+        if((ints.count > 0) && (ints.count % 2 == 0)){
             return true
         }
         return false
@@ -59,6 +58,7 @@ class Polygon:FoldFeature{
             let p = ccpPointOfSegmentIntersection(edge.start, edge.end, e.start, e.end)
             // everything that is not CGPointZero is a valid intersection
             if p != CGPointZero{
+                println("int : \(p)")
                 intersections.append(p)
                 intersectionsWithDrivingFold.append(p)
             }
