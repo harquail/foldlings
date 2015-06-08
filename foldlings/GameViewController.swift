@@ -164,25 +164,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer) {
         println("ouch!")
         println(recognizer.velocity)
+        // set animation here
+    
+        
+
     }
     
     /**************************Create the 3d scene***********************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
-        pinch.delegate = self
-        view.addGestureRecognizer(pinch)
-        
-        
-
         makeScene()
     }
 
     
     func makeScene(){
         // create a new scene
+        // retrieve the SCNView
+        let scnView = self.view as! SCNView
+        scnView.delegate = self
+        
+        // configure the view
+        scnView.backgroundColor = UIColor.whiteColor()
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -247,9 +250,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
         }
         
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        scnView.delegate = self
+
         
         // set the scene to the view
         scnView.scene = scene
@@ -261,8 +262,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // show statistics such as fps and timing information
         scnView.showsStatistics = false
         
-        // configure the view
-        scnView.backgroundColor = UIColor.whiteColor()
+        
+        // add pinch motion to control animation
+        //view.userInteractionEnabled = true
+        pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
+        //pinch.delegate = self
+        view.addGestureRecognizer(pinch)
+
         
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
@@ -346,7 +352,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // different based on orientation
         if hill {
             masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-        } else {
+        }
+        else {
             masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
         }
         
