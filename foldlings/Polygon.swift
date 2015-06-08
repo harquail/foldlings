@@ -39,8 +39,14 @@ class Polygon:FoldFeature{
     
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
-        let ints = intersectionWithStraightEdge(fold).ps
-        if((ints.count > 0) && (ints.count % 2 == 0)){
+        let ints = intersectionWithStraightEdge(fold)
+        if((ints.ps.count > 0) && (ints.ps.count % 2 == 0)){
+            
+            // split cuts
+            for (i,e) in enumerate(ints.es){
+                splitCut(e, at: (ints.ps[i]))
+            }
+            
             return true
         }
         return false
@@ -73,13 +79,16 @@ class Polygon:FoldFeature{
                     let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
                     
                     if(!ints.ps.isEmpty){
+                        
+                        // split cuts
+                        for (i,e) in enumerate(ints.es){
+                            splitCut(e, at: (ints.ps[i]))
+                        }
+                        
                         return ints.ps[0].y
                     }
                     
-                    //TODO: need to make edge here
-//                    for i,e in enumerate(ints.es){
-//                        splitCutAt(ints.ps[i])
-//                    }
+                    
                     
                 }
                 return nil
@@ -142,8 +151,13 @@ class Polygon:FoldFeature{
 //
     }
     
-    private func splitCutAt(point:CGPoint){
+    private func splitCut(edge:Edge,at:CGPoint){
+       let e1 = Edge.straightEdgeBetween(edge.start, end: at, kind: .Cut, feature: self)
+       let e2 = Edge.straightEdgeBetween(at, end: edge.end, kind: .Cut, feature: self)
         
+        featureEdges?.remove(edge)
+        featureEdges?.extend([e1,e2])
+
     }
     
     // need to SET intswithdriving prior to calling this!!
@@ -196,6 +210,7 @@ class Polygon:FoldFeature{
             if p != CGPointZero{
                 println("int : \(p)")
                 intersections.append(p)
+                intersectionsWithDrivingFold.append(p)
                 intersectedEdges.append(e)
 //                intersectionsWithDrivingFold.append(p)
             }
