@@ -87,10 +87,8 @@ class Polygon:FoldFeature{
                             splitCut(e, at: (ints.ps[i]))
                         }
                         
-//                        for point in ints {
-                            let fold = Edge.straightEdgeBetween(ints.ps[0], end:ints.ps[1], kind:.Fold, feature:self)
+                        let fold = Edge.straightEdgeBetween(ints.ps[0], end:ints.ps[1], kind:.Fold, feature:self)
                             addFold(fold)
-//                        }
                         
                         return ints.ps[0].y
                     }
@@ -155,7 +153,8 @@ class Polygon:FoldFeature{
 //                        self.horizontalFolds.append(midLine)
 //                        self.cachedEdges!.append(midLine)
         }
-//
+        rejectOutsideTruncation()
+        //
     }
     
     private func splitCut(edge:Edge,at:CGPoint){
@@ -170,6 +169,21 @@ class Polygon:FoldFeature{
     private func addFold(fold:Edge){
         featureEdges?.append(fold)
         horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
+    }
+    
+    private func rejectOutsideTruncation(){
+        let top = horizontalFolds.first!.start.y
+        let end = horizontalFolds.last!.start.y
+
+        for edge in featureEdges!{
+            let center = CGPointMake((edge.start.x + edge.end.x)/2, (edge.start.y + edge.end.y)/2)
+            if(center.y < top){
+                featureEdges?.remove(edge)
+            }
+            if(center.y > end){
+                featureEdges?.remove(edge)
+            }
+        }
     }
     
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
