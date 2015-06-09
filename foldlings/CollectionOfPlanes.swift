@@ -240,7 +240,6 @@ class CollectionOfPlanes: Printable, Hashable {
                     // insert into parent's children
                     plane.parent.children.append(plane)
                     
-                    
                 case 1:
                     // find fold (either bottom or top)
                     // check top edge, check bottom edge, check which one is a fold
@@ -287,8 +286,6 @@ class CollectionOfPlanes: Printable, Hashable {
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                     }
-                    
-                    
                 default:
                     
                     // more than one fold is a plane
@@ -298,8 +295,6 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{
-                            
-
                             plane.masterTop = true
                             masterTop = plane
                             plane.color = getOrientationColor(plane.orientation == .Horizontal)
@@ -309,15 +304,11 @@ class CollectionOfPlanes: Printable, Hashable {
                             // just set this parent specifically
                         else
                         {
-                            
-
                             plane.masterBottom = true
                             masterBottom = plane
                             plane.orientation = .Horizontal
                             plane.color = getOrientationColor(plane.orientation == .Horizontal)
-
                         }
-                        
 
                     }
 
