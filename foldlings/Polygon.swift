@@ -19,6 +19,7 @@ class Polygon:FoldFeature{
     // temporary debug 
     // TODO: REMOVE
     var centers:[CGPoint] = []
+    var outsidePoints:[CGPoint] = []
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
@@ -79,25 +80,30 @@ class Polygon:FoldFeature{
 //
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
                     
-                    let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
-                    
+                    var ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
+//                    intersectionsWithDrivingFold.sort (
+//                        {(a:CGPoint, b:CGPoint) -> Bool in
+//                            return (a.x < b.x)
+//                        }
+//                    )
                     if(!ints.ps.isEmpty){
                         // split cuts
                         for (i,e) in enumerate(ints.es){
                             splitCut(e, at: (ints.ps[i]))
                             
                             if(i>0){
+                                println("x: \(ints.ps[i].x)")
                                 let fold = Edge.straightEdgeBetween(ints.ps[i-1], end:ints.ps[i], kind:.Fold, feature:self)
                                 
                                 let center = fold.centerOfStraightEdge()
                                 // add fold if its center is inside the polygon
                                 if(self.containsPoint(center)){
-                                    centers.append(center)
+                                    outsidePoints.append(center)
                                     addFold(fold)
                                 }
-//                                else{
-//                                    println("DID NO CONTAIN")
-//                                }
+                                else{
+                                    addFold(fold)
+                                }
                                 
                             }
                         }
@@ -188,12 +194,17 @@ class Polygon:FoldFeature{
 
         for edge in featureEdges!{
             let center = edge.centerOfStraightEdge()
-//            centers.append(center)
+            println("center: \(outsidePoints)")
             if(center.y < top){
+//                outsidePoints.append(center)
                 featureEdges?.remove(edge)
             }
-            if(center.y > end){
+            else if(center.y > end){
+//                outsidePoints.append(center)
                 featureEdges?.remove(edge)
+            }
+            else{
+//                outsidePoints.append(center)
             }
         }
     }
@@ -237,22 +248,25 @@ class Polygon:FoldFeature{
         return nil
     }
     
-    private func intersectionWithStraightEdge(edge:Edge) -> (ps:[CGPoint],es:[Edge]){
-        var intersections:[CGPoint] = []
-        var intersectedEdges:[Edge] = []
+    private func intersectionWithStraightEdge(edge:Edge) -> [(ps:CGPoint,es:Edge)]{
+        var intersections:[(ps:CGPoint,es:Edge)] = []
+//        var intersectedEdges:[Edge] = []
 
         for e in featureEdges ?? []{
             let p = ccpPointOfSegmentIntersection(edge.start, edge.end, e.start, e.end)
             // everything that is not CGPointZero is a valid intersection
             if p != CGPointZero{
                 println("int : \(p)")
-                intersections.append(p)
+                intersections.append(ps: p,es: e)
                 intersectionsWithDrivingFold.append(p)
-                intersectedEdges.append(e)
+//                intersectedEdges.append(e)
 //                intersectionsWithDrivingFold.append(p)
             }
         }
-        return (intersections,intersectedEdges)
+        
+//        intersections.sort({(a:CGPoint, b:CGPoint) -> Bool in return (a.x < b.x) })
+
+        return intersections
     }
     
     func addPoint(point:CGPoint){

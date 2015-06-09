@@ -611,17 +611,22 @@ class SketchView: UIView {
                         else if let poly = feature as? Polygon{
                             //draw control points
                             
-                            for center in poly.centers{
-                                drawCircle(center,color:UIColor.purpleColor())
+//                            for center in poly.centers{
+//                                drawCircle(center,color:UIColor.purpleColor())
+//                            }
+                            for p in poly.outsidePoints{
+                                drawCircle(p,color:UIColor.orangeColor())
                             }
                             
 //                            for point in poly.points{
 //                                drawCircle(point, color:UIColor.grayColor())
 //                            }
+
+                            
                             //draw intersections
-                            for point in poly.intersectionsWithDrivingFold{
-                                drawCircle(point, color:UIColor.redColor())
-                            }
+//                            for point in poly.intersectionsWithDrivingFold{
+//                                drawCircle(point, color:UIColor.redColor())
+//                            }
                             
                         }
                         
@@ -669,11 +674,11 @@ class SketchView: UIView {
     }
     
     
-    func drawCircle(point: CGPoint, color:UIColor = UIColor.redColor()) ->UIBezierPath
+    func drawCircle(point: CGPoint, color:UIColor = UIColor.redColor(), radius:CGFloat = 2.5) ->UIBezierPath
     {
         color.setStroke()
         let c = UIBezierPath()
-        c.addArcWithCenter(point, radius:7.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.addArcWithCenter(point, radius:radius, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
         c.stroke()
         return c
     }
