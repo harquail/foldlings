@@ -182,6 +182,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return color
     }
     
+    func centerOfStraightEdge() -> CGPoint{
+        
+        let averaged = CGPointAdd(start,end)
+        return CGPointMake(averaged.x/2, averaged.y/2)
+    }
+    
     func getLaserColor() -> UIColor
     {
         return Edge.getLaserColor(self.kind)

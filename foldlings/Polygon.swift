@@ -16,6 +16,9 @@ class Polygon:FoldFeature{
     var path: UIBezierPath?
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
+    // temporary debug 
+    // TODO: REMOVE
+    var centers:[CGPoint] = []
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
@@ -32,7 +35,7 @@ class Polygon:FoldFeature{
         // draw lines between the remaining points
         points.map({polyPath.addLineToPoint($0)})
         
-//        polyPath.closePath()
+        polyPath.closePath()
         
         return polyPath
     }
@@ -78,18 +81,26 @@ class Polygon:FoldFeature{
                     
                     let ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
                     
-
-                    
                     if(!ints.ps.isEmpty){
-                        
                         // split cuts
                         for (i,e) in enumerate(ints.es){
                             splitCut(e, at: (ints.ps[i]))
+                            
+                            if(i>0){
+                                let fold = Edge.straightEdgeBetween(ints.ps[i-1], end:ints.ps[i], kind:.Fold, feature:self)
+                                
+                                let center = fold.centerOfStraightEdge()
+                                // add fold if its center is inside the polygon
+                                if(self.containsPoint(center)){
+                                    centers.append(center)
+                                    addFold(fold)
+                                }
+//                                else{
+//                                    println("DID NO CONTAIN")
+//                                }
+                                
+                            }
                         }
-                        
-                        let fold = Edge.straightEdgeBetween(ints.ps[0], end:ints.ps[1], kind:.Fold, feature:self)
-                            addFold(fold)
-                        
                         return ints.ps[0].y
                     }
                     
@@ -176,7 +187,8 @@ class Polygon:FoldFeature{
         let end = horizontalFolds.last!.start.y
 
         for edge in featureEdges!{
-            let center = CGPointMake((edge.start.x + edge.end.x)/2, (edge.start.y + edge.end.y)/2)
+            let center = edge.centerOfStraightEdge()
+//            centers.append(center)
             if(center.y < top){
                 featureEdges?.remove(edge)
             }
