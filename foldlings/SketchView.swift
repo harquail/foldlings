@@ -461,51 +461,51 @@ class SketchView: UIView {
     func handlePolygonTap(sender: AnyObject)
     {
         var touchPoint: CGPoint = sender.locationInView(self)
-//
+        // if this is a new feature, create one
         if sketch.currentFeature == nil{
             sketch.currentFeature = Polygon(start:touchPoint)
         }
+        
         var poly = sketch.currentFeature as! Polygon
-//        path = poly.path
+        //add point to the polygon
         if(poly.pointClosesPoly(touchPoint)){
             poly.addPoint(touchPoint)
+            // add to sketch if this tap closes the shape
             finishPolygon(poly)
         }
         else{
             poly.addPoint(touchPoint)
         }
-//
         forceRedraw()
-        println("tappity")
     }
 
+    // complete the polygon and add it to the sketch
     func finishPolygon(poly:Polygon){
         
-        println("finish poly!")
         outer: for feature in sketch.features
         {
             for fold in feature.horizontalFolds
             {
                 if(poly.featureSpansFold(fold))
                 {
+                    //set parent if the fold spans driving
                     poly.drivingFold = fold
                     poly.parent = feature
-                    //set parent if the fold spans driving
                     poly.parent!.children.append(poly)
                     
                     //split folds
                     let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
                     sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
                     
+                    //add truncating folds
                     poly.truncateWithFolds()
-                    
-//                    println(poly.intersections)
                     break outer;
                 }
             }
         }
         
         sketch.addFeatureToSketch(poly, parent: poly.parent ?? sketch.masterFeature!)
+        // reset current feature so next tap will start a new feature
         sketch.currentFeature = nil
     }
 
@@ -611,40 +611,15 @@ class SketchView: UIView {
                         else if let poly = feature as? Polygon{
                             //draw control points
                             
-//                            for center in poly.centers{
-//                                drawCircle(center,color:UIColor.purpleColor())
-//                            }
-                            for p in poly.outsidePoints{
-                                drawCircle(p,color:UIColor.orangeColor())
-                            }
+                            //  for point in poly.points{
+                            //      drawCircle(point, color:UIColor.grayColor())
+                            //  }
                             
-//                            for point in poly.points{
-//                                drawCircle(point, color:UIColor.grayColor())
-//                            }
-
-                            
-                            //draw intersections
-//                            for point in poly.intersectionsWithDrivingFold{
-//                                drawCircle(point, color:UIColor.redColor())
-//                            }
                             
                         }
                         
                     }
                 }
-                
-                //                // all edges
-                //                for e in sketch.edges
-                //                {
-                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                //
-                //                    // don't draw twin edges
-                //                    if(!twinsOfVisited.contains(e))
-                //                    {
-                //                        e.path.stroke()
-                //                        twinsOfVisited.append(e.twin)
-                //                    }
-                //                }
             }
                 
                 // if grayscale

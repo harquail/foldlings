@@ -9,14 +9,14 @@
 import Foundation
 
 class Polygon:FoldFeature{
-
+    
     // the (draggable) points that define the polygon
     var points:[CGPoint] = []
     //the path through the points
     var path: UIBezierPath?
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
-    // temporary debug 
+    // temporary debug
     // TODO: REMOVE
     var centers:[CGPoint] = []
     var outsidePoints:[CGPoint] = []
@@ -24,7 +24,7 @@ class Polygon:FoldFeature{
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
         var ps = points
-    
+        
         //return nil if we can't draw a path
         if(ps.isEmpty){
             return nil
@@ -57,6 +57,7 @@ class Polygon:FoldFeature{
         
     }
     
+    // use path to get bounds
     override func boundingBox() -> CGRect? {
         return self.path?.bounds ?? nil
     }
@@ -68,18 +69,17 @@ class Polygon:FoldFeature{
             let box = self.boundingBox()
             // scan line is the line we use for intersection testing
             var scanLine:Edge = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
-//
+            //
             var yTop:CGFloat = 0;
             var yBottom:CGFloat = 0;
-//
+            //
             //hop defines the amount to move each time through the loop, intercepts is the maximum number of accepatable intercepts, endSearchAtY is the
             func truncate(hop:CGFloat,intercepts:Int,endSearchAtY:CGFloat) -> CGFloat?{
-//
+                //
                 //move scanline to find bottom intersection point until we are close to limit
                 while(abs(scanLine.path.firstPoint().y - endSearchAtY) > 20 ){
-//
+
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
-                    
                     var ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
                     
                     ints.sort (
@@ -88,24 +88,19 @@ class Polygon:FoldFeature{
                         }
                     )
                     if(!ints.isEmpty){
-//                        // split cuts
                         for (i,int:(ps:CGPoint,es:Edge)) in enumerate(ints){
+                            // split cuts
                             splitCut(int.es, at: int.ps)
-//
                             if(i>0){
-//                                println("x: \(ints.ps[i].x)")
+                                // make folds between the intersections
                                 let fold = Edge.straightEdgeBetween(ints[i-1].ps, end:int.ps, kind:.Fold, feature:self)
-//
+
                                 let center = fold.centerOfStraightEdge()
-//                                // add fold if its center is inside the polygon
+                               // add fold if its center is inside the polygon
                                 if(self.containsPoint(center)){
                                     outsidePoints.append(center)
                                     addFold(fold)
                                 }
-                                else{
-//                                    addFold(fold)
-                                }
-//
                             }
                         }
                         return ints[0].ps.y
@@ -117,11 +112,11 @@ class Polygon:FoldFeature{
                 return nil
             }
             
-
-//
+            
+            //
             /// TOP FOLD
             let scanLineStartingAtTop = Edge.straightEdgeBetween(box!.origin, end: CGPointMake(box!.origin.x + box!.width, box!.origin.y), kind: .Cut, feature: self)
-//
+            //
             scanLine = scanLineStartingAtTop
             //try truncting at bottom with 2 intersections first, then any number of intersections if that fails in the first 50 points
             if let top = truncate(5,2,box!.origin.y+50){
@@ -132,9 +127,9 @@ class Polygon:FoldFeature{
                 if let top = truncate(5 ,100,driver.start.y){
                     yTop = top
                 }
-
+                
             }
-
+            
             // BOTTOM FOLD
             let scanLineStartingAtBottom =  Edge.straightEdgeBetween(CGPointMake(box!.origin.x, box!.origin.y + box!.height), end: CGPointMake(box!.origin.x + box!.width, box!.origin.y + box!.height), kind: .Cut, feature: self)
             scanLine = scanLineStartingAtBottom
@@ -148,8 +143,8 @@ class Polygon:FoldFeature{
                     yBottom = bottom
                 }
             }
-//
-//            //MIDDLE FOLD
+            //
+            //            //MIDDLE FOLD
             //move scan line to position that will make the shape fold to 90º
             let masterdist = yTop - driver.start.y
             let moveToCenter = CGAffineTransformMakeTranslation(0, masterdist)
@@ -161,55 +156,44 @@ class Polygon:FoldFeature{
             
             let middleFolds = truncate(0,100,driver.start.y-masterdist)
             if(middleFolds == nil){
-//                //                println("FAILED INTERSECTION POINTS: \(intersections)");
-//                //                println("\(intersectionsWithDrivingFold)");
                 self.state = .Invalid
-                println("FAILED TO INTERSECT WITH MIDDLE")
             }
-            //            // add a fold between those intersection points
-//                        let midLine = Edge.straightEdgeBetween(points![0], end: points![1], kind: .Fold)
-//                        self.horizontalFolds.append(midLine)
-//                        self.cachedEdges!.append(midLine)
         }
         rejectOutsideTruncation()
-        //
     }
-    
+    // split an edge into two edges at a point
     private func splitCut(edge:Edge,at:CGPoint){
-       let e1 = Edge.straightEdgeBetween(edge.start, end: at, kind: .Cut, feature: self)
-       let e2 = Edge.straightEdgeBetween(at, end: edge.end, kind: .Cut, feature: self)
+        let e1 = Edge.straightEdgeBetween(edge.start, end: at, kind: .Cut, feature: self)
+        let e2 = Edge.straightEdgeBetween(at, end: edge.end, kind: .Cut, feature: self)
         
         featureEdges?.remove(edge)
         featureEdges?.extend([e1,e2])
-
     }
     
+    // adds a fold to the polygon
     private func addFold(fold:Edge){
         featureEdges?.append(fold)
         horizontalFolds.insertIntoOrdered(fold, ordering: {$0.start.y < $1.start.y})
     }
     
+    // remove edges whose senter is outside the top and bottom folds
     private func rejectOutsideTruncation(){
         let top = horizontalFolds.first!.start.y
         let end = horizontalFolds.last!.start.y
-
+        
         for edge in featureEdges!{
             let center = edge.centerOfStraightEdge()
-            println("center: \(outsidePoints)")
+
             if(center.y < top){
-//                outsidePoints.append(center)
                 featureEdges?.remove(edge)
             }
             else if(center.y > end){
-//                outsidePoints.append(center)
                 featureEdges?.remove(edge)
-            }
-            else{
-//                outsidePoints.append(center)
             }
         }
     }
     
+    // split a fold by around the polygon drawn over
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         let start = edge.start
         let end = edge.end
@@ -249,64 +233,60 @@ class Polygon:FoldFeature{
         return nil
     }
     
+    // intersections between the polygon and an edge
     private func intersectionWithStraightEdge(edge:Edge) -> [(ps:CGPoint,es:Edge)]{
         var intersections:[(ps:CGPoint,es:Edge)] = []
-//        var intersectedEdges:[Edge] = []
-
+        
         for e in featureEdges ?? []{
             let p = ccpPointOfSegmentIntersection(edge.start, edge.end, e.start, e.end)
             // everything that is not CGPointZero is a valid intersection
             if p != CGPointZero{
-                println("int : \(p)")
                 intersections.append(ps: p,es: e)
                 intersectionsWithDrivingFold.append(p)
-//                intersectedEdges.append(e)
-//                intersectionsWithDrivingFold.append(p)
             }
         }
-        
-//        intersections.sort({(a:CGPoint, b:CGPoint) -> Bool in return (a.x < b.x) })
-
         return intersections
     }
     
+    // adds a point to the polygon
     func addPoint(point:CGPoint){
         var p = point
         
+        // snap closing point to the first point of poly
         if(pointClosesPoly(p)){
             p = points[0]
         }
         
+        // add point to poly
         points.append(p)
-        
         path = Polygon.pathThroughPolygonPoints(points)
         
+        // add edge
         if(points.count>1){
-        featureEdges?.append(Edge.straightEdgeBetween(points[points.count - 2], end: points.last!, kind: .Cut, feature: self))
-            println(featureEdges)
+            featureEdges?.append(Edge.straightEdgeBetween(points[points.count - 2], end: points.last!, kind: .Cut, feature: self))
         }
         else{
             featureEdges = []
         }
- 
-        
+
         endPoint = p
     }
     
+    // a point closes a poly if it is with the hit test radius of the first point
     func pointClosesPoly(point:CGPoint) -> Bool{
-        
         if(points.isEmpty){
-        return false
+            return false
         }
         
         return ccpDistance(points[0], point) < kHitTestRadius
     }
     
     func movePolyPoint(from:CGPoint, to:CGPoint) {
-    
+        
     }
     
-
+    
+    // things that can be done to polygons
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = super.tapOptions() ?? []
         
@@ -317,11 +297,12 @@ class Polygon:FoldFeature{
         }
         
         options.append(.MovePoints)
-
+        
         return options
         
     }
     
+    // whether a point is inside the polygon
     override func containsPoint(point: CGPoint) -> Bool {
         return path?.containsPoint(point) ?? false
     }
