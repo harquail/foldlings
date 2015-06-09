@@ -238,7 +238,7 @@ class Sketch : NSObject, Printable  {
     func getPlanes()
     {
         println(">> getting planes")
-        return;
+//        return;
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
@@ -522,6 +522,9 @@ class Sketch : NSObject, Printable  {
             let pointTwo = CGPointMake(box.endPoint!.x, feature.drivingFold!.start.y)
             
             intercepts = [pointOne,pointTwo]
+        }
+        else if let poly = feature as? Polygon{
+            intercepts  =  poly.intersectionsWithDrivingFold
         }
         else{
             intercepts = []

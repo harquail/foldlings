@@ -44,11 +44,11 @@ class Polygon:FoldFeature{
     // set intersections here
     override func featureSpansFold(fold: Edge) -> Bool {
         let ints = intersectionWithStraightEdge(fold)
-        if((ints.ps.count > 0) && (ints.ps.count % 2 == 0)){
+        if((ints.count > 0) && (ints.count % 2 == 0)){
             
             // split cuts
-            for (i,e) in enumerate(ints.es){
-                splitCut(e, at: (ints.ps[i]))
+            for (p,e) in ints{
+                splitCut(e, at: p)
             }
             
             return true
@@ -81,33 +81,34 @@ class Polygon:FoldFeature{
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
                     
                     var ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
-//                    intersectionsWithDrivingFold.sort (
-//                        {(a:CGPoint, b:CGPoint) -> Bool in
-//                            return (a.x < b.x)
-//                        }
-//                    )
-                    if(!ints.ps.isEmpty){
-                        // split cuts
-                        for (i,e) in enumerate(ints.es){
-                            splitCut(e, at: (ints.ps[i]))
-                            
+                    
+                    ints.sort (
+                        {(a:(ps:CGPoint,es:Edge),b:(ps:CGPoint,es:Edge)) -> Bool in
+                            return (a.ps.x < b.ps.x)
+                        }
+                    )
+                    if(!ints.isEmpty){
+//                        // split cuts
+                        for (i,int:(ps:CGPoint,es:Edge)) in enumerate(ints){
+                            splitCut(int.es, at: int.ps)
+//
                             if(i>0){
-                                println("x: \(ints.ps[i].x)")
-                                let fold = Edge.straightEdgeBetween(ints.ps[i-1], end:ints.ps[i], kind:.Fold, feature:self)
-                                
+//                                println("x: \(ints.ps[i].x)")
+                                let fold = Edge.straightEdgeBetween(ints[i-1].ps, end:int.ps, kind:.Fold, feature:self)
+//
                                 let center = fold.centerOfStraightEdge()
-                                // add fold if its center is inside the polygon
+//                                // add fold if its center is inside the polygon
                                 if(self.containsPoint(center)){
                                     outsidePoints.append(center)
                                     addFold(fold)
                                 }
                                 else{
-                                    addFold(fold)
+//                                    addFold(fold)
                                 }
-                                
+//
                             }
                         }
-                        return ints.ps[0].y
+                        return ints[0].ps.y
                     }
                     
                     

@@ -499,7 +499,7 @@ class SketchView: UIView {
                     
                     poly.truncateWithFolds()
                     
-                    println(poly.intersectionsWithDrivingFold)
+//                    println(poly.intersections)
                     break outer;
                 }
             }
