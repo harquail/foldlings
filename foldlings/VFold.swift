@@ -122,6 +122,17 @@ class VFold:FoldFeature{
         featureEdges?.remove(verticalCut)
     }
     
+    override func containsPoint(point: CGPoint) -> Bool {
+        // construct a path that encloses the v-fold
+        var enclosingPath = UIBezierPath(CGPath: verticalCut!.path.CGPath)
+        enclosingPath.addLineToPoint(diagonalFolds[1].end)
+        enclosingPath.addLineToPoint(verticalCut!.start)
+        enclosingPath.closePath()
+
+        return enclosingPath.containsPoint(point)
+        
+    }
+    
     
     
 }
