@@ -445,35 +445,73 @@ class SketchView: UIView {
         }
     }
     
-    // Draws V-Fold Shape
+    // creates V-Fold Shape
     func handleVFoldPan(sender: AnyObject)
     {
         var gesture = sender as! UIPanGestureRecognizer
+        let touchPoint: CGPoint = gesture.locationInView(self)
+        var vfold = sketch.currentFeature as? VFold
         
         switch gesture.state{
             // starting a new v-fold
         case UIGestureRecognizerState.Began:
             
-            var touchPoint = gesture.locationInView(self)
-            let vfold = VFold(start: touchPoint)
-            sketch.currentFeature = vfold
-            
-            path = vfold.pathThroughTouchPoints(touchPoint)
+            if(vfold?.endPoint  == nil){
+                vfold = VFold(start: touchPoint)
+                sketch.currentFeature = vfold
+                path = vfold!.pathThroughTouchPoints(touchPoint)
+            }
+            else{
+                vfold!.makeDiagonalFolds(to:touchPoint)
+            }
             // while dragging
         case UIGestureRecognizerState.Changed:
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            let vfold = sketch.currentFeature as! VFold
-            path = vfold.pathThroughTouchPoints(touchPoint)
-
+            if(vfold!.endPoint == nil){
+                path = vfold!.pathThroughTouchPoints(touchPoint)
+            }
+            else{
+                vfold!.makeDiagonalFolds(to:touchPoint)
+            }
+            
             // touch is over
         case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             // do something different if the path hasn't been created yet
-            var touchPoint: CGPoint = gesture.locationInView(self)
-            let vfold = sketch.currentFeature as! VFold
-
-            if(vfold.endPoint == nil){
-            vfold.endPoint = touchPoint
-            vfold.verticalCut.end = touchPoint
+            
+            if(vfold!.endPoint == nil){
+                
+                outer: for feature in sketch.features
+                {
+                    for fold in feature.horizontalFolds
+                    {
+                        
+                        if ( vfold!.featureSpansFold(fold)){
+                            
+                            vfold!.drivingFold = fold
+                            vfold?.parent = feature
+                            break outer
+                        }
+                    }
+                    
+                }
+                
+                
+                vfold!.endPoint = touchPoint
+                vfold!.verticalCut.end = touchPoint
+                //                path = nil
+            }
+            else{
+                
+                vfold!.makeDiagonalFolds(to:touchPoint)
+                //
+                //                // splits the driving fold of the parent
+                //                // removes and adds edges to sketch
+                //                let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
+                //                sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
+                
+                
+                // add feature to sketch features and to parent's children
+                sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
+                
             }
             
         default:
