@@ -17,6 +17,7 @@ class VFold:FoldFeature{
     var lastUpdated = NSDate(timeIntervalSinceNow: 0)
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
+    var cachedEnclosingPath:UIBezierPath? = nil
 
     
     override init(start: CGPoint) {
@@ -122,14 +123,31 @@ class VFold:FoldFeature{
         featureEdges?.remove(verticalCut)
     }
     
+    // things that can be done to v-folds
+    override func tapOptions() -> [FeatureOption]?{
+        var options:[FeatureOption] = super.tapOptions() ?? []
+        options.append(.DeleteFeature)
+        
+        return options
+        
+    }
+    
+    override func boundingBox() -> CGRect? {
+        return cachedEnclosingPath?.boundsForPath() ?? CGRectZero
+    }
+    
     override func containsPoint(point: CGPoint) -> Bool {
         // construct a path that encloses the v-fold
+    
+        if(cachedEnclosingPath == nil){
         var enclosingPath = UIBezierPath(CGPath: verticalCut!.path.CGPath)
         enclosingPath.addLineToPoint(diagonalFolds[1].end)
         enclosingPath.addLineToPoint(verticalCut!.start)
         enclosingPath.closePath()
-
-        return enclosingPath.containsPoint(point)
+        cachedEnclosingPath = enclosingPath
+        }
+    
+        return cachedEnclosingPath!.containsPoint(point)
         
     }
     
