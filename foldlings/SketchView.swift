@@ -503,7 +503,7 @@ class SketchView: UIView {
                 
                 let intersect = vfold!.makeDiagonalFolds(to:touchPoint)
                 vfold!.intersectionsWithDrivingFold.append(intersect)
-                vfold!.splitVerticalCut(at: intersect)
+                vfold!.splitVerticalCut()
                 
                 let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
                 sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)

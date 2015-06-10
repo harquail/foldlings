@@ -89,17 +89,35 @@ class VFold:FoldFeature{
         return pointOnDriver
     }
     
-    func splitVerticalCut(#at:CGPoint){
+    func splitVerticalCut(){
     
-        let path = verticalCut!.path
-        let paths = splitPath(path, withPoint: at)
+        let splitter = intersectionsWithDrivingFold.first!
+        let paths = splitPath(verticalCut!.path, withPoint: splitter)
         
         let ps = [paths.0,paths.1]
     
+        func closestOf(point:CGPoint,pts:[CGPoint]) -> CGPoint{
+            
+            var closest = CGPointZero
+            var minDist = CGFloat.max
+            for p in pts{
+                let dist = ccpDistance(point, p)
+                if( dist < minDist){
+                    closest = p
+                    minDist = dist
+                }
+            }
+            return closest
+        }
+
+        
         for p in ps{
-            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
+            let possibleEnds = [splitter, verticalCut.start, verticalCut.end]
+            let e = Edge(start: closestOf(p.firstPoint(),possibleEnds), end: closestOf(p.lastPoint(),possibleEnds), path: p, kind: .Cut, isMaster: false, feature: self)
+            println(e)
             featureEdges?.append(e)
         }
+        
         
         featureEdges?.remove(verticalCut)
     }
