@@ -494,10 +494,17 @@ class SketchView: UIView {
                     
                 }
                 
-                
+            
                 vfold!.endPoint = touchPoint
                 vfold!.verticalCut.end = touchPoint
-                //                path = nil
+            
+                if(vfold!.parent == nil){
+                    sketch.currentFeature = nil
+                    path = UIBezierPath()
+                    AFMInfoBanner.showWithText("Invalid cut for V-Fold", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+
+                }
+                
             }
             else{
                 
@@ -513,6 +520,7 @@ class SketchView: UIView {
                 sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
                 vfold!.parent!.children.append(vfold!)
                 path = UIBezierPath()
+                sketch.currentFeature = nil
             }
             
         default:
