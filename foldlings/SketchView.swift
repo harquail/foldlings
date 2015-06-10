@@ -95,6 +95,8 @@ class SketchView: UIView {
                 handleBoxFoldPan(sender)
             case .FreeForm:
                 handleFreeFormPan(sender)
+            case .VFold:
+                handleVFoldPan(sender)
             default:
                 break
             }
@@ -350,7 +352,7 @@ class SketchView: UIView {
         
         switch gesture.state
         {
-            // gesture is just starting create a boxfold where the touch began
+            // gesture is just starting; create a boxfold where the touch began
         case UIGestureRecognizerState.Began:
             var touchPoint = gesture.locationInView(self)
             sketch.currentFeature = BoxFold(start: touchPoint)
@@ -438,6 +440,28 @@ class SketchView: UIView {
             
             
             
+        default:
+            break
+        }
+    }
+    
+    // Draws V-Fold Shape
+    func handleVFoldPan(sender: AnyObject)
+    {
+        var gesture = sender as! UIPanGestureRecognizer
+        
+        switch gesture.state{
+            // starting a new v-fold
+        case UIGestureRecognizerState.Began:
+            var touchPoint = gesture.locationInView(self)
+            sketch.currentFeature = VFold(start: touchPoint)
+            // while dragging
+        case UIGestureRecognizerState.Changed:
+            var touchPoint: CGPoint = gesture.locationInView(self)
+            // touch is over
+        case UIGestureRecognizerState.Ended:
+            // do something different if the path hasn't been created yet
+            var touchPoint: CGPoint = gesture.locationInView(self)
         default:
             break
         }
