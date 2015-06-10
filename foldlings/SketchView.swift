@@ -502,19 +502,17 @@ class SketchView: UIView {
             else{
                 
                 let intersect = vfold!.makeDiagonalFolds(to:touchPoint)
-                //
-                //                // splits the driving fold of the parent
-                //                // removes and adds edges to sketch
-                //                let newFolds = drawingFeature.splitFoldByOcclusion(drawingFeature.drivingFold!)
-                //                sketch.replaceFold(drawParent, fold: drawingFeature.drivingFold!,folds: newFolds)
                 vfold!.intersectionsWithDrivingFold.append(intersect)
+                vfold!.splitVerticalCut(at: intersect)
+                
                 let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
                 sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)
                 
                 
                 // add feature to sketch features and to parent's children
                 sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
-                
+                vfold!.parent!.children.append(vfold!)
+                path = UIBezierPath()
             }
             
         default:

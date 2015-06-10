@@ -89,5 +89,21 @@ class VFold:FoldFeature{
         return pointOnDriver
     }
     
+    func splitVerticalCut(#at:CGPoint){
+    
+        let path = verticalCut!.path
+        let paths = splitPath(path, withPoint: at)
+        
+        let ps = [paths.0,paths.1]
+    
+        for p in ps{
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
+            featureEdges?.append(e)
+        }
+        
+        featureEdges?.remove(verticalCut)
+    }
+    
+    
     
 }
