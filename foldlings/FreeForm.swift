@@ -338,8 +338,7 @@ class FreeForm:FoldFeature
     }
     
     
-    
-    //the bezier path through a set of points
+    // the bezier path through the touch points
     func pathThroughTouchPoints() -> UIBezierPath{
         
         //if the points are far enough apart, make a new path
@@ -356,36 +355,7 @@ class FreeForm:FoldFeature
                 ccpDistance((interpolationPoints.first! as! NSValue).CGPointValue(), endPoint!) < kMinLineLength*2{
                     closed = true
             }
-            
-            //if there are enough points, draw a full curve
-            if(interpolationPoints.count > 3){
-                let path = UIBezierPath()
-                
-                //the line between the first two points, which is not part of the catmull-rom curve
-                if(!closed){
-                    path.moveToPoint(interpolationPoints[0].CGPointValue())
-                    path.addLineToPoint(interpolationPoints[1].CGPointValue())
-                }
-                
-                path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(interpolationPoints as! [NSArray], closed: closed, alpha: 1.0))
-                
-                //the line to the currrent touch point from the end
-                if(!closed){
-                    path.addLineToPoint(endPoint!)
-                }
-                cachedPath = path
-                return path
-                
-            }
-            else{
-                //for low numbers of points, return a straight line
-                let path = UIBezierPath()
-                path.moveToPoint(startPoint!)
-                path.addLineToPoint(endPoint!)
-                cachedPath = path
-                return path
-            }
-            
+            cachedPath = pathThroughCatmullPoints(interpolationPoints as! [NSValue], closed)
         }
         return cachedPath!
     }
