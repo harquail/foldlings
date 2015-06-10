@@ -453,18 +453,33 @@ class SketchView: UIView {
         switch gesture.state{
             // starting a new v-fold
         case UIGestureRecognizerState.Began:
+            
             var touchPoint = gesture.locationInView(self)
-            sketch.currentFeature = VFold(start: touchPoint)
+            let vfold = VFold(start: touchPoint)
+            sketch.currentFeature = vfold
+            
+            path = vfold.pathThroughTouchPoints(touchPoint)
             // while dragging
         case UIGestureRecognizerState.Changed:
             var touchPoint: CGPoint = gesture.locationInView(self)
+            let vfold = sketch.currentFeature as! VFold
+            path = vfold.pathThroughTouchPoints(touchPoint)
+
             // touch is over
-        case UIGestureRecognizerState.Ended:
+        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
             // do something different if the path hasn't been created yet
             var touchPoint: CGPoint = gesture.locationInView(self)
+            let vfold = sketch.currentFeature as! VFold
+
+            if(vfold.endPoint == nil){
+            vfold.endPoint = touchPoint
+            vfold.verticalCut.end = touchPoint
+            }
+            
         default:
             break
         }
+        forceRedraw()
     }
     
     // returns whether tap was dealt with

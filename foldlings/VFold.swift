@@ -10,31 +10,37 @@ import Foundation
 
 class VFold:FoldFeature{
     // the cut that crosses the driving fold
-    var verticalCut: Edge?
+    var verticalCut: Edge!
     // diagonal folds that intersect with driving fold
     var diagonalFolds:[Edge] = []
     var interpolationPoints:[AnyObject] = []
     var lastUpdated = NSDate(timeIntervalSinceNow: 0)
     
+    
+    override init(start: CGPoint) {
+        super.init(start: start)
+        verticalCut = Edge.straightEdgeBetween(start, end: start, kind: .Cut, feature: self)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // the bezier path through the touch points
-    func pathThroughTouchPoints() -> UIBezierPath{
+    func pathThroughTouchPoints(newPoint:CGPoint) -> UIBezierPath{
         
         //if the points are far enough apart, make a new path
-        if Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), endPoint!)) > 2{
+        if interpolationPoints.isEmpty || Float(ccpDistance((interpolationPoints.last! as! NSValue).CGPointValue(), newPoint)) > 2{
             lastUpdated = NSDate(timeIntervalSinceNow: 0)
             
-            interpolationPoints.append(NSValue(CGPoint: endPoint!))
+            interpolationPoints.append(NSValue(CGPoint: newPoint))
             
-            //set the curve to be closed when we are close to the endpoint
-            var closed = false
-            if interpolationPoints.count > 7
-                &&
-                ccpDistance((interpolationPoints.first! as! NSValue).CGPointValue(), endPoint!) < kMinLineLength*2{
-                    closed = true
-            }
-            return pathThroughCatmullPoints(interpolationPoints as! [NSValue], closed)
+            
+            verticalCut.path = pathThroughCatmullPoints(interpolationPoints as! [NSValue], false)
         }
         return verticalCut?.path ?? UIBezierPath()
     }
+    
+    
     
 }
