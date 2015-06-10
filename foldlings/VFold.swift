@@ -30,6 +30,26 @@ class VFold:FoldFeature{
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+        var points = intersectionsWithDrivingFold
+        points.append(edge.start)
+        points.append(edge.end)
+        points.sort({return $0.x < $1.x})
+        
+        println(points)
+        assert(points.count == 4)
+        
+        let fragments = [Edge.straightEdgeBetween(points[0], end: points[1], kind: .Fold, feature: self.parent!),
+            Edge.straightEdgeBetween(points[2], end: points[3], kind: .Fold, feature: self.parent!)
+        ]
+        
+        let internalFold = Edge.straightEdgeBetween(points[1], end: points[2], kind: .Fold, feature: self)
+        featureEdges?.append(internalFold)
+        
+        return fragments
+        
+    }
+    
     // the bezier path through the touch points
     func pathThroughTouchPoints(newPoint:CGPoint) -> UIBezierPath{
         
@@ -57,8 +77,7 @@ class VFold:FoldFeature{
         return spans
     }
     
-    func makeDiagonalFolds(#to:CGPoint){
-        
+    func makeDiagonalFolds(#to:CGPoint) -> CGPoint{
         let pointOnDriver = CGPointMake(to.x,self.drivingFold!.start.y)
         
         diagonalFolds.map({self.featureEdges?.remove($0)})
@@ -66,6 +85,8 @@ class VFold:FoldFeature{
                          Edge.straightEdgeBetween(verticalCut.end, end: pointOnDriver, kind: .Fold, feature: self)
                         ]
         featureEdges?.extend(diagonalFolds)
+        
+        return pointOnDriver
     }
     
     
