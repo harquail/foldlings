@@ -263,7 +263,7 @@ class SketchView: UIView {
                 shape.endPoint = touchPoint
                 
             case UIGestureRecognizerState.Changed:
-                let shape = sketch.currentFeature as! FreeForm
+                    let shape = sketch.currentFeature as! FreeForm
                 // if it's been a few microseconds since we tried to add a point
                 let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
                 
@@ -291,6 +291,7 @@ class SketchView: UIView {
                     {
                         if(shape.featureSpansFold(fold))
                         {
+                            
                             shape.drivingFold = fold
                             shape.parent = feature
                             //set parents if the fold spans driving
@@ -316,15 +317,22 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.featureHitTest(shape.path!.firstPoint())
+                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                 }
                 
-                //                shape.shiftEdgeEndpoints()
+//                shape.shiftEdgeEndpoints()
+                
+                let intersectingFs = sketch.featuresIntersecting(shape)
+                
                 sketch.addFeatureToSketch(shape, parent: shape.parent!)
                 
+//                sketch.intersect(shape, with: intersectingFs)
+
                 sketch.currentFeature = nil
                 self.sketch.getPlanes()
                 forceRedraw()
+                println("\\ ALMOST COINCIDENT: \\")
+                println(sketch.almostCoincidentEdgePoints())
                 
                 //                println(sketch.almostCoincidentEdgePoints())
                 
@@ -434,6 +442,74 @@ class SketchView: UIView {
             break
         }
     }
+    
+    // returns whether tap was dealt with
+    func handleTap(sender:AnyObject) -> Bool
+    {
+        
+        if(sketchMode == .Polygon){
+            handlePolygonTap(sender)
+            return true
+        }
+        else{
+        return false
+        }
+    }
+    
+    // tap to add point to polygon
+    // returns whether tap was dealt with
+    func handlePolygonTap(sender: AnyObject)
+    {
+        var touchPoint: CGPoint = sender.locationInView(self)
+        // if this is a new feature, create one
+        if sketch.currentFeature == nil{
+            sketch.currentFeature = Polygon(start:touchPoint)
+        }
+        
+        var poly = sketch.currentFeature as! Polygon
+        //add point to the polygon
+        if(poly.pointClosesPoly(touchPoint)){
+            poly.addPoint(touchPoint)
+            // add to sketch if this tap closes the shape
+            finishPolygon(poly)
+        }
+        else{
+            poly.addPoint(touchPoint)
+        }
+        forceRedraw()
+    }
+
+    // complete the polygon and add it to the sketch
+    func finishPolygon(poly:Polygon){
+        
+        outer: for feature in sketch.features
+        {
+            for fold in feature.horizontalFolds
+            {
+                if(poly.featureSpansFold(fold))
+                {
+                    //set parent if the fold spans driving
+                    poly.drivingFold = fold
+                    poly.parent = feature
+                    poly.parent!.children.append(poly)
+                    
+                    //split folds
+                    let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
+                    sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
+                    
+                    //add truncating folds
+                    poly.truncateWithFolds()
+                    break outer;
+                }
+            }
+        }
+        
+        sketch.addFeatureToSketch(poly, parent: poly.parent ?? sketch.masterFeature!)
+        // reset current feature so next tap will start a new feature
+        sketch.currentFeature = nil
+    }
+
+    
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!)
     {
         self.touchesEnded(touches, withEvent: event)
@@ -487,7 +563,6 @@ class SketchView: UIView {
                         //draw the tapped feature preview
                         if (feature == sketch.tappedFeature && shape != nil){
                             
-                            /// TODO: only for free-form
                             let invertedPath = UIBezierPath(rect: CGRectInfinite)
                             
                             let pathAroundFeature = shape!.path!
@@ -526,21 +601,25 @@ class SketchView: UIView {
                                 }
                             }
                         }
+                        
+                        if let shape = feature as? FreeForm{
+                            for point in shape.intersections{
+                                drawCircle(point, color:UIColor.blueColor())
+                            }
+                            
+                        }
+                        else if let poly = feature as? Polygon{
+                            //draw control points
+                            
+                            //  for point in poly.points{
+                            //      drawCircle(point, color:UIColor.grayColor())
+                            //  }
+                            
+                            
+                        }
+                        
                     }
                 }
-                
-                //                // all edges
-                //                for e in sketch.edges
-                //                {
-                //                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
-                //
-                //                    // don't draw twin edges
-                //                    if(!twinsOfVisited.contains(e))
-                //                    {
-                //                        e.path.stroke()
-                //                        twinsOfVisited.append(e.twin)
-                //                    }
-                //                }
             }
                 
                 // if grayscale
@@ -548,7 +627,7 @@ class SketchView: UIView {
             {
                 for e in sketch.edges
                 {
-                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
+//                    setPathStyle(e.path, edge:e, grayscale:grayscale).setStroke()
                     e.path.stroke()
                 }
                 
@@ -568,6 +647,17 @@ class SketchView: UIView {
         
         return tempIncremental
     }
+    
+    
+    func drawCircle(point: CGPoint, color:UIColor = UIColor.redColor(), radius:CGFloat = 2.5) ->UIBezierPath
+    {
+        color.setStroke()
+        let c = UIBezierPath()
+        c.addArcWithCenter(point, radius:radius, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
+        c.stroke()
+        return c
+    }
+    
     
     /// this will set the path style as well as return the color of the path to be stroked
     func setPathStyle(path:UIBezierPath, edge:Edge?, grayscale:Bool) -> UIColor
@@ -673,18 +763,7 @@ class SketchView: UIView {
     }
     
     
-    //    func setButtonBG(image:UIImage){
-    //        //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)
-    //    }
-    
-    func drawCircle(point: CGPoint) ->UIBezierPath
-    {
-        UIColor.redColor().setStroke()
-        let c = UIBezierPath()
-        c.addArcWithCenter(point, radius:5.0, startAngle:0.0, endAngle:CGFloat(2.0*M_PI), clockwise:true)
-        c.stroke()
-        return c
-    }
+
     
     func setButtonBG(image:UIImage){
         //        previewButton.setBackgroundImage(image, forState: UIControlState.Normal)

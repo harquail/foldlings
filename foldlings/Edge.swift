@@ -59,7 +59,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case Fold = "Fold"
         case Cut = "Cut"
     }
-    // TODO: create enum for hill or valley
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
@@ -82,6 +81,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = round(start)
         self.end = round(end)
         self.path = path
+        self.colorOverride = getRandomColor(0.8)
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
@@ -103,7 +103,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
         self.adjacency = aDecoder.decodeObjectForKey("adj") as! [Edge]
         self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
-
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -116,7 +115,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(self.twin, forKey: "twin")
         aCoder.encodeObject(self.adjacency, forKey: "adj")
         aCoder.encodeObject(self.feature, forKey: "feature")
-
     }
     
     /// makes a straight edge between two points, constructing the path as well
@@ -184,6 +182,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return color
     }
     
+    func centerOfStraightEdge() -> CGPoint{
+        
+        let averaged = CGPointAdd(start,end)
+        return CGPointMake(averaged.x/2, averaged.y/2)
+    }
+    
     func getLaserColor() -> UIColor
     {
         return Edge.getLaserColor(self.kind)
@@ -214,19 +218,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
     func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
         let movedPoint = snapStart ? start : end
-        
-        
-        
+
         if(snapStart){
-            
             if(!(CGPointEqualToPoint(start,snapTo))){
-            
                 println("moved \(start) to \(snapTo)")
                 start = snapTo
-
             }
-            
-            
         }
         else{
             
@@ -240,5 +237,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
     }
 
+    
+    func length() -> CGFloat{
+        return ccpDistance(start, end)
+    }
     
 }

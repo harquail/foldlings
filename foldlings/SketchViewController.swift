@@ -40,62 +40,42 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @IBAction func handleTap(sender: AnyObject) {
-        let gesture = sender as! UITapGestureRecognizer
+        //set tapped feature to nil, clearing any taps
+        sketchView.sketch.tappedFeature = nil
+
+        /// handle polygon taps here, then continue if it didn't happen
+        if (sketchView.handleTap(sender)){
+            return
+        }
         
+        let gesture = sender as! UITapGestureRecognizer
         var touchPoint = gesture.locationInView(sketchView)
         println("tapped at: \(touchPoint)")
         
-        let fs = sketchView.sketch.features
-        
-            //set tapped feature to nil, clearing any taps
-            sketchView.sketch.tappedFeature = nil
-            
-            // evaluate newer features first
-            // but maybe what we should really do is do depth first search
-            let fsBackwards = fs.reverse()
-            
-            for f in fsBackwards{
+        // get tapped feature
+        if let f = self.sketchView.sketch.featureAt(point: touchPoint){
+            if let options = f.tapOptions(){
                 
-                //detect tapped feature
-                if(f.boundingBox()!.contains(touchPoint)){
+                //creates the menu with options
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                for option in options{
+                    // add a menu item with handler for each option
+                    alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
+                        self.handleTapOption(f, option: option)
+                    }))
                     
-                    // if freeform shape, reject points outside bounds
-                    if let freeForm = f as? FreeForm{
-                        if(!freeForm.path!.containsPoint(touchPoint)){
-                            continue
-                        }
-                    }
-                    
-                    if let options = f.tapOptions(){
-                        
-                        //creates the menu with options
-                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-                        
-                        for option in options{
-                            // add a menu item with handler for each option
-                            alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
-                                self.handleTapOption(f, option: option)
-                            }))
-                            
-                        }
-                        
-                        // presents menu at touchPoint
-                        alertController.popoverPresentationController?.sourceView = sketchView
-                        alertController.popoverPresentationController?.delegate = self
-                        alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
-                        alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        
-                    }
-                    
-                    
-                    sketchView.statusLabel.text = "TOUCHED FEATURE: \(f)"
-                    return
                 }
                 
+                // presents menu at touchPoint
+                alertController.popoverPresentationController?.sourceView = sketchView
+                alertController.popoverPresentationController?.delegate = self
+                alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
+                alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
             }
-            
-        sketchView.statusLabel.text = ""
+        }
     }
     
     
@@ -104,14 +84,16 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         Flurry.logEvent("tap option: \(option.rawValue)")
 
+        
         switch option{
         case .AddFolds :
             break
         case .DeleteFeature :
             //delete feature and redraw
             sketchView.sketch.removeFeatureFromSketch(feature)
-            self.sketchView.forceRedraw()
             self.sketchView.sketch.getPlanes()
+            self.sketchView.forceRedraw()
+
         case .MoveFolds:
             // toggle moveFolds on
             sketchView.sketch.tappedFeature = feature
@@ -125,6 +107,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(feature.featurePlanes)
         case .PrintSketch:
             print(sketchView.sketch)
+        case .MovePoints:
+            println("implement move points")
         }
         
     }
@@ -169,18 +153,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         arch.save()
         
     }
-//    
-//    // TODO: Should store index elsewhere, possibly in sketch
-//    @IBAction func CardsButtonClicked(sender: UIButton) {
-//        Flurry.logEvent("moved to 3d land")
-//        
-//        let arch = ArchivedEdges(sketch:sketchView.sketch)
-//        ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
-//        arch.save()
-//        sketchView.hideXCheck()
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
-    
+
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
         sketchView.sketchMode = .BoxFold

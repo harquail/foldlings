@@ -149,6 +149,24 @@ CGPoint ccpIntersectPoint(CGPoint A, CGPoint B, CGPoint C, CGPoint D)
 	return CGPointZero;
 }
 
+
+CGPoint ccpPointOfSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D)
+{
+    float S, T;
+    
+    if( ccpLineIntersect(A, B, C, D, &S, &T) && (S >= 0.0f && S <= 1.0f && T >= 0.0f && T <= 1.0f)) {
+        // Point of intersection
+        CGPoint P;
+        P.x = A.x + S * (B.x - A.x);
+        P.y = A.y + S * (B.y - A.y);
+        return P;
+    }
+    
+    return CGPointZero;
+}
+
+
+
 BOOL ccpLineIntersect(CGPoint A, CGPoint B,
 					  CGPoint C, CGPoint D,
 					  float *S, float *T)
@@ -181,9 +199,9 @@ BOOL ccpLineIntersect(CGPoint A, CGPoint B,
 	*T = *T / denom;
 
 	// Point of intersection
-	// CGPoint P;
-	// P.x = A.x + *S * (B.x - A.x);
-	// P.y = A.y + *S * (B.y - A.y);
+//	 CGPoint P;
+//	 P.x = A.x + *S * (B.x - A.x);
+//	 P.y = A.y + *S * (B.y - A.y);
 
 	return YES;
 }

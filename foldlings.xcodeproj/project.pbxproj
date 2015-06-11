@@ -30,12 +30,13 @@
 		C9279D3050C81795A52ED5DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AE59442F593BE9D6ECDE4D /* libPods.a */; };
 		F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */; };
 		F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */; };
+		F10F21C11B240B6D0022EBCE /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10F21C01B240B6D0022EBCE /* Polygon.swift */; };
 		F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */; };
 		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
-		F13811961B1E87780075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */; };
+		F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
@@ -236,11 +237,12 @@
 		EA0AB42294980D87D43534AA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_red@2x.png"; sourceTree = "<group>"; };
 		F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_green@2x.png"; sourceTree = "<group>"; };
+		F10F21C01B240B6D0022EBCE /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
 		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CGPoint.swift; path = ../CGPoint.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
-		F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
+		F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
 		F13AD4E81ABF78D100372898 /* MasterCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCard.swift; sourceTree = "<group>"; };
 		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 			children = (
 				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				F13AD4E11ABF549500372898 /* BoxFold.swift */,
+				F10F21C01B240B6D0022EBCE /* Polygon.swift */,
 				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
 				F14D844D1AC26321004CCD67 /* FreeForm.swift */,
 				F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */,
@@ -769,7 +772,7 @@
 		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
 			isa = PBXGroup;
 			children = (
-				F13811951B1E87780075DB2A /* APIKeysAndOtherSecrets.swift */,
+				F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */,
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
@@ -1188,6 +1191,7 @@
 				F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */,
 				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
 				225094F21A0CA21000E754CA /* BezierSimple.m in Sources */,
+				F10F21C11B240B6D0022EBCE /* Polygon.swift in Sources */,
 				F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */,
 				F153BBA71A1EAED50029FDF2 /* SVGPathGenerator.m in Sources */,
 				F1EB37571AE4A1AD007DCEC5 /* Array.swift in Sources */,
@@ -1202,7 +1206,7 @@
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				F1EB37591AE4A1AD007DCEC5 /* Character.swift in Sources */,
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
-				F13811961B1E87780075DB2A /* APIKeysAndOtherSecrets.swift in Sources */,
+				F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */,
 				F1EB375B1AE4A1AD007DCEC5 /* Double.swift in Sources */,
 				F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */,
 				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,

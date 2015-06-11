@@ -14,6 +14,7 @@ enum FeatureOption:String {
     case AddFolds = "Add Folds"
     case MoveFolds = "Drag Folds"
     case DeleteFeature = "Delete"
+    case MovePoints = "Move Points"
     case PrintSketch = "Print Sketch"
     case PrintEdges = "Print Edges"
     case PrintPlanes = "Print Planes"

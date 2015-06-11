@@ -60,7 +60,6 @@ class BoxFold:FoldFeature{
             
             //all hfolds are "drawn" left to right
             //this recreates the vertical cuts
-            // #TODO: in the future, we'll have to skip some of these, which will be replaced with user-defined cuts
             var foldsToAppend = [Edge]()
             
             for (var i = 0; i < (horizontalFolds.count - 1); i++)
