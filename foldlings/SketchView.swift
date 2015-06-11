@@ -95,6 +95,8 @@ class SketchView: UIView {
                 handleBoxFoldPan(sender)
             case .FreeForm:
                 handleFreeFormPan(sender)
+            case .VFold:
+                handleVFoldPan(sender)
             default:
                 break
             }
@@ -158,7 +160,6 @@ class SketchView: UIView {
                         let shapePath = shape.path!
                         
                         for height in heights{
-                            //create
                             
                             let testEdge = Edge.straightEdgeBetween(CGPointMake(shape.boundingBox()!.minX,height), end: CGPointMake(shape.boundingBox()!.maxX,height), kind: .Cut, feature: shape)
                             
@@ -176,18 +177,14 @@ class SketchView: UIView {
                                     
                                 }
                                 
-                                //                                println("Failed to intersect with fold at \(height)");
-                                
                                 AFMInfoBanner.showWithText("Failed to intersect with fold at \(height)", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
                             }
                             else{
                                 println("success: \(height)")
                             }
                         }
-                        //                        println("JUST BEFORE FEATUREEDGES EXTEND")
                         
                         sketch.tappedFeature!.featureEdges?.extend(shape.freeFormEdgesSplitByIntersections())
-                        //                        println("ADD TABS")
                         shape.addTabs(heights,savedHeights: savedOriginalHeights)
                         
                         
@@ -247,7 +244,6 @@ class SketchView: UIView {
     func handleFreeFormPan(sender: AnyObject)
     {
         
-        //println("handle")
         let gesture = sender as! UIPanGestureRecognizer
         if sketch.tappedFeature == nil{
             
@@ -333,9 +329,7 @@ class SketchView: UIView {
                 forceRedraw()
                 println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
-                
-                //                println(sketch.almostCoincidentEdgePoints())
-                
+                                
             default:
                 break
             }
@@ -350,7 +344,7 @@ class SketchView: UIView {
         
         switch gesture.state
         {
-            // gesture is just starting create a boxfold where the touch began
+            // gesture is just starting; create a boxfold where the touch began
         case UIGestureRecognizerState.Began:
             var touchPoint = gesture.locationInView(self)
             sketch.currentFeature = BoxFold(start: touchPoint)
@@ -441,6 +435,98 @@ class SketchView: UIView {
         default:
             break
         }
+    }
+    
+    // creates V-Fold Shape
+    func handleVFoldPan(sender: AnyObject)
+    {
+        var gesture = sender as! UIPanGestureRecognizer
+        let touchPoint: CGPoint = gesture.locationInView(self)
+        var vfold = sketch.currentFeature as? VFold
+        
+        switch gesture.state{
+        // pan began
+        case UIGestureRecognizerState.Began:
+            
+            if(vfold?.endPoint  == nil){
+                // start a new v-fold
+                vfold = VFold(start: touchPoint)
+                sketch.currentFeature = vfold
+                path = vfold!.pathThroughTouchPoints(touchPoint)
+            }
+            else{
+                // if the vfold exists, make the diagonal folds
+                vfold!.makeDiagonalFolds(to:touchPoint)
+            }
+            // while dragging
+        case UIGestureRecognizerState.Changed:
+            if(vfold!.endPoint == nil){
+                path = vfold!.pathThroughTouchPoints(touchPoint)
+            }
+            else{
+                // if the vfold exists, move the diagonal folds
+                vfold!.makeDiagonalFolds(to:touchPoint)
+            }
+            
+            // touch is over
+        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+            
+            if(vfold!.endPoint == nil){
+                // find parent fold/feature, if it exists
+                outer: for feature in sketch.features
+                {
+                    for fold in feature.horizontalFolds
+                    {
+                        
+                        if ( vfold!.featureSpansFold(fold)){
+                            
+                            vfold!.drivingFold = fold
+                            vfold?.parent = feature
+                            break outer
+                        }
+                    }
+                    
+                }
+                
+                vfold!.endPoint = touchPoint
+                vfold!.verticalCut.end = touchPoint
+            
+                // if parent not set, error
+                if(vfold!.parent == nil){
+                    sketch.currentFeature = nil
+                    path = UIBezierPath()
+                    AFMInfoBanner.showWithText("Invalid cut for V-Fold", style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+
+                }
+                
+            }
+            else{
+                
+                // if the v-fold is finished
+                //make diagonal folds for the last time
+                let intersect = vfold!.makeDiagonalFolds(to:touchPoint)
+                // add point to intersections
+                vfold!.intersectionsWithDrivingFold.append(intersect)
+                // split the vertical cut
+                vfold!.splitVerticalCut()
+                
+                // split driving fold
+                let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
+                sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)
+                
+                // add feature to sketch features and to parent's children
+                sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
+                vfold!.parent!.children.append(vfold!)
+                
+                // clear current feature
+                path = UIBezierPath()
+                sketch.currentFeature = nil
+            }
+            
+        default:
+            break
+        }
+        forceRedraw()
     }
     
     // returns whether tap was dealt with

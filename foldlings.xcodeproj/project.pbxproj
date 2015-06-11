@@ -154,6 +154,7 @@
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
+		F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */; };
 		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
@@ -423,6 +424,7 @@
 		F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
+		F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFold.swift; sourceTree = "<group>"; };
 		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				F13AD4E11ABF549500372898 /* BoxFold.swift */,
 				F10F21C01B240B6D0022EBCE /* Polygon.swift */,
+				F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */,
 				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
 				F14D844D1AC26321004CCD67 /* FreeForm.swift */,
 				F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */,
@@ -1200,6 +1203,7 @@
 				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
 				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
+				F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
 				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,

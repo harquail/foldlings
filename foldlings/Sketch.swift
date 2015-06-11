@@ -526,6 +526,9 @@ class Sketch : NSObject, Printable  {
         else if let poly = feature as? Polygon{
             intercepts  =  poly.intersectionsWithDrivingFold
         }
+        else if let vfold = feature as? VFold{
+            intercepts  =  vfold.intersectionsWithDrivingFold
+        }
         else{
             intercepts = []
         }

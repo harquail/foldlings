@@ -12,11 +12,45 @@ import UIKit
 //how fine to make the subdivisions -- is divided by the length of the line
 let kBezierIncrements:CGFloat = 0.5
 
+//the bezier path through a set of points
+func pathThroughCatmullPoints(points:[NSValue], closed:Bool) -> UIBezierPath{
+    
+        //if there are enough points, draw a lovely curve
+        if(points.count > 3){
+            let path = UIBezierPath()
+            
+            //the line between the first two points, which is not part of the catmull-rom curve
+            if(!closed){
+                path.moveToPoint(points[0].CGPointValue())
+                path.addLineToPoint(points[1].CGPointValue())
+            }
+            
+            path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(points as [AnyObject], closed: closed, alpha: 1.0))
+
+            //if not closed, add the line to the currrent touch point from the end
+            if(!closed){
+                path.addLineToPoint(points.last!.CGPointValue())
+            }
+            
+            return path
+            
+        }
+        else{
+            //for low numbers of points, return a straight line
+            let path = UIBezierPath()
+            path.moveToPoint(points.first!.CGPointValue())
+            path.addLineToPoint(points.last!.CGPointValue())
+            return path
+        }
+        
+}
+
+
 ///find the average point on a line
 func findCentroid(path:UIBezierPath) -> CGPoint
 {
     let elements = path.getPathElements()
-    // if a staright line, just return endpoint 
+    // if a staright line, just return endpoint
     // TODO: maybe should return center point rather than endpoint
     if elements.count <= 2{
         return path.lastPoint()
