@@ -75,7 +75,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         popupSVGShare(svgString, xposition:100)
     }
     
-
+    
     
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
@@ -160,334 +160,379 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     }
     
     var pinch: UIPinchGestureRecognizer!
-    
-    @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer) {
-        println("ouch!")
-        println(recognizer.velocity)
+
+    @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer)
+    {
+        var currentAngle = zeroDegrees
+
+        println("velocity: \(recognizer.velocity)")
+        println("scale: \(recognizer.scale)")
+        
         // set animation here
-    
-        
+        // go through list of planes and add animation
+        //var hill = true
+        for plane in planes.planes
+        {
+            // different based on orientation
+            //if  !plane.masterBottom{
+            //println(plane.topEdge)
+            if plane.masterSphere != nil
+            {
+                //println(plane.topEdge.isHill())
+                if plane.topEdge.isHill()
+                {
+                    // actually parent, not node
+                    //                    println("rotation vector [\(plane.masterSphere?.rotation.x), \(plane.masterSphere?.rotation.y), \(plane.masterSphere?.rotation.z), \(plane.masterSphere?.rotation.w)]")
+                    var newAngle = tenDegrees*Float(recognizer.scale)
+                    
+                    currentAngle += newAngle
+                    
+                    println("rotation vector [\(plane.masterSphere?.rotation.x), \(plane.masterSphere?.rotation.y), \(plane.masterSphere?.rotation.z), \(plane.masterSphere?.rotation.w)]")
+                        
+                    println("position vector [\(plane.masterSphere?.position.x), \(plane.masterSphere?.position.y), \(plane.masterSphere?.position.z)]")
+                        
+                    plane.masterSphere!.transform = SCNMatrix4MakeRotation(currentAngle, 1, 0, 0)
+                    
 
+                    if(recognizer.state == UIGestureRecognizerState.Ended)
+                    {
+                        currentAngle = newAngle
+                    }
+                    //let degree = ninetyDegreesNeg*Float(recognizer.scale)
+                    // plane.masterSphere!.rotation = SCNVector4(x: 0, y: 0, z: 0, w: newAngle) //make sure it starts out flat
+                    
+                    //plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+                    //}
+                    //                else {
+                    //                    plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+                    //                }
+                    //hill = !hill
+                }
+            }
+            
+        }
     }
-    
-    /**************************Create the 3d scene***********************/
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        makeScene()
-    }
-
-    
-    func makeScene(){
-        // create a new scene
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        scnView.delegate = self
+        /**************************Create the 3d scene***********************/
         
-        // configure the view
-        scnView.backgroundColor = UIColor.whiteColor()
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        
-        // create and add a light to the scene
-        //        let lightNode = SCNNode()
-        //        lightNode.light = SCNLight()
-        //        println(lightNode)
-        //        lightNode.light!.type = SCNLightTypeOmni
-        //        lightNode.light!.color = UIColor.whiteColor()
-        //        lightNode.light!.attenuationStartDistance = 100
-        //        lightNode.light!.attenuationEndDistance = 1000
-        //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //        scene.rootNode.addChildNode(lightNode)
-        //        // create and add an ambient light to the scene
-        //        let ambientLightNode = SCNNode()
-        //        ambientLightNode.light = SCNLight()
-        //        ambientLightNode.light!.type = SCNLightTypeAmbient
-        //        ambientLightNode.light!.color = UIColor.whiteColor()
-        //        scene.rootNode.addChildNode(ambientLightNode)
-        
-        scene.physicsWorld.gravity.y = 0.0
-        
-        //create the sceneShpere
-        scene.rootNode.addChildNode(sceneSphere)
-        sceneSphere.position.y = sceneSphere.position.y + 4.0
-        
-        
-        //sceneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
-        sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
-        
-        visited = []
-        //notMyChild = [Int: [Plane]]()
-        //printTree(planes.masterTop)
-        if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
-            sceneSphere.addChildNode(topPlaneSphere)
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            makeScene()
         }
         
         
-        // make bottomPlane manually
-        // get bottomPlane from planes list
-        if var bottomPlane = planes.masterBottom {
-            //  put a check here for !nil node
-            var bottomPlaneNode = bottomPlane.node
+        func makeScene(){
+            // create a new scene
+            // retrieve the SCNView
+            let scnView = self.view as! SCNView
+            scnView.delegate = self
+            
+            // configure the view
+            scnView.backgroundColor = UIColor.whiteColor()
+            // create and add a camera to the scene
+            let cameraNode = SCNNode()
+            cameraNode.camera = SCNCamera()
+            scene.rootNode.addChildNode(cameraNode)
+            
+            // place the camera
+            cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+            
+            // create and add a light to the scene
+            //        let lightNode = SCNNode()
+            //        lightNode.light = SCNLight()
+            //        println(lightNode)
+            //        lightNode.light!.type = SCNLightTypeOmni
+            //        lightNode.light!.color = UIColor.whiteColor()
+            //        lightNode.light!.attenuationStartDistance = 100
+            //        lightNode.light!.attenuationEndDistance = 1000
+            //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
+            //        scene.rootNode.addChildNode(lightNode)
+            //        // create and add an ambient light to the scene
+            //        let ambientLightNode = SCNNode()
+            //        ambientLightNode.light = SCNLight()
+            //        ambientLightNode.light!.type = SCNLightTypeAmbient
+            //        ambientLightNode.light!.color = UIColor.whiteColor()
+            //        scene.rootNode.addChildNode(ambientLightNode)
+            
+            scene.physicsWorld.gravity.y = 0.0
+            
+            //create the sceneShpere
+            scene.rootNode.addChildNode(sceneSphere)
+            sceneSphere.position.y = sceneSphere.position.y + 4.0
+            
+            
+            //sceneSphere.orientation.y = tenDegreesNeg - (tenDegreesNeg/2)
+            sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
+            
+            visited = []
+            //notMyChild = [Int: [Plane]]()
+            //printTree(planes.masterTop)
+            if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
+                sceneSphere.addChildNode(topPlaneSphere)
+            }
+            
+            
+            // make bottomPlane manually
+            // get bottomPlane from planes list
+            if var bottomPlane = planes.masterBottom {
+                //  put a check here for !nil node
+                var bottomPlaneNode = bottomPlane.node
+                var translate = false
+                
+                if bottomPlane.node == nil{
+                    bottomPlaneNode = bottomPlane.makeNode()
+                    translate = true
+                }
+                
+                let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
+                sceneSphere.addChildNode(masterSphere)
+                masterSphere.addChildNode(bottomPlaneNode!)
+                //masterSphere.rotation = SCNVector4(x: 0, y: 0, z: 0, w: zeroDegrees) //make sure it starts out flat
+                if (translate){
+                    undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+                }
+                bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
+            }
+            
+            
+            
+            // set the scene to the view
+            scnView.scene = scene
+            
+            // allows the user to manipulate the camera
+            scnView.allowsCameraControl = true
+            scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
+            
+            // show statistics such as fps and timing information
+            scnView.showsStatistics = false
+            
+            
+            // add pinch motion to control animation
+            //view.userInteractionEnabled = true
+            pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
+            //pinch.delegate = self
+            view.addGestureRecognizer(pinch)
+            
+            
+            // back button
+            backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
+            backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
+            backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
+        }
+        
+        
+        /// this undoes any translation between the child and parent
+        func undoParentTranslate(parent:SCNNode, child:SCNNode)
+        {
+            child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
+            
+        }
+        
+        func printTree(plane: Plane){
+            println("parent: \(plane.topEdge)")
+            println("children")
+            plane.children.map({println($0.topEdge)})
+            for p in plane.children{
+                printTree(p)
+            }
+        }
+        
+        
+        
+        // if plane is second plane, don't add physics body
+        // walk tree, save path, record fold and hill or valley, place hinge into visited
+        func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
+        {
             var translate = false
             
-            if bottomPlane.node == nil{
-                bottomPlaneNode = bottomPlane.makeNode()
+            // base case if bottom
+            if plane.masterBottom {
+                return nil
+            }
+            // base case already visited or going back up
+            if contains(visited, plane) {
+                return nil
+            }
+            
+            //println("\(recurseCount) : \(plane.topEdge)")
+            // put a check here for !nil node
+            var node = plane.node
+            
+            if plane.node == nil{
+                node = plane.makeNode()
                 translate = true
             }
             
-            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
-            sceneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode!)
-            if (translate){
-                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+            
+            // add fade-in key for holes
+            if(plane.kind != .Hole){
+                node!.addAnimation(fadeIn(), forKey: "fade in")
             }
-            bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
-        }
-        
-
-        
-        // set the scene to the view
-        scnView.scene = scene
-        
-        // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
-        scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
-        
-        // show statistics such as fps and timing information
-        scnView.showsStatistics = false
-        
-        
-        // add pinch motion to control animation
-        //view.userInteractionEnabled = true
-        pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
-        //pinch.delegate = self
-        view.addGestureRecognizer(pinch)
-
-        
-        // back button
-        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
-        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Highlighted)
-        backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Selected)
-    }
-    
-    
-    /// this undoes any translation between the child and parent
-    func undoParentTranslate(parent:SCNNode, child:SCNNode)
-    {
-        child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
-        
-    }
-    
-    func printTree(plane: Plane){
-        println("parent: \(plane.topEdge)")
-        println("children")
-        plane.children.map({println($0.topEdge)})
-        for p in plane.children{
-            printTree(p)
-        }
-    }
-    
-    
-    
-    // if plane is second plane, don't add physics body
-    // walk tree, save path, record fold and hill or valley, place hinge into visited
-    func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
-    {
-        var translate = false
-        
-        // base case if bottom
-        if plane.masterBottom {
-            return nil
-        }
-        // base case already visited or going back up
-        if contains(visited, plane) {
-            return nil
-        }
-        
-        //println("\(recurseCount) : \(plane.topEdge)")
-        // put a check here for !nil node
-        var node = plane.node
-        
-        if plane.node == nil{
-            node = plane.makeNode()
-            translate = true
-        }
-        
-        
-        // add fade-in key for holes
-        if(plane.kind != .Hole){
-            node!.addAnimation(fadeIn(), forKey: "fade in")
-        }
-        
-        var useBottom = (recurseCount == 0)//check if we hit top plane
-        let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
-        plane.masterSphere = masterSphere
-        masterSphere.addChildNode(node!)
-        
-        if (translate){
-            undoParentTranslate(masterSphere, child: node!)
-        }
-        
-        let m = SCNMaterial()
-        if debugColor {
-            m.diffuse.contents = debugColors[recurseCount]
-        } else {
-            m.diffuse.contents = plane.color
-        }
-        node!.geometry?.firstMaterial = m
-        masterSphere.geometry?.firstMaterial = m
-        
-        
-        //        //make sphere invisible
-        //        let transparentMaterial = SCNMaterial()
-        //        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        //        masterSphere.geometry?.firstMaterial = transparentMaterial
-        
-        // different based on orientation
-        if hill {
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-        }
-        else {
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-        }
-        
-        
-        var children = plane.children
-        visited.append(plane)
-        //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
-        // loop through the adj starting with top plane
-        for p in children
-        {
-            let rc = recurseCount + 1
-            if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
-                // child hasn't reached bottom so do something to it
-                masterSphere.addChildNode(childSphere)
-                if (translate){
-                    undoParentTranslate(masterSphere, child: childSphere)
+            
+            var useBottom = (recurseCount == 0)//check if we hit top plane
+            let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
+            plane.masterSphere = masterSphere
+            masterSphere.addChildNode(node!)
+            
+            if (translate){
+                undoParentTranslate(masterSphere, child: node!)
+            }
+            
+            let m = SCNMaterial()
+            if debugColor {
+                m.diffuse.contents = debugColors[recurseCount]
+            } else {
+                m.diffuse.contents = plane.color
+            }
+            node!.geometry?.firstMaterial = m
+            masterSphere.geometry?.firstMaterial = m
+            
+            
+            //        //make sphere invisible
+            //        let transparentMaterial = SCNMaterial()
+            //        transparentMaterial.diffuse.contents = UIColor.clearColor()
+            //        masterSphere.geometry?.firstMaterial = transparentMaterial
+            
+            //        // different based on orientation
+            //        if hill {
+            // masterSphere.rotation = SCNVector4(x: 0, y: 0, z: 0, w: zeroDegrees)      //        }
+            //        else {
+            //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            //        }
+            
+            
+            var children = plane.children
+            visited.append(plane)
+            //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+            // loop through the adj starting with top plane
+            for p in children
+            {
+                let rc = recurseCount + 1
+                if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
+                    // child hasn't reached bottom so do something to it
+                    masterSphere.addChildNode(childSphere)
+                    if (translate){
+                        undoParentTranslate(masterSphere, child: childSphere)
+                    }
                 }
             }
+            return masterSphere
+            
+            
         }
-        return masterSphere
+        
+        ///returns a list from dict including all previous levels up to but including the one
+        func flattenUntil(adj: [Int:[Plane]], level:Int) -> [Plane] {
+            var list = [Plane]()
+            for (k,v) in adj
+            {
+                if k < level-1 {
+                    list = list.union(v)
+                }
+            }
+            return list
+        }
         
         
-    }
-    
-    ///returns a list from dict including all previous levels up to but including the one
-    func flattenUntil(adj: [Int:[Plane]], level:Int) -> [Plane] {
-        var list = [Plane]()
-        for (k,v) in adj
-        {
-            if k < level-1 {
-                list = list.union(v)
+        //
+        func showNodePivot(node:SCNNode) {
+            makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
+            
+        }
+        
+        /// function to show plane corners and shows how to get the anchor points
+        func showPlaneCorners(plane:Plane, node:SCNNode) {
+            for edge in plane.edges {
+                let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
+                let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
+                let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
+                let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
+                scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
+                scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
             }
         }
-        return list
-    }
-    
-    
-    //
-    func showNodePivot(node:SCNNode) {
-        makeSphere(atPoint: SCNVector3Make(0, 0, 0), inNode:node)
         
-    }
-    
-    /// function to show plane corners and shows how to get the anchor points
-    func showPlaneCorners(plane:Plane, node:SCNNode) {
-        for edge in plane.edges {
-            let startPoint = SCNVector3Make(Float(edge.start.x), Float(edge.start.y), Float(0.0))
-            let endPoint = SCNVector3Make(Float(edge.end.x), Float(edge.end.y), Float(0.0))
-            let anchorStart = node.convertPosition(startPoint, toNode: scene.rootNode)
-            let anchorEnd = node.convertPosition(startPoint, toNode: scene.rootNode)
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorStart))
-            scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
-        }
-    }
-    
-    // this determines the parent sphere for the plane
-    private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
-        
-        var edge:Edge
-        
-        if(bottom){// TODO:confused
-            //println("bottom/top: \(plane.topEdge)")
-            edge = plane.bottomEdge
-        }
-        else{
-            edge = plane.topEdge
+        // this determines the parent sphere for the plane
+        private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {
+            
+            var edge:Edge
+            
+            if(bottom){// TODO:confused
+                //println("bottom/top: \(plane.topEdge)")
+                edge = plane.bottomEdge
+            }
+            else{
+                edge = plane.topEdge
+            }
+            
+            let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, edge.end.x)), Float(edge.start.y), Float(0.0))
+            let anchorStart = node.convertPosition(startPoint, toNode: nil)
+            let masterSphere = makeSphere(atPoint: anchorStart)
+            
+            let m = SCNMaterial()
+            m.diffuse.contents = UIColor.clearColor()
+            masterSphere.geometry?.firstMaterial = m
+            
+            return masterSphere
         }
         
-        let startPoint = SCNVector3Make(Float(makeMid(edge.start.x, edge.end.x)), Float(edge.start.y), Float(0.0))
-        let anchorStart = node.convertPosition(startPoint, toNode: nil)
-        let masterSphere = makeSphere(atPoint: anchorStart)
+        ///makes a little sphere at the given point in world space
+        func makeSphere(#atPoint: SCNVector3) -> SCNNode {
+            let sphereGeometry = SCNSphere(radius: 0.15)
+            let sphereNode = SCNNode(geometry: sphereGeometry)
+            sphereNode.position = atPoint
+            return sphereNode
+        }
         
-        let m = SCNMaterial()
-        m.diffuse.contents = UIColor.clearColor()
-        masterSphere.geometry?.firstMaterial = m
+        ///makes a little sphere at the given point in world space
+        func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
+            let sphereGeometry = SCNSphere(radius: 0.15)
+            let sphereNode = SCNNode(geometry: sphereGeometry)
+            sphereNode.position = atPoint
+            inNode.addChildNode(sphereNode)
+        }
         
-        return masterSphere
-    }
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3) -> SCNNode {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        return sphereNode
-    }
-    
-    ///makes a little sphere at the given point in world space
-    func makeSphere(#atPoint: SCNVector3, inNode:SCNNode) {
-        let sphereGeometry = SCNSphere(radius: 0.15)
-        let sphereNode = SCNNode(geometry: sphereGeometry)
-        sphereNode.position = atPoint
-        inNode.addChildNode(sphereNode)
-    }
-    
-    
-    /***********************animation*************************/
-    
-    /// back and forth rotation animation
-    /// this is magical
-    /// very sketchy idea of how it works
-    func rotationAnimation(startAngle:Float, endAngle:Float) -> CAKeyframeAnimation{
-        let anim = CAKeyframeAnimation(keyPath: "rotation")
-        anim.duration = 14;
-        anim.cumulative = false;
-        anim.repeatCount = .infinity;
-        anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
-            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
-            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
-            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
-        anim.keyTimes = [NSNumber(float: Float(0.0)),
-            NSNumber(float: Float(1)),
-            NSNumber(float: Float(1.4)),
-            NSNumber(float: Float(2.4))]
-        anim.removedOnCompletion = false;
-        anim.fillMode = kCAFillModeForwards;
-        anim.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
         
-        return anim
+        /***********************animation*************************/
         
-    }
-    
-    /// fade in animation makes it less jarring
-    func fadeIn() -> CABasicAnimation{
-        var fadeIn = CABasicAnimation(keyPath:"opacity");
-        fadeIn.duration = 2.0;
-        fadeIn.fromValue = 0.0;
-        fadeIn.toValue = 1.0;
-        return fadeIn
-    }
-    
-    
-    
-    
+        /// back and forth rotation animation
+        /// this is magical
+        /// very sketchy idea of how it works
+        func rotationAnimation(startAngle:Float, endAngle:Float) -> CAKeyframeAnimation{
+            let anim = CAKeyframeAnimation(keyPath: "rotation")
+            anim.duration = 14;
+            anim.cumulative = false;
+            //anim.repeatCount = .infinity;
+            anim.values = [
+                NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
+                NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
+                NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
+                NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
+            anim.keyTimes = [
+                NSNumber(float: Float(0.0)),
+                NSNumber(float: Float(1)),
+                NSNumber(float: Float(1.4)),
+                NSNumber(float: Float(2.4))]
+            anim.removedOnCompletion = false;
+            anim.fillMode = kCAFillModeForwards;
+            anim.timingFunctions = [
+                CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
+                CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
+                CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
+            
+            return anim
+            
+        }
+        
+        /// fade in animation makes it less jarring
+        func fadeIn() -> CABasicAnimation{
+            var fadeIn = CABasicAnimation(keyPath:"opacity");
+            fadeIn.duration = 2.0;
+            fadeIn.fromValue = 0.0;
+            fadeIn.toValue = 1.0;
+            return fadeIn
+        }
+        
+        
+        
+        
 }

@@ -94,6 +94,8 @@ class CollectionOfPlanes: Printable, Hashable {
                         {
                             plane.masterBottom = true
                             masterBottom = plane
+                            plane.orientation = .Horizontal
+
                         }
                     }
                         

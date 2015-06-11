@@ -229,6 +229,23 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         //also have to do things to the path
         
     }
-
+    // determines whether the edge is a Hill edge
+    // or not (a Valley edge
+    func isHill()-> Bool
+    {
+        // check plane orientation
+        let plane = self.plane
+        if plane!.orientation == .Vertical
+        {
+            // check whether top edge or bottom edge
+            return (self == plane!.topEdge)
+        }
+        else if plane!.orientation == .Horizontal
+        {
+            // check whether top edge or bottom edge
+            return (self == plane!.topEdge)
+        }
+        return false
+    }
     
 }

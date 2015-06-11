@@ -439,24 +439,7 @@ class Sketch : NSObject, Printable  {
         return self.drawingBounds.contains(point)
     }
     
-    // determines whether the edge is a Hill edge
-    // or not (a Valley edge
-    func isHill(edge: Edge) -> Bool
-    {
-        // check plane orientation
-        let plane = edge.plane
-        if plane!.orientation == .Vertical
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
-        }
-        else if plane!.orientation == .Horizontal
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
-        }
-        return false
-    }
+
 
     
     //replaces edges to close the gap left by deleting a feature
