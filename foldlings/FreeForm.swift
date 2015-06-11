@@ -475,7 +475,7 @@ class FreeForm:FoldFeature
             }
             else{
                 scanLine = scanLineStartingAtTop
-                if let top = truncate(5 ,100,driver.start.y){
+                if let top = truncate(5,100,driver.start.y){
                     yTop = top
                 }
                 

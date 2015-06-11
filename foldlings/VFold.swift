@@ -32,18 +32,22 @@ class VFold:FoldFeature{
     }
     
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
+    
+        // points to make edges between
         var points = intersectionsWithDrivingFold
         points.append(edge.start)
         points.append(edge.end)
         points.sort({return $0.x < $1.x})
         
-        println(points)
+        // there should be exactly 4
         assert(points.count == 4)
         
+        // folds around shape
         let fragments = [Edge.straightEdgeBetween(points[0], end: points[1], kind: .Fold, feature: self.parent!),
             Edge.straightEdgeBetween(points[2], end: points[3], kind: .Fold, feature: self.parent!)
         ]
         
+        // fold inside shape
         let internalFold = Edge.straightEdgeBetween(points[1], end: points[2], kind: .Fold, feature: self)
         featureEdges?.append(internalFold)
         
@@ -65,12 +69,13 @@ class VFold:FoldFeature{
         return verticalCut?.path ?? UIBezierPath()
     }
     
+    // v-folds span a fold if they have exactly one intersection with it
     override func featureSpansFold(fold: Edge) -> Bool {
         
         var intersects = PathIntersections.intersectionsBetween(fold.path,path2: self.verticalCut.path)
-        
         let spans = (intersects?.count ?? 0) == 1
         
+        // add intersections if found
         if spans{
             intersectionsWithDrivingFold = intersects!
         }
@@ -78,10 +83,13 @@ class VFold:FoldFeature{
         return spans
     }
     
+    // make folds between intersection point and verical cut end points, return intersection point
     func makeDiagonalFolds(#to:CGPoint) -> CGPoint{
+        // calculate intersection point with driving fold
         let pointOnDriver = CGPointMake(to.x,self.drivingFold!.start.y)
         
         diagonalFolds.map({self.featureEdges?.remove($0)})
+        // make folds between intersection point and vetical cut endpoints
         diagonalFolds = [Edge.straightEdgeBetween(verticalCut.start, end: pointOnDriver, kind: .Fold, feature: self),
                          Edge.straightEdgeBetween(verticalCut.end, end: pointOnDriver, kind: .Fold, feature: self)
                         ]
@@ -92,15 +100,16 @@ class VFold:FoldFeature{
     
     func splitVerticalCut(){
     
+        // split the vertical cut into two paths
         let splitter = intersectionsWithDrivingFold.first!
         let paths = splitPath(verticalCut!.path, withPoint: splitter)
-        
         let ps = [paths.0,paths.1]
-    
+        
+        // return the closest point in an array to the given point
         func closestOf(point:CGPoint,pts:[CGPoint]) -> CGPoint{
-            
             var closest = CGPointZero
             var minDist = CGFloat.max
+            // for each point, find closest
             for p in pts{
                 let dist = ccpDistance(point, p)
                 if( dist < minDist){
@@ -111,14 +120,13 @@ class VFold:FoldFeature{
             return closest
         }
 
-        
+        // make edges from paths
         for p in ps{
             let possibleEnds = [splitter, verticalCut.start, verticalCut.end]
             let e = Edge(start: closestOf(p.firstPoint(),possibleEnds), end: closestOf(p.lastPoint(),possibleEnds), path: p, kind: .Cut, isMaster: false, feature: self)
             println(e)
             featureEdges?.append(e)
         }
-        
         
         featureEdges?.remove(verticalCut)
     }
@@ -138,7 +146,6 @@ class VFold:FoldFeature{
     
     override func containsPoint(point: CGPoint) -> Bool {
         // construct a path that encloses the v-fold
-    
         if(cachedEnclosingPath == nil){
         var enclosingPath = UIBezierPath(CGPath: verticalCut!.path.CGPath)
         enclosingPath.addLineToPoint(diagonalFolds[1].end)
