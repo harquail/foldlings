@@ -325,7 +325,6 @@ class SketchView: UIView {
 //                sketch.intersect(shape, with: intersectingFs)
 
                 sketch.currentFeature = nil
-                self.sketch.getPlanes()
                 forceRedraw()
                 println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
