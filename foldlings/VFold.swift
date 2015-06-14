@@ -47,9 +47,13 @@ class VFold:FoldFeature{
             Edge.straightEdgeBetween(points[2], end: points[3], kind: .Fold, feature: self.parent!)
         ]
         
+        //TODO: HERE IS WHERE TO ADD NEW DIAGONAL FOLD
         // fold inside shape
-        let internalFold = Edge.straightEdgeBetween(points[1], end: points[2], kind: .Fold, feature: self)
-        featureEdges?.append(internalFold)
+        
+//        USE THIS: CGPoint ccpRotateByAngle(CGPoint v, CGPoint pivot, float angle);
+
+//        let internalFold = Edge.straightEdgeBetween(points[1], end: points[2], kind: .Fold, feature: self)
+//        featureEdges?.append(internalFold)
         
         return fragments
         
@@ -93,6 +97,7 @@ class VFold:FoldFeature{
         diagonalFolds = [Edge.straightEdgeBetween(verticalCut.start, end: pointOnDriver, kind: .Fold, feature: self),
                          Edge.straightEdgeBetween(verticalCut.end, end: pointOnDriver, kind: .Fold, feature: self)
                         ]
+        
         featureEdges?.extend(diagonalFolds)
         
         return pointOnDriver
