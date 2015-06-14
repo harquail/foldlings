@@ -47,12 +47,8 @@ class VFold:FoldFeature{
             Edge.straightEdgeBetween(points[2], end: points[3], kind: .Fold, feature: self.parent!)
         ]
         
-        //TODO: HERE IS WHERE TO ADD NEW DIAGONAL FOLD
-        // fold inside shape
-        
-//        USE THIS: CGPoint ccpRotateByAngle(CGPoint v, CGPoint pivot, float angle);
 
-//        let internalFold = Edge.straightEdgeBetween(points[1], end: points[2], kind: .Fold, feature: self)
+
 //        featureEdges?.append(internalFold)
         
         return fragments
@@ -101,6 +97,32 @@ class VFold:FoldFeature{
         featureEdges?.extend(diagonalFolds)
         
         return pointOnDriver
+    }
+    
+    func makeInternalFold(){
+    
+        //TODO: HERE IS WHERE TO ADD NEW DIAGONAL FOLD
+        // fold inside shape
+        
+        //        USE THIS: CGPoint ccpRotateByAngle(CGPoint v, CGPoint pivot, float angle);
+        
+        //get angle between two edges
+        
+        let angleA = getAngle(diagonalFolds[0], drivingFold!)
+        let angleB = getAngle(diagonalFolds[1], drivingFold!)
+        
+        let angleC = 2*angleA
+        
+        var startPoint = drivingFold!.end
+        var endPoint = diagonalFolds[1].end
+        
+        startPoint = ccpRotateByAngle(startPoint, endPoint, Float(degToRad(angleB+180 + angleC)))
+        
+        let internalFold = Edge.straightEdgeBetween(startPoint, end: endPoint, kind: .Fold, feature: self)
+        featureEdges?.append(internalFold)
+        
+        
+        println("angleA: \(angleA) | angleB: \(angleB)")
     }
     
     func splitVerticalCut(){

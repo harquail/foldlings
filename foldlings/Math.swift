@@ -58,3 +58,7 @@ func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
 //    return point
     return CGPointMake(round(point.x), round(point.y))
 }
+
+func degToRad(x:CGFloat) -> CGFloat{
+    return x * (CGFloat(M_PI) / CGFloat(180))
+}

@@ -506,6 +506,10 @@ class SketchView: UIView {
                 let intersect = vfold!.makeDiagonalFolds(to:touchPoint)
                 // add point to intersections
                 vfold!.intersectionsWithDrivingFold.append(intersect)
+                
+                // make the diagonal 
+                vfold!.makeInternalFold()
+                
                 // split the vertical cut
                 vfold!.splitVerticalCut()
                 
