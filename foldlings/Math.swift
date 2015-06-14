@@ -13,9 +13,27 @@ func square(a: CGFloat) -> CGFloat{
 /// get the angle between two edges
 func getAngle(edgeA: Edge, edgeB: Edge) -> CGFloat{
     
+    var centroidA:CGPoint
+    var centroidB:CGPoint
+    
+    //since folds are always straight lines, their centroid is just their center 
+    if(edgeA.kind == .Fold){
+        centroidA = edgeA.centerOfStraightEdge() //edge midpoint
+    }
+    else{
+        centroidA = findCentroid(edgeA.path)
+    }
+    
+    if(edgeB.kind == .Fold){
+        centroidB = edgeB.centerOfStraightEdge() //edge midpoint
+    }
+    else{
+        centroidB = findCentroid(edgeB.path)
+    }
+    
     // get the centroid and create the vector
-    var a = CGPointSubtract(findCentroid(edgeA.path), edgeA.start)
-    var b = CGPointSubtract(findCentroid(edgeB.path), edgeB.start)
+    var a = CGPointSubtract(centroidA, edgeA.start)
+    var b = CGPointSubtract(centroidB, edgeB.start)
 
     let dot = a.x*b.x + a.y*b.y //  dot product
     let det = a.x*b.y - a.y*b.x // determinant
@@ -26,6 +44,9 @@ func getAngle(edgeA: Edge, edgeB: Edge) -> CGFloat{
     return angle
     
 }
+
+//func angleBetweenStraight() -> CGFloat
+
 // returns the average of two CGFloats
 func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
     return CGFloat((a + b)/2.0)
