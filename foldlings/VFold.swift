@@ -101,30 +101,46 @@ class VFold:FoldFeature{
     
     func makeInternalFold(){
         
-        let angleA = getAngle(diagonalFolds[0], drivingFold!)
-        let angleB = getAngle(diagonalFolds[1], drivingFold!)
+
+
         
-        let angleC = 2*angleA
+        var startPointA = diagonalFolds[0].start
+        var startPointB =  diagonalFolds[1].start
+        var endPointA = diagonalFolds[0].end
+        var endPointB = diagonalFolds[1].end
+        
+        let vectorA = ccpSub(startPointA, endPointA)
+        let vectorB = ccpSub(startPointA, endPointB)
+        let vectorDriving = ccpSub(drivingFold!.start,drivingFold!.end)
+        
+        let angleA = ccpAngleSigned(vectorA,vectorDriving)
+        let angleB = ccpAngleSigned(vectorB, vectorDriving)
+        
+        var angleC = 2*angleA
+        if(angleC < Float(-M_PI)){
+            angleC = Float(angleC - Float(2*M_PI))
+        }
+        println("\n\nANGLE C: \(angleC)\n")
+
         let angleD = 2*angleB
 
-        
-        var startPointA = drivingFold!.end
-        var startPointB = drivingFold!.end
-        var endPointA = diagonalFolds[1].end
-        var endPointB = diagonalFolds[0].end
 
         
-        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(degToRad(angleB+180 + angleC)))
+        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(0))
         let internalFold = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Cut, feature: self)
         featureEdges?.append(internalFold)
         
-        startPointB = ccpRotateByAngle(startPointB, endPointB, Float(degToRad(angleA + 180 + angleD)))
-        let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: .Fold, feature: self)
-        featureEdges?.append(internalFoldB)
+        let startPointA1 = ccpRotateByAngle(diagonalFolds[0].start, diagonalFolds[0].end, Float(angleC))
+        let internalFoldA1 = Edge.straightEdgeBetween(startPointA1, end: diagonalFolds[0].end, kind: Edge.Kind.Cut, feature: self)
+        featureEdges?.append(internalFoldA1)
         
         
-        println("angleA: \(angleA) | angleB: \(angleB) | angleC: \(angleC)")
-        println("internal fold angle: \(getAngle(internalFold, drivingFold!))")
+//        startPointB = ccpRotateByAngle(startPointB, endPointB, Float(angleC))
+//        let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: .Fold, feature: self)
+//        featureEdges?.append(internalFoldB)
+        
+        
+        println("angleA: \(angleA) | angleB: \(angleB) | angleC: \(angleC) | angleD: \(angleD)")
     }
     
     func splitVerticalCut(){
