@@ -221,8 +221,7 @@ class CollectionOfPlanes: Printable, Hashable {
                 plane.feature = top.feature
                 let feature = plane.feature
                 //TODO: Mark edges as clean
-                println(feature)
-                
+
                 plane.edges.map({$0.feature = feature})
 
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})

@@ -100,29 +100,31 @@ class VFold:FoldFeature{
     }
     
     func makeInternalFold(){
-    
-        //TODO: HERE IS WHERE TO ADD NEW DIAGONAL FOLD
-        // fold inside shape
-        
-        //        USE THIS: CGPoint ccpRotateByAngle(CGPoint v, CGPoint pivot, float angle);
-        
-        //get angle between two edges
         
         let angleA = getAngle(diagonalFolds[0], drivingFold!)
         let angleB = getAngle(diagonalFolds[1], drivingFold!)
         
         let angleC = 2*angleA
+        let angleD = 2*angleB
+
         
-        var startPoint = drivingFold!.end
-        var endPoint = diagonalFolds[1].end
+        var startPointA = drivingFold!.end
+        var startPointB = drivingFold!.end
+        var endPointA = diagonalFolds[1].end
+        var endPointB = diagonalFolds[0].end
+
         
-        startPoint = ccpRotateByAngle(startPoint, endPoint, Float(degToRad(angleB+180 + angleC)))
-        
-        let internalFold = Edge.straightEdgeBetween(startPoint, end: endPoint, kind: .Fold, feature: self)
+        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(degToRad(angleB+180 + angleC)))
+        let internalFold = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Cut, feature: self)
         featureEdges?.append(internalFold)
         
+        startPointB = ccpRotateByAngle(startPointB, endPointB, Float(degToRad(angleA + 180 + angleD)))
+        let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: .Fold, feature: self)
+        featureEdges?.append(internalFoldB)
         
-        println("angleA: \(angleA) | angleB: \(angleB)")
+        
+        println("angleA: \(angleA) | angleB: \(angleB) | angleC: \(angleC)")
+        println("internal fold angle: \(getAngle(internalFold, drivingFold!))")
     }
     
     func splitVerticalCut(){
@@ -151,7 +153,6 @@ class VFold:FoldFeature{
         for p in ps{
             let possibleEnds = [splitter, verticalCut.start, verticalCut.end]
             let e = Edge(start: closestOf(p.firstPoint(),possibleEnds), end: closestOf(p.lastPoint(),possibleEnds), path: p, kind: .Cut, isMaster: false, feature: self)
-            println(e)
             featureEdges?.append(e)
         }
         
