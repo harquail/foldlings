@@ -234,7 +234,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
                 end = snapTo
             }
         }
-        //also have to do things to the path
+        //TODO: also have to do things to the path
         
     }
 
@@ -242,5 +242,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func length() -> CGFloat{
         return ccpDistance(start, end)
     }
+    
+    func edgeSplitByPoints(breakers:[CGPoint]) ->[Edge]{
+        
+        
+        return [self]
+    }
+
     
 }

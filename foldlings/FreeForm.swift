@@ -115,11 +115,9 @@ class FreeForm:FoldFeature
         for p in paths{
             
             // check greater less than greater than top truncations heights
-            // findCentroid(p)
-//            if(true){
+
             let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
                 edges.append(e)
-//            }
         }
         
 //        println("\nEDGES!!!!!!\n \(edges)")

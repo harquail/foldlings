@@ -164,8 +164,9 @@ class VFold:FoldFeature{
     
         // split the vertical cut into two paths
         let splitter = intersectionsWithDrivingFold.first!
-        let paths = splitPath(verticalCut!.path, withPoint: splitter)
-        let ps = [paths.0,paths.1]
+        let paths = Bezier.pathSplitByPoints(verticalCut!.path, breakers: [splitter])
+//        let paths = splitPath(verticalCut!.path, withPoint: splitter)
+        let ps = paths
         
         // return the closest point in an array to the given point
         func closestOf(point:CGPoint,pts:[CGPoint]) -> CGPoint{
