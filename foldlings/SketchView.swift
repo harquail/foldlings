@@ -537,8 +537,7 @@ class SketchView: UIView {
     {
         
         if(sketchMode == .Polygon){
-            handlePolygonTap(sender)
-            return true
+           return handlePolygonTap(sender)
         }
         else{
         return false
@@ -547,11 +546,19 @@ class SketchView: UIView {
     
     // tap to add point to polygon
     // returns whether tap was dealt with
-    func handlePolygonTap(sender: AnyObject)
+    func handlePolygonTap(sender: AnyObject) ->Bool
     {
         var touchPoint: CGPoint = sender.locationInView(self)
+        
+
+        
         // if this is a new feature, create one
         if sketch.currentFeature == nil{
+            // bail if the first point is inside anothe feature -- the user probably wanted tap options instead
+            if(sketch.featureAt(point: touchPoint) != sketch.masterFeature!){
+                return false
+            }
+    
             sketch.currentFeature = Polygon(start:touchPoint)
         }
         
@@ -566,6 +573,7 @@ class SketchView: UIView {
             poly.addPoint(touchPoint)
         }
         forceRedraw()
+        return true
     }
 
     // complete the polygon and add it to the sketch

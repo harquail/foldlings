@@ -41,7 +41,6 @@ class VFold:FoldFeature{
         cachedEnclosingPath = aDecoder.decodeObjectForKey("cachedEnclosingPath") as? UIBezierPath
     }
     
-    
     override func encodeWithCoder(aCoder: NSCoder) {
         verticalCut.adjacency = diagonalFolds
         verticalCut.twin = Edge(start: verticalCut.start, end: verticalCut.end, path: verticalCut.path)
@@ -68,10 +67,6 @@ class VFold:FoldFeature{
         let fragments = [Edge.straightEdgeBetween(points[0], end: points[1], kind: .Fold, feature: self.parent!),
             Edge.straightEdgeBetween(points[2], end: points[3], kind: .Fold, feature: self.parent!)
         ]
-        
-
-
-//        featureEdges?.append(internalFold)
         
         return fragments
         
