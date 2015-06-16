@@ -110,7 +110,7 @@ class VFold:FoldFeature{
         var endPointB = diagonalFolds[1].end
         
         let vectorA = ccpSub(startPointA, endPointA)
-        let vectorB = ccpSub(startPointA, endPointB)
+        let vectorB = ccpSub(startPointB, endPointB)
         let vectorDriving = ccpSub(drivingFold!.start,drivingFold!.end)
         
         let angleA = ccpAngleSigned(vectorA,vectorDriving)
@@ -120,29 +120,23 @@ class VFold:FoldFeature{
         if(angleC < Float(-M_PI)){
             angleC = Float(angleC - Float(2*M_PI))
         }
-        println("\n\nANGLE C: \(angleC)\n")
 
-        let angleD = 2*angleB
-
-
+        var angleD = 2*angleB
+        if(angleD > Float(M_PI)){
+            angleD = Float(angleD + Float(2*M_PI))
+        }
+      
+        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(angleC))
+        let internalFoldA = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Fold, feature: self)
+        featureEdges?.append(internalFoldA)
         
-        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(0))
-        let internalFold = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Cut, feature: self)
-        featureEdges?.append(internalFold)
+        startPointB = ccpRotateByAngle(startPointB, endPointB, Float(angleD))
+        let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: Edge.Kind.Fold, feature: self)
+        featureEdges?.append(internalFoldB)
         
-        let startPointA1 = ccpRotateByAngle(diagonalFolds[0].start, diagonalFolds[0].end, Float(angleC))
-        let internalFoldA1 = Edge.straightEdgeBetween(startPointA1, end: diagonalFolds[0].end, kind: Edge.Kind.Cut, feature: self)
-        featureEdges?.append(internalFoldA1)
-        
-        
-//        startPointB = ccpRotateByAngle(startPointB, endPointB, Float(angleC))
-//        let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: .Fold, feature: self)
-//        featureEdges?.append(internalFoldB)
-        
-        
-        println("angleA: \(angleA) | angleB: \(angleB) | angleC: \(angleC) | angleD: \(angleD)")
     }
-    
+
+    // TODO: REFACTOR
     func splitVerticalCut(){
     
         // split the vertical cut into two paths
