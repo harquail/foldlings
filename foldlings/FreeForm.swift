@@ -84,7 +84,7 @@ class FreeForm:FoldFeature
     //TODO: verify that this is not introducing floating point error
     //TODO: convenience function to return edges, move to Bezier.swift
     //splits a bezierpath composed of cubic curves at intersection points
-    func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
+    class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
 
         var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
         var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
@@ -232,16 +232,16 @@ class FreeForm:FoldFeature
     
     
     // searches for the nearest interpolation point to p on curve
-    func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
+    class func tVeryNearPointonCurve(previousPoint:CGPoint,originalCurve:CGPathElement,p:CGPoint) -> CGFloat
     {
         
         //    Calculate the parameterized value along the curve (between 0.0 and 1.0) of the touch. To do this you can calculate a set of points at regular intervals (0.1, 0.2, 0.3 etc.) and then find the two closest points to your touch points and repeat the parameterization between these points if you want more accuracy (0.21, 0.22, 0.23, etc.). This will result in a number between 0.0 and 1.0 along the curve segment representing where you touched.
         let maxRecursionDepth = 3
-        return approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
+        return FreeForm.approachT(0.000,endT: 1.000,start: previousPoint,ctrl1: originalCurve.points[0],ctrl2: originalCurve.points[1],end: originalCurve.points[2],goal:p,recursionDepth: maxRecursionDepth)
     }
     
     //recursive search for nearest t value
-    func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint,goal:CGPoint, recursionDepth:Int) -> CGFloat{
+    class func approachT (startT:CGFloat,endT:CGFloat,start:CGPoint,ctrl1:CGPoint,ctrl2:CGPoint,end:CGPoint,goal:CGPoint, recursionDepth:Int) -> CGFloat{
         
         //calculate 5 t values
         let divisions = CGFloat(4.0000)
@@ -265,7 +265,7 @@ class FreeForm:FoldFeature
             
             //recurse with new t values, decremented recursion value, and everything else the same
             
-            return approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
+            return FreeForm.approachT(min(closestPointOnCurve.t,secondClosest.t),endT: max(closestPointOnCurve.t,secondClosest.t),start: start,ctrl1: ctrl1,ctrl2: ctrl2,end: end, goal:goal,recursionDepth: recursionDepth - 1)
             
             
         }
@@ -279,7 +279,7 @@ class FreeForm:FoldFeature
     
     // splits a cubic bezier curve at a fraction of its length.  Pseudocode from stackoverflow
     //    This bit is difficult to explain in text, but there's a good visualization on this page about half-way down under the heading Subdividing a Bezier curve. Use the slider under the diagram to see how it works, here's my textual explanation: You need to subdivide the straight lines between the control points of your curve segment proportional to the parameterized value you calculated in step 1. So if you calculated 0.4, you have four points (A, B, C, D) plus the split-point on the curve closest to your touch at 0.4 along the curve, we'll call this split-point point S:
-    func splitCubicCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
+    class func splitCubicCurveAtT(previousPoint:CGPoint,originalCurve:CGPathElementObj,t:Float) -> (CGPathElementObj,CGPathElementObj){
         
         //    Calculate a temporary point T which is 0.4 along the line B→C
         
@@ -319,7 +319,7 @@ class FreeForm:FoldFeature
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
         /// splits the path into multiple edges based on intersection points
-        var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+        var paths = FreeForm.pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
         paths = filterPathsOutsideBounds(paths)
         
         var edges:[Edge] = []
