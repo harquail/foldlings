@@ -526,7 +526,7 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         
         switch(el.type.value){
         case kCGPathElementMoveToPoint.value : returnee.last!.moveToPoint(points[0])
-        case kCGPathElementAddLineToPoint.value : println("line")
+        case kCGPathElementAddLineToPoint.value : returnee.last!.addLineToPoint(points[0])  //TODO: Need intersection code here
         case kCGPathElementAddQuadCurveToPoint.value : println("quad")
         case kCGPathElementAddCurveToPoint.value :
             
