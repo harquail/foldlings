@@ -381,18 +381,18 @@ class Sketch : NSObject, Printable  {
         return p
     }
     
-    /// returns the edge and nearest hitpoint to point given
-    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
-    {
-        var r:(Edge?,CGPoint)? = nil
-        for edge in self.edges
-        {
-            if let np = edge.hitTest(point) {
-                r = (edge, np)
-            }
-        }
-        return r
-    }
+//    /// returns the edge and nearest hitpoint to point given
+//    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
+//    {
+//        var r:(Edge?,CGPoint)? = nil
+//        for edge in self.edges
+//        {
+//            if let np = edge.hitTest(point) {
+//                r = (edge, np)
+//            }
+//        }
+//        return r
+//    }
     
 //        
 //        /// returns a list of edges if any of then intersect the given shape

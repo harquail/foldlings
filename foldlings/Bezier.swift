@@ -457,7 +457,6 @@ func convertToCGPoints(path:NSArray) -> [CGPoint]
 class Bezier{
 
 //TODO: verify that this is not introducing floating point error
-//TODO: convenience function to return edges, move to Bezier.swift
 //splits a bezierpath composed of cubic curves at intersection points
 class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
     
@@ -577,6 +576,7 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
                 returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
             }
         case kCGPathElementCloseSubpath.value :
+            println("close")
             break
         default: println("unexpected")
         }

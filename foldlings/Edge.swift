@@ -100,9 +100,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
-        
         self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
-        self.adjacency = aDecoder.decodeObjectForKey("adj") as! [Edge]
+        self.adjacency = aDecoder.decodeObjectForKey("adj") as? [Edge] ?? []
         self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
     }
     
@@ -112,7 +111,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
-        
         aCoder.encodeObject(self.twin, forKey: "twin")
         aCoder.encodeObject(self.adjacency, forKey: "adj")
         aCoder.encodeObject(self.feature, forKey: "feature")
@@ -255,7 +253,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
         // make edges from paths
         for p in paths{
-            let e = Edge(start: path.firstPoint(), end: path.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
+//            println("\(p.firstPoint()) | \(p.lastPoint())")
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
             edges.append(e)
         }
         

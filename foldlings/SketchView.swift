@@ -511,7 +511,7 @@ class SketchView: UIView {
                 vfold!.makeInternalFold()
                 
                 // split the vertical cut
-                vfold!.splitVerticalCut()
+//                vfold!.splitVerticalCut()
                 
                 // split driving fold
                 let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
