@@ -147,53 +147,53 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
     
     return npath
 }
+//
+/////splits the path at the point given
+//func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIBezierPath)
+//{
+//    let elements = path.getPathElements()
+//    let points = getSubdivisions(elements)
+//    var pathOnePoints = [CGPoint]()
+//    var pathTwoPoints = [CGPoint]()
+//    
+//    // find the nearest point
+//    // this is necessary because the subdivisions are not guaranteed equal all the time
+//    // but will usually be pretty exact
+//    var mindist=CGFloat.max
+//    var minI = 0
+//    for (var i = 0; i < points.count; i++)
+//    {
+//        let d = CGPointGetDistance(points[i], point)
+//        if (d < mindist) {
+//            mindist = d
+//            minI = i
+//        }
+//    }
+//    
+//    for (var i = 0; i < points.count; i++)
+//    {
+//        if i < minI {
+//            pathOnePoints.append(points[i])
+//        } else {
+//            pathTwoPoints.append(points[i])
+//        }
+//    }
+//    
+//    let uipathOne = pathFromPoints(smoothPoints(pathOnePoints))
+//    let uipathTwo = pathFromPoints(smoothPoints(pathTwoPoints))
+//    
+//    return (uipathOne, uipathTwo)
+//    
+//}
 
-///splits the path at the point given
-func splitPath(path:UIBezierPath, withPoint point:CGPoint) -> (UIBezierPath, UIBezierPath)
-{
-    let elements = path.getPathElements()
-    let points = getSubdivisions(elements)
-    var pathOnePoints = [CGPoint]()
-    var pathTwoPoints = [CGPoint]()
-    
-    // find the nearest point
-    // this is necessary because the subdivisions are not guaranteed equal all the time
-    // but will usually be pretty exact
-    var mindist=CGFloat.max
-    var minI = 0
-    for (var i = 0; i < points.count; i++)
-    {
-        let d = CGPointGetDistance(points[i], point)
-        if (d < mindist) {
-            mindist = d
-            minI = i
-        }
-    }
-    
-    for (var i = 0; i < points.count; i++)
-    {
-        if i < minI {
-            pathOnePoints.append(points[i])
-        } else {
-            pathTwoPoints.append(points[i])
-        }
-    }
-    
-    let uipathOne = pathFromPoints(smoothPoints(pathOnePoints))
-    let uipathTwo = pathFromPoints(smoothPoints(pathTwoPoints))
-    
-    return (uipathOne, uipathTwo)
-    
-}
-
-/// smooths a uibezierpath using douglas peucker method
-func smoothPath(path:UIBezierPath) -> UIBezierPath
-{
-    let elements = path.getPathElements()
-    let points = getSubdivisions(elements)
-    let npaths = smoothPoints(points)
-    return pathFromPoints(npaths)
-}
+///// smooths a uibezierpath using douglas peucker method
+//func smoothPath(path:UIBezierPath) -> UIBezierPath
+//{
+//    let elements = path.getPathElements()
+//    let points = getSubdivisions(elements)
+//    let npaths = smoothPoints(points)
+//    return pathFromPoints(npaths)
+//}
 
 /// smooths a set of point using douglas peucker method
 func smoothPoints(points:[CGPoint], epsilon:Float = 0.5) -> [CGPoint]

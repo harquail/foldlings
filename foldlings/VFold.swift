@@ -17,6 +17,8 @@ class VFold:FoldFeature{
     var lastUpdated = NSDate(timeIntervalSinceNow: 0)
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
+    
+    var intersectionsOnVerticalCut:[CGPoint] = []
     var cachedEnclosingPath:UIBezierPath? = nil
 
     
@@ -152,14 +154,16 @@ class VFold:FoldFeature{
             let interceptB = PathIntersections.intersectionsBetween(internalFoldB.path, path2: verticalCut.path)
             let foldToAdd = Edge.straightEdgeBetween(interceptB![0], end: endPointB, kind: Edge.Kind.Fold, feature: self)
             featureEdges?.append(foldToAdd)
-            
         }
         
+//       let splitter = featureEdges!.last!.start
+//    let paths = Bezier.pathSplitByPoints(verticalCut!.path, breakers: [splitter])
+
         
         
     }
 
-    // TODO: REFACTOR
+    // TODO: REFACTOR TO DO SPLITTING IN ONE STEP
     func splitVerticalCut(){
     
         // split the vertical cut into two paths
@@ -168,25 +172,25 @@ class VFold:FoldFeature{
 //        let paths = splitPath(verticalCut!.path, withPoint: splitter)
         let ps = paths
         
-        // return the closest point in an array to the given point
-        func closestOf(point:CGPoint,pts:[CGPoint]) -> CGPoint{
-            var closest = CGPointZero
-            var minDist = CGFloat.max
-            // for each point, find closest
-            for p in pts{
-                let dist = ccpDistance(point, p)
-                if( dist < minDist){
-                    closest = p
-                    minDist = dist
-                }
-            }
-            return closest
-        }
+//        // return the closest point in an array to the given point
+//        func closestOf(point:CGPoint,pts:[CGPoint]) -> CGPoint{
+//            var closest = CGPointZero
+//            var minDist = CGFloat.max
+//            // for each point, find closest
+//            for p in pts{
+//                let dist = ccpDistance(point, p)
+//                if( dist < minDist){
+//                    closest = p
+//                    minDist = dist
+//                }
+//            }
+//            return closest
+//        }
 
         // make edges from paths
         for p in ps{
             let possibleEnds = [splitter, verticalCut.start, verticalCut.end]
-            let e = Edge(start: closestOf(p.firstPoint(),possibleEnds), end: closestOf(p.lastPoint(),possibleEnds), path: p, kind: .Cut, isMaster: false, feature: self)
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
             featureEdges?.append(e)
         }
         

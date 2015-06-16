@@ -245,8 +245,21 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     
     func edgeSplitByPoints(breakers:[CGPoint]) ->[Edge]{
         
+        var edges:[Edge] = []
+
+        let paths = Bezier.pathSplitByPoints(path, breakers: breakers)
         
-        return [self]
+        if paths.count == 1{
+            return [self]
+        }
+        
+        // make edges from paths
+        for p in paths{
+            let e = Edge(start: path.firstPoint(), end: path.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
+            edges.append(e)
+        }
+        
+        return edges
     }
 
     

@@ -238,7 +238,7 @@ class Sketch : NSObject, Printable  {
     func getPlanes()
     {
         println(">> getting planes")
-        return;
+//        return;
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
