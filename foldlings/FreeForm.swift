@@ -81,6 +81,8 @@ class FreeForm:FoldFeature
         }
     }
     
+    //TODO: verify that this is not introducing floating point error
+    //TODO: convenience function to return edges, move to Bezier.swift
     //splits a bezierpath composed of cubic curves at intersection points
     func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPath]{
 

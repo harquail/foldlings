@@ -196,7 +196,8 @@ class VFold:FoldFeature{
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = super.tapOptions() ?? []
         options.append(.DeleteFeature)
-        
+        options.append(.Symmetrize)
+
         return options
         
     }
