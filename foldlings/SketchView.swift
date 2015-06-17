@@ -646,7 +646,16 @@ class SketchView: UIView {
                 if sketch.features.count > 0{
                     
                     if(sketch.currentFeature != nil){
+                        
+                        if let poly = sketch.currentFeature as? Polygon{
+                            //draw control points
+                              for point in poly.points{
+                                drawCircle(point, color:UIColor.blackColor(),radius:3.5)
+                              }
+                        }
                         currentFeatures.append(sketch.currentFeature!)
+
+                        
                     }
                     
                     for feature in currentFeatures{
@@ -700,16 +709,7 @@ class SketchView: UIView {
                             }
                             
                         }
-                        else if let poly = feature as? Polygon{
-                            //draw control points
-                            
-                            //  for point in poly.points{
-                            //      drawCircle(point, color:UIColor.grayColor())
-                            //  }
-                            
-                            
-                        }
-                        
+                     
                     }
                 }
             }
