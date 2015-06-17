@@ -97,6 +97,8 @@ class SketchView: UIView {
                 handleFreeFormPan(sender)
             case .VFold:
                 handleVFoldPan(sender)
+            case .Polygon:
+                handlePolygonPan(sender)
             default:
                 break
             }
@@ -404,7 +406,6 @@ class SketchView: UIView {
                 // makes the start point the top left point and sorts horizontal folds
                 drawingFeature.fixStartEndPoint()
                 
-                drawingFeature.validate()
                 
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
@@ -523,7 +524,7 @@ class SketchView: UIView {
                 
                 // add feature to sketch features and to parent's children
                 sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
-                vfold!.parent!.children.append(vfold!)
+//                vfold!.parent!.children.append(vfold!)
                 
                 // clear current feature
                 path = UIBezierPath()
@@ -574,6 +575,43 @@ class SketchView: UIView {
         forceRedraw()
         return true
     }
+    
+    //can also add points by panning
+    func handlePolygonPan(sender: AnyObject){
+        
+        var gesture = sender as! UIPanGestureRecognizer
+        let touchPoint: CGPoint = gesture.locationInView(self)
+        var poly = sketch.currentFeature as? Polygon
+        
+        switch gesture.state{
+            // pan began
+            case UIGestureRecognizerState.Began:
+            
+                if poly == nil{
+                    sketch.currentFeature = Polygon(start:touchPoint)
+                    poly = sketch.currentFeature as? Polygon
+                }
+                poly!.addPoint(touchPoint)
+
+            case UIGestureRecognizerState.Changed:
+                poly!.points.removeLast()
+                if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
+                    poly!.featureEdges?.removeLast()
+                }
+//                poly!.featureEdges?.removeLast()
+                poly!.addPoint(touchPoint)
+            case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+               
+                if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
+                 poly!.featureEdges?.removeLast()
+                }
+                poly!.points.removeLast()
+                handlePolygonTap(sender)
+            default: break
+        }
+        forceRedraw()
+        
+    }
 
     // complete the polygon and add it to the sketch
     func finishPolygon(poly:Polygon){
@@ -587,7 +625,7 @@ class SketchView: UIView {
                     //set parent if the fold spans driving
                     poly.drivingFold = fold
                     poly.parent = feature
-                    poly.parent!.children.append(poly)
+//                    poly.parent!.children.append(poly)
                     
                     //split folds
                     let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)

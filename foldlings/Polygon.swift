@@ -307,4 +307,11 @@ class Polygon:FoldFeature{
         return path?.containsPoint(point) ?? false
     }
     
+    override func validate() -> (passed: Bool, error: String) {
+        let validity = super.validate()
+        if(!validity.passed){
+            return validity
+        }
+        return (true,"")
+    }
 }

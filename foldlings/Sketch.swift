@@ -615,7 +615,8 @@ class Sketch : NSObject, Printable  {
     }
 
     
-    
+    // #TODO: do fold occlusion and other feature-specific things when adding features
+    // probably need a switch
     // add any feature edges that aren't
     // already in the sketch
     // create edges, if there are none
@@ -625,6 +626,14 @@ class Sketch : NSObject, Printable  {
         let fEdges = feature.getEdges()
         // set edges for feature, for freeform
         feature.featureEdges = fEdges
+        
+        //check for errors in feature before adding it to the sketch
+        let validity = feature.validate()
+        if(!validity.passed){
+                //print error, return
+        }
+
+        
         for edge in fEdges
         {
             if (!self.edges.contains(edge))// and if twin has a feature
