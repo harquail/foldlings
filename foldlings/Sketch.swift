@@ -469,16 +469,17 @@ class Sketch : NSObject, Printable  {
     func isHill(edge: Edge) -> Bool
     {
         // check plane orientation
-        let plane = edge.plane
-        if plane!.orientation == .Vertical
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
-        }
-        else if plane!.orientation == .Horizontal
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
+        if let plane = edge.plane{
+            if plane.orientation == .Vertical
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane.topEdge)
+            }
+            else if plane.orientation == .Horizontal
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane.topEdge)
+            }
         }
         return false
     }

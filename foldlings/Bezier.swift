@@ -673,5 +673,23 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         return (leg1,leg2)
     }
     
+    class func printEndingElementsOf(path:UIBezierPath){
+        
+        let elementCount = path.elementCount()
+        var first:CGPathElement = path.elementAtIndex(0)
+        var last:CGPathElement = path.elementAtIndex(elementCount-1)
+
+        println("edge with \(elementCount) elements:")
+        println("\t first:")
+        withUnsafePointer(&first, { (ptr: UnsafePointer<CGPathElement>) -> Void in
+            println("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
+        })
+        println("\t last:")
+        withUnsafePointer(&last, { (ptr: UnsafePointer<CGPathElement>) -> Void in
+            println("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
+        })
+        
+    }
+    
 }
 

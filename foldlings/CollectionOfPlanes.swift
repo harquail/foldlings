@@ -345,6 +345,7 @@ class CollectionOfPlanes: Printable, Hashable {
     /// remove a plane and set dirty on edges
     func removePlane(plane:Plane)
     {
+
         // dispatch_sync(planeAdjacencylockQueue) {
         
         for edge in plane.edges {

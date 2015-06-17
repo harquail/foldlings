@@ -535,7 +535,6 @@ class SketchView: UIView {
     // returns whether tap was dealt with
     func handleTap(sender:AnyObject) -> Bool
     {
-        
         if(sketchMode == .Polygon){
            return handlePolygonTap(sender)
         }
@@ -549,16 +548,12 @@ class SketchView: UIView {
     func handlePolygonTap(sender: AnyObject) ->Bool
     {
         var touchPoint: CGPoint = sender.locationInView(self)
-        
-
-        
         // if this is a new feature, create one
         if sketch.currentFeature == nil{
-            // bail if the first point is inside anothe feature -- the user probably wanted tap options instead
+            // bail if the first point is inside another feature -- the user probably wanted tap options instead
             if(sketch.featureAt(point: touchPoint) != sketch.masterFeature!){
                 return false
             }
-    
             sketch.currentFeature = Polygon(start:touchPoint)
         }
         
