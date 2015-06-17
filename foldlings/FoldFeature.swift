@@ -18,12 +18,12 @@ class FoldFeature: NSObject, Printable
         Valid = 1 // can be simulated in 3d/folded in real life
     }
     
-//    enum DefinitionState {
-//        case Incomplete, //still drawing/dragging
-//        Complete //finished drawing
-//    }
+    //    enum DefinitionState {
+    //        case Incomplete, //still drawing/dragging
+    //        Complete //finished drawing
+    //    }
     
-
+    
     var featurePlanes:[Plane] = []
     //not used yet
     //var drawingPlanes:[Plane] = []
@@ -41,7 +41,7 @@ class FoldFeature: NSObject, Printable
     
     var activeOption:FeatureOption?  // the operation being performed on this feature (eg. .MoveFold)
     var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
-
+    
     required init(coder aDecoder: NSCoder) {
         
         self.startPoint = aDecoder.decodeCGPointForKey("startPoint")
@@ -68,7 +68,7 @@ class FoldFeature: NSObject, Printable
         //println("encoded \(featureEdges)")
         
         if let point = startPoint{
-        aCoder.encodeCGPoint(point, forKey: "startPoint")
+            aCoder.encodeCGPoint(point, forKey: "startPoint")
         }
         if let point = endPoint{
             aCoder.encodeCGPoint(point, forKey: "endPoint")
@@ -87,8 +87,8 @@ class FoldFeature: NSObject, Printable
     
     /// printable description is the object class & startPoint
     override var description: String
-    {
-        return "\(reflect(self).summary) \(startPoint!)"
+        {
+            return "\(reflect(self).summary) \(startPoint!)"
     }
     
     init(start:CGPoint)
@@ -126,14 +126,14 @@ class FoldFeature: NSObject, Printable
     func fixStartEndPoint(){
         
         if(startPoint != nil && endPoint != nil){
-        let topLeft = CGPointMake(min(startPoint!.x,endPoint!.x), min(startPoint!.y,endPoint!.y))
-        let bottomRight = CGPointMake(max(startPoint!.x,endPoint!.x), max(startPoint!.y,endPoint!.y))
-        
-        startPoint = topLeft
-        endPoint = bottomRight
+            let topLeft = CGPointMake(min(startPoint!.x,endPoint!.x), min(startPoint!.y,endPoint!.y))
+            let bottomRight = CGPointMake(max(startPoint!.x,endPoint!.x), max(startPoint!.y,endPoint!.y))
+            
+            startPoint = topLeft
+            endPoint = bottomRight
         }
         
-//        horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
+        //        horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
     }
     
     
@@ -187,9 +187,9 @@ class FoldFeature: NSObject, Printable
     /// the unique fold heights in the feature (ignores duplicates), modified by delta y
     func foldHeightsWithTransform(originalHeights:[CGFloat], draggedEdge:Edge, masterFold:Edge) -> [CGFloat]{
         
-//        println("original heights: \(originalHeights)")
+        //        println("original heights: \(originalHeights)")
         let draggedHeight = draggedEdge.start.y
-//        println("dragged height: \(draggedHeight)")
+        //        println("dragged height: \(draggedHeight)")
         var newHeights:[CGFloat] = []
         
         let draggedIndex = originalHeights.indexOf(draggedHeight)!
@@ -205,23 +205,23 @@ class FoldFeature: NSObject, Printable
         default:
             newHeights = originalHeights
         }
-
+        
         if(newHeights.first > masterFold.start.y || newHeights.last < masterFold.start.y){
-         // TODO: original heights is the wrong thing to return here
+            // TODO: original heights is the wrong thing to return here
             return originalHeights
         }
         else{
             return newHeights
         }
     }
-
+    
     func featureSpansFold(fold:Edge)->Bool
     {
         var fMin = min(fold.start.x, fold.end.x)
         var fMax = max(fold.start.x, fold.end.x)
-
+        
         if (fMin < self.startPoint!.x && self.startPoint!.x < fMax) && (fMin < self.endPoint!.x && self.endPoint!.x < fMax){
-
+            
             return ccpSegmentIntersect(fold.start, fold.end, self.startPoint!, self.endPoint!)
         }
         return false
@@ -232,14 +232,14 @@ class FoldFeature: NSObject, Printable
         return featurePlanes
     }
     
-//    // makes a straight path between two points
-//    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
-//        let path = UIBezierPath()
-//        path.moveToPoint(start)
-//        path.addLineToPoint(end)
-//        
-//        return path
-//    }
+    //    // makes a straight path between two points
+    //    func makeStraightPath(start: CGPoint, end: CGPoint)-> UIBezierPath{
+    //        let path = UIBezierPath()
+    //        path.moveToPoint(start)
+    //        path.addLineToPoint(end)
+    //
+    //        return path
+    //    }
     
     // whether a feature contains a point — needs to be overridden by subclasses
     func containsPoint(point:CGPoint) -> Bool{
@@ -249,5 +249,17 @@ class FoldFeature: NSObject, Printable
     // returns edges that are less than the minimum length
     func tooShortEdges() -> [Edge]{
         return featureEdges?.filter({$0.length() < kMinLineLength}) ?? []
+    }
+    
+    // this function should try to fix errors first, then return an error if it can't fix them — returns whether the feature was valid
+    func validate() -> (passed:Bool,error:String){
+        
+        var valid = true
+        if(!tooShortEdges().isEmpty){
+            println("!! Edges too short !!")
+            return (false,"Edges too short")
+        }
+        println("valid")
+        return (true,"")
     }
 }

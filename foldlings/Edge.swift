@@ -30,10 +30,7 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
         
-        Bezier.printEndingElementsOf(path)
-//        return "\nStart: \(start), End: \(end)"
-
-        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
+        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty), \(Bezier.endingElementsOf(path))\n"
         
     }
     
@@ -235,10 +232,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
             }
         }
         //TODO: also have to do things to the path
-        
     }
-
     
+    //length of a straight edge — should do something better for curves
     func length() -> CGFloat{
         return ccpDistance(start, end)
     }

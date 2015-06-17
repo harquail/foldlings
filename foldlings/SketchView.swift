@@ -404,6 +404,8 @@ class SketchView: UIView {
                 // makes the start point the top left point and sorts horizontal folds
                 drawingFeature.fixStartEndPoint()
                 
+                drawingFeature.validate()
+                
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
@@ -422,6 +424,8 @@ class SketchView: UIView {
                     AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
                     
                 }
+                
+                
                 
                 //clear the current feature
                 sketch.currentFeature = nil

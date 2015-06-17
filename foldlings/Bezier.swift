@@ -673,22 +673,23 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         return (leg1,leg2)
     }
     
-    class func printEndingElementsOf(path:UIBezierPath){
+    class func endingElementsOf(path:UIBezierPath) -> String{
         
         let elementCount = path.elementCount()
         var first:CGPathElement = path.elementAtIndex(0)
         var last:CGPathElement = path.elementAtIndex(elementCount-1)
-
-        println("edge with \(elementCount) elements:")
-        println("\t first:")
-        withUnsafePointer(&first, { (ptr: UnsafePointer<CGPathElement>) -> Void in
-            println("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
-        })
-        println("\t last:")
-        withUnsafePointer(&last, { (ptr: UnsafePointer<CGPathElement>) -> Void in
-            println("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
-        })
+        var returnee:String = ""
         
+        returnee.extend("edge with \(elementCount) elements:")
+        returnee.extend("\t first:")
+        withUnsafePointer(&first, { (ptr: UnsafePointer<CGPathElement>) -> Void in
+            returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
+        })
+       returnee.extend("\t last:")
+        withUnsafePointer(&last, { (ptr: UnsafePointer<CGPathElement>) -> Void in
+            returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
+        })
+        return returnee
     }
     
 }
