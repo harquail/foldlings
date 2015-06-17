@@ -584,9 +584,8 @@ class SketchView: UIView {
         var poly = sketch.currentFeature as? Polygon
         
         switch gesture.state{
-            // pan began
             case UIGestureRecognizerState.Began:
-            
+                // remove previous point, because we're moving, not adding points
                 if poly == nil{
                     sketch.currentFeature = Polygon(start:touchPoint)
                     poly = sketch.currentFeature as? Polygon
@@ -594,23 +593,23 @@ class SketchView: UIView {
                 poly!.addPoint(touchPoint)
 
             case UIGestureRecognizerState.Changed:
+                // remove previous point & edge, because we're moving, not adding points
                 poly!.points.removeLast()
                 if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
                     poly!.featureEdges?.removeLast()
                 }
-//                poly!.featureEdges?.removeLast()
                 poly!.addPoint(touchPoint)
             case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
-               
+               // remove previous point & edge
                 if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
                  poly!.featureEdges?.removeLast()
                 }
                 poly!.points.removeLast()
+                // turn this into a tap
                 handlePolygonTap(sender)
             default: break
         }
         forceRedraw()
-        
     }
 
     // complete the polygon and add it to the sketch
