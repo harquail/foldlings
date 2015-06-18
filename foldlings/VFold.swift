@@ -117,8 +117,80 @@ class VFold:FoldFeature{
         return pointOnDriver
     }
     
-    func makeInternalFold(){
+// OLD WAY, DONT DELETE YET
+//    func makeInternalFold(){
+//
+//        var startPointA = diagonalFolds[0].start
+//        var startPointB =  diagonalFolds[1].start
+//        var endPointA = diagonalFolds[0].end
+//        var endPointB = diagonalFolds[1].end
+//        
+//        let vectorA = ccpSub(startPointA, endPointA)
+//        let vectorB = ccpSub(startPointB, endPointB)
+//        let vectorDriving = ccpSub(drivingFold!.start,drivingFold!.end)
+//        
+//        //         /|
+//        //        / |
+//        //     A /  |
+//        //      /Φ  |    driving fold
+//        //  - - \---|- - - - - - - - - - -
+//        //       \Θ \
+//        //     B  \  |
+//        //         \  \
+//        //          \ \
+//        //           \|
+//        let Φ = ccpAngleSigned(vectorA,vectorDriving)
+//        let Θ = ccpAngleSigned(vectorB, vectorDriving)
+//        
+//        
+//        var twoPhi = 2*Φ
+//        if(twoPhi < Float(-M_PI)){
+//            twoPhi = Float(twoPhi - Float(2*M_PI))
+//        }
+//        
+//        var twoTheta = 2*Θ
+//        if(twoTheta > Float(M_PI)){
+//            twoTheta = Float(twoTheta + Float(2*M_PI))
+//        }
+//        
+//        //make line really long so it definitely intersects cut
+//        startPointA = ccpAdd(startPointA, ccpMult(vectorA, 2))
+//        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(twoPhi))
+//        let internalFoldA = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Fold, feature: self)
+//        let interceptA = PathIntersections.intersectionsBetween(internalFoldA.path, path2: verticalCut.path)
+//        
+//        // if there was an intersection, take this edge
+//        if (interceptA != nil){
+//            let foldToAdd = Edge.straightEdgeBetween(interceptA![0], end: endPointA, kind: Edge.Kind.Fold, feature: self)
+//            featureEdges?.append(foldToAdd)
+//            intersectionsOnVerticalCut.append(interceptA![0])
+//
+//        }
+//        else{
+//            //make line really long so it definitely intersects cut
+//            startPointB = ccpAdd(startPointB, ccpMult(vectorB, 2))
+//            startPointB = ccpRotateByAngle(startPointB, endPointB, Float(twoTheta))
+//            let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: Edge.Kind.Fold, feature: self)
+//            let interceptB = PathIntersections.intersectionsBetween(internalFoldB.path, path2: verticalCut.path)
+//            let foldToAdd = Edge.straightEdgeBetween(interceptB![0], end: endPointB, kind: Edge.Kind.Fold, feature: self)
+//            featureEdges?.append(foldToAdd)
+//            intersectionsOnVerticalCut.append(interceptB![0])
+//        }
+//
+////        println(intersectionsOnVerticalCut)
+//        // split vertical cut
+////        println(featureEdges!.count)
+//        featureEdges?.remove(verticalCut)
+//        let appendees = verticalCut.edgeSplitByPoints(intersectionsOnVerticalCut)
+////        println("TO APPEND:")
+////        println(appendees)
+//        featureEdges?.extend(appendees)
+//        
+//    }
 
+    
+    func makeInternalFold(){
+        
         var startPointA = diagonalFolds[0].start
         var startPointB =  diagonalFolds[1].start
         var endPointA = diagonalFolds[0].end
@@ -151,42 +223,45 @@ class VFold:FoldFeature{
         if(twoTheta > Float(M_PI)){
             twoTheta = Float(twoTheta + Float(2*M_PI))
         }
+//        make line really long so it definitely intersects cut
+                startPointA = ccpAdd(startPointA, ccpMult(vectorA, 2))
+                startPointA = ccpRotateByAngle(startPointA, endPointA, Float(-twoTheta/2))
+                let internalFoldA = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Fold, feature: self)
+                let interceptA = PathIntersections.intersectionsBetween(internalFoldA.path, path2: verticalCut.path)
         
-        //make line really long so it definitely intersects cut
-        startPointA = ccpAdd(startPointA, ccpMult(vectorA, 2))
-        startPointA = ccpRotateByAngle(startPointA, endPointA, Float(twoPhi))
-        let internalFoldA = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Fold, feature: self)
-        let interceptA = PathIntersections.intersectionsBetween(internalFoldA.path, path2: verticalCut.path)
+//        featureEdges?.append(internalFoldA)
+
+                // if there was an intersection, take this edge
+                if (interceptA != nil){
+                    let foldToAdd = Edge.straightEdgeBetween(interceptA![0], end: endPointA, kind: Edge.Kind.Fold, feature: self)
+                    featureEdges?.append(foldToAdd)
+                    intersectionsOnVerticalCut.append(interceptA![0])
         
-        // if there was an intersection, take this edge
-        if (interceptA != nil){
-            let foldToAdd = Edge.straightEdgeBetween(interceptA![0], end: endPointA, kind: Edge.Kind.Fold, feature: self)
-            featureEdges?.append(foldToAdd)
-            intersectionsOnVerticalCut.append(interceptA![0])
+                }
+                else{
+                    //make line really long so it definitely intersects cut
+                    startPointB = ccpAdd(startPointB, ccpMult(vectorB, 2))
+                    startPointB = ccpRotateByAngle(startPointB, endPointB, Float(-twoPhi/2))
+                    let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: Edge.Kind.Fold, feature: self)
+                    let interceptB = PathIntersections.intersectionsBetween(internalFoldB.path, path2: verticalCut.path)
+//                    featureEdges?.append(internalFoldB)
 
-        }
-        else{
-            //make line really long so it definitely intersects cut
-            startPointB = ccpAdd(startPointB, ccpMult(vectorB, 2))
-            startPointB = ccpRotateByAngle(startPointB, endPointB, Float(twoTheta))
-            let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: Edge.Kind.Fold, feature: self)
-            let interceptB = PathIntersections.intersectionsBetween(internalFoldB.path, path2: verticalCut.path)
-            let foldToAdd = Edge.straightEdgeBetween(interceptB![0], end: endPointB, kind: Edge.Kind.Fold, feature: self)
-            featureEdges?.append(foldToAdd)
-            intersectionsOnVerticalCut.append(interceptB![0])
-        }
+                    let foldToAdd = Edge.straightEdgeBetween(interceptB![0], end: endPointB, kind: Edge.Kind.Fold, feature: self)
+                    featureEdges?.append(foldToAdd)
+                    intersectionsOnVerticalCut.append(interceptB![0])
+                }
+        
+        //        println(intersectionsOnVerticalCut)
+                // split vertical cut
+        //        println(featureEdges!.count)
+                featureEdges?.remove(verticalCut)
+                let appendees = verticalCut.edgeSplitByPoints(intersectionsOnVerticalCut)
+        //        println("TO APPEND:")
+        //        println(appendees)
+                featureEdges?.extend(appendees)
 
-//        println(intersectionsOnVerticalCut)
-        // split vertical cut
-//        println(featureEdges!.count)
-        featureEdges?.remove(verticalCut)
-        let appendees = verticalCut.edgeSplitByPoints(intersectionsOnVerticalCut)
-//        println("TO APPEND:")
-//        println(appendees)
-        featureEdges?.extend(appendees)
         
     }
-
     
     // things that can be done to v-folds
     override func tapOptions() -> [FeatureOption]?{

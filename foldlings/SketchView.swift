@@ -648,6 +648,7 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
+    // TODO: separate into CALayers for fade in
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
