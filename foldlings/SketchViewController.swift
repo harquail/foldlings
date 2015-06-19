@@ -161,24 +161,28 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
         playVideo("boxfold-tutorial")
+        sketchView.switchedTool()
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
     @IBAction func freeForm(sender: UIBarButtonItem) {
         playVideo("freeform-tutorial")
+        sketchView.switchedTool()
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
         playVideo("vfold-tutorial")
+        sketchView.switchedTool()
         sketchView.sketchMode = .VFold
        setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
         playVideo("polygon-tutorial")
+        sketchView.switchedTool()
         sketchView.sketchMode = .Polygon
         setSelectedImage(.Polygon)
     }

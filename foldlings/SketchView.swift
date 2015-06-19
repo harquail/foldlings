@@ -610,6 +610,22 @@ class SketchView: UIView {
         forceRedraw()
     }
 
+    // when switching tools, discard or resolve the previous shape
+    func switchedTool(){
+        // try to close polygon if they are left open
+        if let poly = sketch.currentFeature as? Polygon{
+            if(poly.pointClosesPoly(poly.points[0])){
+                poly.addPoint(poly.points[0])
+                // add to sketch if this tap closes the shape
+                finishPolygon(poly)
+            }
+        }
+        
+        path = UIBezierPath()
+        sketch.currentFeature = nil
+        forceRedraw()
+    }
+    
     // complete the polygon and add it to the sketch
     func finishPolygon(poly:Polygon){
         

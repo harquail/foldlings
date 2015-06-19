@@ -277,7 +277,7 @@ class Polygon:FoldFeature{
             return false
         }
         
-        return ccpDistance(points[0], point) < kHitTestRadius
+        return ccpDistance(points[0], point) < kHitTestRadius  && points.count > 2
     }
     
     func movePolyPoint(from:CGPoint, to:CGPoint) {
