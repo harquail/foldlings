@@ -7,12 +7,14 @@
 
 import Foundation
 import SceneKit
+import MediaPlayer
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
     var index = 0
     var name = "placeholder"
     var restoredFromSave = false
+    var moviePlayer : MPMoviePlayerController?
     
     @IBOutlet var box: UIBarButtonItem!
     @IBOutlet var free: UIBarButtonItem!
@@ -158,23 +160,37 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
 
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
+        playVideo("boxfold-tutorial")
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
     @IBAction func freeForm(sender: UIBarButtonItem) {
+        playVideo("freeform-tutorial")
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
+        playVideo("vfold-tutorial")
         sketchView.sketchMode = .VFold
        setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
+        playVideo("polygon-tutorial")
         sketchView.sketchMode = .Polygon
         setSelectedImage(.Polygon)
+    }
+    
+    private func playVideo(named:String) {
+        let path = NSBundle.mainBundle().pathForResource(named, ofType: "mp4")
+        let pathURL = NSURL.fileURLWithPath(path!)
+        
+        let myPlayer = MPMoviePlayerViewController(contentURL: pathURL)
+        myPlayer.moviePlayer.repeatMode = .None
+        
+        presentMoviePlayerViewControllerAnimated(myPlayer)
     }
     
     func resetButtonImages(){

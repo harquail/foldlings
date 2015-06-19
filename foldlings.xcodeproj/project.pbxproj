@@ -156,6 +156,10 @@
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
 		F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */; };
 		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
+		F1D36F3B1B34A3F8003316C9 /* polygon-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */; };
+		F1D36F3C1B34A3F8003316C9 /* vfold-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */; };
+		F1D36F3D1B34A3F8003316C9 /* boxfold-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */; };
+		F1D36F3E1B34A3F8003316C9 /* freeform-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
@@ -425,6 +429,10 @@
 		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
 		F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFold.swift; sourceTree = "<group>"; };
+		F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "polygon-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "vfold-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "boxfold-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "freeform-tutorial.mp4"; sourceTree = "<group>"; };
 		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
@@ -550,6 +558,10 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */,
+				F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */,
+				F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */,
+				F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */,
 				F1BB8E251AF56F7E006800CB /* freeform-selected-icon.png */,
 				F1BB8E261AF56F7E006800CB /* vfold-selected-icon.png */,
 				F1BB8E271AF56F7E006800CB /* polygon-selected-icon.png */,
@@ -1070,7 +1082,9 @@
 				F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				F16673BD1ACE3F5700243D70 /* Info.plist in Resources */,
+				F1D36F3C1B34A3F8003316C9 /* vfold-tutorial.mp4 in Resources */,
 				F1AAFE261B01A99E0044AB00 /* sts-2011-06-15.json in Resources */,
+				F1D36F3E1B34A3F8003316C9 /* freeform-tutorial.mp4 in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
@@ -1081,6 +1095,7 @@
 				F1BB8E201AF56A09006800CB /* vfold-icon.png in Resources */,
 				F1AAFE1C1B01A99E0044AB00 /* email-2010-12-01.json in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
+				F1D36F3B1B34A3F8003316C9 /* polygon-tutorial.mp4 in Resources */,
 				F1BB8E2C1AF56F7E006800CB /* box-fold-selected-icon.png in Resources */,
 				F1BB8E291AF56F7E006800CB /* freeform-selected-icon.png in Resources */,
 				F1AAFE181B01A99E0044AB00 /* cognito-sync-2014-06-30.json in Resources */,
@@ -1093,6 +1108,7 @@
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
 				F1AAFE201B01A99E0044AB00 /* mobileanalytics-2014-06-30.json in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+				F1D36F3D1B34A3F8003316C9 /* boxfold-tutorial.mp4 in Resources */,
 				F1AAFE1E1B01A99E0044AB00 /* lambda-2015-03-31.json in Resources */,
 				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,

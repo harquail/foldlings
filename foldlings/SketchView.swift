@@ -744,9 +744,9 @@ class SketchView: UIView {
                         }
                         
                         if let shape = feature as? FreeForm{
-                            for point in shape.intersections{
-                                drawCircle(point, color:UIColor.blueColor())
-                            }
+//                            for point in shape.intersections{
+//                                drawCircle(point, color:UIColor.blueColor())
+//                            }
                             
                         }
                      
