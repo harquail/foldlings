@@ -109,8 +109,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(sketchView.sketch)
         case .MovePoints:
             println("implement move points")
-        case .Symmetrize:
-            println("implement make symmetrical")
+//        case .Symmetrize:
+//            println("implement make symmetrical")
         }
         
     }

@@ -210,22 +210,22 @@ class VFold:FoldFeature{
         //         \  \
         //          \ \
         //           \|
-        let Φ = ccpAngleSigned(vectorA,vectorDriving)
-        let Θ = ccpAngleSigned(vectorB, vectorDriving)
+        var Φ = ccpAngleSigned(vectorA,vectorDriving)
+        var Θ = ccpAngleSigned(vectorB, vectorDriving)
         
         
-        var twoPhi = 2*Φ
-        if(twoPhi < Float(-M_PI)){
-            twoPhi = Float(twoPhi - Float(2*M_PI))
+//        var twoPhi = 2*Φ
+        if(Φ < Float(-M_PI/2)){
+            Φ = Float(Φ - Float(M_PI))
         }
         
-        var twoTheta = 2*Θ
-        if(twoTheta > Float(M_PI)){
-            twoTheta = Float(twoTheta + Float(2*M_PI))
+//        var twoTheta = 2*Θ
+        if(Θ > Float(M_PI/2)){
+            Θ = Float(Θ + Float(M_PI))
         }
 //        make line really long so it definitely intersects cut
                 startPointA = ccpAdd(startPointA, ccpMult(vectorA, 2))
-                startPointA = ccpRotateByAngle(startPointA, endPointA, Float(-twoTheta/2))
+                startPointA = ccpRotateByAngle(startPointA, endPointA, Float(-Θ))
                 let internalFoldA = Edge.straightEdgeBetween(startPointA, end: endPointA, kind: Edge.Kind.Fold, feature: self)
                 let interceptA = PathIntersections.intersectionsBetween(internalFoldA.path, path2: verticalCut.path)
         
@@ -241,7 +241,7 @@ class VFold:FoldFeature{
                 else{
                     //make line really long so it definitely intersects cut
                     startPointB = ccpAdd(startPointB, ccpMult(vectorB, 2))
-                    startPointB = ccpRotateByAngle(startPointB, endPointB, Float(-twoPhi/2))
+                    startPointB = ccpRotateByAngle(startPointB, endPointB, Float(-Φ))
                     let internalFoldB = Edge.straightEdgeBetween(startPointB, end: endPointB, kind: Edge.Kind.Fold, feature: self)
                     let interceptB = PathIntersections.intersectionsBetween(internalFoldB.path, path2: verticalCut.path)
 //                    featureEdges?.append(internalFoldB)
@@ -267,7 +267,6 @@ class VFold:FoldFeature{
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = super.tapOptions() ?? []
         options.append(.DeleteFeature)
-        options.append(.Symmetrize)
 
         return options
         

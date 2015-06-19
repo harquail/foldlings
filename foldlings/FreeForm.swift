@@ -293,7 +293,7 @@ class FreeForm:FoldFeature
             if(!middleFolds){
 //                println("FAILED INTERSECTION POINTS: \(intersections)");
                 //                println("\(intersectionsWithDrivingFold)");
-                self.state = .Invalid
+//                self.state = .Invalid
                 println("FAILED TO INTERSECT WITH MIDDLE")
             }
         }

@@ -238,7 +238,7 @@ class Sketch : NSObject, Printable  {
     func getPlanes()
     {
         println(">> getting planes")
-        return;
+//        return;
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
@@ -627,11 +627,16 @@ class Sketch : NSObject, Printable  {
         // set edges for feature, for freeform
         feature.featureEdges = fEdges
         
+        
         //check for errors in feature before adding it to the sketch
         let validity = feature.validate()
         if(!validity.passed){
                 //print error, return
+            AFMInfoBanner.showWithText(validity.error, style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+            return
         }
+        
+      
 
         
         for edge in fEdges

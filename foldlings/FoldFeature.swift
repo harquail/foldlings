@@ -9,20 +9,17 @@
 
 import Foundation
 
+
+
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
 class FoldFeature: NSObject, Printable
 {
     
-    enum ValidityState:Int {
-        case Invalid = 0, // we don't know how to make this feature valid
-        Valid = 1 // can be simulated in 3d/folded in real life
+    override var hashValue: Int { get {
+        return featureEdges?.description.hashValue ?? self.description.hashValue
+        }
     }
-    
-    //    enum DefinitionState {
-    //        case Incomplete, //still drawing/dragging
-    //        Complete //finished drawing
-    //    }
-    
+
     
     var featurePlanes:[Plane] = []
     //not used yet
@@ -51,7 +48,7 @@ class FoldFeature: NSObject, Printable
         self.drivingFold = aDecoder.decodeObjectForKey("drivingFold") as? Edge
         self.horizontalFolds = aDecoder.decodeObjectForKey("horizontalFolds") as! [Edge]
         self.featureEdges = aDecoder.decodeObjectForKey("cachedEdges") as? [Edge]
-        self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
+//        self.state = ValidityState(rawValue: aDecoder.decodeObjectForKey("state") as! Int)!
     }
     
     
@@ -78,11 +75,11 @@ class FoldFeature: NSObject, Printable
         aCoder.encodeObject(drivingFold, forKey:"drivingFold")
         aCoder.encodeObject(horizontalFolds,forKey:"horizontalFolds")
         aCoder.encodeObject(featureEdges,forKey:"cachedEdges")
-        aCoder.encodeObject(state.rawValue,forKey:"state")
+//        aCoder.encodeObject(state.rawValue,forKey:"state")
     }
     
     /// is it valid?
-    var state:ValidityState = .Valid
+//    var state:ValidityState = .Valid
     var dirty: Bool = true
     
     /// printable description is the object class & startPoint
@@ -255,8 +252,7 @@ class FoldFeature: NSObject, Printable
     func validate() -> (passed:Bool,error:String){
         
         var valid = true
-        if(!tooShortEdges().isEmpty){
-            println("!! Edges too short !!")
+        if(!tooShortEdges().filter({$0.kind == Edge.Kind.Fold}).isEmpty){
             return (false,"Edges too short")
         }
         println("valid")

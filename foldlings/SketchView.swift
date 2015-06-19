@@ -619,13 +619,12 @@ class SketchView: UIView {
         {
             for fold in feature.horizontalFolds
             {
-                if(poly.featureSpansFold(fold))
+                if(poly.featureSpansFold(fold) && poly.validate().passed)
                 {
                     //set parent if the fold spans driving
                     poly.drivingFold = fold
                     poly.parent = feature
-//                    poly.parent!.children.append(poly)
-                    
+
                     //split folds
                     let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
                     sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
@@ -637,6 +636,7 @@ class SketchView: UIView {
             }
         }
         
+//        if(poly.validate())
         sketch.addFeatureToSketch(poly, parent: poly.parent ?? sketch.masterFeature!)
         // reset current feature so next tap will start a new feature
         sketch.currentFeature = nil

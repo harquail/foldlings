@@ -10,6 +10,8 @@ import Foundation
 
 class Polygon:FoldFeature{
     
+
+    
     // the (draggable) points that define the polygon
     var points:[CGPoint] = []
     //the path through the points
@@ -155,9 +157,6 @@ class Polygon:FoldFeature{
             scanLine.end = CGPointApplyAffineTransform(scanLine.end, moveToCenter)
             
             let middleFolds = truncate(0,100,driver.start.y-masterdist)
-            if(middleFolds == nil){
-                self.state = .Invalid
-            }
         }
         rejectOutsideTruncation()
     }
@@ -312,6 +311,32 @@ class Polygon:FoldFeature{
         if(!validity.passed){
             return validity
         }
+        
+        if(!intersectingEdges().isEmpty){
+            return (false,"Edges cannot intersect")
+        }
+        
         return (true,"")
+    }
+    
+    
+    // returns edges that cross
+    func intersectingEdges()-> [(Edge,Edge)]{
+        var intersections:[(Edge,Edge)] = []
+        
+        outer:for edge in featureEdges!{
+            for edg in featureEdges!{
+                
+                // don't count sharing endpoints as collision
+                if(edg.start == edge.start || edg.end == edge.end || edg.start == edge.end || edg.end == edge.start){
+                    break
+                }
+                if(ccpSegmentIntersect(edge.start, edge.end, edg.start, edg.end)){
+                    intersections.append((edge,edg))
+                }
+            }
+        }
+        println(intersections)
+        return intersections
     }
 }
