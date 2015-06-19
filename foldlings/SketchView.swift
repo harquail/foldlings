@@ -512,16 +512,14 @@ class SketchView: UIView {
                 // add point to intersections
                 vfold!.intersectionsWithDrivingFold.append(intersect)
                 
+                if(vfold!.validate().passed){
                 // make the diagonal 
                 vfold!.makeInternalFold()
-                
-                // split the vertical cut
-//                vfold!.splitVerticalCut()
                 
                 // split driving fold
                 let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
                 sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)
-                
+                }
                 // add feature to sketch features and to parent's children
                 sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
 //                vfold!.parent!.children.append(vfold!)
