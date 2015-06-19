@@ -232,7 +232,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let img = view.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            let viewController:FoldPreviewViewController = segue.destinationViewController as! FoldPreviewViewController
             
             viewController.setButtonBG(imgNew)
             viewController.laserImage = view.bitmap(grayscale: true)

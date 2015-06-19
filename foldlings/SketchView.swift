@@ -38,7 +38,7 @@ class SketchView: UIView {
     var sketch: Sketch!
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
-    var gameView = GameViewController()
+    var gameView = FoldPreviewViewController()
     
     // Threading
     let redrawPriority = DISPATCH_QUEUE_PRIORITY_DEFAULT

@@ -1,5 +1,5 @@
 //
-//  GameViewController.swift
+//  FoldPreviewViewController.swift
 // foldlings
 //
 // © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
@@ -11,7 +11,7 @@ import SceneKit
 import Foundation
 import MessageUI
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
+class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
     
     /*************image variables***********/
     var bgImage:UIImage!
