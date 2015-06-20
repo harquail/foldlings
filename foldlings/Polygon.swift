@@ -111,7 +111,13 @@ class Polygon:FoldFeature{
                         }
                     )
                     
-                    if(!ints.isEmpty  && ccpDistance(ints.first!.ps, ints.last!.ps) > kMinLineLength){
+                    if(!ints.isEmpty){
+
+                    // skip this point if the resulting fold is too short
+                    //  #TODO: check distances between each int point, not just the total span
+                    if(!(ccpDistance(ints.first!.ps, ints.last!.ps) > kMinLineLength)){
+                        continue
+                    }
                         for (i,int:(ps:CGPoint,es:Edge)) in enumerate(ints){
                             // split cuts
                             splitCut(int.es, at: int.ps)
