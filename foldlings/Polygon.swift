@@ -10,7 +10,7 @@ import Foundation
 
 class Polygon:FoldFeature{
     
-
+    
     // the (draggable) points that define the polygon
     var points:[CGPoint] = []
     //the path through the points
@@ -112,12 +112,12 @@ class Polygon:FoldFeature{
                     )
                     
                     if(!ints.isEmpty){
-
-                    // skip this point if the resulting fold is too short
-                    //  #TODO: check distances between each int point, not just the total span
-                    if(!(ccpDistance(ints.first!.ps, ints.last!.ps) > kMinLineLength)){
-                        continue
-                    }
+                        
+                        // skip this point if the resulting fold is too short
+                        //  #TODO: check distances between each int point, not just the total span
+                        if(!(ccpDistance(ints.first!.ps, ints.last!.ps) > kMinLineLength)){
+                            continue
+                        }
                         for (i,int:(ps:CGPoint,es:Edge)) in enumerate(ints){
                             // split cuts
                             splitCut(int.es, at: int.ps)
@@ -210,7 +210,7 @@ class Polygon:FoldFeature{
         
         for edge in featureEdges!{
             let center = edge.centerOfStraightEdge()
-
+            
             if(center.y < top){
                 featureEdges?.remove(edge)
             }
@@ -302,7 +302,7 @@ class Polygon:FoldFeature{
         else{
             featureEdges = []
         }
-
+        
         endPoint = p
     }
     
@@ -335,11 +335,8 @@ class Polygon:FoldFeature{
                 let newEdge = Edge.straightEdgeBetween(edge.start, end: to, kind: edge.kind, feature: edge.feature ?? self)
                 newEdge.dirty = true
                 featureEdges?.append(newEdge)
-
             }
         }
-        
-
     }
     
     
