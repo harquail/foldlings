@@ -83,7 +83,6 @@ class Polygon:FoldFeature{
     }
     
     func truncateWithFolds(){
-        // TODO:
         if let driver = drivingFold
         {
             let box = self.boundingBox()
@@ -98,25 +97,31 @@ class Polygon:FoldFeature{
                 //
                 //move scanline to find bottom intersection point until we are close to limit
                 while(abs(scanLine.path.firstPoint().y - endSearchAtY) > 20 ){
-
+                    
+                    
+                    var ints = intersectionWithStraightEdge(scanLine)
+                    
                     var moveDown = CGAffineTransformMakeTranslation(0, hop);
-                    var ints = intersectionWithStraightEdge(Edge(start: CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), path: scanLine.path))
+                    //move scanline down one hop for the next time through the loop
+                    scanLine = Edge.straightEdgeBetween(CGPointApplyAffineTransform(scanLine.start, moveDown), end: CGPointApplyAffineTransform(scanLine.end, moveDown), kind: scanLine.kind, feature: scanLine.feature!)
                     
                     ints.sort (
                         {(a:(ps:CGPoint,es:Edge),b:(ps:CGPoint,es:Edge)) -> Bool in
                             return (a.ps.x < b.ps.x)
                         }
                     )
-                    if(!ints.isEmpty){
+                    
+                    if(!ints.isEmpty  && ccpDistance(ints.first!.ps, ints.last!.ps) > kMinLineLength){
                         for (i,int:(ps:CGPoint,es:Edge)) in enumerate(ints){
                             // split cuts
                             splitCut(int.es, at: int.ps)
                             if(i>0){
                                 // make folds between the intersections
                                 let fold = Edge.straightEdgeBetween(ints[i-1].ps, end:int.ps, kind:.Fold, feature:self)
-
+                                
+                                
                                 let center = fold.centerOfStraightEdge()
-                               // add fold if its center is inside the polygon
+                                // add fold if its center is inside the polygon
                                 if(self.containsPoint(center)){
                                     addFold(fold)
                                 }
