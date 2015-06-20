@@ -582,30 +582,51 @@ class SketchView: UIView {
         var poly = sketch.currentFeature as? Polygon
         
         switch gesture.state{
-            case UIGestureRecognizerState.Began:
-                // remove previous point, because we're moving, not adding points
-                if poly == nil{
-                    sketch.currentFeature = Polygon(start:touchPoint)
-                    poly = sketch.currentFeature as? Polygon
-                }
+        case UIGestureRecognizerState.Began:
+            if poly == nil{
+                sketch.currentFeature = Polygon(start:touchPoint)
+                poly = sketch.currentFeature as? Polygon
+            }
+            
+            // set dragged point if touch is at a previous point
+            if let p = poly?.polyPointAt(touchPoint){
+                poly!.draggedPoint = p
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
                 poly!.addPoint(touchPoint)
-
-            case UIGestureRecognizerState.Changed:
+            }
+            
+        case UIGestureRecognizerState.Changed:
+            
+            if let p = poly!.draggedPoint{
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
                 // remove previous point & edge, because we're moving, not adding points
                 poly!.points.removeLast()
                 if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
                     poly!.featureEdges?.removeLast()
                 }
                 poly!.addPoint(touchPoint)
-            case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
-               // remove previous point & edge
+            }
+            
+        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+            
+            if let p = poly!.draggedPoint{
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
+                // remove previous point & edge
                 if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
-                 poly!.featureEdges?.removeLast()
+                    poly!.featureEdges?.removeLast()
                 }
                 poly!.points.removeLast()
                 // turn this into a tap
                 handlePolygonTap(sender)
-            default: break
+            }
+            poly!.draggedPoint = nil
+        default: break
         }
         forceRedraw()
     }

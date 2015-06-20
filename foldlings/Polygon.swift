@@ -18,6 +18,9 @@ class Polygon:FoldFeature{
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
     
+    //if the user
+    var draggedPoint:CGPoint? = nil
+    
     //this is bullshit, but apparently we have to redeclare the initializer here
     override init(start:CGPoint)
     {
@@ -242,7 +245,14 @@ class Polygon:FoldFeature{
         return returnee
     }
     
+    // returns the polygon point at a touch point, if there is one
     func polyPointAt(point:CGPoint) -> CGPoint?{
+        
+        for p in points{
+            if(ccpDistance(p, point) < kHitTestRadius){
+                return p
+            }
+        }
         return nil
     }
     
@@ -295,7 +305,30 @@ class Polygon:FoldFeature{
     }
     
     func movePolyPoint(from:CGPoint, to:CGPoint) {
+        // change point in array
+        let i = points.indexOf(from)
+        points.remove(from)
+        points.insert(to, atIndex: i!)
+        draggedPoint = to
         
+        //squidge edge endpoints around
+        for edge in featureEdges ?? []{
+            if(CGPointEqualToPoint(edge.start, from)){
+                featureEdges?.remove(edge)
+                let newEdge = Edge.straightEdgeBetween(to, end: edge.end, kind: edge.kind, feature: edge.feature ?? self)
+                newEdge.dirty = true
+                featureEdges?.append(newEdge)
+            }
+            else if (CGPointEqualToPoint(edge.end, from)){
+                featureEdges?.remove(edge)
+                let newEdge = Edge.straightEdgeBetween(edge.start, end: to, kind: edge.kind, feature: edge.feature ?? self)
+                newEdge.dirty = true
+                featureEdges?.append(newEdge)
+
+            }
+        }
+        
+
     }
     
     
