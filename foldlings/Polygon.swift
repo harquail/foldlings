@@ -11,17 +11,32 @@ import Foundation
 class Polygon:FoldFeature{
     
 
-    
     // the (draggable) points that define the polygon
     var points:[CGPoint] = []
     //the path through the points
     var path: UIBezierPath?
     //the intersection points calculated by featureSpansFold & used for occlusion
     var intersectionsWithDrivingFold:[CGPoint] = []
-    // temporary debug
-    // TODO: REMOVE
-    var centers:[CGPoint] = []
-    var outsidePoints:[CGPoint] = []
+    
+    //this is bullshit, but apparently we have to redeclare the initializer here
+    override init(start:CGPoint)
+    {
+        super.init(start: start)
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.points = convertToCGPoints(aDecoder.decodeObjectForKey("polyPoints") as! NSArray)
+        self.path = Polygon.pathThroughPolygonPoints(points)
+        self.intersectionsWithDrivingFold = convertToCGPoints(aDecoder.decodeObjectForKey("polyInts") as! NSArray)
+    }
+    
+    
+    override func encodeWithCoder(aCoder: NSCoder) {
+        super.encodeWithCoder(aCoder)
+        aCoder.encodeObject(convertToNSArray(self.points), forKey: "polyPoints")
+        aCoder.encodeObject(convertToNSArray(self.intersectionsWithDrivingFold), forKey: "polyInts")
+    }
     
     //the path through polygon points
     class func pathThroughPolygonPoints(points:[CGPoint]) -> UIBezierPath? {
@@ -100,7 +115,6 @@ class Polygon:FoldFeature{
                                 let center = fold.centerOfStraightEdge()
                                // add fold if its center is inside the polygon
                                 if(self.containsPoint(center)){
-                                    outsidePoints.append(center)
                                     addFold(fold)
                                 }
                             }
