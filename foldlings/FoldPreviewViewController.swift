@@ -101,7 +101,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     
     // creates mailView controller to send svg to user as attechment
     func sendMail(svgData: NSData) {
-        
         if(MFMailComposeViewController.canSendMail()){
             Flurry.logEvent("mailed foldling svg")
             var mailView = MFMailComposeViewController()

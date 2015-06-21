@@ -489,7 +489,7 @@ class SketchView: UIView {
                         if ( vfold!.featureSpansFold(fold)){
                             
                             vfold!.drivingFold = fold
-                            vfold?.parent = feature
+                            vfold!.parent = feature
                             break outer
                         }
                     }
@@ -525,7 +525,7 @@ class SketchView: UIView {
                 sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)
                 }
                 // add feature to sketch features and to parent's children
-                sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
+                sketch.addFeatureToSketch(vfold!, parent: vfold!.parent ?? sketch.masterFeature!)
 //                vfold!.parent!.children.append(vfold!)
                 
                 // clear current feature
