@@ -479,7 +479,11 @@ class SketchView: UIView {
                 // find parent fold/feature, if it exists
                 outer: for feature in sketch.features
                 {
-                    for fold in feature.horizontalFolds
+                    var folds = feature.horizontalFolds
+                    if let veature = feature as? VFold{
+                        folds.extend(veature.diagonalFolds)
+                    }
+                    for fold in folds
                     {
                         
                         if ( vfold!.featureSpansFold(fold)){
