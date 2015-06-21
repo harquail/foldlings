@@ -53,8 +53,8 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     // if a staright line, just return endpoint
     // TODO: maybe should return center point rather than endpoint
     if elements.count == 2{
-        println(path)
-        println("center \(path.center())")
+//        println(path)
+//        println("center \(path.center())")
         return path.center()
     }
     
@@ -486,6 +486,9 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         }
         let points = el.points
         
+        // #TODO: do not ignore non-curve elements
+        // use func nearestPointOnLine(point:CGPoint, start:CGPoint, end:CGPoint) -> CGPoint
+
         // ignore elements that are not curves
         if el.type.value == kCGPathElementAddCurveToPoint.value{
             for (i,breaker) in enumerate(breakers){
@@ -504,13 +507,20 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
                     
                 }
             }
+        }
+        else if el.type.value == kCGPathElementMoveToPoint.value{
             
         }
+        else if el.type.value == kCGPathElementAddLineToPoint.value{
+        
+        }
+
     }
     //
     //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
     for var i = 0; i < Int(path.elementCount()); i++ {
         
+        // #TODO: set previous elements in loops below, not here!
         let el = path.elementAtIndex(i)
         // this is the end point of the previous element, which is our new start point
         var prevPoint:CGPoint
@@ -526,8 +536,12 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         let points = el.points
         
         switch(el.type.value){
-        case kCGPathElementMoveToPoint.value : returnee.last!.moveToPoint(points[0])
-        case kCGPathElementAddLineToPoint.value : returnee.last!.addLineToPoint(points[0])  //TODO: Need intersection code here
+        case kCGPathElementMoveToPoint.value :
+            returnee.last!.moveToPoint(points[0])
+            println("move to \(points[0])")
+        case kCGPathElementAddLineToPoint.value :
+            returnee.last!.addLineToPoint(points[0])  //TODO: Need intersection code here
+            println("add line to \(points[0])")
         case kCGPathElementAddQuadCurveToPoint.value : println("quad")
         case kCGPathElementAddCurveToPoint.value :
             
