@@ -25,7 +25,7 @@ func pathThroughCatmullPoints(points:[NSValue], closed:Bool) -> UIBezierPath{
                 path.addLineToPoint(points[1].CGPointValue())
             }
             
-            path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(points as [AnyObject], closed: closed, alpha: 1.0))
+//            path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(points as [AnyObject], closed: closed, alpha: 1.0))
 
             //if not closed, add the line to the currrent touch point from the end
             if(!closed){
@@ -52,8 +52,10 @@ func findCentroid(path:UIBezierPath) -> CGPoint
     let elements = path.getPathElements()
     // if a staright line, just return endpoint
     // TODO: maybe should return center point rather than endpoint
-    if elements.count <= 2{
-        return path.lastPoint()
+    if elements.count == 2{
+        println(path)
+        println("center \(path.center())")
+        return path.center()
     }
     
     let points = getSubdivisions(elements, increments:25)

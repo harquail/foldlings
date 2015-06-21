@@ -335,6 +335,7 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.orientation = .Horizontal
                         }
                         //TODO: put back
+                        
 //                        plane.color = getOrientationColor(plane.orientation == .Horizontal)
 
                     }
