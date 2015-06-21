@@ -20,6 +20,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet var v: UIBarButtonItem!
     @IBOutlet var polygon: UIBarButtonItem!
     
+    var toolsUsedThisSession = Set<SketchView.Mode>()
+    
     @IBOutlet var sketchView: SketchView!
 
     @IBOutlet var selected: UIImageView!
@@ -156,42 +158,66 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         arch.save()
         
     }
-
+    
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
-        playVideo("boxfold-tutorial")
+        playVideo(.BoxFold)
         sketchView.switchedTool()
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
     @IBAction func freeForm(sender: UIBarButtonItem) {
-        playVideo("freeform-tutorial")
+        playVideo(.FreeForm)
         sketchView.switchedTool()
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
-        playVideo("vfold-tutorial")
+        playVideo(.VFold)
         sketchView.switchedTool()
         sketchView.sketchMode = .VFold
-       setSelectedImage(.VFold)
+        setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
-        playVideo("polygon-tutorial")
+        playVideo(.Polygon)
         sketchView.switchedTool()
         sketchView.sketchMode = .Polygon
         setSelectedImage(.Polygon)
     }
     
-    private func playVideo(named:String) {
+    // plays tutorial videos when trying to use a tool
+    private func playVideo(featureType:SketchView.Mode) {
+        // don't ever show tutorials if the user has made a few sketches, or has already used this tool in this sketch
+        if(Tutorial.numberOfSignificantEvents() > 3 || toolsUsedThisSession.contains(featureType)){
+            return
+        }
+        
+        //video file name
+        var named = ""
+        switch(featureType){
+        case .BoxFold:
+            named = "boxfold-tutorial"
+        case .FreeForm:
+            named = "freeform-tutorial"
+        case .VFold:
+            named = "vfold-tutorial"
+        case .Polygon:
+            named = "polygon-tutorial"
+        default:
+            named = "nil-tutorial"
+        }
+        
         let myPlayer = Tutorial.video(named)
         let popRect = CGRectMake(self.view.frame.width/2, self.view.frame.height - 135, 10, 10)
         let aPopover =  UIPopoverController(contentViewController: myPlayer)
         aPopover.backgroundColor = UIColor.whiteColor()
         aPopover.presentPopoverFromRect(popRect, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+        
+        // don't play this video again for this sketch
+        toolsUsedThisSession.insert(featureType)
     }
     
     func resetButtonImages(){

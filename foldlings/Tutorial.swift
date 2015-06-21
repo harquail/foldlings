@@ -25,4 +25,11 @@ class Tutorial {
         
         return myPlayer
     }
+    
+    // gets the number of significant events performed (right now, sketches made) from UAAppReviewManager
+    class func numberOfSignificantEvents() -> Int{
+        let key = UAAppReviewManager.keyForUAAppReviewManagerKeyType(UAAppReviewManagerKeySignificantEventCount)
+        let events = UAAppReviewManager.userDefaultsObject().valueForKey(key) as! NSNumber
+        return events.integerValue
+    }
 }

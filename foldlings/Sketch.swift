@@ -61,6 +61,9 @@ class Sketch : NSObject, Printable  {
             //insert master fold and make borders into cuts
             makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
         }
+        
+        // making a sketch is a significant event
+        UAAppReviewManager.userDidSignificantEvent(false)
     }
     
     override var description: String {
