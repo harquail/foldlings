@@ -95,6 +95,7 @@
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
 		F18EC9541B1D4F3700987BF6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LICENSE */; };
+		F19C1E521B365FB700B2E995 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19C1E511B365FB700B2E995 /* Tutorial.swift */; };
 		F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF11B01A9500044AB00 /* AWSCore.framework */; };
 		F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF21B01A9500044AB00 /* AWSS3.framework */; };
 		F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF51B01A9730044AB00 /* Bolts.framework */; };
@@ -353,6 +354,7 @@
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
 		F18EC9531B1D4F3700987BF6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		F19C1E511B365FB700B2E995 /* Tutorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		F1AAFDF11B01A9500044AB00 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
 		F1AAFDF21B01A9500044AB00 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		F1AAFDF51B01A9730044AB00 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -791,6 +793,7 @@
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
+				F19C1E511B365FB700B2E995 /* Tutorial.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
@@ -1247,6 +1250,7 @@
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F16673C81ACE3F5700243D70 /* UIBezierPathProperties.m in Sources */,
+				F19C1E521B365FB700B2E995 /* Tutorial.swift in Sources */,
 				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
 				F1EB37631AE4A1AD007DCEC5 /* Sequence.swift in Sources */,
 				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,

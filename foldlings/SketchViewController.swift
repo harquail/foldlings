@@ -14,7 +14,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     var index = 0
     var name = "placeholder"
     var restoredFromSave = false
-    var moviePlayer : MPMoviePlayerController?
     
     @IBOutlet var box: UIBarButtonItem!
     @IBOutlet var free: UIBarButtonItem!
@@ -188,17 +187,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     private func playVideo(named:String) {
-        // video friend
-        let path = NSBundle.mainBundle().pathForResource(named, ofType: "mp4")
-        let pathURL = NSURL.fileURLWithPath(path!)
-        let myPlayer = MPMoviePlayerViewController(contentURL: pathURL)
-        myPlayer.moviePlayer.controlStyle = MPMovieControlStyle.None
-        myPlayer.moviePlayer.repeatMode = .None
-        myPlayer.moviePlayer.backgroundView.backgroundColor = UIColor.whiteColor()
-
-        // stuff video friend in a modal popover
-        myPlayer.modalPresentationStyle = .Popover
-        myPlayer.preferredContentSize = CGSizeMake(582 * 0.75, 712 * 0.75);
+        let myPlayer = Tutorial.video(named)
         let popRect = CGRectMake(self.view.frame.width/2, self.view.frame.height - 135, 10, 10)
         let aPopover =  UIPopoverController(contentViewController: myPlayer)
         aPopover.backgroundColor = UIColor.whiteColor()

@@ -210,11 +210,11 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d98-wt-Wkc">
                                 <rect key="frame" x="60" y="46" width="480" height="378"/>
-                                <mutableString key="text">Design, cut and fold pop-up cards with Foldlings!  Create complex geometric structures or smooth free-form shapes.  Make a dragon, a city, a boat, or whatever card strikes your imagination. 
+                                <string key="text">Design, cut and fold pop-up cards with Foldlings!  Create complex geometric structures or smooth free-form shapes.  Make a dragon, a city, a boat, or whatever card strikes your imagination. 
 
 You can either modify an existing design, or start from a blank sheet of paper.  The 3d preview shows how your design will fold in real life, and saved sketches.  Designs can be printed on a conventional printer and cut/folded by hand, or output as an svg files.  These vector files can then be sent to a laser cutter or edited in a vector editing program such as Illustrator or Inkscape.
 
-Foldlings was created by Marissa Allen, and Nook Harquail — with much development help from Tim Tregubov.  Advised by Emily Whiting with special thanks to Lorie Loeb and Jodie Mack.  Created at the DALI Lab at Dartmouth.</mutableString>
+Foldlings was created by Marissa Allen, and Nook Harquail — with much development help from Tim Tregubov.  Advised by Emily Whiting with special thanks to Lorie Loeb and Jodie Mack.  Created at the DALI Lab at Dartmouth.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -229,29 +229,41 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                                     <action selector="CloseButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="PDS-Nu-hpF"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWd-F0-aN1">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWd-F0-aN1">
                                 <rect key="frame" x="38" y="460" width="155" height="125"/>
                                 <state key="normal" image="box-fold-icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="boxButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="3sH-n2-HBi"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wkv-lj-F3x">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wkv-lj-F3x">
                                 <rect key="frame" x="154" y="460" width="155" height="125"/>
                                 <state key="normal" image="freeform-icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="freeFormButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="JaO-D3-Gcn"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uTE-tV-tNu">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uTE-tV-tNu">
                                 <rect key="frame" x="277" y="460" width="155" height="125"/>
                                 <state key="normal" image="vfold-icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="vFoldButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="8lL-Su-N3D"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PA-OR-3Hw">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PA-OR-3Hw">
                                 <rect key="frame" x="390" y="460" width="155" height="125"/>
                                 <state key="normal" image="polygon-icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="polygonButton:" destination="S5n-fv-E6Z" eventType="touchUpInside" id="rAQ-ZA-3vx"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
