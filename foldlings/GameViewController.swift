@@ -414,8 +414,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // masterSphere.rotation = SCNVector4(x: 0, y: 0, z: 0, w: zeroDegrees)      //        }
         //        else {
         //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-        //        }
-        
+//        //        }
+//        if hill{
+//            // set to neg90
+//            // gotta know to which way to bend
+//        }
+
         
         var children = plane.children
         visited.append(plane)

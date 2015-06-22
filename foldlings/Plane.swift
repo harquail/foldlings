@@ -51,6 +51,7 @@ class Plane: Printable, Hashable
     var parent : Plane!
     var children : [Plane] = []
     var foldcount : Int!
+    var NegNinety : Bool = false
     
     
     // mark if this plane is the master's feature top or bottom plane
