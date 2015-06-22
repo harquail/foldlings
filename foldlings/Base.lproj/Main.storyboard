@@ -315,6 +315,16 @@ We propose a tool to assist in the exploratory process of creating a pop-up by a
                         <action selector="handlePinch:" destination="BV1-FR-VrT" id="udO-4U-99w"/>
                     </connections>
                 </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="RNF-Dy-iyu">
+                    <connections>
+                        <action selector="handlePan:" destination="BV1-FR-VrT" id="szK-fJ-Bv2"/>
+                        <outlet property="delegate" destination="3se-qz-xqx" id="J8g-x5-I1n"/>
+                    </connections>
+                </panGestureRecognizer>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="2uO-SW-MBh">
+                    <rect key="frame" x="0.0" y="0.0" width="118" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </slider>
             </objects>
             <point key="canvasLocation" x="-473" y="85"/>
         </scene>
