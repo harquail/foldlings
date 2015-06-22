@@ -24,7 +24,7 @@ func pathThroughCatmullPoints(points:[NSValue], closed:Bool) -> UIBezierPath{
                 path.moveToPoint(points[0].CGPointValue())
 //                path.addLineToPoint(points[1].CGPointValue())
 //            }
-            
+//
             for point in points{
 //                path.moveToPoint(points[0].CGPointValue())
                 path.addLineToPoint(point.CGPointValue())
@@ -471,12 +471,10 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
     var closestElements = [CGPathElement](count: breakers.count, repeatedValue: CGPathElement())
     var closestElementsDists = [CGFloat](count: breakers.count, repeatedValue:CGFloat.max)
     
-    // start with an empty path
-    var returnee:[UIBezierPath] = []
-    returnee.append(UIBezierPath())
+
     
     // this is the end point of the previous element, which is our new start point
-    var prevPoint:CGPoint = CGPointZero
+    var prevPoint:CGPoint = CGPointZero // TODO: this might be bad, if it ever gets used
     // first, find the closest element to each intersection point
     for var i = 0; i < Int(path.elementCount()); i++ {
         let el = path.elementAtIndex(i)
@@ -526,6 +524,10 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
         }
 
     }
+    // start with an empty path
+    var returnee:[UIBezierPath] = []
+    returnee.append(UIBezierPath())
+    returnee.last!.moveToPoint(path.elementAtIndex(0).points[0])
     //
     //this second loop is less bad than it looks, because elements are cached by PerformanceBezier
     for var i = 0; i < Int(path.elementCount()); i++ {
@@ -540,7 +542,6 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
 //            returnee.last!.moveToPoint(points[0])
             println("move to \(points[0])")
         case kCGPathElementAddLineToPoint.value :
-            
             var splittingPointsForElement:[CGPoint] = []
             
             for (j,breaker) in enumerate(breakers){
@@ -558,15 +559,17 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
             
             
             if splittingPointsForElement.isEmpty{
-//                returnee.append(UIBezierPath())
+                println("not splitting line")
 //                returnee.last!.moveToPoint(prevPoint)
                 returnee.last!.addLineToPoint(points[0])
                 prevPoint = el.points[0]
             }
             else{
+                println("splitting line")
 //                returnee.last!.moveToPoint(prevPoint)
 //                returnee.last!.addLineToPoint(points[0])
-                println("rawr")
+                println("split")
+                 println(splittingPointsForElement)
                 
                 
                 returnee.append(UIBezierPath())
@@ -649,7 +652,6 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
             if(splittingPointsForElement.isEmpty){
                 returnee.last!.addCurveToPoint(points[2], controlPoint1: points[0], controlPoint2: points[1])
             }
-            
             prevPoint = el.points[2]
         case kCGPathElementCloseSubpath.value :
             println("close")
