@@ -558,8 +558,8 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
             
             
             if splittingPointsForElement.isEmpty{
-                returnee.append(UIBezierPath())
-                returnee.last!.moveToPoint(prevPoint)
+//                returnee.append(UIBezierPath())
+//                returnee.last!.moveToPoint(prevPoint)
                 returnee.last!.addLineToPoint(points[0])
                 prevPoint = el.points[0]
             }
