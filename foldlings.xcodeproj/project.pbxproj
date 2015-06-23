@@ -68,6 +68,8 @@
 		F153BBB01A1EAED50029FDF2 /* SVGDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB981A1EAED50029FDF2 /* SVGDocumentView.m */; };
 		F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */; };
 		F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15472D31A97AA74009E36A6 /* FoldFeature.swift */; };
+		F1608E761B39CAEC00452571 /* HelpfulTipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1608E751B39CAEC00452571 /* HelpfulTipViewController.swift */; };
+		F1608E781B39CB0800452571 /* tips.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1608E771B39CB0800452571 /* tips.plist */; };
 		F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */; };
 		F160F3BD1A31473800B469CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BC1A31473800B469CA /* Security.framework */; };
 		F160F3BF1A31474800B469CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F160F3BE1A31474800B469CA /* SystemConfiguration.framework */; };
@@ -307,6 +309,8 @@
 		F153BB991A1EAED50029FDF2 /* SVGRendererLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGRendererLayer.h; sourceTree = "<group>"; };
 		F153BB9A1A1EAED50029FDF2 /* SVGRendererLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGRendererLayer.m; sourceTree = "<group>"; };
 		F15472D31A97AA74009E36A6 /* FoldFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldFeature.swift; sourceTree = "<group>"; };
+		F1608E751B39CAEC00452571 /* HelpfulTipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpfulTipViewController.swift; sourceTree = "<group>"; };
+		F1608E771B39CB0800452571 /* tips.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tips.plist; sourceTree = "<group>"; };
 		F160F3B91A31463900B469CA /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		F160F3BA1A31463900B469CA /* libFlurry_5.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.4.0.a; sourceTree = "<group>"; };
 		F160F3BC1A31473800B469CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -553,6 +557,8 @@
 				22C3F4C419F35E9600857C82 /* AboutViewController.swift */,
 				F18C864519FD9F4500211229 /* SplashViewController.swift */,
 				F18C864619FD9F4500211229 /* FoldlingsCell.swift */,
+				F1608E751B39CAEC00452571 /* HelpfulTipViewController.swift */,
+				F1608E771B39CB0800452571 /* tips.plist */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1080,6 +1086,7 @@
 				F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */,
 				F1E309641A15854C00C09792 /* roundedrect.png in Resources */,
 				F1AAFE231B01A99E0044AB00 /* sdb-2009-04-15.json in Resources */,
+				F1608E781B39CB0800452571 /* tips.plist in Resources */,
 				F1AAFE191B01A99E0044AB00 /* dynamodb-2012-08-10.json in Resources */,
 				F16673BF1ACE3F5700243D70 /* PerformanceBezier-Info.plist in Resources */,
 				F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */,
@@ -1234,6 +1241,7 @@
 				F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */,
 				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,
 				F1EB37621AE4A1AD007DCEC5 /* Range.swift in Sources */,
+				F1608E761B39CAEC00452571 /* HelpfulTipViewController.swift in Sources */,
 				F153BBB11A1EAED50029FDF2 /* SVGRendererLayer.m in Sources */,
 				F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */,
 				F16673C11ACE3F5700243D70 /* UIBezierPath+Clockwise.m in Sources */,
