@@ -253,7 +253,7 @@ class FoldFeature: NSObject, Printable
         
         var valid = true
         if(!tooShortEdges().filter({$0.kind == Edge.Kind.Fold}).isEmpty){
-            return (false,"Edges too short")
+//            return (false,"Edges too short")
         }
         println("valid")
         return (true,"")
