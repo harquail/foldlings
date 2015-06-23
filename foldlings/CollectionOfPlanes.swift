@@ -296,8 +296,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         if top.kind != .Fold{
                             plane.masterTop = true
                             masterTop = plane
-                            //TODO: put back
-//                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
                         }
                             
                             // else, it is masterBottom
@@ -307,8 +306,7 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.masterBottom = true
                             masterBottom = plane
                             plane.orientation = .Horizontal
-                            //TODO: put back
-//                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
                         }
 
                     }
@@ -334,8 +332,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         if parent!.orientation == .Vertical {
                             plane.orientation = .Horizontal
                         }
-                        //TODO: put back
-//                        plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                        plane.color = getOrientationColor(plane.orientation == .Horizontal)
 
                     }
                     
