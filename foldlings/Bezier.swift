@@ -20,22 +20,16 @@ func pathThroughCatmullPoints(points:[NSValue], closed:Bool) -> UIBezierPath{
             let path = UIBezierPath()
             
             //the line between the first two points, which is not part of the catmull-rom curve
-//            if(!closed){
+            if(!closed){
                 path.moveToPoint(points[0].CGPointValue())
-//                path.addLineToPoint(points[1].CGPointValue())
-//            }
-//
-            for point in points{
-//                path.moveToPoint(points[0].CGPointValue())
-                path.addLineToPoint(point.CGPointValue())
-            
+                path.addLineToPoint(points[1].CGPointValue())
             }
-            
-//            path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(points as [AnyObject], closed: closed, alpha: 1.0))
+
+            path.appendPath(UIBezierPath.interpolateCGPointsWithCatmullRom(points as [AnyObject], closed: closed, alpha: 1.0))
 
             //if not closed, add the line to the currrent touch point from the end
             if(!closed){
-//                path.addLineToPoint(points.last!.CGPointValue())
+                path.addLineToPoint(points.last!.CGPointValue())
             }
             
             return path
@@ -580,19 +574,19 @@ class func pathSplitByPoints(path:UIBezierPath,breakers:[CGPoint]) ->[UIBezierPa
                 returnee.last!.moveToPoint(splittingPointsForElement[0])
                 returnee.last!.addLineToPoint(points[0])
 
-                
-//            splittingPointsForElement.sort({return ccpDistance($0, el.points[0]) < ccpDistance($1, el.points[0])})
-//            for (i,split) in enumerate(splittingPointsForElement){
+            splittingPointsForElement.append(points[0])
+            splittingPointsForElement.sort({return ccpDistance($0, el.points[0]) > ccpDistance($1, el.points[0])})
+            for (i,split) in enumerate(splittingPointsForElement){
 //                println("previous: \(prevPoint)")
 //                println("split: \(split)")
 //                println("-----")
+//                  
+                returnee.last!.addLineToPoint(split)
 //
-//                returnee.last!.addLineToPoint(split)
-//
-//                returnee.append(UIBezierPath())
-//                returnee.last!.moveToPoint(split)
-//                prevPoint = split
-//            }
+                returnee.append(UIBezierPath())
+                returnee.last!.moveToPoint(split)
+                prevPoint = split
+            }
 
                 
 //                returnee.append(UIBezierPath())
