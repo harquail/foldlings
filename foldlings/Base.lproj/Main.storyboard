@@ -42,7 +42,7 @@
                                     <constraint firstAttribute="height" constant="607" id="Obb-q5-Itb"/>
                                     <constraint firstAttribute="width" constant="513" id="XxJ-Zt-8qU"/>
                                 </constraints>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -85,6 +85,11 @@
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="xkZ-6X-j3i"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tipImage" destination="OVX-P2-oQx" id="DyC-7p-e90"/>
+                        <outlet property="tipLabel" destination="kdT-Nh-xKC" id="WA3-Uj-QvM"/>
+                        <outlet property="tipText" destination="BaU-oj-8uc" id="pxt-4g-h4D"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S80-XA-tfM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

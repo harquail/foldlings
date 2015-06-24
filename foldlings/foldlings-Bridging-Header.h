@@ -16,6 +16,7 @@
 #import "ANPathBitmap.h"
 #import "ANPathIntersection.h"
 #import "PerformanceBezier/PerformanceBezier.h"
+#import "UIImage+animatedGIF.h"
 #import <AFMInfoBanner/AFMInfoBanner.h>
 //#import <AWSCore/AWSCore.h>
 #import <AWSS3/AWSS3.h>
