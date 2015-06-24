@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Regift
 
 class HelpfulTipViewController: UIViewController{
 
@@ -31,14 +32,22 @@ class HelpfulTipViewController: UIViewController{
         tipText.selectable = true
         tipText.text = tip["text"]
         tipText.selectable = false
-        let imageName =  UIImage(named: tip["image"]!)
-//        
-//        if imageName!.pathExtension == "mp4"{
-//        
-//        }
+        let imageName = tip["image"]
         
-        tipImage.image = UIImage(named: tip["image"]!)
+        if imageName!.pathExtension == "mp4"{
+            
+            println("success")
+            let videoPath  = NSBundle.mainBundle().pathForResource(imageName!.stringByDeletingPathExtension, ofType: "mp4")!
+            let url = NSURL(fileURLWithPath: videoPath)
+            let length = tip["videoLength"]
+            let gifURL = Regift.createGIFFromURL(url!, withFrameCount: length!.toInt()!*20, delayTime: 0.05, loopCount: 0)
+            let gifData = NSData(contentsOfURL: gifURL!)
 
+            tipImage.image = UIImage.animatedImageWithAnimatedGIFURL(gifURL)
+        }
+        else{
+        tipImage.image = UIImage(named: tip["image"]!)
+        }
     }
     
     // return a random tip object

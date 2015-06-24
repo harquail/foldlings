@@ -8,7 +8,9 @@
 		<key>text</key>
 		<string>Deleting a feature deletes features drawn on top of it.</string>
 		<key>image</key>
-		<string>first.png</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 	<dict>
 		<key>label</key>
@@ -16,7 +18,9 @@
 		<key>text</key>
 		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string>send.jpeg</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 	<dict>
 		<key>label</key>
@@ -24,7 +28,9 @@
 		<key>text</key>
 		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string>polygon-icon.png</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 	<dict>
 		<key>label</key>
@@ -32,7 +38,9 @@
 		<key>text</key>
 		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string>print.jpeg</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 	<dict>
 		<key>label</key>
@@ -40,7 +48,9 @@
 		<key>text</key>
 		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string>tab.png</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 	<dict>
 		<key>label</key>
@@ -48,7 +58,9 @@
 		<key>text</key>
 		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string>track_button.png</string>
+		<string>vfold-tutorial.mp4</string>
+		<key>videoLength</key>
+		<string>7</string>
 	</dict>
 </array>
 </plist>
