@@ -8,6 +8,8 @@
 import Foundation
 import CoreGraphics
 import UIKit
+import UAAppReviewManager
+import AFMInfoBanner
 
 class Sketch : NSObject, Printable  {
     

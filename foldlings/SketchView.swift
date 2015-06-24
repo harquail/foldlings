@@ -6,6 +6,7 @@
 // All Rights Reserved
 
 import UIKit
+import AFMInfoBanner
 
 class SketchView: UIView {
     

@@ -3,40 +3,52 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>label</key>
+		<string>Deleting Features</string>
 		<key>text</key>
-		<string></string>
+		<string>Deleting a feature deletes features drawn on top of it.</string>
 		<key>image</key>
-		<string></string>
+		<string>first.png</string>
 	</dict>
 	<dict>
+		<key>label</key>
+		<string>4</string>
 		<key>text</key>
-		<string></string>
+		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string></string>
+		<string>send.jpeg</string>
 	</dict>
 	<dict>
+		<key>label</key>
+		<string>4</string>
 		<key>text</key>
-		<string></string>
+		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string></string>
+		<string>polygon-icon.png</string>
 	</dict>
 	<dict>
+		<key>label</key>
+		<string>4</string>
 		<key>text</key>
-		<string></string>
+		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string></string>
+		<string>print.jpeg</string>
 	</dict>
 	<dict>
+		<key>label</key>
+		<string>4</string>
 		<key>text</key>
-		<string></string>
+		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string></string>
+		<string>tab.png</string>
 	</dict>
 	<dict>
+		<key>label</key>
+		<string>4</string>
 		<key>text</key>
-		<string></string>
+		<string>Fold flaps to make them flappier!</string>
 		<key>image</key>
-		<string></string>
+		<string>track_button.png</string>
 	</dict>
 </array>
 </plist>

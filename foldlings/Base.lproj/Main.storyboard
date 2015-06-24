@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="X6B-tj-K8G">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="nM8-t4-tim">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -35,7 +35,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="foldlings_background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="gB0-oF-Ec8">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaU-oj-8uc">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaU-oj-8uc">
                                 <rect key="frame" x="122" y="562" width="513" height="607"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -43,7 +43,7 @@
                                     <constraint firstAttribute="width" constant="513" id="XxJ-Zt-8qU"/>
                                 </constraints>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdT-Nh-xKC">
@@ -63,7 +63,7 @@
                                 </constraints>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="FQV-qX-Hvj">
-                                <rect key="frame" x="366" y="910" width="37" height="37"/>
+                                <rect key="frame" x="360" y="767" width="37" height="37"/>
                                 <color key="color" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
@@ -71,7 +71,7 @@
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="kdT-Nh-xKC" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="50" id="F19-zH-Rxo"/>
-                            <constraint firstItem="fgE-ra-V1o" firstAttribute="top" secondItem="FQV-qX-Hvj" secondAttribute="bottom" constant="77" id="FX4-GK-aG8"/>
+                            <constraint firstItem="fgE-ra-V1o" firstAttribute="top" secondItem="FQV-qX-Hvj" secondAttribute="bottom" constant="220" id="FX4-GK-aG8"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" id="Kgv-yV-bE8"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="bottom" secondItem="fgE-ra-V1o" secondAttribute="top" id="LxV-iW-88I"/>
                             <constraint firstItem="BaU-oj-8uc" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="122" id="W7U-2Y-Ndq"/>
@@ -79,7 +79,7 @@
                             <constraint firstItem="BaU-oj-8uc" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="562" id="hTz-VP-iw0"/>
                             <constraint firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="k9b-FZ-0Ik"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" id="q7j-1S-2EZ"/>
-                            <constraint firstItem="FQV-qX-Hvj" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="r10-tP-KBa"/>
+                            <constraint firstItem="FQV-qX-Hvj" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" constant="-5.5" id="r10-tP-KBa"/>
                             <constraint firstItem="OVX-P2-oQx" firstAttribute="centerX" secondItem="BaU-oj-8uc" secondAttribute="centerX" id="riU-Ax-3Hv"/>
                             <constraint firstItem="kdT-Nh-xKC" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="85" id="wbj-lz-Y8e"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="xkZ-6X-j3i"/>
