@@ -20,19 +20,35 @@ class AboutViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func CloseButton(sender: UIButton) {
        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    private func playVideo(named:String, fromRect:CGRect) {
+        let myPlayer = Tutorial.video(named)
+        let aPopover =  UIPopoverController(contentViewController: myPlayer)
+        aPopover.backgroundColor = UIColor.whiteColor()
+        aPopover.presentPopoverFromRect(fromRect, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+    }
+    
+    @IBAction func boxButton(sender: UIButton){
+        playVideo("boxfold-tutorial",fromRect: sender.frame)
+    }
+    
+    @IBAction func freeFormButton(sender: UIButton){
+        playVideo("freeform-tutorial",fromRect: sender.frame)
+    }
+    
+    @IBAction func vFoldButton(sender: UIButton){
+        playVideo("vfold-tutorial",fromRect: sender.frame)
+
+    }
+    
+    @IBAction func polygonButton(sender: UIButton){
+        playVideo("polygon-tutorial",fromRect: sender.frame)
+
     }
 
 }

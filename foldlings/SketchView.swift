@@ -38,7 +38,7 @@ class SketchView: UIView {
     var sketch: Sketch!
     var startEdgeCollision:Edge?
     var endEdgeCollision:Edge?
-    var gameView = GameViewController()
+    var gameView = FoldPreviewViewController()
     
     // Threading
     let redrawPriority = DISPATCH_QUEUE_PRIORITY_DEFAULT
@@ -97,6 +97,8 @@ class SketchView: UIView {
                 handleFreeFormPan(sender)
             case .VFold:
                 handleVFoldPan(sender)
+            case .Polygon:
+                handlePolygonPan(sender)
             default:
                 break
             }
@@ -325,7 +327,6 @@ class SketchView: UIView {
 //                sketch.intersect(shape, with: intersectingFs)
 
                 sketch.currentFeature = nil
-                self.sketch.getPlanes()
                 forceRedraw()
                 println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
@@ -405,6 +406,7 @@ class SketchView: UIView {
                 // makes the start point the top left point and sorts horizontal folds
                 drawingFeature.fixStartEndPoint()
                 
+                
                 // if is a complete boxfold with driving fold in middle
                 if(drawingFeature.drivingFold != nil)
                 {
@@ -423,6 +425,8 @@ class SketchView: UIView {
                     AFMInfoBanner.showWithText("Box folds must span a single fold", style: .Error, andHideAfter: NSTimeInterval(2.5))
                     
                 }
+                
+                
                 
                 //clear the current feature
                 sketch.currentFeature = nil
@@ -475,13 +479,17 @@ class SketchView: UIView {
                 // find parent fold/feature, if it exists
                 outer: for feature in sketch.features
                 {
-                    for fold in feature.horizontalFolds
+                    var folds = feature.horizontalFolds
+                    if let veature = feature as? VFold{
+                        folds.extend(veature.diagonalFolds)
+                    }
+                    for fold in folds
                     {
                         
                         if ( vfold!.featureSpansFold(fold)){
                             
                             vfold!.drivingFold = fold
-                            vfold?.parent = feature
+                            vfold!.parent = feature
                             break outer
                         }
                     }
@@ -507,16 +515,18 @@ class SketchView: UIView {
                 let intersect = vfold!.makeDiagonalFolds(to:touchPoint)
                 // add point to intersections
                 vfold!.intersectionsWithDrivingFold.append(intersect)
-                // split the vertical cut
-                vfold!.splitVerticalCut()
+                
+                if(vfold!.validate().passed){
+                // make the diagonal 
+                vfold!.makeInternalFold()
                 
                 // split driving fold
                 let newFolds = vfold!.splitFoldByOcclusion(vfold!.drivingFold!)
                 sketch.replaceFold(vfold!.parent!, fold: vfold!.drivingFold!,folds: newFolds)
-                
+                }
                 // add feature to sketch features and to parent's children
-                sketch.addFeatureToSketch(vfold!, parent: sketch.masterFeature!)
-                vfold!.parent!.children.append(vfold!)
+                sketch.addFeatureToSketch(vfold!, parent: vfold!.parent ?? sketch.masterFeature!)
+//                vfold!.parent!.children.append(vfold!)
                 
                 // clear current feature
                 path = UIBezierPath()
@@ -532,10 +542,8 @@ class SketchView: UIView {
     // returns whether tap was dealt with
     func handleTap(sender:AnyObject) -> Bool
     {
-        
         if(sketchMode == .Polygon){
-            handlePolygonTap(sender)
-            return true
+           return handlePolygonTap(sender)
         }
         else{
         return false
@@ -544,11 +552,15 @@ class SketchView: UIView {
     
     // tap to add point to polygon
     // returns whether tap was dealt with
-    func handlePolygonTap(sender: AnyObject)
+    func handlePolygonTap(sender: AnyObject) ->Bool
     {
         var touchPoint: CGPoint = sender.locationInView(self)
         // if this is a new feature, create one
         if sketch.currentFeature == nil{
+            // bail if the first point is inside another feature -- the user probably wanted tap options instead
+            if(sketch.featureAt(point: touchPoint) != sketch.masterFeature!){
+                return false
+            }
             sketch.currentFeature = Polygon(start:touchPoint)
         }
         
@@ -563,8 +575,82 @@ class SketchView: UIView {
             poly.addPoint(touchPoint)
         }
         forceRedraw()
+        return true
+    }
+    
+    //can also add points by panning
+    func handlePolygonPan(sender: AnyObject){
+        
+        var gesture = sender as! UIPanGestureRecognizer
+        let touchPoint: CGPoint = gesture.locationInView(self)
+        var poly = sketch.currentFeature as? Polygon
+        
+        switch gesture.state{
+        case UIGestureRecognizerState.Began:
+            if poly == nil{
+                sketch.currentFeature = Polygon(start:touchPoint)
+                poly = sketch.currentFeature as? Polygon
+            }
+            
+            // set dragged point if touch is at a previous point
+            if let p = poly?.polyPointAt(touchPoint){
+                poly!.draggedPoint = p
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
+                poly!.addPoint(touchPoint)
+            }
+            
+        case UIGestureRecognizerState.Changed:
+            
+            if let p = poly!.draggedPoint{
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
+                // remove previous point & edge, because we're moving, not adding points
+                poly!.points.removeLast()
+                if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
+                    poly!.featureEdges?.removeLast()
+                }
+                poly!.addPoint(touchPoint)
+            }
+            
+        case UIGestureRecognizerState.Ended, UIGestureRecognizerState.Cancelled:
+            
+            if let p = poly!.draggedPoint{
+                poly!.movePolyPoint(p, to: touchPoint)
+            }
+            else{
+                // remove previous point & edge
+                if(poly!.featureEdges != nil  && !poly!.featureEdges!.isEmpty){
+                    poly!.featureEdges?.removeLast()
+                }
+                poly!.points.removeLast()
+                // turn this into a tap
+                handlePolygonTap(sender)
+            }
+            poly!.draggedPoint = nil
+        default: break
+        }
+        forceRedraw()
     }
 
+    // when switching tools, discard or resolve the previous shape
+    func switchedTool(){
+        // try to close polygon if they are left open
+        if let poly = sketch.currentFeature as? Polygon{
+            if(poly.pointClosesPoly(poly.points[0])){
+                poly.addPoint(poly.points[0])
+                // add to sketch if this tap closes the shape
+                finishPolygon(poly)
+            }
+        }
+        
+        path = UIBezierPath()
+        sketch.currentFeature = nil
+        forceRedraw()
+    }
+    
     // complete the polygon and add it to the sketch
     func finishPolygon(poly:Polygon){
         
@@ -572,13 +658,12 @@ class SketchView: UIView {
         {
             for fold in feature.horizontalFolds
             {
-                if(poly.featureSpansFold(fold))
+                if(poly.featureSpansFold(fold) && poly.validate().passed)
                 {
                     //set parent if the fold spans driving
                     poly.drivingFold = fold
                     poly.parent = feature
-                    poly.parent!.children.append(poly)
-                    
+
                     //split folds
                     let newFolds = poly.splitFoldByOcclusion(poly.drivingFold!)
                     sketch.replaceFold(poly.parent!, fold: poly.drivingFold!,folds: newFolds)
@@ -590,6 +675,7 @@ class SketchView: UIView {
             }
         }
         
+//        if(poly.validate())
         sketch.addFeatureToSketch(poly, parent: poly.parent ?? sketch.masterFeature!)
         // reset current feature so next tap will start a new feature
         sketch.currentFeature = nil
@@ -601,6 +687,7 @@ class SketchView: UIView {
         self.touchesEnded(touches, withEvent: event)
     }
     
+    // TODO: separate into CALayers for fade in
     // creates a bitmap preview image of sketch
     func bitmap(#grayscale:Bool, circles:Bool = true) -> UIImage
     {
@@ -640,7 +727,16 @@ class SketchView: UIView {
                 if sketch.features.count > 0{
                     
                     if(sketch.currentFeature != nil){
+                        
+                        if let poly = sketch.currentFeature as? Polygon{
+                            //draw control points
+                              for point in poly.points{
+                                drawCircle(point, color:UIColor.blackColor(),radius:3.5)
+                              }
+                        }
                         currentFeatures.append(sketch.currentFeature!)
+
+                        
                     }
                     
                     for feature in currentFeatures{
@@ -689,21 +785,12 @@ class SketchView: UIView {
                         }
                         
                         if let shape = feature as? FreeForm{
-                            for point in shape.intersections{
-                                drawCircle(point, color:UIColor.blueColor())
-                            }
+//                            for point in shape.intersections{
+//                                drawCircle(point, color:UIColor.blueColor())
+//                            }
                             
                         }
-                        else if let poly = feature as? Polygon{
-                            //draw control points
-                            
-                            //  for point in poly.points{
-                            //      drawCircle(point, color:UIColor.grayColor())
-                            //  }
-                            
-                            
-                        }
-                        
+                     
                     }
                 }
             }

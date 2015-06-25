@@ -73,6 +73,7 @@ class Plane: Printable, Hashable
     {
         self.edges = edges
         edges.map({self.path.appendPath($0.path)})// create one path for all edges
+        //#TODO: put back
         self.sanitizePath()
     }
     
@@ -172,16 +173,24 @@ class Plane: Printable, Hashable
     
     /// close the path and remove MoveToPoint instructions
     func sanitizePath(){
+        //TODO: fix me to use performancebezier
         path = sanitizedPath(path)
         
     }
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
-    //TODO: Look into this for weirdness in the path 
+    //TODO: Look into this for weirdness in the path
+    //TODO: convert this to use performanceBezier
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
+//        println("started sanitizing:\n")
+//        println(path)
 
         let elements = path.getPathElements()
+//        println(elements)
+        if(elements.isEmpty){
+            return UIBezierPath()
+        }
         
         let els = elements as! [CGPathElementObj]
         var outPath = UIBezierPath()
@@ -198,25 +207,31 @@ class Plane: Printable, Hashable
             switch (currPath.type.value) {
             case kCGPathElementMoveToPoint.value:
                 let p = currPath.points[0].CGPointValue()
-                
+//                print("skipped move to point ")
             case kCGPathElementAddLineToPoint.value:
                 let p = currPath.points[0].CGPointValue()
                 outPath.addLineToPoint(p)
+//                print("\t add line to \(p)")
+
                 
             case kCGPathElementAddQuadCurveToPoint.value:
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
                 outPath.addQuadCurveToPoint(p2, controlPoint: p1)
-                
+//                print("\t add quad curve to \(p2)")
+
             case kCGPathElementAddCurveToPoint.value:
                 let p1 = currPath.points[0].CGPointValue()
                 let p2 = currPath.points[1].CGPointValue()
                 let p3 = currPath.points[2].CGPointValue()
                 outPath.addCurveToPoint(p3, controlPoint1: p1, controlPoint2: p2)
+//                print("\t add curve to \(p3)")
+
             default:
                 break
             }
         }
+//        println("reached close")
         outPath.closePath()
         outPath.flatness = 3.0;
         return outPath

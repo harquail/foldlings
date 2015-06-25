@@ -19,8 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Flurry.setCrashReportingEnabled(true)
 //        Flurry.setDebugLogEnabled(true)
         Flurry.startSession(KEY_FLURRY)
-//        Armchair.appID(APP_STORE_ID)
-//        Armchair.debugEnabled(true)
+        UAAppReviewManager.setAppID(APP_STORE_ID)
+        
+        UAAppReviewManager.showPromptIfNecessary()
         
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: COGNITO_IDENTITY_POOL)
         let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)

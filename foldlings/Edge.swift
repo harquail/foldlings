@@ -28,9 +28,8 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-        return "\nStart: \(start), End: \(end)"
-
-        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
+        
+        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty), \(Bezier.endingElementsOf(path))\n"
         
     }
     
@@ -99,9 +98,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
-        
         self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
-        self.adjacency = aDecoder.decodeObjectForKey("adj") as! [Edge]
+        self.adjacency = aDecoder.decodeObjectForKey("adj") as? [Edge] ?? []
         self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
     }
     
@@ -111,7 +109,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
-        
         aCoder.encodeObject(self.twin, forKey: "twin")
         aCoder.encodeObject(self.adjacency, forKey: "adj")
         aCoder.encodeObject(self.feature, forKey: "feature")
@@ -233,13 +230,33 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
                 end = snapTo
             }
         }
-        //also have to do things to the path
-        
+        //TODO: also have to do things to the path
     }
-
     
+    //length of a straight edge — should do something better for curves
     func length() -> CGFloat{
         return ccpDistance(start, end)
     }
+    
+    func edgeSplitByPoints(breakers:[CGPoint]) ->[Edge]{
+        
+        var edges:[Edge] = []
+
+        let paths = Bezier.pathSplitByPoints(path, breakers: breakers)
+        
+        if paths.count == 1{
+            return [self]
+        }
+        
+        // make edges from paths
+        for p in paths{
+//            println("\(p.firstPoint()) | \(p.lastPoint())")
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
+            edges.append(e)
+        }
+        
+        return edges
+    }
+
     
 }

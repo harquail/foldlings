@@ -61,6 +61,9 @@ class Sketch : NSObject, Printable  {
             //insert master fold and make borders into cuts
             makeBorderEdgesUsingFeatures(screenWidth*scaleFactor, height: screenHeight*scaleFactor)
         }
+        
+        // making a sketch is a significant event
+        UAAppReviewManager.userDidSignificantEvent(false)
     }
     
     override var description: String {
@@ -381,18 +384,18 @@ class Sketch : NSObject, Printable  {
         return p
     }
     
-    /// returns the edge and nearest hitpoint to point given
-    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
-    {
-        var r:(Edge?,CGPoint)? = nil
-        for edge in self.edges
-        {
-            if let np = edge.hitTest(point) {
-                r = (edge, np)
-            }
-        }
-        return r
-    }
+//    /// returns the edge and nearest hitpoint to point given
+//    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
+//    {
+//        var r:(Edge?,CGPoint)? = nil
+//        for edge in self.edges
+//        {
+//            if let np = edge.hitTest(point) {
+//                r = (edge, np)
+//            }
+//        }
+//        return r
+//    }
     
 //        
 //        /// returns a list of edges if any of then intersect the given shape
@@ -469,16 +472,17 @@ class Sketch : NSObject, Printable  {
     func isHill(edge: Edge) -> Bool
     {
         // check plane orientation
-        let plane = edge.plane
-        if plane!.orientation == .Vertical
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
-        }
-        else if plane!.orientation == .Horizontal
-        {
-            // check whether top edge or bottom edge
-            return (edge == plane!.topEdge)
+        if let plane = edge.plane{
+            if plane.orientation == .Vertical
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane.topEdge)
+            }
+            else if plane.orientation == .Horizontal
+            {
+                // check whether top edge or bottom edge
+                return (edge == plane.topEdge)
+            }
         }
         return false
     }
@@ -614,7 +618,8 @@ class Sketch : NSObject, Printable  {
     }
 
     
-    
+    // #TODO: do fold occlusion and other feature-specific things when adding features
+    // probably need a switch
     // add any feature edges that aren't
     // already in the sketch
     // create edges, if there are none
@@ -624,6 +629,19 @@ class Sketch : NSObject, Printable  {
         let fEdges = feature.getEdges()
         // set edges for feature, for freeform
         feature.featureEdges = fEdges
+        
+        
+        //check for errors in feature before adding it to the sketch
+        let validity = feature.validate()
+        if(!validity.passed){
+                //print error, return
+            AFMInfoBanner.showWithText(validity.error, style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
+            return
+        }
+        
+      
+
+        
         for edge in fEdges
         {
             if (!self.edges.contains(edge))// and if twin has a feature

@@ -7,6 +7,7 @@
 
 import Foundation
 import SceneKit
+import MediaPlayer
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
@@ -18,6 +19,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet var free: UIBarButtonItem!
     @IBOutlet var v: UIBarButtonItem!
     @IBOutlet var polygon: UIBarButtonItem!
+    
+    var toolsUsedThisSession = Set<SketchView.Mode>()
     
     @IBOutlet var sketchView: SketchView!
 
@@ -109,6 +112,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(sketchView.sketch)
         case .MovePoints:
             println("implement move points")
+//        case .Symmetrize:
+//            println("implement make symmetrical")
         }
         
     }
@@ -153,26 +158,66 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         arch.save()
         
     }
-
+    
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
+        playVideo(.BoxFold)
+        sketchView.switchedTool()
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
     @IBAction func freeForm(sender: UIBarButtonItem) {
+        playVideo(.FreeForm)
+        sketchView.switchedTool()
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
+        playVideo(.VFold)
+        sketchView.switchedTool()
         sketchView.sketchMode = .VFold
-       setSelectedImage(.VFold)
+        setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
+        playVideo(.Polygon)
+        sketchView.switchedTool()
         sketchView.sketchMode = .Polygon
         setSelectedImage(.Polygon)
+    }
+    
+    // plays tutorial videos when trying to use a tool
+    private func playVideo(featureType:SketchView.Mode) {
+        // don't ever show tutorials if the user has made a few sketches, or has already used this tool in this sketch
+        if(Tutorial.numberOfSignificantEvents() > 3 || toolsUsedThisSession.contains(featureType)){
+            return
+        }
+        
+        //video file name
+        var named = ""
+        switch(featureType){
+        case .BoxFold:
+            named = "boxfold-tutorial"
+        case .FreeForm:
+            named = "freeform-tutorial"
+        case .VFold:
+            named = "vfold-tutorial"
+        case .Polygon:
+            named = "polygon-tutorial"
+        default:
+            named = "nil-tutorial"
+        }
+        
+        let myPlayer = Tutorial.video(named)
+        let popRect = CGRectMake(self.view.frame.width/2, self.view.frame.height - 135, 10, 10)
+        let aPopover =  UIPopoverController(contentViewController: myPlayer)
+        aPopover.backgroundColor = UIColor.whiteColor()
+        aPopover.presentPopoverFromRect(popRect, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+        
+        // don't play this video again for this sketch
+        toolsUsedThisSession.insert(featureType)
     }
     
     func resetButtonImages(){
@@ -210,7 +255,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let img = view.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            let viewController:FoldPreviewViewController = segue.destinationViewController as! FoldPreviewViewController
             
             viewController.setButtonBG(imgNew)
             viewController.laserImage = view.bitmap(grayscale: true)
