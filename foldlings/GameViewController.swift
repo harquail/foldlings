@@ -352,7 +352,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             return nil
         }
         
-        //println("\(recurseCount) : \(plane.topEdge)")
         // put a check here for !nil node
         var node = plane.node
         
