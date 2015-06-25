@@ -32,6 +32,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     let thirtyDegreesNeg = Float(-M_PI/6.0)
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
+    let oneSixtyDegrees = Float(M_PI/1.124)
     
     /*****************scene variables*****************/
     var sceneSphere = SCNNode()
@@ -169,8 +170,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // set animation here
         var nextAngle = 1/(Float(recognizer.scale)/2.0) //+ currentAngle //*Float(180/M_PI)
         
-        if (currentAngle + nextAngle) > 2.7 {
-            currentAngle = 2.7
+        if (currentAngle + nextAngle) > oneSixtyDegrees {
+            currentAngle = oneSixtyDegrees
         }
         
         else if (currentAngle + nextAngle < zeroDegrees){
@@ -178,7 +179,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         }
         
         else
-        { // should be between 0 and 2.5
+        { // should be between 0 and 160
             currentAngle = currentAngle + nextAngle
             // go through list of planes and add animation
             for plane in planes.planes
@@ -186,7 +187,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
                 
                 if plane.masterSphere != nil
                 {
-                    //println(plane.topEdge.isHill())
+                    // determine how the plane bends (backwards/forwards)
                     if plane.NegNinety
                     {
                         plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: -currentAngle)
@@ -195,25 +196,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
                     {
                         plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: currentAngle)
                     }
-                    println("current angle \(currentAngle)")
                     
                 }
             }
-            //                    if(recognizer.state == UIGestureRecognizerState.Ended)
-            //                    {
-            //                        //currentAngle = newAngle
-            //                    }
-            //                    //let degree = ninetyDegreesNeg*Float(recognizer.scale)
-            //                    // plane.masterSphere!.rotation = SCNVector4(x: 0, y: 0, z: 0, w: newAngle) //make sure it starts out flat
-            //
-            //                    //plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-            //                    //}
-            //                    //                else {
-            //                    //                    plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-            //                    //                }
-            //                    //hill = !hill
-            //                }
-            //            }
+ 
             
         }
     }
@@ -397,20 +383,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             m.diffuse.contents = plane.color
         }
         node!.geometry?.firstMaterial = m
-        //masterSphere.geometry?.firstMaterial = m
-        
-        
-        //        //make sphere invisible
-        //        let transparentMaterial = SCNMaterial()
-        //        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        //        masterSphere.geometry?.firstMaterial = transparentMaterial
-        
-        //        // different based on orientation
-        //        if hill {
-        // masterSphere.rotation = SCNVector4(x: 0, y: 0, z: 0, w: zeroDegrees)      //        }
-        //        else {
-        //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-        //        //        }
+
         if hill{
             // set to neg90
             plane.NegNinety = true
@@ -419,7 +392,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         var children = plane.children
         visited.append(plane)
-        //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+
         // loop through the adj starting with top plane
         for p in children
         {
