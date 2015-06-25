@@ -161,63 +161,59 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         uploader.uploadToS3(svgString,named:"\(name)")
     }
     
-
-
     
     @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer)
     {
         var currentAngle = zeroDegrees
-        
-        println("velocity: \(recognizer.velocity)")
-        println("scale: \(recognizer.scale)")
-        
+
         // set animation here
-        // go through list of planes and add animation
-        //var hill = true
-        for plane in planes.planes
-        {
-            // different based on orientation
-            //if  !plane.masterBottom{
-            //println(plane.topEdge)
-            //var originalPos
-            
-            if plane.masterSphere != nil
+        var nextAngle = 1/(Float(recognizer.scale)/2.0) //+ currentAngle //*Float(180/M_PI)
+        
+        if (currentAngle + nextAngle) > 2.7 {
+            currentAngle = 2.7
+        }
+        
+        else if (currentAngle + nextAngle < zeroDegrees){
+            currentAngle = zeroDegrees
+        }
+        
+        else
+        { // should be between 0 and 2.5
+            currentAngle = currentAngle + nextAngle
+            // go through list of planes and add animation
+            for plane in planes.planes
             {
-                //println(plane.topEdge.isHill())
-                if plane.topEdge.isHill()
+                
+                if plane.masterSphere != nil
                 {
-                    // actually parent, not node
-                    //                    println("rotation vector [\(plane.masterSphere?.rotation.x), \(plane.masterSphere?.rotation.y), \(plane.masterSphere?.rotation.z), \(plane.masterSphere?.rotation.w)]")
-                    var newAngle = 1/(Float(recognizer.scale)/2.0)//*Float(180/M_PI)
-                    
-                    if (currentAngle < 2.5) && (currentAngle >= zeroDegrees)
-                    { // should be between 0 and 2.5
-                        currentAngle += newAngle // for valley, -= for hill
-                        plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: currentAngle)
-                        println("current angle \(currentAngle)")
-                        println("new angle \(newAngle)")
-                    }
-                    //
-                    //                    println("rotation vector [\(plane.masterSphere?.rotation.x), \(plane.masterSphere?.rotation.y), \(plane.masterSphere?.rotation.z), \(plane.masterSphere?.rotation.w)]")
-                    
-                    //changes the rotation
-                    
-                    
-                    if(recognizer.state == UIGestureRecognizerState.Ended)
+                    //println(plane.topEdge.isHill())
+                    if plane.NegNinety
                     {
-                        //currentAngle = newAngle
+                        plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: -currentAngle)
                     }
-                    //let degree = ninetyDegreesNeg*Float(recognizer.scale)
-                    // plane.masterSphere!.rotation = SCNVector4(x: 0, y: 0, z: 0, w: newAngle) //make sure it starts out flat
+                    else
+                    {
+                        plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: currentAngle)
+                    }
+                    println("current angle \(currentAngle)")
                     
-                    //plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-                    //}
-                    //                else {
-                    //                    plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-                    //                }
-                    //hill = !hill
                 }
             }
+            //                    if(recognizer.state == UIGestureRecognizerState.Ended)
+            //                    {
+            //                        //currentAngle = newAngle
+            //                    }
+            //                    //let degree = ninetyDegreesNeg*Float(recognizer.scale)
+            //                    // plane.masterSphere!.rotation = SCNVector4(x: 0, y: 0, z: 0, w: newAngle) //make sure it starts out flat
+            //
+            //                    //plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
+            //                    //}
+            //                    //                else {
+            //                    //                    plane.masterSphere!.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
+            //                    //                }
+            //                    //hill = !hill
+            //                }
+            //            }
             
         }
     }
@@ -300,7 +296,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
             let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
             sceneSphere.addChildNode(masterSphere)
             masterSphere.addChildNode(bottomPlaneNode!)
-
+            
             if (translate){
                 undoParentTranslate(masterSphere, child: bottomPlaneNode!)
             }
@@ -327,7 +323,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         //pinch.delegate = self
         view.addGestureRecognizer(pinch)
         view.addGestureRecognizer(pan)
-
+        
         
         
         // back button
@@ -414,12 +410,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         // masterSphere.rotation = SCNVector4(x: 0, y: 0, z: 0, w: zeroDegrees)      //        }
         //        else {
         //            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-//        //        }
-//        if hill{
-//            // set to neg90
-//            // gotta know to which way to bend
-//        }
-
+        //        //        }
+        if hill{
+            // set to neg90
+            plane.NegNinety = true
+        }
+        
         
         var children = plane.children
         visited.append(plane)
