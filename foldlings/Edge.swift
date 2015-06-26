@@ -28,8 +28,10 @@ func ≈ (lhs: Edge, rhs: Edge) -> Bool {
 
 class Edge: NSObject, Printable, Hashable, NSCoding {
     override var description: String {
-//        return "\nStart: \(start), End: \(end)"
+        //        return "\nStart: \(start), End: \(end)"
         return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty)\n"
+        
+        return "Start: \(start), End: \(end), Type: \(kind.rawValue), Feature: \(feature), dirty: \(dirty), \(Bezier.endingElementsOf(path))\n"
         
     }
     
@@ -43,7 +45,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var plane:Plane?
     var dirty = true //if the edge is dirty it'll be reevaluated for planes
     var deltaY:CGFloat? = nil  //distance moved from original y position during this drag, nil if not being dragged
-   
+    
     
     var start: CGPoint
     var end: CGPoint
@@ -80,7 +82,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = round(start)
         self.end = round(end)
         self.path = path
-        self.colorOverride = getRandomColor(0.8)
+        //self.colorOverride = getRandomColor(0.8)
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
@@ -88,7 +90,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.kind = kind
         self.isMaster = isMaster
         self.feature = feature
-
+        
     }
     
     
@@ -155,8 +157,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case .Fold:
             color = Color.Fold
         case .Cut:
-//            color = getRandomColor(0.8);
-                        color = Color.Cut
+            color = Color.Cut
         default:
             color = Color.Cut
         }
@@ -212,13 +213,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func snapEnd(#to:CGPoint){
         snapToPoint(false,snapTo:to)
     }
-
+    
     func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
         let movedPoint = snapStart ? start : end
-
+        
         if(snapStart){
             if(!(CGPointEqualToPoint(start,snapTo))){
-            
+                
                 //println("moved \(start) to \(snapTo)")
                 start = snapTo
             }
@@ -242,7 +243,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     func edgeSplitByPoints(breakers:[CGPoint]) ->[Edge]{
         
         var edges:[Edge] = []
-
+        
         let paths = Bezier.pathSplitByPoints(path, breakers: breakers)
         
         if paths.count == 1{
@@ -251,7 +252,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         
         // make edges from paths
         for p in paths{
-//            println("\(p.firstPoint()) | \(p.lastPoint())")
+            //            println("\(p.firstPoint()) | \(p.lastPoint())")
             let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
             edges.append(e)
         }

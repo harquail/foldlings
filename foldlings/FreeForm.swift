@@ -106,20 +106,21 @@ class FreeForm:FoldFeature
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
         /// splits the path into multiple edges based on intersection points
-        var paths = pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
-//
-//        println("PATH \(path)")
-//        println("INTERSECTIONS \(intersections)")
-//        
+        var paths = Bezier.pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
+        paths = filterPathsOutsideBounds(paths)
+        
         var edges:[Edge] = []
         
         //create edges from split paths
         for p in paths{
-            //println("PATH: \n \(p)")
-            edges.append(Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self))
+            
+            // check greater less than greater than top truncations heights
+
+            let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
+                edges.append(e)
         }
         
-        //println("\nEDGES!!!!!!\n \(edges)")
+//        println("\nEDGES!!!!!!\n \(edges)")
         return edges
     }
     
@@ -292,8 +293,8 @@ class FreeForm:FoldFeature
             if(!middleFolds){
 //                println("FAILED INTERSECTION POINTS: \(intersections)");
                 //                println("\(intersectionsWithDrivingFold)");
-                self.state = .Invalid
-                //println("FAILED TO INTERSECT WITH MIDDLE")
+//                self.state = .Invalid
+               /// println("FAILED TO INTERSECT WITH MIDDLE")
             }
         }
     }
@@ -393,7 +394,7 @@ class FreeForm:FoldFeature
     
     func shiftEdgeEndpoints(){
         
-        //println("\n\nstartPoint: \(startPoint) | endPoint: \(endPoint)")
+//        println("\n\nstartPoint: \(startPoint) | endPoint: \(endPoint)")
         
         //first, snap Edge to intersections
         var snappablePoints = intersections.map({round($0)})

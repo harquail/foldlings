@@ -11,7 +11,7 @@ import SceneKit
 import Foundation
 import MessageUI
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate {
+class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate {
     
     /*************image variables***********/
     var bgImage:UIImage!
@@ -167,6 +167,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer)
     {
+        //println("pinch")
         var currentAngle = zeroDegrees
 
         // set animation here
@@ -208,7 +209,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     @IBAction func handlePan(recognizer : UIPanGestureRecognizer)
     {
-        println("heelllooow")
+        //println("pan")
     }
     /**************************Create the 3d scene***********************/
     
@@ -364,9 +365,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         
         
         // add fade-in key for holes
-        if(plane.kind != .Hole){
-            node!.addAnimation(fadeIn(), forKey: "fade in")
-        }
+//        if(plane.kind != .Hole){
+//            node!.addAnimation(fadeIn(), forKey: "fade in")
+//        }
         
         var useBottom = (recurseCount == 0)//check if we hit top plane
         let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
@@ -448,7 +449,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
         var edge:Edge
         
         if(bottom){// TODO:confused
-            //println("bottom/top: \(plane.topEdge)")
             edge = plane.bottomEdge
         }
         else{

@@ -240,8 +240,7 @@ class Sketch : NSObject, Printable  {
     /// does a traversal of all the edges to find all the planes
     func getPlanes()
     {
-        println(">> getting planes")
-//        return;
+        // println(">> getting planes")
         self.visited = []
         planelist = []
         for (i, start) in enumerate(self.edges)//traverse edges
@@ -305,6 +304,7 @@ class Sketch : NSObject, Printable  {
                         //set plane for edges
                         plane.edges.map({$0.plane = plane})
                         
+                        
                         // add planes to planelist
                         planelist.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                         // println("\nplane complete\n")
@@ -314,9 +314,8 @@ class Sketch : NSObject, Printable  {
                 }
             }
         }
-        // }
         self.planes.linkPlanes(planelist)
-        println(">> got planes")
+        // println(">> got planes")
     }
     
     
@@ -382,81 +381,81 @@ class Sketch : NSObject, Printable  {
         return p
     }
     
-//    /// returns the edge and nearest hitpoint to point given
-//    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
-//    {
-//        var r:(Edge?,CGPoint)? = nil
-//        for edge in self.edges
-//        {
-//            if let np = edge.hitTest(point) {
-//                r = (edge, np)
-//            }
-//        }
-//        return r
-//    }
+    //    /// returns the edge and nearest hitpoint to point given
+    //    func edgeHitTest(point:CGPoint) -> (Edge?, CGPoint)?
+    //    {
+    //        var r:(Edge?,CGPoint)? = nil
+    //        for edge in self.edges
+    //        {
+    //            if let np = edge.hitTest(point) {
+    //                r = (edge, np)
+    //            }
+    //        }
+    //        return r
+    //    }
     
-//        
-//        /// returns a list of edges if any of then intersect the given shape
-//        /// DO not call with an unclosed path
-//        func shapeHitTest(path: UIBezierPath) -> [Edge]?
-//        {
-//            var list = [Edge]()
-//           /// dispatch_sync(edgeAdjacencylockQueue) {
-//                for (k,v) in self.adjacency
-//                {
-//                    if CGPathContainsPoint(path.CGPath, nil, k, true)
-//                    {
-//                        for e in v
-//                        {
-//                            if e.path != path { list.append(e) }
-//                        }
-//                    }
-//                }
-//           // }
-//            return (list.count > 0) ? list : nil
-//        }
-        
-        
-//        /// returns the feature that contains the hitpoint
-//        func featureHitTest(point:CGPoint) -> FoldFeature
-//        {
-//            let f:FoldFeature? = nil
-//            outer: for feature in self.features.reverse()
-//            {
-//                for plane in feature.featurePlanes
-//                {
-//                    if plane.path.containsPoint(point) {
-//                        return feature
-//                    }
-//                }
-//            }
-//            println("not in a feature")
-//            return f!
-//        }
-        
-        // returns the feature at a point
-        func featureAt(#point:CGPoint) -> FoldFeature?{
-            // go in reversse order, because more recently-drawn features
-            // are the children of a previous feature
-            for feature in self.features.reverse(){
-                if (feature.containsPoint(point)){
-                    println("found feature: \(feature)")
-                    return feature
-                }
+    //
+    //        /// returns a list of edges if any of then intersect the given shape
+    //        /// DO not call with an unclosed path
+    //        func shapeHitTest(path: UIBezierPath) -> [Edge]?
+    //        {
+    //            var list = [Edge]()
+    //           /// dispatch_sync(edgeAdjacencylockQueue) {
+    //                for (k,v) in self.adjacency
+    //                {
+    //                    if CGPathContainsPoint(path.CGPath, nil, k, true)
+    //                    {
+    //                        for e in v
+    //                        {
+    //                            if e.path != path { list.append(e) }
+    //                        }
+    //                    }
+    //                }
+    //           // }
+    //            return (list.count > 0) ? list : nil
+    //        }
+    
+    
+    //        /// returns the feature that contains the hitpoint
+    //        func featureHitTest(point:CGPoint) -> FoldFeature
+    //        {
+    //            let f:FoldFeature? = nil
+    //            outer: for feature in self.features.reverse()
+    //            {
+    //                for plane in feature.featurePlanes
+    //                {
+    //                    if plane.path.containsPoint(point) {
+    //                        return feature
+    //                    }
+    //                }
+    //            }
+    //            println("not in a feature")
+    //            return f!
+    //        }
+    
+    // returns the feature at a point
+    func featureAt(#point:CGPoint) -> FoldFeature?{
+        // go in reversse order, because more recently-drawn features
+        // are the children of a previous feature
+        for feature in self.features.reverse(){
+            if (feature.containsPoint(point)){
+                println("found feature: \(feature)")
+                return feature
             }
-            println("no feature here")
-            return nil
         }
-        
-        // features whose bounds overlap with a feature
-        func featuresIntersecting(comparisonFeature:FoldFeature) -> [FoldFeature]{
-            var intersecting = features.filter({CGRectIntersectsRect($0.boundingBox()!, comparisonFeature.boundingBox()!)})
-            // ignore parent
-            // in the future, intersection with parent might be generalized, replacing splitFoldByOcclusion
-            intersecting.remove(comparisonFeature.parent!)
-            return intersecting
-        }
-        
+        println("no feature here")
+        return nil
+    }
+    
+    // features whose bounds overlap with a feature
+    func featuresIntersecting(comparisonFeature:FoldFeature) -> [FoldFeature]{
+        var intersecting = features.filter({CGRectIntersectsRect($0.boundingBox()!, comparisonFeature.boundingBox()!)})
+        // ignore parent
+        // in the future, intersection with parent might be generalized, replacing splitFoldByOcclusion
+        intersecting.remove(comparisonFeature.parent!)
+        return intersecting
+    }
+    
     
     
     /// check bounds for drawing
@@ -465,8 +464,8 @@ class Sketch : NSObject, Printable  {
         return self.drawingBounds.contains(point)
     }
     
-
-
+    
+    
     
     //replaces edges to close the gap left by deleting a feature
     func healFoldsOccludedBy(feature:FoldFeature){
@@ -518,7 +517,7 @@ class Sketch : NSObject, Printable  {
             return returnee
         }
         //appends a fold to the feature & sketch
-        func appendFold(edge:Edge){            
+        func appendFold(edge:Edge){
             feature.parent?.horizontalFolds.insertIntoOrdered(edge, ordering: {$0.start.y < $1.start.y})
             feature.parent?.featureEdges?.append(edge)
             self.addEdge(edge)
@@ -563,15 +562,15 @@ class Sketch : NSObject, Printable  {
         folds.map({self.addEdge($0)})
     }
     
-        func replaceCut(feature: FoldFeature, cut:Edge, cuts:[Edge]){
-            
-            feature.featureEdges?.remove(cut)
-            removeEdge(cut)
-
-            feature.featureEdges?.extend(cuts)
-            cuts.map({self.addEdge($0)})
+    func replaceCut(feature: FoldFeature, cut:Edge, cuts:[Edge]){
+        
+        feature.featureEdges?.remove(cut)
+        removeEdge(cut)
+        
+        feature.featureEdges?.extend(cuts)
+        cuts.map({self.addEdge($0)})
     }
-
+    
     
     // #TODO: do fold occlusion and other feature-specific things when adding features
     // probably need a switch
@@ -589,13 +588,13 @@ class Sketch : NSObject, Printable  {
         //check for errors in feature before adding it to the sketch
         let validity = feature.validate()
         if(!validity.passed){
-                //print error, return
+            //print error, return
             AFMInfoBanner.showWithText(validity.error, style: AFMInfoBannerStyle.Error, andHideAfter: NSTimeInterval(5))
             return
         }
         
-      
-
+        
+        
         
         for edge in fEdges
         {
@@ -633,7 +632,7 @@ class Sketch : NSObject, Printable  {
         if (feature.drivingFold != nil && healOnDelete) {
             self.healFoldsOccludedBy(feature)
         }
-//        getPlanes()
+        //        getPlanes()
     }
     
     /// debugging function to find points very near each other
@@ -656,7 +655,7 @@ class Sketch : NSObject, Printable  {
         return returnee
     }
     
-
+    
 }
 
 
