@@ -1483,7 +1483,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -1522,7 +1522,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3a1a43a7-a156-4d99-9f4f-ac13997808d2";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
 			};
 			name = Release;
