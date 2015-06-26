@@ -58,7 +58,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         case Fold = "Fold"
         case Cut = "Cut"
     }
-    // TODO: create enum for hill or valley
     
     struct Color {
         static var Hill:UIColor = UIColor(red: 0.0, green: 0.0, blue: 255.0, alpha: 1.0)
@@ -81,6 +80,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = round(start)
         self.end = round(end)
         self.path = path
+        self.colorOverride = getRandomColor(0.8)
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
@@ -98,7 +98,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
         self.isMaster = aDecoder.decodeBoolForKey("isMaster")
-
+        self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
+        self.adjacency = aDecoder.decodeObjectForKey("adj") as? [Edge] ?? []
+        self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -107,6 +109,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
         aCoder.encodeBool(self.isMaster, forKey: "isMaster")
+        aCoder.encodeObject(self.twin, forKey: "twin")
+        aCoder.encodeObject(self.adjacency, forKey: "adj")
+        aCoder.encodeObject(self.feature, forKey: "feature")
     }
     
     /// makes a straight edge between two points, constructing the path as well
@@ -174,6 +179,12 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         return color
     }
     
+    func centerOfStraightEdge() -> CGPoint{
+        
+        let averaged = CGPointAdd(start,end)
+        return CGPointMake(averaged.x/2, averaged.y/2)
+    }
+    
     func getLaserColor() -> UIColor
     {
         return Edge.getLaserColor(self.kind)
@@ -204,19 +215,13 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 
     func snapToPoint (snapStart:Bool,snapTo:CGPoint) {
         let movedPoint = snapStart ? start : end
-        
-        
-        
+
         if(snapStart){
-            
             if(!(CGPointEqualToPoint(start,snapTo))){
             
                 //println("moved \(start) to \(snapTo)")
                 start = snapTo
-
             }
-            
-            
         }
         else{
             
@@ -226,8 +231,32 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
                 end = snapTo
             }
         }
-        //also have to do things to the path
+        //TODO: also have to do things to the path
+    }
+    
+    //length of a straight edge — should do something better for curves
+    func length() -> CGFloat{
+        return ccpDistance(start, end)
+    }
+    
+    func edgeSplitByPoints(breakers:[CGPoint]) ->[Edge]{
         
+        var edges:[Edge] = []
+
+        let paths = Bezier.pathSplitByPoints(path, breakers: breakers)
+        
+        if paths.count == 1{
+            return [self]
+        }
+        
+        // make edges from paths
+        for p in paths{
+//            println("\(p.firstPoint()) | \(p.lastPoint())")
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
+            edges.append(e)
+        }
+        
+        return edges
     }
     // determines whether the edge is a Hill edge
     // or not (a Valley edge

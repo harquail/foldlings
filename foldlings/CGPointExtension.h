@@ -295,7 +295,12 @@ BOOL ccpLineIntersect(CGPoint p1, CGPoint p2,
  ccpSegmentIntersect returns YES if Segment A-B intersects with segment C-D
  */
 BOOL ccpSegmentIntersect(CGPoint A, CGPoint B, CGPoint C, CGPoint D);
-
+    
+/*
+ccpPointOfSegmentIntersection returns The point of intersection if Segment A-B intersects with segment C-D, otherwise CGPointZero
+*/
+CGPoint ccpPointOfSegmentIntersection(CGPoint A, CGPoint B, CGPoint C, CGPoint D);
+    
 /*
  ccpIntersectPoint returns the intersection point of line A-B, C-D
  */

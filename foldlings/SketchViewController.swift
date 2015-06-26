@@ -7,6 +7,7 @@
 
 import Foundation
 import SceneKit
+import MediaPlayer
 
 class SketchViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
@@ -18,6 +19,8 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet var free: UIBarButtonItem!
     @IBOutlet var v: UIBarButtonItem!
     @IBOutlet var polygon: UIBarButtonItem!
+    
+    var toolsUsedThisSession = Set<SketchView.Mode>()
     
     @IBOutlet var sketchView: SketchView!
 
@@ -40,62 +43,42 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @IBAction func handleTap(sender: AnyObject) {
-        let gesture = sender as! UITapGestureRecognizer
+        //set tapped feature to nil, clearing any taps
+        sketchView.sketch.tappedFeature = nil
+
+        /// handle polygon taps here, then continue if it didn't happen
+        if (sketchView.handleTap(sender)){
+            return
+        }
         
+        let gesture = sender as! UITapGestureRecognizer
         var touchPoint = gesture.locationInView(sketchView)
         println("tapped at: \(touchPoint)")
         
-        let fs = sketchView.sketch.features
-        
-            //set tapped feature to nil, clearing any taps
-            sketchView.sketch.tappedFeature = nil
-            
-            // evaluate newer features first
-            // but maybe what we should really do is do depth first search
-            let fsBackwards = fs.reverse()
-            
-            for f in fsBackwards{
+        // get tapped feature
+        if let f = self.sketchView.sketch.featureAt(point: touchPoint){
+            if let options = f.tapOptions(){
                 
-                //detect tapped feature
-                if(f.boundingBox()!.contains(touchPoint)){
+                //creates the menu with options
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                for option in options{
+                    // add a menu item with handler for each option
+                    alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
+                        self.handleTapOption(f, option: option)
+                    }))
                     
-                    // if freeform shape, reject points outside bounds
-                    if let freeForm = f as? FreeForm{
-                        if(!freeForm.path!.containsPoint(touchPoint)){
-                            continue
-                        }
-                    }
-                    
-                    if let options = f.tapOptions(){
-                        
-                        //creates the menu with options
-                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-                        
-                        for option in options{
-                            // add a menu item with handler for each option
-                            alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
-                                self.handleTapOption(f, option: option)
-                            }))
-                            
-                        }
-                        
-                        // presents menu at touchPoint
-                        alertController.popoverPresentationController?.sourceView = sketchView
-                        alertController.popoverPresentationController?.delegate = self
-                        alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
-                        alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        
-                    }
-                    
-                    
-                    sketchView.statusLabel.text = "TOUCHED FEATURE: \(f)"
-                    return
                 }
                 
+                // presents menu at touchPoint
+                alertController.popoverPresentationController?.sourceView = sketchView
+                alertController.popoverPresentationController?.delegate = self
+                alertController.popoverPresentationController?.sourceRect = CGRectMake(touchPoint.x, touchPoint.y, 1, 1)
+                alertController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up | UIPopoverArrowDirection.Down
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
             }
-            
-        sketchView.statusLabel.text = ""
+        }
     }
     
     
@@ -104,14 +87,16 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         Flurry.logEvent("tap option: \(option.rawValue)")
 
+        
         switch option{
         case .AddFolds :
             break
         case .DeleteFeature :
             //delete feature and redraw
             sketchView.sketch.removeFeatureFromSketch(feature)
-            self.sketchView.forceRedraw()
             self.sketchView.sketch.getPlanes()
+            self.sketchView.forceRedraw()
+
         case .MoveFolds:
             // toggle moveFolds on
             sketchView.sketch.tappedFeature = feature
@@ -125,6 +110,10 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(feature.featurePlanes)
         case .PrintSketch:
             print(sketchView.sketch)
+        case .MovePoints:
+            println("implement move points")
+//        case .Symmetrize:
+//            println("implement make symmetrical")
         }
         
     }
@@ -169,37 +158,66 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         arch.save()
         
     }
-//    
-//    // TODO: Should store index elsewhere, possibly in sketch
-//    @IBAction func CardsButtonClicked(sender: UIButton) {
-//        Flurry.logEvent("moved to 3d land")
-//        
-//        let arch = ArchivedEdges(sketch:sketchView.sketch)
-//        ArchivedEdges.setImage(sketchView.sketch.index, image:sketchView.bitmap(grayscale: false, circles: false))
-//        arch.save()
-//        sketchView.hideXCheck()
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
     
     // button selections
     @IBAction func boxFold(sender: UIBarButtonItem) {
+        playVideo(.BoxFold)
+        sketchView.switchedTool()
         sketchView.sketchMode = .BoxFold
         setSelectedImage(.BoxFold)
     }
     
     @IBAction func freeForm(sender: UIBarButtonItem) {
+        playVideo(.FreeForm)
+        sketchView.switchedTool()
         sketchView.sketchMode = .FreeForm
         setSelectedImage(.FreeForm)
     }
     
     @IBAction func vFold(sender: UIBarButtonItem) {
+        playVideo(.VFold)
+        sketchView.switchedTool()
         sketchView.sketchMode = .VFold
-       setSelectedImage(.VFold)
+        setSelectedImage(.VFold)
     }
     
     @IBAction func polygon(sender: UIBarButtonItem) {
+        playVideo(.Polygon)
+        sketchView.switchedTool()
         sketchView.sketchMode = .Polygon
         setSelectedImage(.Polygon)
+    }
+    
+    // plays tutorial videos when trying to use a tool
+    private func playVideo(featureType:SketchView.Mode) {
+        // don't ever show tutorials if the user has made a few sketches, or has already used this tool in this sketch
+        if(Tutorial.numberOfSignificantEvents() > 3 || toolsUsedThisSession.contains(featureType)){
+            return
+        }
+        
+        //video file name
+        var named = ""
+        switch(featureType){
+        case .BoxFold:
+            named = "boxfold-tutorial"
+        case .FreeForm:
+            named = "freeform-tutorial"
+        case .VFold:
+            named = "vfold-tutorial"
+        case .Polygon:
+            named = "polygon-tutorial"
+        default:
+            named = "nil-tutorial"
+        }
+        
+        let myPlayer = Tutorial.video(named)
+        let popRect = CGRectMake(self.view.frame.width/2, self.view.frame.height - 135, 10, 10)
+        let aPopover =  UIPopoverController(contentViewController: myPlayer)
+        aPopover.backgroundColor = UIColor.whiteColor()
+        aPopover.presentPopoverFromRect(popRect, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+        
+        // don't play this video again for this sketch
+        toolsUsedThisSession.insert(featureType)
     }
     
     func resetButtonImages(){
@@ -237,7 +255,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             let img = view.bitmap(grayscale: false, circles: false)
             let imgNew = img.copy() as! UIImage
             
-            let viewController:GameViewController = segue.destinationViewController as! GameViewController
+            let viewController:FoldPreviewViewController = segue.destinationViewController as! FoldPreviewViewController
             
             viewController.setButtonBG(imgNew)
             viewController.laserImage = view.bitmap(grayscale: true)

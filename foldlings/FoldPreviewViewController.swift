@@ -1,5 +1,5 @@
 //
-//  GameViewController.swift
+//  FoldPreviewViewController.swift
 // foldlings
 //
 // © 2014-2015 Marissa Allen, Nook Harquail, Tim Tregubov
@@ -105,14 +105,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, MFMailComp
     
     // creates mailView controller to send svg to user as attechment
     func sendMail(svgData: NSData) {
-        Flurry.logEvent("mailed foldling svg")
-        var mailView = MFMailComposeViewController()
-        mailView.mailComposeDelegate = self
-        mailView.setSubject("Here is your Pop-up Card")
-        mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
-        mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"\(name).svg")
-        
-        presentViewController(mailView, animated: true, completion: nil)
+        if(MFMailComposeViewController.canSendMail()){
+            Flurry.logEvent("mailed foldling svg")
+            var mailView = MFMailComposeViewController()
+            mailView.mailComposeDelegate = self
+            mailView.setSubject("Here is your Pop-up Card")
+            mailView.setMessageBody("Please open attachment on a computer connected to a laser cutter", isHTML: false)
+            mailView.addAttachmentData(svgData, mimeType: "image/svg+xml", fileName:"\(name).svg")
+            
+            presentViewController(mailView, animated: true, completion: nil)
+        }
     }
     
     // hide status bar

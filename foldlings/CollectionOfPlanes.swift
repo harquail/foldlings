@@ -1,3 +1,7 @@
+
+
+
+
 //
 //  CollectionOfPlanes.swift
 // foldlings
@@ -14,7 +18,7 @@ func == (lhs: CollectionOfPlanes, rhs: CollectionOfPlanes) -> Bool {
 }
 
 /// set this to false to turn off plane edge coloring
-var kOverrideColor = false
+var kOverrideColor = true
 
 class CollectionOfPlanes: Printable, Hashable {
     var description: String {
@@ -56,10 +60,12 @@ class CollectionOfPlanes: Printable, Hashable {
                 plane.feature = top.feature
                 let feature = plane.feature
                 //TODO: Mark edges as clean
+
                 plane.edges.map({$0.feature = feature})
-                
+
                 feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                 
+
                 let foldCount = plane.foldcount
                 
                 switch(foldCount)
@@ -71,7 +77,6 @@ class CollectionOfPlanes: Printable, Hashable {
                     plane.parent = top.twin.plane
                     // insert into parent's children
                     plane.parent.children.append(plane)
-                    
                     
                 case 1:
                     // find fold (either bottom or top)
@@ -103,6 +108,8 @@ class CollectionOfPlanes: Printable, Hashable {
                     {
                         // set parent plane
                         let parent = bottom.twin.plane
+                        
+
                         plane.parent = parent
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
@@ -111,14 +118,14 @@ class CollectionOfPlanes: Printable, Hashable {
                         
                     else if top.kind == .Fold
                     {
+                        
+
                         // set parent plane
                         let parent = top.twin.plane
                         plane.parent = parent
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                     }
-                    
-                    
                 default:
                     
                     // more than one fold is a plane
@@ -141,10 +148,10 @@ class CollectionOfPlanes: Printable, Hashable {
                             masterBottom = plane
                             plane.orientation = .Horizontal
                             plane.color = getOrientationColor(plane.orientation == .Horizontal)
-
                         }
+
                     }
-                        
+
                         // set the parent and the children
                         // make sure that this doesn't include MasterBottom
                     else if top.kind == .Fold
@@ -153,18 +160,19 @@ class CollectionOfPlanes: Printable, Hashable {
                         let parent = top.twin.plane
                         
                         plane.parent = parent
+                        
 
 //                        println("plane: \(plane.topEdge)")
 //                        println("parent: \(parent!.topEdge)")
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                         
+
                         // if the parent is .Vertical,
                         //change the orientation of the plane to .Horizontal
                         if parent!.orientation == .Vertical {
                             plane.orientation = .Horizontal
                         }
-                        
                         plane.color = getOrientationColor(plane.orientation == .Horizontal)
 
                     }
@@ -177,6 +185,7 @@ class CollectionOfPlanes: Printable, Hashable {
     /// remove a plane and set dirty on edges
     func removePlane(plane:Plane)
     {
+
         // dispatch_sync(planeAdjacencylockQueue) {
         
         for edge in plane.edges {

@@ -11,8 +11,8 @@ import UIKit
 
 
 let kLineWidth:CGFloat = 2.0
-let kHitTestRadius = CGFloat(10.0)
-let kMinLineLength = kHitTestRadius/2
+let kHitTestRadius = CGFloat(20.0)
+let kMinLineLength = kHitTestRadius/4
 
 
 

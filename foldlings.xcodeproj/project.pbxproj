@@ -30,11 +30,13 @@
 		C9279D3050C81795A52ED5DD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AE59442F593BE9D6ECDE4D /* libPods.a */; };
 		F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */; };
 		F102A08D1A7F3B5E00C44B25 /* check_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */; };
+		F10F21C11B240B6D0022EBCE /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10F21C01B240B6D0022EBCE /* Polygon.swift */; };
 		F10FACC01A1D2774006541BF /* ArchivedEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */; };
 		F10FACC21A1D2E98006541BF /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10FACC11A1D2E98006541BF /* CGPoint.swift */; };
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
+		F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
 		F145829A1A79E89000760799 /* mirror_button.png in Resources */ = {isa = PBXBuildFile; fileRef = F14582961A79E89000760799 /* mirror_button.png */; };
@@ -83,7 +85,7 @@
 		F16673C81ACE3F5700243D70 /* UIBezierPathProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = F16673BC1ACE3F5700243D70 /* UIBezierPathProperties.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */; };
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
-		F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* GameViewController.swift */; };
+		F17C93D219E24BEC00BB77F1 /* FoldPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* FoldPreviewViewController.swift */; };
 		F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D619E24BEC00BB77F1 /* Images.xcassets */; };
 		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
 		F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */; };
@@ -92,8 +94,8 @@
 		F1824ED11A19E525008B0F66 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECE1A19E525008B0F66 /* first.png */; };
 		F18C864719FD9F4500211229 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864519FD9F4500211229 /* SplashViewController.swift */; };
 		F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C864619FD9F4500211229 /* FoldlingsCell.swift */; };
-		F18EC9501B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */; };
-		F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LISCENCE */; };
+		F18EC9541B1D4F3700987BF6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F18EC9531B1D4F3700987BF6 /* LICENSE */; };
+		F19C1E521B365FB700B2E995 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19C1E511B365FB700B2E995 /* Tutorial.swift */; };
 		F1AAFDF31B01A9500044AB00 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF11B01A9500044AB00 /* AWSCore.framework */; };
 		F1AAFDF41B01A9500044AB00 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF21B01A9500044AB00 /* AWSS3.framework */; };
 		F1AAFDFD1B01A9730044AB00 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AAFDF51B01A9730044AB00 /* Bolts.framework */; };
@@ -153,7 +155,12 @@
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
+		F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */; };
 		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
+		F1D36F3B1B34A3F8003316C9 /* polygon-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */; };
+		F1D36F3C1B34A3F8003316C9 /* vfold-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */; };
+		F1D36F3D1B34A3F8003316C9 /* boxfold-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */; };
+		F1D36F3E1B34A3F8003316C9 /* freeform-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */; };
 		F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */; };
 		F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */; };
 		F1E16E8F19E44B6900BC27C4 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E16E8E19E44B6900BC27C4 /* Edge.swift */; };
@@ -210,7 +217,7 @@
 		22198BE91A007B9D00FCEDD1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F8EEE1A05C76A00DA4405 /* CGPathElementObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGPathElementObj.h; path = ../CGPathElementObj.h; sourceTree = "<group>"; };
 		223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGPathElementObj.m; path = ../CGPathElementObj.m; sourceTree = "<group>"; };
-		224501131A0F334200E18F82 /* CollectionOfPlanes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionOfPlanes.swift; sourceTree = "<group>"; };
+		224501131A0F334200E18F82 /* CollectionOfPlanes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CollectionOfPlanes.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		225094F01A0CA21000E754CA /* BezierSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierSimple.h; sourceTree = "<group>"; };
 		225094F11A0CA21000E754CA /* BezierSimple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BezierSimple.m; sourceTree = "<group>"; };
 		225094F51A0DBB5D00E754CA /* CGPoint+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGPoint+Vector.h"; sourceTree = "<group>"; };
@@ -236,17 +243,19 @@
 		EA0AB42294980D87D43534AA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F102A08A1A7F3B5E00C44B25 /* x_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_red@2x.png"; sourceTree = "<group>"; };
 		F102A08B1A7F3B5E00C44B25 /* check_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check_green@2x.png"; sourceTree = "<group>"; };
+		F10F21C01B240B6D0022EBCE /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
 		F10FACC11A1D2E98006541BF /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CGPoint.swift; path = ../CGPoint.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
+		F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
 		F13AD4E81ABF78D100372898 /* MasterCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCard.swift; sourceTree = "<group>"; };
 		F14582961A79E89000760799 /* mirror_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mirror_button.png; sourceTree = "<group>"; };
 		F14582971A79E89000760799 /* preview_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview_button.png; sourceTree = "<group>"; };
 		F14582981A79E89000760799 /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_button.png; sourceTree = "<group>"; };
 		F14582991A79E89000760799 /* track_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_button.png; sourceTree = "<group>"; };
-		F14D844D1AC26321004CCD67 /* FreeForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeForm.swift; sourceTree = "<group>"; };
+		F14D844D1AC26321004CCD67 /* FreeForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FreeForm.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F153BB651A1EAED50029FDF2 /* GHAttributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAttributedObject.h; sourceTree = "<group>"; };
 		F153BB661A1EAED50029FDF2 /* GHAttributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAttributedObject.m; sourceTree = "<group>"; };
 		F153BB671A1EAED50029FDF2 /* GHPathDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPathDescription.h; sourceTree = "<group>"; };
@@ -331,7 +340,7 @@
 		F17C93CC19E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F17C93CF19E24BEC00BB77F1 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		F17C93D119E24BEC00BB77F1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		F17C93D119E24BEC00BB77F1 /* FoldPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldPreviewViewController.swift; sourceTree = "<group>"; };
 		F17C93D419E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F17C93D619E24BEC00BB77F1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F17C93D919E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -344,8 +353,8 @@
 		F1824ECE1A19E525008B0F66 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = ../first.png; sourceTree = "<group>"; };
 		F18C864519FD9F4500211229 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F18C864619FD9F4500211229 /* FoldlingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingsCell.swift; sourceTree = "<group>"; };
-		F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
-		F18EC9531B1D4F3700987BF6 /* LISCENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LISCENCE; sourceTree = "<group>"; };
+		F18EC9531B1D4F3700987BF6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		F19C1E511B365FB700B2E995 /* Tutorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		F1AAFDF11B01A9500044AB00 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
 		F1AAFDF21B01A9500044AB00 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		F1AAFDF51B01A9730044AB00 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -421,6 +430,11 @@
 		F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
+		F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFold.swift; sourceTree = "<group>"; };
+		F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "polygon-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "vfold-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "boxfold-tutorial.mp4"; sourceTree = "<group>"; };
+		F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "freeform-tutorial.mp4"; sourceTree = "<group>"; };
 		F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchViewController.swift; sourceTree = "<group>"; };
 		F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		F1E16E8E19E44B6900BC27C4 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
@@ -532,7 +546,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E16E8A19E3B0BC00BC27C4 /* SketchViewController.swift */,
-				F17C93D119E24BEC00BB77F1 /* GameViewController.swift */,
+				F17C93D119E24BEC00BB77F1 /* FoldPreviewViewController.swift */,
 				227708D619EE016A0095CD9D /* SketchView.swift */,
 				F1B58D571A2B933A00DF08B7 /* CollectionOfFoldlings.swift */,
 				F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */,
@@ -546,6 +560,10 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */,
+				F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */,
+				F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */,
+				F1D36F3A1B34A3F8003316C9 /* freeform-tutorial.mp4 */,
 				F1BB8E251AF56F7E006800CB /* freeform-selected-icon.png */,
 				F1BB8E261AF56F7E006800CB /* vfold-selected-icon.png */,
 				F1BB8E271AF56F7E006800CB /* polygon-selected-icon.png */,
@@ -596,6 +614,8 @@
 			children = (
 				F15472D31A97AA74009E36A6 /* FoldFeature.swift */,
 				F13AD4E11ABF549500372898 /* BoxFold.swift */,
+				F10F21C01B240B6D0022EBCE /* Polygon.swift */,
+				F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */,
 				F13AD4E81ABF78D100372898 /* MasterCard.swift */,
 				F14D844D1AC26321004CCD67 /* FreeForm.swift */,
 				F1E8A1731ACB19B90060E808 /* FeatureOptions.swift */,
@@ -744,7 +764,7 @@
 		F17C93BF19E24BEC00BB77F1 = {
 			isa = PBXGroup;
 			children = (
-				F18EC9531B1D4F3700987BF6 /* LISCENCE */,
+				F18EC9531B1D4F3700987BF6 /* LICENSE */,
 				F17C93CA19E24BEC00BB77F1 /* foldlings */,
 				F160F3BE1A31474800B469CA /* SystemConfiguration.framework */,
 				F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */,
@@ -769,10 +789,11 @@
 		F17C93CA19E24BEC00BB77F1 /* foldlings */ = {
 			isa = PBXGroup;
 			children = (
-				F18EC94F1B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift */,
+				F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */,
 				22C3F4AF19F332C500857C82 /* Assets */,
 				22AF485019EDE98000BCC1A4 /* Views */,
 				F17C93CD19E24BEC00BB77F1 /* AppDelegate.swift */,
+				F19C1E511B365FB700B2E995 /* Tutorial.swift */,
 				224501131A0F334200E18F82 /* CollectionOfPlanes.swift */,
 				F1E16E8C19E44B3C00BC27C4 /* Sketch.swift */,
 				F1E16E8E19E44B6900BC27C4 /* Edge.swift */,
@@ -1064,7 +1085,9 @@
 				F1BB8E221AF56A09006800CB /* box-fold-icon.png in Resources */,
 				22C3F4B719F33B4900857C82 /* cut.png in Resources */,
 				F16673BD1ACE3F5700243D70 /* Info.plist in Resources */,
+				F1D36F3C1B34A3F8003316C9 /* vfold-tutorial.mp4 in Resources */,
 				F1AAFE261B01A99E0044AB00 /* sts-2011-06-15.json in Resources */,
+				F1D36F3E1B34A3F8003316C9 /* freeform-tutorial.mp4 in Resources */,
 				F102A08C1A7F3B5E00C44B25 /* x_red@2x.png in Resources */,
 				F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
@@ -1075,6 +1098,7 @@
 				F1BB8E201AF56A09006800CB /* vfold-icon.png in Resources */,
 				F1AAFE1C1B01A99E0044AB00 /* email-2010-12-01.json in Resources */,
 				F145829A1A79E89000760799 /* mirror_button.png in Resources */,
+				F1D36F3B1B34A3F8003316C9 /* polygon-tutorial.mp4 in Resources */,
 				F1BB8E2C1AF56F7E006800CB /* box-fold-selected-icon.png in Resources */,
 				F1BB8E291AF56F7E006800CB /* freeform-selected-icon.png in Resources */,
 				F1AAFE181B01A99E0044AB00 /* cognito-sync-2014-06-30.json in Resources */,
@@ -1087,13 +1111,14 @@
 				22C3F4BD19F33EBA00857C82 /* small_2d.jpeg in Resources */,
 				F1AAFE201B01A99E0044AB00 /* mobileanalytics-2014-06-30.json in Resources */,
 				22ED9F0819F367AB001F8AAA /* erase.png in Resources */,
+				F1D36F3D1B34A3F8003316C9 /* boxfold-tutorial.mp4 in Resources */,
 				F1AAFE1E1B01A99E0044AB00 /* lambda-2015-03-31.json in Resources */,
 				F1824ECF1A19E525008B0F66 /* last.png in Resources */,
 				22C3F4BB19F33D4E00857C82 /* small_preview.jpeg in Resources */,
 				F1AAFE1B1B01A99E0044AB00 /* elasticloadbalancing-2012-06-01.json in Resources */,
 				22C3F4B319F33B3F00857C82 /* menu.png in Resources */,
 				F1AAFE161B01A99E0044AB00 /* autoscaling-2011-01-01.json in Resources */,
-				F18EC9541B1D4F3700987BF6 /* LISCENCE in Resources */,
+				F18EC9541B1D4F3700987BF6 /* LICENSE in Resources */,
 				22C3F4C119F33FF200857C82 /* send.jpeg in Resources */,
 				F1AAFE241B01A99E0044AB00 /* sns-2010-03-31.json in Resources */,
 				F1824ED01A19E525008B0F66 /* middle.png in Resources */,
@@ -1165,7 +1190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F153BB9C1A1EAED50029FDF2 /* GHPathUtilities.m in Sources */,
-				F17C93D219E24BEC00BB77F1 /* GameViewController.swift in Sources */,
+				F17C93D219E24BEC00BB77F1 /* FoldPreviewViewController.swift in Sources */,
 				F1EB37641AE4A1AD007DCEC5 /* String.swift in Sources */,
 				F14D844E1AC26321004CCD67 /* FreeForm.swift in Sources */,
 				F1AAFE2C1B01ADE70044AB00 /* SecretlyUploadtoS3.swift in Sources */,
@@ -1174,7 +1199,6 @@
 				F16673C51ACE3F5700243D70 /* UIBezierPath+NSOSX.m in Sources */,
 				F1BE6A891AC1EF4A00B99C8F /* ANPathBitmap.m in Sources */,
 				F16673C31ACE3F5700243D70 /* UIBezierPath+Equals.m in Sources */,
-				F18EC9501B1D4A3F00987BF6 /* APIKeysAndOtherSecrets.swift in Sources */,
 				F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */,
 				F153BBAA1A1EAED50029FDF2 /* SVGtoPDFConverter.m in Sources */,
 				F1BE6A861AC1EF4A00B99C8F /* BitmapCropManipulator.m in Sources */,
@@ -1189,6 +1213,7 @@
 				F153BBAF1A1EAED50029FDF2 /* GHControlFactory.m in Sources */,
 				F1E16E8D19E44B3C00BC27C4 /* Sketch.swift in Sources */,
 				225094F21A0CA21000E754CA /* BezierSimple.m in Sources */,
+				F10F21C11B240B6D0022EBCE /* Polygon.swift in Sources */,
 				F18C864819FD9F4500211229 /* FoldlingsCell.swift in Sources */,
 				F153BBA71A1EAED50029FDF2 /* SVGPathGenerator.m in Sources */,
 				F1EB37571AE4A1AD007DCEC5 /* Array.swift in Sources */,
@@ -1197,12 +1222,14 @@
 				22C3F4C519F35E9600857C82 /* AboutViewController.swift in Sources */,
 				F153BBAB1A1EAED50029FDF2 /* Base64Transcoder.m in Sources */,
 				F153BB9D1A1EAED50029FDF2 /* GHText.m in Sources */,
+				F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
 				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				F1EB37591AE4A1AD007DCEC5 /* Character.swift in Sources */,
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
+				F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */,
 				F1EB375B1AE4A1AD007DCEC5 /* Double.swift in Sources */,
 				F1AD3D3D1AD4BBEB00B55D2C /* CGPointExtension.m in Sources */,
 				F16673C61ACE3F5700243D70 /* UIBezierPath+Performance.m in Sources */,
@@ -1223,6 +1250,7 @@
 				F1E16E8B19E3B0BC00BC27C4 /* SketchViewController.swift in Sources */,
 				F17C93CE19E24BEC00BB77F1 /* AppDelegate.swift in Sources */,
 				F16673C81ACE3F5700243D70 /* UIBezierPathProperties.m in Sources */,
+				F19C1E521B365FB700B2E995 /* Tutorial.swift in Sources */,
 				F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */,
 				F1EB37631AE4A1AD007DCEC5 /* Sequence.swift in Sources */,
 				F1BE6A7F1AC1EF4A00B99C8F /* BitmapContextRep.m in Sources */,
