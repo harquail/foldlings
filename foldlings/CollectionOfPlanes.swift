@@ -74,9 +74,12 @@ class CollectionOfPlanes: Printable, Hashable {
                     // no folds is a hole
                     plane.kind = .Hole
                     // this plane's parent is it's feature parent fyi
-                    plane.parent = top.twin.plane
+                    plane.parent = top.twin.plane // TODO: may have to change
                     // insert into parent's children
                     plane.parent.children.append(plane)
+                    
+                    println(plane)
+                    println(plane.parent)
                     
                 case 1:
                     // find fold (either bottom or top)
@@ -236,7 +239,11 @@ class CollectionOfPlanes: Printable, Hashable {
         return true
     }
     
-    
+    //returns parent of the plane
+    func getParent(plane: Plane) -> Plane
+    {
+        return plane
+    }
     
 }
 
