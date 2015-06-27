@@ -62,16 +62,14 @@
                                     <constraint firstAttribute="width" constant="336" id="tda-0h-NXH"/>
                                 </constraints>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="FQV-qX-Hvj">
-                                <rect key="frame" x="360" y="767" width="37" height="37"/>
-                                <color key="color" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold-load.gif" translatesAutoresizingMaskIntoConstraints="NO" id="dwD-cn-MGQ">
+                                <rect key="frame" x="328" y="752" width="100" height="100"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="kdT-Nh-xKC" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="50" id="F19-zH-Rxo"/>
-                            <constraint firstItem="fgE-ra-V1o" firstAttribute="top" secondItem="FQV-qX-Hvj" secondAttribute="bottom" constant="220" id="FX4-GK-aG8"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" id="Kgv-yV-bE8"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="bottom" secondItem="fgE-ra-V1o" secondAttribute="top" id="LxV-iW-88I"/>
                             <constraint firstItem="BaU-oj-8uc" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="122" id="W7U-2Y-Ndq"/>
@@ -79,13 +77,14 @@
                             <constraint firstItem="BaU-oj-8uc" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="562" id="hTz-VP-iw0"/>
                             <constraint firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="k9b-FZ-0Ik"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" id="q7j-1S-2EZ"/>
-                            <constraint firstItem="FQV-qX-Hvj" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" constant="-5.5" id="r10-tP-KBa"/>
                             <constraint firstItem="OVX-P2-oQx" firstAttribute="centerX" secondItem="BaU-oj-8uc" secondAttribute="centerX" id="riU-Ax-3Hv"/>
                             <constraint firstItem="kdT-Nh-xKC" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="85" id="wbj-lz-Y8e"/>
                             <constraint firstItem="gB0-oF-Ec8" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="xkZ-6X-j3i"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="bRk-9A-kD0"/>
                     <connections>
+                        <outlet property="loadingImage" destination="dwD-cn-MGQ" id="pcn-Qy-hzo"/>
                         <outlet property="tipImage" destination="OVX-P2-oQx" id="DyC-7p-e90"/>
                         <outlet property="tipLabel" destination="kdT-Nh-xKC" id="WA3-Uj-QvM"/>
                         <outlet property="tipText" destination="BaU-oj-8uc" id="pxt-4g-h4D"/>
@@ -174,6 +173,17 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-Re-LAF">
                                 <rect key="frame" x="34" y="39" width="700" height="120"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0a-FI-GOG">
+                                <rect key="frame" x="345" y="947" width="77" height="62"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="(TIP)">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="X6B-tj-K8G" kind="push" id="QEv-rh-xZf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -429,6 +439,7 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
     <resources>
         <image name="box-fold-icon.png" width="100" height="125"/>
         <image name="check_green.png" width="49" height="49"/>
+        <image name="fold-load.gif" width="200" height="200"/>
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="freeform-icon.png" width="100" height="125"/>

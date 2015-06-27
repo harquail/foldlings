@@ -8,59 +8,9 @@
 		<key>text</key>
 		<string>Deleting a feature deletes features drawn on top of it.</string>
 		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
+		<string>small_preview.jpeg</string>
 		<key>videoLength</key>
-		<string>7</string>
-	</dict>
-	<dict>
-		<key>label</key>
-		<string>4</string>
-		<key>text</key>
-		<string>Fold flaps to make them flappier!</string>
-		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
-		<key>videoLength</key>
-		<string>7</string>
-	</dict>
-	<dict>
-		<key>label</key>
-		<string>4</string>
-		<key>text</key>
-		<string>Fold flaps to make them flappier!</string>
-		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
-		<key>videoLength</key>
-		<string>7</string>
-	</dict>
-	<dict>
-		<key>label</key>
-		<string>4</string>
-		<key>text</key>
-		<string>Fold flaps to make them flappier!</string>
-		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
-		<key>videoLength</key>
-		<string>7</string>
-	</dict>
-	<dict>
-		<key>label</key>
-		<string>4</string>
-		<key>text</key>
-		<string>Fold flaps to make them flappier!</string>
-		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
-		<key>videoLength</key>
-		<string>7</string>
-	</dict>
-	<dict>
-		<key>label</key>
-		<string>4</string>
-		<key>text</key>
-		<string>Fold flaps to make them flappier!</string>
-		<key>image</key>
-		<string>vfold-tutorial.mp4</string>
-		<key>videoLength</key>
-		<string>7</string>
+		<string>0</string>
 	</dict>
 </array>
 </plist>

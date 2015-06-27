@@ -176,6 +176,7 @@
 		F1BE6A8C1AC1EF6B00B99C8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */; };
 		F1BE6A8E1AC1EFC700B99C8F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */; };
 		F1BE6A911AC1F29D00B99C8F /* PathIntersections.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */; };
+		F1C368C51B3E19460068DA19 /* foldlings-loader.gif in Resources */ = {isa = PBXBuildFile; fileRef = F1C368C41B3E19460068DA19 /* foldlings-loader.gif */; };
 		F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */; };
 		F1CA51441B12CE07005B7CD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */; };
 		F1D36F3B1B34A3F8003316C9 /* polygon-tutorial.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */; };
@@ -458,6 +459,7 @@
 		F1BE6A8B1AC1EF6B00B99C8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F1BE6A8D1AC1EFC700B99C8F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F1BE6A901AC1F29D00B99C8F /* PathIntersections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathIntersections.swift; sourceTree = "<group>"; };
+		F1C368C41B3E19460068DA19 /* foldlings-loader.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "foldlings-loader.gif"; sourceTree = "<group>"; };
 		F1C6BBE01B27BB4A0042A7F3 /* VFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFold.swift; sourceTree = "<group>"; };
 		F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "polygon-tutorial.mp4"; sourceTree = "<group>"; };
 		F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "vfold-tutorial.mp4"; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 		22C3F4AF19F332C500857C82 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F1C368C41B3E19460068DA19 /* foldlings-loader.gif */,
 				F1D36F371B34A3F8003316C9 /* polygon-tutorial.mp4 */,
 				F1D36F381B34A3F8003316C9 /* vfold-tutorial.mp4 */,
 				F1D36F391B34A3F8003316C9 /* boxfold-tutorial.mp4 */,
@@ -1118,6 +1121,7 @@
 				F1BB8E2A1AF56F7E006800CB /* vfold-selected-icon.png in Resources */,
 				22C3F4C019F33FF200857C82 /* print.jpeg in Resources */,
 				F1BB8E2B1AF56F7E006800CB /* polygon-selected-icon.png in Resources */,
+				F1C368C51B3E19460068DA19 /* foldlings-loader.gif in Resources */,
 				F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */,
 				F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */,
 				F1AAFE1A1B01A99E0044AB00 /* ec2-2014-09-01.json in Resources */,

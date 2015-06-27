@@ -15,28 +15,32 @@ class HelpfulTipViewController: UIViewController{
     @IBOutlet var tipLabel: UILabel!
     @IBOutlet var tipImage: UIImageView!
     @IBOutlet var tipText: UITextView!
-
+    @IBOutlet var loadingImage: UIImageView!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        println(randomTip())
-//        tipText.text = randomTip()["text"]
 
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-    
-        let tip = randomTip()
         
+        let loadingGifPath  = NSBundle.mainBundle().pathForResource("foldlings-loader", ofType: "gif")!
+        let url = NSURL(fileURLWithPath: loadingGifPath)
+        loadingImage.image = UIImage.animatedImageWithAnimatedGIFURL(url)
+
+        let tip = randomTip()
+        // set tip text * image
         tipLabel.text = tip["label"]
+        // this gets around the font size resetting bug
         tipText.selectable = true
         tipText.text = tip["text"]
         tipText.selectable = false
         let imageName = tip["image"]
         
+        // converta all videos to gifs
+        // this takes a while, so it's better to just use a gif if you can
         if imageName!.pathExtension == "mp4"{
-            
-            println("success")
             let videoPath  = NSBundle.mainBundle().pathForResource(imageName!.stringByDeletingPathExtension, ofType: "mp4")!
             let url = NSURL(fileURLWithPath: videoPath)
             let length = tip["videoLength"]
@@ -44,6 +48,14 @@ class HelpfulTipViewController: UIViewController{
             let gifData = NSData(contentsOfURL: gifURL!)
 
             tipImage.image = UIImage.animatedImageWithAnimatedGIFURL(gifURL)
+        }
+        // load gifs
+        else if imageName?.pathExtension == "gif"{
+            println("gif")
+            let loadingGifPath  = NSBundle.mainBundle().pathForResource(imageName!.stringByDeletingPathExtension, ofType: "gif")!
+            let url = NSURL(fileURLWithPath: loadingGifPath)
+            tipImage.image = UIImage.animatedImageWithAnimatedGIFURL(url)
+
         }
         else{
         tipImage.image = UIImage(named: tip["image"]!)
