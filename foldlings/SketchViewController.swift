@@ -135,9 +135,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         if(restoredFromSave){
             sketchView.sketch = ArchivedEdges.loadSaved(dex: index)
-            sketchView.sketch.getPlanes()
-            sketchView.forceRedraw()
         }
+        
+        sketchView.sketch.getPlanes()
+        sketchView.forceRedraw()
+
         self.title = sketchView.sketch.name
 
     }

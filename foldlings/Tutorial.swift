@@ -8,6 +8,7 @@
 
 import Foundation
 import MediaPlayer
+import UAAppReviewManager//import Armchair
 
 class Tutorial {
     class func video(named:String) -> MPMoviePlayerViewController{

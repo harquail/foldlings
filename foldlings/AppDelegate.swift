@@ -6,7 +6,7 @@
 // All Rights Reserved
 
 import UIKit
-//import Armchair
+import UAAppReviewManager//import Armchair
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

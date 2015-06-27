@@ -96,10 +96,8 @@ class ArchivedEdges : NSObject, NSCoding {
                         sktch.masterFeature = feature as? MasterCard //this will always succeed
                     }
                     // add features
-                    sktch.addFeatureToSketch(feature, parent: feature.parent ?? feature)
-//                    sktch.getPlanes()
+                    sktch.addFeatureToSketch(feature, parent: feature.parent ?? feature, shouldGetPlanes:false)
                 }
-
                 return sktch
             }
         }

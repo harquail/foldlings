@@ -6,6 +6,7 @@
 // All Rights Reserved
 
 import UIKit
+import AFMInfoBanner
 
 class SketchView: UIView {
     
@@ -59,7 +60,7 @@ class SketchView: UIView {
         path = UIBezierPath()
         path.lineWidth = kLineWidth
         sketch = Sketch(at: 0, named:"unitialized")
-        sketch.getPlanes()
+//        sketch.getPlanes()
         incrementalImage = bitmap(grayscale: false)
         
     }
