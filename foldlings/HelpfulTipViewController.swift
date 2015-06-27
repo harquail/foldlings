@@ -30,7 +30,7 @@ class HelpfulTipViewController: UIViewController{
         loadingImage.image = UIImage.animatedImageWithAnimatedGIFURL(url)
 
         let tip = randomTip()
-        // set tip text * image
+        // set tip text & image
         tipLabel.text = tip["label"]
         // this gets around the font size resetting bug
         tipText.selectable = true
