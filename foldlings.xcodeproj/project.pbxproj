@@ -35,6 +35,7 @@
 		F11B552019FDFCE200169A07 /* foldlings_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F11B551E19FDFCE200169A07 /* foldlings_background.jpg */; };
 		F11B552119FDFCE200169A07 /* fold_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F11B551F19FDFCE200169A07 /* fold_logo.png */; };
 		F12152771AC88DE400921BBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D319E24BEC00BB77F1 /* Main.storyboard */; };
+		F12F0DA51B3F40B8000F61D7 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F0DA41B3F40B8000F61D7 /* Color.swift */; };
 		F13811981B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */; };
 		F13AD4E21ABF549500372898 /* BoxFold.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E11ABF549500372898 /* BoxFold.swift */; };
 		F13AD4E91ABF78D100372898 /* MasterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13AD4E81ABF78D100372898 /* MasterCard.swift */; };
@@ -252,6 +253,7 @@
 		F10FACBF1A1D2774006541BF /* ArchivedEdges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArchivedEdges.swift; path = ../ArchivedEdges.swift; sourceTree = "<group>"; };
 		F11B551E19FDFCE200169A07 /* foldlings_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foldlings_background.jpg; sourceTree = "<group>"; };
 		F11B551F19FDFCE200169A07 /* fold_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fold_logo.png; sourceTree = "<group>"; };
+		F12F0DA41B3F40B8000F61D7 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		F13811971B1EA6980075DB2A /* APIKeysAndOtherSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeysAndOtherSecrets.swift; sourceTree = "<group>"; };
 		F13AD4E11ABF549500372898 /* BoxFold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFold.swift; sourceTree = "<group>"; };
 		F13AD4E81ABF78D100372898 /* MasterCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCard.swift; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 				223F8EEF1A05C76A00DA4405 /* CGPathElementObj.m */,
 				F1E16E9019E460C700BC27C4 /* Math.swift */,
 				22198BE91A007B9D00FCEDD1 /* Constants.swift */,
+				F12F0DA41B3F40B8000F61D7 /* Color.swift */,
 				F17C93D619E24BEC00BB77F1 /* Images.xcassets */,
 				F17C93D819E24BEC00BB77F1 /* LaunchScreen.xib */,
 				22C0D68C1A059C6C00D521CA /* foldlings-Bridging-Header.h */,
@@ -1268,6 +1271,7 @@
 				F1C6BBE11B27BB4A0042A7F3 /* VFold.swift in Sources */,
 				220750F11A1ED2B60028F6DC /* Array+InsertionIntoSorted.swift in Sources */,
 				F15472D41A97AA74009E36A6 /* FoldFeature.swift in Sources */,
+				F12F0DA51B3F40B8000F61D7 /* Color.swift in Sources */,
 				F153BBA21A1EAED50029FDF2 /* SVGTextUtilities.m in Sources */,
 				F153BBA41A1EAED50029FDF2 /* SVGgh.m in Sources */,
 				F1BE6A871AC1EF4A00B99C8F /* BitmapRotationManipulator.m in Sources */,
