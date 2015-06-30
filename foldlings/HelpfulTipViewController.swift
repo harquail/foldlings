@@ -19,7 +19,6 @@ class HelpfulTipViewController: UIViewController{
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
     }
     
     override func viewWillAppear(animated: Bool) {
