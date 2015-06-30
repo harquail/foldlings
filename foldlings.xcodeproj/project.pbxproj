@@ -108,7 +108,6 @@
 		F17C93D019E24BEC00BB77F1 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93CF19E24BEC00BB77F1 /* art.scnassets */; };
 		F17C93D219E24BEC00BB77F1 /* FoldPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93D119E24BEC00BB77F1 /* FoldPreviewViewController.swift */; };
 		F17C93D719E24BEC00BB77F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17C93D619E24BEC00BB77F1 /* Images.xcassets */; };
-		F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */; };
 		F17E1B0D1A2BF19900191DE5 /* FoldlingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */; };
 		F1824ECF1A19E525008B0F66 /* last.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECC1A19E525008B0F66 /* last.png */; };
 		F1824ED01A19E525008B0F66 /* middle.png in Resources */ = {isa = PBXBuildFile; fileRef = F1824ECD1A19E525008B0F66 /* middle.png */; };
@@ -194,16 +193,6 @@
 		F1ED7A0B1A7F5FB8004F6573 /* check_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A091A7F5FB8004F6573 /* check_grey@2x.png */; };
 		F1ED7A0C1A7F5FB8004F6573 /* x_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F1ED7A0A1A7F5FB8004F6573 /* x_grey@2x.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		F17C93E019E24BEC00BB77F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F17C93C019E24BEC00BB77F1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F17C93C719E24BEC00BB77F1;
-			remoteInfo = foldlings;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F1174DBE1A33E8DC00FDEACF /* Copy Frameworks */ = {
@@ -373,7 +362,6 @@
 		F17C93D419E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F17C93D619E24BEC00BB77F1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F17C93D919E24BEC00BB77F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = foldlingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F17C93E419E24BEC00BB77F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F17C93E519E24BEC00BB77F1 /* foldlingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foldlingsTests.swift; sourceTree = "<group>"; };
 		F17E1B0C1A2BF19900191DE5 /* FoldlingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldlingCell.swift; sourceTree = "<group>"; };
@@ -509,13 +497,6 @@
 				F160F3BD1A31473800B469CA /* Security.framework in Frameworks */,
 				F160F3BB1A31463900B469CA /* libFlurry_5.4.0.a in Frameworks */,
 				35770320AE36D38A0B6EF491 /* Pods.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F17C93DC19E24BEC00BB77F1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,7 +813,6 @@
 			isa = PBXGroup;
 			children = (
 				F17C93C819E24BEC00BB77F1 /* foldlings.app */,
-				F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1032,24 +1012,6 @@
 			productReference = F17C93C819E24BEC00BB77F1 /* foldlings.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F17C93DE19E24BEC00BB77F1 /* foldlingsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F17C93EC19E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlingsTests" */;
-			buildPhases = (
-				F17C93DB19E24BEC00BB77F1 /* Sources */,
-				F17C93DC19E24BEC00BB77F1 /* Frameworks */,
-				F17C93DD19E24BEC00BB77F1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F17C93E119E24BEC00BB77F1 /* PBXTargetDependency */,
-			);
-			name = foldlingsTests;
-			productName = foldlingsTests;
-			productReference = F17C93DF19E24BEC00BB77F1 /* foldlingsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1062,11 +1024,6 @@
 					F17C93C719E24BEC00BB77F1 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = 66J7R72XF5;
-					};
-					F17C93DE19E24BEC00BB77F1 = {
-						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = 66J7R72XF5;
-						TestTargetID = F17C93C719E24BEC00BB77F1;
 					};
 				};
 			};
@@ -1084,7 +1041,6 @@
 			projectRoot = "";
 			targets = (
 				F17C93C719E24BEC00BB77F1 /* foldlings */,
-				F17C93DE19E24BEC00BB77F1 /* foldlingsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1158,13 +1114,6 @@
 				F1B9AE7A1A06B37D00265AAE /* data.plist in Resources */,
 				F1AAFE1F1B01A99E0044AB00 /* machinelearning-2014-12-12.json in Resources */,
 				F145829D1A79E89000760799 /* track_button.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F17C93DD19E24BEC00BB77F1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1338,23 +1287,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F17C93DB19E24BEC00BB77F1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F17C93E619E24BEC00BB77F1 /* foldlingsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F17C93E119E24BEC00BB77F1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F17C93C719E24BEC00BB77F1 /* foldlings */;
-			targetProxy = F17C93E019E24BEC00BB77F1 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F17C93D319E24BEC00BB77F1 /* Main.storyboard */ = {
@@ -1464,8 +1397,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Foldlings;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings",
@@ -1491,7 +1424,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f9e58afa-3c5a-4234-9d80-fe5c784bca47";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -1503,8 +1436,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Foldlings;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Nook Harquail (TRA32M28V2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nook Harquail (TRA32M28V2)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/foldlings",
@@ -1530,48 +1463,8 @@
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f9e58afa-3c5a-4234-9d80-fe5c784bca47";
 				SWIFT_OBJC_BRIDGING_HEADER = "foldlings/foldlings-Bridging-Header.h";
-			};
-			name = Release;
-		};
-		F17C93ED19E24BEC00BB77F1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = foldlingsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "92d66082-a05e-48f3-8246-d0db0d602208";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
-			};
-			name = Debug;
-		};
-		F17C93EE19E24BEC00BB77F1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = foldlingsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "92d66082-a05e-48f3-8246-d0db0d602208";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/foldlings.app/foldlings";
 			};
 			name = Release;
 		};
@@ -1592,15 +1485,6 @@
 			buildConfigurations = (
 				F17C93EA19E24BEC00BB77F1 /* Debug */,
 				F17C93EB19E24BEC00BB77F1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		F17C93EC19E24BEC00BB77F1 /* Build configuration list for PBXNativeTarget "foldlingsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F17C93ED19E24BEC00BB77F1 /* Debug */,
-				F17C93EE19E24BEC00BB77F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
