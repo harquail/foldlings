@@ -58,7 +58,7 @@ class PathIntersections {
         // the output of this is multiple clusters of very similar points...
         // so, cluster similar points together for convenience
         if let points = returnee{
-            returnee = clusterPoints(returnee!).map({round($0)})
+            returnee = clusterPoints(returnee!)
         }
         
         return returnee

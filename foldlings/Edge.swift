@@ -77,8 +77,8 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     }
     
     init(start:CGPoint,end:CGPoint, path:UIBezierPath){
-        self.start = round(start)
-        self.end = round(end)
+        self.start = start
+        self.end = end
         self.path = path
         self.colorOverride = getRandomColor(0.8)
     }
@@ -117,9 +117,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     /// makes a straight edge between two points, constructing the path as well
     class func straightEdgeBetween(start:CGPoint,end:CGPoint, kind:Edge.Kind, feature: FoldFeature) -> Edge{
         let path = UIBezierPath()
-        path.moveToPoint(round(start))
-        path.addLineToPoint(round(end))
-        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
+        path.moveToPoint(start)
+        path.addLineToPoint(end)
+        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?
