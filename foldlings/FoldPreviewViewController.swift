@@ -355,6 +355,10 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             return nil
         }
         
+        // if plane is a hole, add the path to parent
+        if plane.kind == .Hole{
+            return nil
+        }
         // put a check here for !nil node
         var node = plane.node
         

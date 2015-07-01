@@ -439,7 +439,7 @@ class Sketch : NSObject, Printable  {
         // are the children of a previous feature
         for feature in self.features.reverse(){
             if (feature.containsPoint(point)){
-                println("found feature: \(feature)")
+               // println("found feature: \(feature)")
                 return feature
             }
         }

@@ -315,7 +315,10 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
+                    //shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
+                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint())
+                    println("parent: \(shape.parent)")
+
                 }
                 
 //                shape.shiftEdgeEndpoints()
@@ -328,7 +331,7 @@ class SketchView: UIView {
 
                 sketch.currentFeature = nil
                 forceRedraw()
-                println("\\ ALMOST COINCIDENT: \\")
+                //println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
                                 
             default:
