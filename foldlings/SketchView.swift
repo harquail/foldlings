@@ -264,7 +264,7 @@ class SketchView: UIView {
             case UIGestureRecognizerState.Changed:
                     let shape = sketch.currentFeature as! FreeForm
                 // if it's been a few microseconds since we tried to add a point
-                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.5
+                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.01
                 
                 if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
                     var touchPoint: CGPoint = gesture.locationInView(self)
@@ -768,6 +768,8 @@ class SketchView: UIView {
                                 edge.path.stroke()
                             }
                             
+                            
+                         
                             CGContextRestoreGState(context);
                             
                             //draw path
@@ -786,9 +788,17 @@ class SketchView: UIView {
                         }
                         
                         if let shape = feature as? FreeForm{
-//                            for point in shape.intersections{
-//                                drawCircle(point, color:UIColor.blueColor())
-//                            }
+                            
+                            println(shape.interpolationPoints)
+                            //draw control points
+                            for point in  convertToCGPoints(shape.interpolationPoints as! [NSValue])  {
+                                drawCircle(point, color:UIColor.redColor(),radius:3.0)
+                            }
+                            
+                            
+                            for point in shape.intersections{
+                                drawCircle(point, color:UIColor.blueColor(),radius:3.0)
+                            }
                             
                         }
                      
