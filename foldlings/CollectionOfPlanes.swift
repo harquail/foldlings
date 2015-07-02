@@ -53,28 +53,17 @@ class CollectionOfPlanes: Printable, Hashable {
             
             plane.feature = top.feature
             let feature = plane.feature
-
-            if isCounterClockwise(plane.path)
-            {
-                
-                planes.append(plane)
-                                //TODO: Mark edges as clean?
-                plane.edges.map({$0.feature = feature})
-                
-                //insert sorted by top edge of the plane into featurePlanes list
-                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
-                
-                
-                let foldCount = plane.foldcount
-                
-                switch(foldCount)
-                {
-                case 0:
-                    // no folds is a hole
-                    plane.kind = .Hole
-                    // TODO: Abstract
-                    // this plane's parent is it's feature parent
+            
+            if plane.path.isClockwise(){
+                // save the counterClockwise holes and add to parent plane
+                // if a hole
+                if !top.isMaster && plane.foldcount == 0{
+                    
+                    // get parent plane and add to parent's children
                     var featureParentPlanes = plane.feature.parent!.featurePlanes
+                    planes.append(plane)
+                    //TODO: Mark edges as clean?
+                    plane.edges.map({$0.feature = feature})
                     // get the start point of hole
                     var start = plane.edges[0].start
                     // TODO: use filter here
@@ -87,10 +76,52 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.parent = p
                             // doesn't matter where it goes in the list, could still insert into ordered
                             p.children.append(plane)
-                            // could insert a break out of the loop here
+                            // holes need to have the same orientation as its parent
+//                            plane.orientation = p.orientation// TODO: check for nil here
+//                            plane.NegNinety = p.NegNinety
+                            // insert a break out of the loop here
                         }
                     }
-                    // append path to parent plane
+                }
+            }
+                
+            else
+            {
+//                planes.append(plane)
+//                //TODO: Mark edges as clean?
+//                plane.edges.map({$0.feature = feature})
+//                
+//                //insert sorted by top edge of the plane into featurePlanes list
+//                feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                
+                
+                let foldCount = plane.foldcount
+                
+                switch(foldCount)
+                {
+                case 0:
+                    continue
+                    //                    // no folds is a hole
+                    //                    plane.kind = .Hole
+                    //                    // TODO: Abstract
+                    //                    // this plane's parent is it's feature parent
+                    //                    var featureParentPlanes = plane.feature.parent!.featurePlanes
+                    //                    // get the start point of hole
+                    //                    var start = plane.edges[0].start
+                    //                    // TODO: use filter here
+                    //                    for p in featureParentPlanes{
+                    //                        // test if point is in plane
+                    //                        var path = p.path
+                    //                        if path.containsPoint(start){
+                    //                            //println ("\nFeatureplane: \(p)\n")
+                    //                            // set parent plane that satisfies the hitTest
+                    //                            plane.parent = p
+                    //                            // doesn't matter where it goes in the list, could still insert into ordered
+                    //                            p.children.append(plane)
+                    //                            // could insert a break out of the loop here
+                    //                        }
+                    //                    }
+                    //                    // append path to parent plane
                     
                 case 1:
                     // find fold (either bottom or top)
@@ -140,6 +171,14 @@ class CollectionOfPlanes: Printable, Hashable {
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                     }
+                    
+                    planes.append(plane)
+                    //TODO: Mark edges as clean?
+                    plane.edges.map({$0.feature = feature})
+                    
+                    //insert sorted by top edge of the plane into featurePlanes list
+                    feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
+                    
                 default:
                     
                     // more than one fold is a plane
@@ -151,7 +190,7 @@ class CollectionOfPlanes: Printable, Hashable {
                         if top.kind != .Fold{
                             plane.masterTop = true
                             masterTop = plane
-                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                            plane.color = getOrientationColorTrans(plane.orientation == .Horizontal)
                         }
                             
                             // else, it is masterBottom
@@ -161,7 +200,7 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.masterBottom = true
                             masterBottom = plane
                             plane.orientation = .Horizontal
-                            plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                            plane.color = getOrientationColorTrans(plane.orientation == .Horizontal)
                         }
                         
                     }
@@ -187,36 +226,19 @@ class CollectionOfPlanes: Printable, Hashable {
                         if parent!.orientation == .Vertical {
                             plane.orientation = .Horizontal
                         }
-                        plane.color = getOrientationColor(plane.orientation == .Horizontal)
+                        plane.color = getOrientationColorTrans(plane.orientation == .Horizontal)
                         
                     }
+                    planes.append(plane)
+                    //TODO: Mark edges as clean?
+                    plane.edges.map({$0.feature = feature})
+                    
+                    //insert sorted by top edge of the plane into featurePlanes list
+                    feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                     
                 }
             }
-                // save the counterClockwise holes and add to parent plane
-            else if !top.isMaster {
-                // if a hole
-                if plane.foldcount == 0{
-                    // get parent plane and add to parent's children
-                    var featureParentPlanes = plane.feature.parent!.featurePlanes
-                    // get the start point of hole
-                    var start = plane.edges[0].start
-                    // TODO: use filter here
-                    for p in featureParentPlanes{
-                        // test if point is in plane
-                        var path = p.path
-                        if path.containsPoint(start){
-                            //println ("\nFeatureplane: \(p)\n")
-                            // set parent plane that satisfies the hitTest
-                            plane.parent = p
-                            // doesn't matter where it goes in the list, could still insert into ordered
-                            p.children.append(plane)
-                            // insert a break out of the loop here
-                        }
-                    }
-                    
-                }
-            }
+            
         }
     }
     

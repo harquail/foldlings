@@ -98,7 +98,6 @@ class Plane: Printable, Hashable
                 var cEdges = c.edges
                 // add hole edges to plane path
                 cEdges.map({self.path.appendPath($0.path)})
-                self.sanitizePath()
             }
         }
         

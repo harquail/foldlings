@@ -317,7 +317,6 @@ class SketchView: UIView {
                 {
                     //shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
                     shape.parent = sketch.featureAt(point: shape.path!.firstPoint())
-                    println("parent: \(shape.parent)")
 
                 }
                 
