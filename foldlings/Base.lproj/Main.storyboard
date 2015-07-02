@@ -406,6 +406,7 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                     </view>
                     <navigationItem key="navigationItem" id="fBJ-DE-29n"/>
                     <connections>
@@ -434,6 +435,23 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hCr-Ki-erF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="331" y="56"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ksk-1P-xzX">
+            <objects>
+                <viewController id="lvP-5A-82g" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ik0-FW-joD"/>
+                        <viewControllerLayoutGuide type="bottom" id="gfx-Hz-XXu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ye3-Wf-AnQ">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ocv-QB-KJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

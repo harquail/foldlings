@@ -264,9 +264,10 @@ class SketchView: UIView {
             case UIGestureRecognizerState.Changed:
                     let shape = sketch.currentFeature as! FreeForm
                 // if it's been a few microseconds since we tried to add a point
-                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 0.01
-                
-                if(Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
+//                let multiplier = Float(CalculateVectorMagnitude(gesture.velocityInView(self))) * 4000000.0
+                let multiplier = Float(30)
+                 // TODO: remove short circuit
+                if(true || Float(shape.lastUpdated.timeIntervalSinceNow) < multiplier){
                     var touchPoint: CGPoint = gesture.locationInView(self)
                     shape.endPoint = touchPoint
                     //set the path to a curve through the points
@@ -717,7 +718,7 @@ class SketchView: UIView {
                     let c = plane.color
                     //set pleasing colors here based on orientation
                     c.setFill()
-                    plane.path.usesEvenOddFillRule = false
+                    plane.path.usesEvenOddFillRule = true
                     plane.path.fill()
                 }
                 
@@ -798,6 +799,12 @@ class SketchView: UIView {
                             
                             for point in shape.intersections{
                                 drawCircle(point, color:UIColor.blueColor(),radius:3.0)
+                            }
+                            
+                            for edge in (shape.featureEdges ?? []) {
+                                drawCircle(edge.start, color:UIColor.greenColor(),radius:6.0)
+                                drawCircle(edge.end, color:UIColor.greenColor(),radius:6.0)
+
                             }
                             
                         }
