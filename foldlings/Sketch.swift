@@ -629,7 +629,7 @@ class Sketch : NSObject, Printable  {
         if (feature.drivingFold != nil && healOnDelete) {
             self.healFoldsOccludedBy(feature)
         }
-        //        getPlanes()
+        //getPlanes()
     }
     
     /// debugging function to find points very near each other

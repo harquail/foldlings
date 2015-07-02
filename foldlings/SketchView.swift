@@ -196,8 +196,7 @@ class SketchView: UIView {
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
-                        
-                        self.sketch.getPlanes()
+
                         forceRedraw()
                     }
                     else if let box = tappedF as? BoxFold{
@@ -211,11 +210,6 @@ class SketchView: UIView {
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
-                        
-                        
-                        
-                        //                        sketch.refreshFeatureEdges()
-                        self.sketch.getPlanes()
                         
                         forceRedraw()
                         
@@ -432,7 +426,6 @@ class SketchView: UIView {
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                //sketch.getPlanes()
                 forceRedraw()
             }
             

@@ -44,41 +44,42 @@ class CollectionOfPlanes: Printable, Hashable {
     // based on the topfold
     func linkPlanes(planelist: [Plane])
     {
-        // println("planelist count: \(planelist.count)")
-        
         for (i, plane) in enumerate(planelist)
         {
+            // set top and bottom edge and the feature
             let bottom = plane.bottomEdge
             let top = plane.topEdge
             
             plane.feature = top.feature
             let feature = plane.feature
             
+            // Save the Clockwise holes and add to parent plane
             if plane.path.isClockwise(){
-                // save the counterClockwise holes and add to parent plane
-                // if a hole
+
                 if !top.isMaster && plane.foldcount == 0{
                     
                     // get parent plane and add to parent's children
                     var featureParentPlanes = plane.feature.parent!.featurePlanes
-                    planes.append(plane)
-                    //TODO: Mark edges as clean?
+                    // add to master plane list
+                    //planes.append(plane)
+                    
                     plane.edges.map({$0.feature = feature})
+                    
+                    // mark as hole
+                    plane.kind = .Hole
+
                     // get the start point of hole
                     var start = plane.edges[0].start
                     // TODO: use filter here
+                    // set parent plane that satisfies the hitTest
                     for p in featureParentPlanes{
                         // test if point is in plane
                         var path = p.path
                         if path.containsPoint(start){
-                            //println ("\nFeatureplane: \(p)\n")
-                            // set parent plane that satisfies the hitTest
                             plane.parent = p
-                            // doesn't matter where it goes in the list, could still insert into ordered
+                            // TODO: doesn't matter where it goes in the list, could still insert into ordered
                             p.children.append(plane)
-                            // holes need to have the same orientation as its parent
-//                            plane.orientation = p.orientation// TODO: check for nil here
-//                            plane.NegNinety = p.NegNinety
+                            // TODO: holes need to have the same orientation as its parent?
                             // insert a break out of the loop here
                         }
                     }
@@ -101,27 +102,6 @@ class CollectionOfPlanes: Printable, Hashable {
                 {
                 case 0:
                     continue
-                    //                    // no folds is a hole
-                    //                    plane.kind = .Hole
-                    //                    // TODO: Abstract
-                    //                    // this plane's parent is it's feature parent
-                    //                    var featureParentPlanes = plane.feature.parent!.featurePlanes
-                    //                    // get the start point of hole
-                    //                    var start = plane.edges[0].start
-                    //                    // TODO: use filter here
-                    //                    for p in featureParentPlanes{
-                    //                        // test if point is in plane
-                    //                        var path = p.path
-                    //                        if path.containsPoint(start){
-                    //                            //println ("\nFeatureplane: \(p)\n")
-                    //                            // set parent plane that satisfies the hitTest
-                    //                            plane.parent = p
-                    //                            // doesn't matter where it goes in the list, could still insert into ordered
-                    //                            p.children.append(plane)
-                    //                            // could insert a break out of the loop here
-                    //                        }
-                    //                    }
-                    //                    // append path to parent plane
                     
                 case 1:
                     // find fold (either bottom or top)

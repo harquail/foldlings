@@ -42,7 +42,7 @@ class Plane: Printable, Hashable
     var kind = Kind.Hole
     var orientation = Orientation.Vertical
     var color = getRandomColor(0.5)
-    //var color = getOrientaionColor(self.orientation)
+    //var color = getOrientaionColorTrans(self.orientation)
     var edges : [Edge]!
     var path = UIBezierPath()
     var feature:FoldFeature!
@@ -131,58 +131,6 @@ class Plane: Printable, Hashable
         return node!
         //}
     }
-    //TODO: set topfold and bottom when creating plane so don't need to recalc always and based on features
-    /// the fold with minimum y height in a plane
-    //    func bottomEdge(tab:Bool = true) {
-    //        // loop through edges
-    //        // if topEdge is not set then, set it
-    //        // else set bottomEdge
-    //        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
-    //    }
-    //
-    //    func topEdge(tab:Bool = true) {
-    //        // loop through edges
-    //        // if topEdge is not set then, set it
-    //        // else set bottomEdge
-    //        // NO THIS IS SHOULD BE CALCULATED IN GETPLANES
-    //
-    //    }
-    //
-    //    func bottomFold(tab:Bool = true) -> Edge? {
-    //
-    //        var minEdge:Edge? = nil
-    //
-    //        var minY:CGFloat = 0.0
-    //        for edge in edges {
-    //            if(edge.kind ==  .Fold ) {
-    //                if(edge.start.y > minY) {
-    //                    minEdge = edge
-    //                    minY = edge.start.y
-    //                }
-    //            }
-    //        }
-    //
-    //        return minEdge
-    //    }
-    //
-    //    /// the fold with maximum y height in a plane
-    //    // TODO: Topfold based on ordered horizontal folds???
-    //    func topFold(tab:Bool = true) -> Edge? {
-    //
-    //        var maxEdge:Edge? = nil
-    //
-    //        var maxY:CGFloat = CGFloat.max
-    //        for edge in edges {
-    //            if(edge.kind == .Fold ) {
-    //                if(edge.start.y < maxY) {
-    //                    maxEdge = edge
-    //                    maxY = edge.start.y
-    //                }
-    //            }
-    //        }
-    //
-    //        return maxEdge
-    //    }
     
     /// close the path and remove MoveToPoint instructions
     func sanitizePath(){
@@ -193,14 +141,11 @@ class Plane: Printable, Hashable
     
     /// closes and combines paths into one
     /// remove kCGPathElementMoveToPoints in a path, to make it convertible to SCNNode
-    //TODO: Look into this for weirdness in the path
     //TODO: convert this to use performanceBezier
     private func sanitizedPath(path:UIBezierPath) -> UIBezierPath{
-        //        println("started sanitizing:\n")
-        //        println(path)
+
         
         let elements = path.getPathElements()
-        //        println(elements)
         if(elements.isEmpty){
             return UIBezierPath()
         }
@@ -255,28 +200,6 @@ class Plane: Printable, Hashable
     {
         return self.edges.contains(edge)
     }
-    
-    //check if edge is in the plane
-    // to find the parent of the plane
-    // just use twin's plane? for the fold
-    //TODO: change this to return parent or find where this is called
-    //    func containerPlane(planes:[Plane]) -> Plane? {
-    //
-    //        for (i,potentialParent) in enumerate(planes){
-    //
-    //            //skip it if we're testing against ourselves
-    //            if potentialParent == self {
-    //                continue
-    //            }
-    //            //TODO: use filter here
-    //            for edge in self.edges{
-    //                if(potentialParent.path.containsPoint(edge.start)){
-    //                    return potentialParent
-    //                }
-    //            }
-    //        }
-    //        return nil
-    //    }
     
     
 }
