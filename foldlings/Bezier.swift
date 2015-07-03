@@ -721,28 +721,31 @@ class Bezier{
         withUnsafePointer(&first, { (ptr: UnsafePointer<CGPathElement>) -> Void in
             returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
         })
-       returnee.extend("\t last:")
+        returnee.extend("\t last:")
         withUnsafePointer(&last, { (ptr: UnsafePointer<CGPathElement>) -> Void in
             returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
         })
         return returnee
     }
     
-    class func selfIntersections(path:UIBezierPath){
-    
+    class func repairSelfIntersections(path:UIBezierPath) -> UIBezierPath{
+        
+        println("original path count: \(path.elementCount())")
+        var outPath = UIBezierPath()
         // allocate enough room for 4 points per element
-        var pI:CGPoint = CGPointZero
-        var pIPrev:CGPoint = CGPointZero
-
-        var pJ:CGPoint = CGPointZero
-        var pJPrev:CGPoint = CGPointZero
+        var pI:CGPoint = path.firstPoint()
+        var pIPrev:CGPoint = path.firstPoint()
+        
+        var pJ:CGPoint = path.firstPoint()
+        var pJPrev:CGPoint = path.firstPoint()
         
         for (var i=0; i<path.elementCount(); i++){
             
             pIPrev = pI
+            var iHasProblem = false
             // this assigns pI
             let elemntI = path.elementAtIndex(i, associatedPoints: &pI)
-
+            
             for (var j=0; j<path.elementCount(); j++){
                 if(i == j){
                     continue
@@ -752,26 +755,83 @@ class Bezier{
                 // this assigns pJ
                 let elemntJ = path.elementAtIndex(j, associatedPoints: &pJ)
                 
-                let intersection = ccpPointOfSegmentIntersection(pIPrev, pI, pJPrev, pJ)
+                var intersection = ccpPointOfSegmentIntersection(pIPrev, pI, pJPrev, pJ)
                 if(!CGPointEqualToPoint(intersection, CGPointZero)){
                     
                     let intersectionAtEnd = [pIPrev,pI,pJPrev,pJ].find({CGPointEqualToPoint($0,intersection)})
                     if let intersect = intersectionAtEnd{
                         continue
                     }
+                    
+                    
+                    func printElement(el:CGPathElement){
+                        
+                        switch(el.type.value){
+                        case kCGPathElementMoveToPoint.value:
+                            println("moveTo")
+                        case kCGPathElementAddLineToPoint.value:
+                            println("line")
+                        default:
+                            println("unexpected")
+                        }
+                        
+                    }
+                    
+                    //                    /// REPAIR SELF INTERSECTIONS
+                    //
+                    //                    //take closest of pI, pIPrev
+                    //                    let pIDist = ccpDistance(pI, intersection)
+                    //                    let pIPrevDist = ccpDistance(pIPrev, intersection)
+                    //
+                    //                    if(pIDist < pIPrevDist){
+                    //                        path.setAssociatedPoints(&intersection, atIndex: i)
+                    //                        println("modding pI")
+                    //                    }
+                    //                    else{
+                    //                        println("modding pIPrev")
+                    //                        path.setAssociatedPoints(&intersection, atIndex: i-1)
+                    //                    }
+                    //
+                    //
+                    //                    //take closest of pJ, pJPrev
+                    //                    let pJDist = ccpDistance(pJ, intersection)
+                    //                    let pJPrevDist = ccpDistance(pJPrev, intersection)
+                    //
+                    //                    if(pJDist < pJPrevDist){
+                    //                        path.setAssociatedPoints(&intersection, atIndex: j)
+                    //                        println("modding pJ")
+                    //                    }
+                    //                    else{
+                    //                        println("modding pJPrev")
+                    //                        path.setAssociatedPoints(&intersection, atIndex: j-1)
+                    //                    }
+                    iHasProblem = true
+                    
                     println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
                     println(intersection)
                     println("!! pI: \(pI) | pJ \(pJ) !!")
                     println("----------------------")
-
+                    
+                    /// formatted for wolfram alpha
+                    //                println("segment(\(pIPrev),\(pI)) | segment(\(pJPrev),\(pJ))")
+                    
                 }
                 else{
-//                    print(".")
                 }
-                
+            }
+            if(!iHasProblem){
+                switch(elemntI.type.value){
+                case kCGPathElementMoveToPoint.value:
+                    outPath.moveToPoint(pI)
+                case kCGPathElementAddLineToPoint.value:
+                    outPath.addLineToPoint(pI)
+                default:
+                    println("unexpected")
+                }
             }
         }
-        
+        println("new path count: \(outPath.elementCount())")
+        return outPath
     }
     
 }

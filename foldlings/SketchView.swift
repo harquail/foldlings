@@ -790,7 +790,6 @@ class SketchView: UIView {
                         
                         if let shape = feature as? FreeForm{
                             
-                            println(shape.interpolationPoints)
                             //draw control points
                             for point in  convertToCGPoints(shape.interpolationPoints as! [NSValue])  {
                                 drawCircle(point, color:UIColor.redColor(),radius:3.0)

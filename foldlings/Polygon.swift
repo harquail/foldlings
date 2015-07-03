@@ -391,7 +391,7 @@ class Polygon:FoldFeature{
                 }
             }
         }
-        println(intersections)
+//        println(intersections)
         return intersections
     }
 }

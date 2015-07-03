@@ -16,7 +16,7 @@ class FoldFeature: NSObject, Printable
 {
     
     override var hashValue: Int { get {
-        println(featureEdges)
+//        println(featureEdges)
         return featureEdges?.description.hashValue ?? self.description.hashValue
         }
     }
