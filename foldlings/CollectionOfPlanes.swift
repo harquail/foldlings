@@ -127,6 +127,8 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.orientation = .Horizontal
                             
                         }
+                        plane.color = getOrientationColorTrans(plane.orientation == .Horizontal)
+
                     }
                         
                     else if bottom.kind == .Fold
