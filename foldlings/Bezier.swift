@@ -184,14 +184,14 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
 //    
 //}
 
-///// smooths a uibezierpath using douglas peucker method
-//func smoothPath(path:UIBezierPath) -> UIBezierPath
-//{
-//    let elements = path.getPathElements()
-//    let points = getSubdivisions(elements)
-//    let npaths = smoothPoints(points)
-//    return pathFromPoints(npaths)
-//}
+/// smooths a uibezierpath using douglas peucker method
+func smoothPath(path:UIBezierPath) -> UIBezierPath
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements)
+    let npaths = smoothPoints(points)
+    return pathFromPoints(npaths)
+}
 
 /// smooths a set of point using douglas peucker method
 func smoothPoints(points:[CGPoint], epsilon:Float = 0.5) -> [CGPoint]
@@ -726,6 +726,52 @@ class Bezier{
             returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
         })
         return returnee
+    }
+    
+    class func selfIntersections(path:UIBezierPath){
+    
+        // allocate enough room for 4 points per element
+        var pI:CGPoint = CGPointZero
+        var pIPrev:CGPoint = CGPointZero
+
+        var pJ:CGPoint = CGPointZero
+        var pJPrev:CGPoint = CGPointZero
+        
+        for (var i=0; i<path.elementCount(); i++){
+            
+            pIPrev = pI
+            // this assigns pI
+            let elemntI = path.elementAtIndex(i, associatedPoints: &pI)
+
+            for (var j=0; j<path.elementCount(); j++){
+                if(i == j){
+                    continue
+                }
+                
+                pJPrev = pJ
+                // this assigns pJ
+                let elemntJ = path.elementAtIndex(j, associatedPoints: &pJ)
+                
+                let intersection = ccpPointOfSegmentIntersection(pIPrev, pI, pJPrev, pJ)
+                if(!CGPointEqualToPoint(intersection, CGPointZero)){
+                    
+                    let intersectionAtEnd = [pIPrev,pI,pJPrev,pJ].find({CGPointEqualToPoint($0,intersection)})
+                    if let intersect = intersectionAtEnd{
+                        continue
+                    }
+                    println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
+                    println(intersection)
+                    println("!! pI: \(pI) | pJ \(pJ) !!")
+                    println("----------------------")
+
+                }
+                else{
+//                    print(".")
+                }
+                
+            }
+        }
+        
     }
     
 }

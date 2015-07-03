@@ -298,6 +298,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         //println("\(recurseCount) : \(plane.topEdge)")
         
         var node = plane.lazyNode()
+//        println(node)
         
         // add fade-in key for holes
         if(plane.kind != .Hole){
