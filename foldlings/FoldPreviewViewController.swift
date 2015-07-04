@@ -298,7 +298,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         //println("\(recurseCount) : \(plane.topEdge)")
         
         var node = plane.lazyNode()
-//        println(node)
         
         // add fade-in key for holes
         if(plane.kind != .Hole){
@@ -319,7 +318,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         }
         node.geometry?.firstMaterial = m
         masterSphere.geometry?.firstMaterial = m
-        
         
         //        //make sphere invisible
         //        let transparentMaterial = SCNMaterial()

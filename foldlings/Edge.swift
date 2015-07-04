@@ -80,7 +80,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = start
         self.end = end
         self.path = path
-        self.colorOverride = getRandomColor(0.8)
+//        self.colorOverride = plane.color
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {

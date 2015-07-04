@@ -728,9 +728,10 @@ class Bezier{
         return returnee
     }
     
-    class func repairSelfIntersections(path:UIBezierPath) -> UIBezierPath{
+    class func repairSelfIntersections(path:UIBezierPath, recursionDepth:Int = 5) -> UIBezierPath{
         
-        println("original path count: \(path.elementCount())")
+        
+//        println("original path count: \(path.elementCount())")
         var outPath = UIBezierPath()
         // allocate enough room for 4 points per element
         var pI:CGPoint = path.firstPoint()
@@ -738,6 +739,8 @@ class Bezier{
         
         var pJ:CGPoint = path.firstPoint()
         var pJPrev:CGPoint = path.firstPoint()
+        
+        var intersectionsCount = 0
         
         for (var i=0; i<path.elementCount(); i++){
             
@@ -777,36 +780,8 @@ class Bezier{
                         
                     }
                     
-                    //                    /// REPAIR SELF INTERSECTIONS
-                    //
-                    //                    //take closest of pI, pIPrev
-                    //                    let pIDist = ccpDistance(pI, intersection)
-                    //                    let pIPrevDist = ccpDistance(pIPrev, intersection)
-                    //
-                    //                    if(pIDist < pIPrevDist){
-                    //                        path.setAssociatedPoints(&intersection, atIndex: i)
-                    //                        println("modding pI")
-                    //                    }
-                    //                    else{
-                    //                        println("modding pIPrev")
-                    //                        path.setAssociatedPoints(&intersection, atIndex: i-1)
-                    //                    }
-                    //
-                    //
-                    //                    //take closest of pJ, pJPrev
-                    //                    let pJDist = ccpDistance(pJ, intersection)
-                    //                    let pJPrevDist = ccpDistance(pJPrev, intersection)
-                    //
-                    //                    if(pJDist < pJPrevDist){
-                    //                        path.setAssociatedPoints(&intersection, atIndex: j)
-                    //                        println("modding pJ")
-                    //                    }
-                    //                    else{
-                    //                        println("modding pJPrev")
-                    //                        path.setAssociatedPoints(&intersection, atIndex: j-1)
-                    //                    }
                     iHasProblem = true
-                    
+                    intersectionsCount++
                     println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
                     println(intersection)
                     println("!! pI: \(pI) | pJ \(pJ) !!")
@@ -826,12 +801,24 @@ class Bezier{
                 case kCGPathElementAddLineToPoint.value:
                     outPath.addLineToPoint(pI)
                 default:
-                    println("unexpected")
+                    println("unexpected in line has problem")
                 }
             }
         }
-        println("new path count: \(outPath.elementCount())")
-        return outPath
+        
+        if(intersectionsCount == 0  || recursionDepth == 0){
+            if(intersectionsCount != 0){
+                println(path)
+                println("a bad thing happened :(")
+                println("the path was beyond repair...")
+                println()
+
+            }
+            return path
+        }
+        else{
+            return repairSelfIntersections(outPath,recursionDepth: recursionDepth - 1)
+        }
     }
     
 }

@@ -235,8 +235,6 @@ class Plane: Printable, Hashable
         outPath.closePath()
         outPath = linePathFromPoints(getSubdivisions(elements, increments: 10.0))
         outPath = Bezier.repairSelfIntersections(outPath)
-//        outPath = Bezier.repairSelfIntersections(outPath)
-//        outPath = Bezier.repairSelfIntersections(outPath)
         outPath.closePath()
 
 //        outPath.flatness = 7.0;
