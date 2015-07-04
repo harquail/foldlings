@@ -169,18 +169,18 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     {
         //println("pinch")
         var currentAngle = zeroDegrees
-
+        
         // set animation here
         var nextAngle = 1/(Float(recognizer.scale)/2.0) //+ currentAngle //*Float(180/M_PI)
         
         if (currentAngle + nextAngle) > oneSixtyDegrees {
             currentAngle = oneSixtyDegrees
         }
-        
+            
         else if (currentAngle + nextAngle < zeroDegrees){
             currentAngle = zeroDegrees
         }
-        
+            
         else
         { // should be between 0 and 160
             currentAngle = currentAngle + nextAngle
@@ -202,7 +202,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
                     
                 }
             }
- 
+            
             
         }
     }
@@ -355,10 +355,11 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             return nil
         }
         
-        // if plane is a hole, add the path to parent
+        // if plane is a hole, add the path to parent later, but skip it here
         if plane.kind == .Hole{
             return nil
         }
+        
         // put a check here for !nil node
         var node = plane.node
         
@@ -367,11 +368,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             translate = true
         }
         
-        
-        // add fade-in key for holes
-//        if(plane.kind != .Hole){
-//            node!.addAnimation(fadeIn(), forKey: "fade in")
-//        }
         
         var useBottom = (recurseCount == 0)//check if we hit top plane
         let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
@@ -389,16 +385,14 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             m.diffuse.contents = plane.color
         }
         node!.geometry?.firstMaterial = m
-
-        if hill{
-            // set to neg90
-            plane.NegNinety = true
-        }
+        
+        // determines how the plane will fold based on hierarchy
+        plane.NegNinety = hill //set to neg90
         
         
         var children = plane.children
         visited.append(plane)
-
+        
         // loop through the adj starting with top plane
         for p in children
         {

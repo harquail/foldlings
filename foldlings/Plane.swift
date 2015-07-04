@@ -90,7 +90,6 @@ class Plane: Printable, Hashable
         node = SCNNode()
         var shape : SCNShape
         
-        
         // loop through children
         for c in children {
             // if hole then just add path to parent plane
