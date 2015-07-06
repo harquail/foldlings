@@ -170,7 +170,7 @@ class FoldFeature: NSObject, Printable
     /// modifications that can be made to the current feature
     func tapOptions() -> [FeatureOption]?
     {
-        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges, FeatureOption.ColorPlaneEdges]
+        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges, FeatureOption.ColorPlaneEdges, FeatureOption.PrintSinglePlane]
     }
     
     /// the unique fold heights in the feature (ignores duplicates)

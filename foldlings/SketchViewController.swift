@@ -113,7 +113,6 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         case .MovePoints:
             println("implement move points")
         case .ColorPlaneEdges:
-            println("implement color plane edges")
             let p = sketchView.sketch.planeHitTest(point)
             
             if let planeHit = p{
@@ -123,7 +122,12 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                 }
                 sketchView.forceRedraw()
             }
-            
+      case .PrintSinglePlane:
+        let p = sketchView.sketch.planeHitTest(point)
+        
+        if let planeHit = p{
+            println(planeHit)
+            }
 //        case .Symmetrize:
 //            println("implement make symmetrical")
         }
