@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BoxFold:FoldFeature{
+class BoxFold:FoldFeature {
     
     override func getEdges() -> [Edge]
     {
@@ -25,8 +25,6 @@ class BoxFold:FoldFeature{
         //         s2 |     h2  | e2
         //            - - - - - E
         //
-        
-        
         if let returnee = featureEdges {
             return returnee
         }
@@ -34,7 +32,6 @@ class BoxFold:FoldFeature{
         var returnee:[Edge] = []
         let h0 = Edge.straightEdgeBetween(startPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Fold, feature: self)
         let h2 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, endPoint!.y), end:endPoint!, kind: .Fold, feature: self)
-        
         
         //if there's a driving fold
         horizontalFolds = [h0,h2]
@@ -44,27 +41,26 @@ class BoxFold:FoldFeature{
         returnee.append(h2)
         
         //if there's a driving fold, create the centerfold for a boxfold
-        if let master = drivingFold{
+        if let master = drivingFold {
             
+            // calculare where to place middle fold h1
             let masterDist = endPoint!.y - master.start.y
             let h1 = Edge.straightEdgeBetween(CGPointMake(startPoint!.x, startPoint!.y + masterDist), end:CGPointMake(endPoint!.x, startPoint!.y + masterDist), kind: .Fold, feature: self)
             returnee.append(h1)
             horizontalFolds.insertIntoOrdered(h1, ordering: {$0.start.y < $1.start.y})
             
-            // this is fine because the box is a rectangle; in the future we'll have to get intersections
-            // getting intersections on every drag might be too expensive...
+            // the driving fold, temporarily added to horizontal folds because it affects vertical cuts
             let tempMasterStart = CGPointMake(startPoint!.x, master.start.y)
             let tempMasterEnd = CGPointMake(endPoint!.x, master.start.y)
             let tempMaster = Edge.straightEdgeBetween(tempMasterStart, end: tempMasterEnd, kind: .Fold, feature:self)
             horizontalFolds.insertIntoOrdered(tempMaster, ordering: {$0.start.y < $1.start.y})
             
             //all hfolds are "drawn" left to right
-            //this recreates the vertical cuts
             var foldsToAppend = [Edge]()
-            
+            // make vertical cuts
+            // got to folds.count -1, because we look at the next edge each time
             for (var i = 0; i < (horizontalFolds.count - 1); i++)
             {
-                
                 let leftPoint = horizontalFolds[i].start
                 let nextLeftPoint = horizontalFolds[i + 1].start
                 
@@ -80,7 +76,6 @@ class BoxFold:FoldFeature{
             
             horizontalFolds.remove(tempMaster)
         }
-            
             // otherwise, we only have 4 edges
             //
             //               h0
@@ -89,7 +84,6 @@ class BoxFold:FoldFeature{
             //            |      |
             //            -------E
             //               h2
-            
         else
         {
             let s0 = Edge.straightEdgeBetween(endPoint!, end:CGPointMake(endPoint!.x, startPoint!.y), kind: .Cut, feature: self)
@@ -108,18 +102,16 @@ class BoxFold:FoldFeature{
     // for box folds, this always creates two folds
     override func splitFoldByOcclusion(edge: Edge) -> [Edge] {
         
-        
         let start = [edge.start,edge.end].minBy({$0.x})!
         let end = [edge.start,edge.end].maxBy({$0.x})!
         var returnee = [Edge]()
         
-        //make two pieces between the end points of the split fold and the place the intersect with box fold
+        //make two pieces between the end points of the split fold and place the intersect with box fold
         let piece = Edge.straightEdgeBetween(start, end: CGPointMake(self.startPoint!.x, start.y), kind: .Fold, feature: self.parent!)
         let piece2 = Edge.straightEdgeBetween(CGPointMake(self.endPoint!.x, start.y), end: end, kind: .Fold, feature: self.parent!)
         
         returnee = [piece,piece2]
         return returnee
-        
     }
     
     // bounding box is between start & end point corners
@@ -131,33 +123,28 @@ class BoxFold:FoldFeature{
     }
     
     
-//
-/// boxFolds can be deleted
-/// folds can be added only to leaves
-override func tapOptions() -> [FeatureOption]?{
-    var options:[FeatureOption] = super.tapOptions() ?? []
-    options.append(.DeleteFeature)
-    if(self.isLeaf()){
-        options.append(.MoveFolds);
+    /// boxFolds can be deleted
+    /// folds can be added only to leaves
+    override func tapOptions() -> [FeatureOption]?{
+        var options:[FeatureOption] = super.tapOptions() ?? []
+        options.append(.DeleteFeature)
+        if(self.isLeaf()){
+            options.append(.MoveFolds);
+        }
+        return options
     }
     
-    return options
+    //converts a boxfold into a freeform shape
+    func toFreeForm() -> FreeForm{
+        var shape = FreeForm(start: self.startPoint!)
+        
+        shape.path = UIBezierPath(rect: self.boundingBox()!)
+        shape.children = self.children
+        shape.parent = self.parent
+        
+        return shape
+    }
     
-
-}
-    
-//converts a boxfold into a freeform shape
-func toFreeForm() -> FreeForm{
-    var shape = FreeForm(start: self.startPoint!)
-    
-    shape.path = UIBezierPath(rect: self.boundingBox()!)
-    shape.children = self.children
-    shape.parent = self.parent
-
-    
-    return shape
-}
-
     override func validate() -> (passed: Bool, error: String) {
         let validity = super.validate()
         if(!validity.passed){
