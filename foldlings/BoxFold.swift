@@ -124,7 +124,7 @@ class BoxFold:FoldFeature {
     
     
     /// boxFolds can be deleted
-    /// folds can be added only to leaves
+    /// folds can be moved only on leaves
     override func tapOptions() -> [FeatureOption]?{
         var options:[FeatureOption] = super.tapOptions() ?? []
         options.append(.DeleteFeature)
@@ -141,6 +141,8 @@ class BoxFold:FoldFeature {
         shape.path = UIBezierPath(rect: self.boundingBox()!)
         shape.children = self.children
         shape.parent = self.parent
+        
+        //TODO: recreate horiziontal folds by intersection
         
         return shape
     }
