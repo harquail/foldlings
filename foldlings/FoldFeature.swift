@@ -130,7 +130,6 @@ class FoldFeature: NSObject, Printable
             endPoint = bottomRight
         }
         
-        //        horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
     }
     
     
