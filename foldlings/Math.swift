@@ -55,8 +55,8 @@ func makeMid(a:CGFloat, b:CGFloat) -> CGFloat{
 
 // rounds a cgpoint
  func round(point:CGPoint) -> CGPoint{
-//    return point
-    return CGPointMake(round(point.x), round(point.y))
+//    round to the nearest 0.5
+    return CGPointMake(round(point.x * 2)/2, round(point.y * 2)/2)
 }
 
 func degToRad(x:CGFloat) -> CGFloat{

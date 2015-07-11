@@ -732,7 +732,7 @@ class Bezier{
         
         
 //        println("original path count: \(path.elementCount())")
-        var outPath = UIBezierPath()
+//        var outPath = UIBezierPath()
         // allocate enough room for 4 points per element
         var pI:CGPoint = path.firstPoint()
         var pIPrev:CGPoint = path.firstPoint()
@@ -746,6 +746,7 @@ class Bezier{
             
             pIPrev = pI
             var iHasProblem = false
+            var intersectedJ:[Int] = []
             // this assigns pI
             let elemntI = path.elementAtIndex(i, associatedPoints: &pI)
             
@@ -767,6 +768,7 @@ class Bezier{
                     }
                     
                     
+                    
                     func printElement(el:CGPathElement){
                         
                         switch(el.type.value){
@@ -781,6 +783,7 @@ class Bezier{
                     }
                     
                     iHasProblem = true
+                    intersectedJ.append(j)
                     intersectionsCount++
                     println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
                     println(intersection)
@@ -795,14 +798,10 @@ class Bezier{
                 }
             }
             if(!iHasProblem){
-                switch(elemntI.type.value){
-                case kCGPathElementMoveToPoint.value:
-                    outPath.moveToPoint(pI)
-                case kCGPathElementAddLineToPoint.value:
-                    outPath.addLineToPoint(pI)
-                default:
-                    println("unexpected in line has problem")
-                }
+
+            }
+            else{
+                println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
             }
         }
         
@@ -817,7 +816,8 @@ class Bezier{
             return path
         }
         else{
-            return repairSelfIntersections(outPath,recursionDepth: recursionDepth - 1)
+            return path
+//            return repairSelfIntersections(outPath,recursionDepth: recursionDepth - 1)
         }
     }
     

@@ -106,7 +106,7 @@ class FreeForm:FoldFeature
     func freeFormEdgesSplitByIntersections() ->[Edge]{
         
         /// splits the path into multiple edges based on intersection points
-        var paths = Bezier.pathSplitByPoints(path!,breakers: intersections)
+        var paths = Bezier.pathSplitByPoints(path!,breakers: intersections.map({round($0)}))
         paths = filterPathsOutsideBounds(paths)
         
         var edges:[Edge] = []
