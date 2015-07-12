@@ -53,21 +53,21 @@ class CollectionOfPlanes: Printable, Hashable {
             let feature = plane.feature
             
             // Save the Clockwise holes and add to parent plane
+            // For 3d rendering
             if plane.path.isClockwise(){
-
+                
                 if !top.isMaster && plane.foldcount == 0{
                     
                     // get parent plane and add to parent's children
                     var featureParentPlanes = plane.feature.parent!.featurePlanes
                     // add to master plane list
-                    //planes.append(plane)
                     for p in plane.edges{
-                    p.feature = feature
+                        p.feature = feature
                     }
                     
                     // mark as hole
                     plane.kind = .Hole
-
+                    
                     // get the start point of hole
                     var start = plane.edges[0].start
                     // set parent plane that satisfies the hitTest
@@ -93,10 +93,12 @@ class CollectionOfPlanes: Printable, Hashable {
                 
                 switch(foldCount)
                 {
+                    //Holes for 2D rendering
                 case 0:
                     plane.kind = .Hole
                     plane.color = UIColor.whiteColor()
                     
+                    //Flaps
                 case 1:
                     // find fold (either bottom or top)
                     // check top edge, check bottom edge, check which one is a fold
@@ -119,18 +121,17 @@ class CollectionOfPlanes: Printable, Hashable {
                             plane.masterBottom = true
                             masterBottom = plane
                             plane.orientation = .Horizontal
-                            
+                            masterTop.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                         }
                         plane.color = getOrientationColorTrans(plane.orientation == .Horizontal)
-
+                        
                     }
                         
+                        // set any children/parent relationship
                     else if bottom.kind == .Fold
                     {
                         // set parent plane
                         let parent = bottom.twin.plane
-                        
-                        
                         plane.parent = parent
                         // insert into parent's children
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
@@ -146,11 +147,12 @@ class CollectionOfPlanes: Printable, Hashable {
                         parent!.children.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)} )
                     }
                     
-
+                    
                     
                     //insert sorted by top edge of the plane into featurePlanes list
                     feature.featurePlanes.insertIntoOrdered(plane, ordering: {makeMid($0.topEdge.start.y, $0.topEdge.end.y) < makeMid($1.topEdge.start.y, $1.topEdge.end.y)})
                     
+                    // Plane
                 default:
                     
                     // more than one fold is a plane
@@ -176,10 +178,10 @@ class CollectionOfPlanes: Printable, Hashable {
                         }
                         
                     }
-                        
-                        // set the parent and the children
-                        // make sure that this doesn't include MasterBottom
-                    else if top.kind == .Fold
+                    
+                    // set the parent and the children
+                    // make sure that this doesn't include MasterBottom
+                    if top.kind == .Fold
                     {
                         // set parent plane
                         let parent = top.twin.plane
@@ -224,7 +226,7 @@ class CollectionOfPlanes: Printable, Hashable {
         for p in plane.children {
             removePlane(p)
         }
-
+        
         if plane.parent != nil {
             plane.parent.children.remove(plane)
         }
@@ -239,7 +241,7 @@ class CollectionOfPlanes: Printable, Hashable {
         self.planes =  []
         //}
     }
-
+    
     
 }
 

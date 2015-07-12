@@ -38,7 +38,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
-    //var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
     var debugColor = false
@@ -235,23 +234,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         
-        // create and add a light to the scene
-        //        let lightNode = SCNNode()
-        //        lightNode.light = SCNLight()
-        //        println(lightNode)
-        //        lightNode.light!.type = SCNLightTypeOmni
-        //        lightNode.light!.color = UIColor.whiteColor()
-        //        lightNode.light!.attenuationStartDistance = 100
-        //        lightNode.light!.attenuationEndDistance = 1000
-        //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //        scene.rootNode.addChildNode(lightNode)
-        //        // create and add an ambient light to the scene
-        //        let ambientLightNode = SCNNode()
-        //        ambientLightNode.light = SCNLight()
-        //        ambientLightNode.light!.type = SCNLightTypeAmbient
-        //        ambientLightNode.light!.color = UIColor.whiteColor()
-        //        scene.rootNode.addChildNode(ambientLightNode)
-        
         scene.physicsWorld.gravity.y = 0.0
         
         //create the sceneShpere
@@ -263,35 +245,21 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
         
         visited = []
-        //notMyChild = [Int: [Plane]]()
+        //        println("\ntransition\n")
+        //        for p in planes.planes{
+        //            println("plane: \(p)")
+        //            println("node: \(p.node)")
+        //        }
+        var topPlane = SCNNode()
+        
         //printTree(planes.masterTop)
+        //        println("top: \(planes.masterTop!)\n")
         if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
+            topPlane = topPlaneSphere
         }
-        
-        
-        // make bottomPlane manually
-        // get bottomPlane from planes list
-        if var bottomPlane = planes.masterBottom {
-            //  put a check here for !nil node
-            var bottomPlaneNode = bottomPlane.node
-            var translate = false
-            
-            if bottomPlane.node == nil{
-                bottomPlaneNode = bottomPlane.makeNode()
-                translate = true
-            }
-            
-            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode!, bottom: false)
-            sceneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode!)
-            
-            if (translate){
-                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
-            }
-            bottomPlaneNode!.addAnimation(fadeIn(), forKey: "fade in")
-        }
-        
+        println("children")
+        sceneSphere.childNodes.map({println($0)})
         
         
         // set the scene to the view
@@ -347,7 +315,31 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         var translate = false
         
         // base case if bottom
+        //println("\n\(plane)\n")
+//        println("\n\(plane.masterTop)\n")
+//        println("\n\(plane.children.count)\n")
+        
+        
+        
         if plane.masterBottom {
+            var bottomPlaneNode = plane.node
+            
+            if bottomPlaneNode == nil{
+                println("bottom being made")
+                bottomPlaneNode = plane.makeNode()
+                translate = true
+
+            }
+            let masterSphere = parentSphere(plane, node:bottomPlaneNode!, bottom: false)
+            sceneSphere.addChildNode(masterSphere)
+            masterSphere.addChildNode(bottomPlaneNode!)
+
+            
+            if translate {
+                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+
+            }
+            
             return nil
         }
         // base case already visited or going back up
@@ -356,7 +348,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         }
         
         // if plane is a hole, add the path to parent later, but skip it here
-        if plane.kind == .Hole{
+        if plane.kind == .Hole {
             return nil
         }
         
@@ -364,6 +356,8 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         var node = plane.node
         
         if plane.node == nil{
+            println("\n\(plane.masterTop)\n")
+            println("plane being made")
             node = plane.makeNode()
             translate = true
         }
@@ -399,6 +393,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             let rc = recurseCount + 1
             if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
+                println(childSphere)
                 masterSphere.addChildNode(childSphere)
                 if (translate){
                     undoParentTranslate(masterSphere, child: childSphere)
@@ -458,7 +453,8 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         let masterSphere = makeSphere(atPoint: anchorStart)
         
         let m = SCNMaterial()
-        m.diffuse.contents = UIColor.clearColor()
+        //        m.diffuse.contents = UIColor.clearColor()
+        m.diffuse.contents = plane.color
         masterSphere.geometry?.firstMaterial = m
         
         return masterSphere
