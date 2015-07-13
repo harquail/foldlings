@@ -641,9 +641,6 @@ class Sketch : NSObject, Printable  {
             return
         }
         
-      
-
-        
         for edge in fEdges
         {
             if (!self.edges.contains(edge))// and if twin has a feature
