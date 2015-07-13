@@ -99,18 +99,7 @@ class Plane: Printable, Hashable
                 cEdges.map({self.path.appendPath($0.path)})
             }
         }
-        
-        // holes are white, and extruded to prevent z-fighting
-        // check if child is a hole
-        // if so, then add to the path
-        //        if(self.kind == .Hole){
-        //            shape = SCNShape(path: path, extrusionDepth: 5.5)
-        //            material.diffuse.contents = UIColor.whiteColor()
-        //            material.shininess = 0
-        //
-        //        }
-        //        else{
-        // planes are white (for now, random color)
+
         
         shape = SCNShape(path: path, extrusionDepth: 5)
         

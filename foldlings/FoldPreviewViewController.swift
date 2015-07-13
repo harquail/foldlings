@@ -257,6 +257,11 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
             topPlane = topPlaneSphere
+            
+//            println("top")
+//            println("\(topPlaneSphere.position.x), \(topPlaneSphere.position.y), \(topPlaneSphere.position.z)")
+//            println("scene")
+//            println("\(sceneSphere.position.x), \(sceneSphere.position.y), \(sceneSphere.position.z)")
         }
         println("children")
         sceneSphere.childNodes.map({println($0)})
@@ -293,8 +298,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     /// this undoes any translation between the child and parent
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
-        child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
-        
+        child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)        
     }
     
     func printTree(plane: Plane){
@@ -324,23 +328,27 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         if plane.masterBottom {
             var bottomPlaneNode = plane.node
             
-            if bottomPlaneNode == nil{
-                println("bottom being made")
-                bottomPlaneNode = plane.makeNode()
-                translate = true
-
-            }
-            let masterSphere = parentSphere(plane, node:bottomPlaneNode!, bottom: false)
-            sceneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode!)
-
-            
-            if translate {
-                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+            if bottomPlaneNode != nil{
+                return plane.node
 
             }
             
-            return nil
+//            if bottomPlaneNode == nil{
+////                println("bottom being made")
+//                bottomPlaneNode = plane.makeNode()
+////                translate = true
+////
+//            }
+//            let masterSphere = parentSphere(plane, node:bottomPlaneNode!, bottom: false)
+//            sceneSphere.addChildNode(masterSphere)
+//            masterSphere.addChildNode(bottomPlaneNode!)
+//
+//            
+////            if translate {
+//                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
+//
+//            //}
+            
         }
         // base case already visited or going back up
         if contains(visited, plane) {
