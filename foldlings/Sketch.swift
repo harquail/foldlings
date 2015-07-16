@@ -8,6 +8,8 @@
 import Foundation
 import CoreGraphics
 import UIKit
+import UAAppReviewManager
+import AFMInfoBanner
 
 class Sketch : NSObject, Printable  {
     
@@ -623,7 +625,7 @@ class Sketch : NSObject, Printable  {
     // add any feature edges that aren't
     // already in the sketch
     // create edges, if there are none
-    func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature)
+    func addFeatureToSketch(feature: FoldFeature, parent: FoldFeature, shouldGetPlanes:Bool = true)
     {
         // get the edges
         let fEdges = feature.getEdges()
@@ -639,9 +641,6 @@ class Sketch : NSObject, Printable  {
             return
         }
         
-      
-
-        
         for edge in fEdges
         {
             if (!self.edges.contains(edge))// and if twin has a feature
@@ -653,7 +652,9 @@ class Sketch : NSObject, Printable  {
         // set the parent/child relationship
         parent.children.append(feature)
         feature.parent = parent
-        getPlanes()
+        if(shouldGetPlanes){
+            getPlanes()
+        }
     }
     
     // removes any feature edges that aren't

@@ -66,7 +66,10 @@ class MasterCard:FoldFeature{
     
     override func tapOptions() -> [FeatureOption]?{
         
-        return [FeatureOption.PrintSketch]
+        var options:[FeatureOption] = super.tapOptions() ?? []
+        options.append(.PrintSketch)
+
+        return options
         
     }
     

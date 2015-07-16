@@ -80,7 +80,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.start = round(start)
         self.end = round(end)
         self.path = path
-        self.colorOverride = getRandomColor(0.8)
+//        self.colorOverride = plane.color
     }
     
     convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
@@ -119,7 +119,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         let path = UIBezierPath()
         path.moveToPoint(round(start))
         path.addLineToPoint(round(end))
-        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
+        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?

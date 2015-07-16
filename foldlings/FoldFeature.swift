@@ -16,7 +16,7 @@ class FoldFeature: NSObject, Printable
 {
     
     override var hashValue: Int { get {
-        println(featureEdges)
+//        println(featureEdges)
         return featureEdges?.description.hashValue ?? self.description.hashValue
         }
     }
@@ -130,7 +130,6 @@ class FoldFeature: NSObject, Printable
             endPoint = bottomRight
         }
         
-        //        horizontalFolds.sort({ (a: Edge, b:Edge) -> Bool in return a.start.y > b.start.y })
     }
     
     
@@ -170,7 +169,7 @@ class FoldFeature: NSObject, Printable
     /// modifications that can be made to the current feature
     func tapOptions() -> [FeatureOption]?
     {
-        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges]
+        return [FeatureOption.PrintPlanes, FeatureOption.PrintEdges, FeatureOption.ColorPlaneEdges, FeatureOption.PrintSinglePlane]
     }
     
     /// the unique fold heights in the feature (ignores duplicates)
@@ -253,7 +252,7 @@ class FoldFeature: NSObject, Printable
         
         var valid = true
         if(!tooShortEdges().filter({$0.kind == Edge.Kind.Fold}).isEmpty){
-            return (false,"Edges too short")
+//            return (false,"Edges too short")
         }
         println("valid")
         return (true,"")

@@ -65,7 +65,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
                 for option in options{
                     // add a menu item with handler for each option
                     alertController.addAction(UIAlertAction(title: option.rawValue, style: .Default, handler: { alertAction in
-                        self.handleTapOption(f, option: option)
+                        self.handleTapOption(f, option: option, point: touchPoint)
                     }))
                     
                 }
@@ -83,7 +83,7 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
     
     
     /// do the thing specified by the option
-    func handleTapOption(feature:FoldFeature, option:FeatureOption){
+    func handleTapOption(feature:FoldFeature, option:FeatureOption, point:CGPoint){
         
         Flurry.logEvent("tap option: \(option.rawValue)")
 
@@ -112,6 +112,22 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
             print(sketchView.sketch)
         case .MovePoints:
             println("implement move points")
+        case .ColorPlaneEdges:
+            let p = sketchView.sketch.planeHitTest(point)
+            
+            if let planeHit = p{
+                for e in planeHit.edges{
+                    e.colorOverride = planeHit.color
+                    e.twin.colorOverride = planeHit.color
+                }
+                sketchView.forceRedraw()
+            }
+      case .PrintSinglePlane:
+        let p = sketchView.sketch.planeHitTest(point)
+        
+        if let planeHit = p{
+            println(planeHit)
+            }
 //        case .Symmetrize:
 //            println("implement make symmetrical")
         }
@@ -135,9 +151,11 @@ class SketchViewController: UIViewController, UIPopoverPresentationControllerDel
         
         if(restoredFromSave){
             sketchView.sketch = ArchivedEdges.loadSaved(dex: index)
-            sketchView.sketch.getPlanes()
-            sketchView.forceRedraw()
         }
+        
+        sketchView.sketch.getPlanes()
+        sketchView.forceRedraw()
+
         self.title = sketchView.sketch.name
 
     }
