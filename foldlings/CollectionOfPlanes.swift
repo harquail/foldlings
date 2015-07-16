@@ -71,16 +71,17 @@ class CollectionOfPlanes: Printable, Hashable {
                     // get the start point of hole
                     var start = plane.edges[0].start
                     // set parent plane that satisfies the hitTest
-                    loop: for p in featureParentPlanes{
+                    for p in featureParentPlanes{
                         // test if point is in plane
                         var path = p.path
                         if path.containsPoint(start){
                             plane.parent = p
                             p.children.append(plane)
-                            break loop
+                            
                         }
                     }
                 }
+                
             }
                 
             else

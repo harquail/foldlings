@@ -245,28 +245,16 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
         
         visited = []
-        //        println("\ntransition\n")
-        //        for p in planes.planes{
-        //            println("plane: \(p)")
-        //            println("node: \(p.node)")
-        //        }
+
         var topPlane = SCNNode()
         
-        //printTree(planes.masterTop)
-        //        println("top: \(planes.masterTop!)\n")
+        // create the entire plane acyclic graph using top plane
         if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
             topPlane = topPlaneSphere
-            
-//            println("top")
-//            println("\(topPlaneSphere.position.x), \(topPlaneSphere.position.y), \(topPlaneSphere.position.z)")
-//            println("scene")
-//            println("\(sceneSphere.position.x), \(sceneSphere.position.y), \(sceneSphere.position.z)")
+
         }
-        println("children")
-        sceneSphere.childNodes.map({println($0)})
-        
-        
+
         // set the scene to the view
         scnView.scene = scene
         
@@ -318,36 +306,12 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     {
         var translate = false
         
-        // base case if bottom
-        //println("\n\(plane)\n")
-//        println("\n\(plane.masterTop)\n")
-//        println("\n\(plane.children.count)\n")
-        
-        
-        
         if plane.masterBottom {
             var bottomPlaneNode = plane.node
             
             if bottomPlaneNode != nil{
                 return plane.node
-
             }
-            
-//            if bottomPlaneNode == nil{
-////                println("bottom being made")
-//                bottomPlaneNode = plane.makeNode()
-////                translate = true
-////
-//            }
-//            let masterSphere = parentSphere(plane, node:bottomPlaneNode!, bottom: false)
-//            sceneSphere.addChildNode(masterSphere)
-//            masterSphere.addChildNode(bottomPlaneNode!)
-//
-//            
-////            if translate {
-//                undoParentTranslate(masterSphere, child: bottomPlaneNode!)
-//
-//            //}
             
         }
         // base case already visited or going back up
@@ -364,8 +328,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         var node = plane.node
         
         if plane.node == nil{
-            println("\n\(plane.masterTop)\n")
-            println("plane being made")
             node = plane.makeNode()
             translate = true
         }
@@ -401,7 +363,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             let rc = recurseCount + 1
             if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
-                println(childSphere)
                 masterSphere.addChildNode(childSphere)
                 if (translate){
                     undoParentTranslate(masterSphere, child: childSphere)

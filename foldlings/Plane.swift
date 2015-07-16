@@ -99,7 +99,6 @@ class Plane: Printable, Hashable
                 cEdges.map({self.path.appendPath($0.path)})
             }
         }
-
         
         shape = SCNShape(path: path, extrusionDepth: 5)
         
