@@ -434,7 +434,7 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </slider>
             </objects>
-            <point key="canvasLocation" x="-473" y="85"/>
+            <point key="canvasLocation" x="-528" y="356"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="fxb-Oh-0Ll">

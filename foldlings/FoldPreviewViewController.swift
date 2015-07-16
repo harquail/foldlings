@@ -156,20 +156,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         return img
     }
     
-
-    // print nodes on tap
-    func handleTap(sender:UITapGestureRecognizer){
-        let location: CGPoint =  sender.locationInView(self.view)// for example from a tap gesture recognizer
-        let scnView = self.view as! SCNView
-        let hits = scnView.hitTest(location, options: nil)
-
-        if let tappedNode = hits?.first?.node {
-            println(tappedNode)
-        }
-    
-    }
-    
-    
     // log svgs to s3
     //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
     override func viewWillDisappear(animated: Bool) {
