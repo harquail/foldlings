@@ -121,7 +121,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         let path = UIBezierPath()
         path.moveToPoint(round(start))
         path.addLineToPoint(round(end))
-        return Edge(start: round(start), end: round(end), path: path, kind:kind, feature: feature)
+        return Edge(start: start, end: end, path: path, kind:kind, feature: feature)
     }
     
     // creates a copy of path?

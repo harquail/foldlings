@@ -18,6 +18,6 @@ enum FeatureOption:String {
     case PrintSketch = "Print Sketch"
     case PrintEdges = "Print Edges"
     case PrintPlanes = "Print Planes"
-//    case Symmetrize = "Make Symmetrical"
-
+    case PrintSinglePlane = "Print Single Plane"
+    case ColorPlaneEdges = "Color Plane Edges"
 }

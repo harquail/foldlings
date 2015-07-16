@@ -13,6 +13,7 @@ import MessageUI
 
 class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate {
     
+    
     /*************image variables***********/
     var bgImage:UIImage!
     var laserImage:UIImage!
@@ -154,6 +155,20 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         UIGraphicsEndImageContext();
         return img
     }
+    
+
+    // print nodes on tap
+    func handleTap(sender:UITapGestureRecognizer){
+        let location: CGPoint =  sender.locationInView(self.view)// for example from a tap gesture recognizer
+        let scnView = self.view as! SCNView
+        let hits = scnView.hitTest(location, options: nil)
+
+        if let tappedNode = hits?.first?.node {
+            println(tappedNode)
+        }
+    
+    }
+    
     
     // log svgs to s3
     //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
@@ -404,6 +419,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             scene.rootNode.addChildNode(makeSphere(atPoint: anchorEnd))
         }
     }
+    
     
     // this determines the parent sphere for the plane
     private func parentSphere(plane:Plane, node:SCNNode, bottom:Bool = true) -> SCNNode {

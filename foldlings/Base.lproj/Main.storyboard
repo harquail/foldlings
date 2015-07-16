@@ -20,6 +20,80 @@
             </objects>
             <point key="canvasLocation" x="-4290" y="-322"/>
         </scene>
+        <!--Tip-->
+        <scene sceneID="rBm-Eu-TlM">
+            <objects>
+                <viewController storyboardIdentifier="Tip" title="Tip" id="X6B-tj-K8G" customClass="HelpfulTipViewController" customModule="foldlings" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ihk-3K-vJx"/>
+                        <viewControllerLayoutGuide type="bottom" id="fgE-ra-V1o"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ajP-xo-8LO">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="foldlings_background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="gB0-oF-Ec8">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaU-oj-8uc">
+                                <rect key="frame" x="122" y="562" width="513" height="607"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="607" id="Obb-q5-Itb"/>
+                                    <constraint firstAttribute="width" constant="513" id="XxJ-Zt-8qU"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdT-Nh-xKC">
+                                <rect key="frame" x="85" y="50" width="598" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="598" id="mdN-la-GV2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="last.png" translatesAutoresizingMaskIntoConstraints="NO" id="OVX-P2-oQx">
+                                <rect key="frame" x="210" y="168" width="336" height="323"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="323" id="Gqx-Ck-E4I"/>
+                                    <constraint firstAttribute="width" constant="336" id="tda-0h-NXH"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold-load.gif" translatesAutoresizingMaskIntoConstraints="NO" id="dwD-cn-MGQ">
+                                <rect key="frame" x="328" y="752" width="100" height="100"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kdT-Nh-xKC" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="50" id="F19-zH-Rxo"/>
+                            <constraint firstItem="gB0-oF-Ec8" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" id="Kgv-yV-bE8"/>
+                            <constraint firstItem="gB0-oF-Ec8" firstAttribute="bottom" secondItem="fgE-ra-V1o" secondAttribute="top" id="LxV-iW-88I"/>
+                            <constraint firstItem="BaU-oj-8uc" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="122" id="W7U-2Y-Ndq"/>
+                            <constraint firstItem="BaU-oj-8uc" firstAttribute="top" secondItem="OVX-P2-oQx" secondAttribute="bottom" constant="71" id="g40-qN-i1q"/>
+                            <constraint firstItem="BaU-oj-8uc" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" constant="562" id="hTz-VP-iw0"/>
+                            <constraint firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="k9b-FZ-0Ik"/>
+                            <constraint firstItem="gB0-oF-Ec8" firstAttribute="top" secondItem="ajP-xo-8LO" secondAttribute="top" id="q7j-1S-2EZ"/>
+                            <constraint firstItem="OVX-P2-oQx" firstAttribute="centerX" secondItem="BaU-oj-8uc" secondAttribute="centerX" id="riU-Ax-3Hv"/>
+                            <constraint firstItem="kdT-Nh-xKC" firstAttribute="leading" secondItem="ajP-xo-8LO" secondAttribute="leading" constant="85" id="wbj-lz-Y8e"/>
+                            <constraint firstItem="gB0-oF-Ec8" firstAttribute="centerX" secondItem="kdT-Nh-xKC" secondAttribute="centerX" id="xkZ-6X-j3i"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="bRk-9A-kD0"/>
+                    <connections>
+                        <outlet property="loadingImage" destination="dwD-cn-MGQ" id="pcn-Qy-hzo"/>
+                        <outlet property="tipImage" destination="OVX-P2-oQx" id="DyC-7p-e90"/>
+                        <outlet property="tipLabel" destination="kdT-Nh-xKC" id="WA3-Uj-QvM"/>
+                        <outlet property="tipText" destination="BaU-oj-8uc" id="pxt-4g-h4D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S80-XA-tfM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3316" y="-2091"/>
+        </scene>
         <!--Splash View Controller-->
         <scene sceneID="POB-fl-LU2">
             <objects>
@@ -99,6 +173,17 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fold_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-Re-LAF">
                                 <rect key="frame" x="34" y="39" width="700" height="120"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0a-FI-GOG">
+                                <rect key="frame" x="345" y="947" width="77" height="62"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="36"/>
+                                <state key="normal" title="(TIP)">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="X6B-tj-K8G" kind="push" id="QEv-rh-xZf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -194,7 +279,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uac-vD-RqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-916" y="-1328"/>
+            <point key="canvasLocation" x="-276" y="-1408"/>
         </scene>
         <!--About View Controller-->
         <scene sceneID="ICt-1G-R6w">
@@ -367,14 +452,34 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hCr-Ki-erF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="331" y="56"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ksk-1P-xzX">
+            <objects>
+                <viewController id="lvP-5A-82g" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ik0-FW-joD"/>
+                        <viewControllerLayoutGuide type="bottom" id="gfx-Hz-XXu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ye3-Wf-AnQ">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ocv-QB-KJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
         <image name="box-fold-icon.png" width="100" height="125"/>
         <image name="check_green.png" width="49" height="49"/>
+        <image name="fold-load.gif" width="200" height="200"/>
         <image name="fold_logo.png" width="1423" height="325"/>
         <image name="foldlings_background.jpg" width="1536" height="1993"/>
         <image name="freeform-icon.png" width="100" height="125"/>
+        <image name="last.png" width="523" height="420"/>
         <image name="polygon-icon.png" width="100" height="125"/>
         <image name="print.jpeg" width="291" height="265"/>
         <image name="send.jpeg" width="400" height="345"/>

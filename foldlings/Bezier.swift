@@ -184,14 +184,14 @@ func pathFromPoints(path:[CGPoint]) -> UIBezierPath
 //    
 //}
 
-///// smooths a uibezierpath using douglas peucker method
-//func smoothPath(path:UIBezierPath) -> UIBezierPath
-//{
-//    let elements = path.getPathElements()
-//    let points = getSubdivisions(elements)
-//    let npaths = smoothPoints(points)
-//    return pathFromPoints(npaths)
-//}
+/// smooths a uibezierpath using douglas peucker method
+func smoothPath(path:UIBezierPath) -> UIBezierPath
+{
+    let elements = path.getPathElements()
+    let points = getSubdivisions(elements)
+    let npaths = smoothPoints(points)
+    return pathFromPoints(npaths)
+}
 
 /// smooths a set of point using douglas peucker method
 func smoothPoints(points:[CGPoint], epsilon:Float = 0.5) -> [CGPoint]
@@ -721,11 +721,104 @@ class Bezier{
         withUnsafePointer(&first, { (ptr: UnsafePointer<CGPathElement>) -> Void in
             returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
         })
-       returnee.extend("\t last:")
+        returnee.extend("\t last:")
         withUnsafePointer(&last, { (ptr: UnsafePointer<CGPathElement>) -> Void in
             returnee.extend("\t\t\(UIBezierPath().ob_descriptionForPathElement(ptr))")
         })
         return returnee
+    }
+    
+    class func repairSelfIntersections(path:UIBezierPath, recursionDepth:Int = 5) -> UIBezierPath{
+        
+        
+//        println("original path count: \(path.elementCount())")
+//        var outPath = UIBezierPath()
+        // allocate enough room for 4 points per element
+        var pI:CGPoint = path.firstPoint()
+        var pIPrev:CGPoint = path.firstPoint()
+        
+        var pJ:CGPoint = path.firstPoint()
+        var pJPrev:CGPoint = path.firstPoint()
+        
+        var intersectionsCount = 0
+        
+        for (var i=0; i<path.elementCount(); i++){
+            
+            pIPrev = pI
+            var iHasProblem = false
+            var intersectedJ:[Int] = []
+            // this assigns pI
+            let elemntI = path.elementAtIndex(i, associatedPoints: &pI)
+            
+            for (var j=0; j<path.elementCount(); j++){
+                if(i == j){
+                    continue
+                }
+                
+                pJPrev = pJ
+                // this assigns pJ
+                let elemntJ = path.elementAtIndex(j, associatedPoints: &pJ)
+                
+                var intersection = ccpPointOfSegmentIntersection(pIPrev, pI, pJPrev, pJ)
+                if(!CGPointEqualToPoint(intersection, CGPointZero)){
+                    
+                    let intersectionAtEnd = [pIPrev,pI,pJPrev,pJ].find({CGPointEqualToPoint($0,intersection)})
+                    if let intersect = intersectionAtEnd{
+                        continue
+                    }
+                    
+                    
+                    
+                    func printElement(el:CGPathElement){
+                        
+                        switch(el.type.value){
+                        case kCGPathElementMoveToPoint.value:
+                            println("moveTo")
+                        case kCGPathElementAddLineToPoint.value:
+                            println("line")
+                        default:
+                            println("unexpected")
+                        }
+                        
+                    }
+                    
+                    iHasProblem = true
+                    intersectedJ.append(j)
+                    intersectionsCount++
+                    println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
+                    println(intersection)
+                    println("!! pI: \(pI) | pJ \(pJ) !!")
+                    println("----------------------")
+                    
+                    /// formatted for wolfram alpha
+                    //                println("segment(\(pIPrev),\(pI)) | segment(\(pJPrev),\(pJ))")
+                    
+                }
+                else{
+                }
+            }
+            if(!iHasProblem){
+
+            }
+            else{
+                println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
+            }
+        }
+        
+        if(intersectionsCount == 0  || recursionDepth == 0){
+            if(intersectionsCount != 0){
+                println(path)
+                println("a bad thing happened :(")
+                println("the path was beyond repair...")
+                println()
+
+            }
+            return path
+        }
+        else{
+            return path
+//            return repairSelfIntersections(outPath,recursionDepth: recursionDepth - 1)
+        }
     }
     
 }

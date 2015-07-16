@@ -70,7 +70,7 @@ class FreeForm:FoldFeature
         }
         
         if let p = path{
-            let edge = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
+            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
             return [edge]
         }
             // else create a straight edge
@@ -116,7 +116,7 @@ class FreeForm:FoldFeature
             
             // check greater less than greater than top truncations heights
 
-            let e = Edge(start: round(p.firstPoint()), end: round(p.lastPoint()), path: p, kind: .Cut, isMaster: false, feature: self)
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
                 edges.append(e)
         }
         
@@ -199,7 +199,7 @@ class FreeForm:FoldFeature
                 var edgesToAdd:[Edge] = []
                 for (var i = 0; i<ps.count-1; i++){
                         //try making a straight edge between the points
-                        let edge = Edge.straightEdgeBetween(round(ps[i]), end: round(ps[i+1]), kind: .Fold, feature:self)
+                        let edge = Edge.straightEdgeBetween(ps[i], end: ps[i+1], kind: .Fold, feature:self)
                         // if the line's center is inside the path, add the edge and go to the next pair
                         if(testPathTwo.containsPoint(edge.path.center()) && ccpDistance(ps[i], ps[i + 1]) > kMinLineLength){
                             edgesToAdd.append(edge)
