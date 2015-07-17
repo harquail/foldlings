@@ -11,7 +11,7 @@ import SceneKit
 import Foundation
 import MessageUI
 
-class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate {
+class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate {
     
     
     /*************image variables***********/
@@ -33,12 +33,12 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     let thirtyDegreesNeg = Float(-M_PI/6.0)
     let tenDegrees = Float(M_PI/18.0)
     let tenDegreesNeg = Float(-M_PI/18.0)
+    let oneSixtyDegrees = Float(M_PI/1.124)
     
     /*****************scene variables*****************/
     var sceneSphere = SCNNode()
     
     var visited: [Plane] = [Plane]()
-    //var notMyChild: [Int:[Plane]] =  [Int : [Plane]]() //recursion level -> list of visited planes
     
     /********************color variables*************/
     var debugColor = false
@@ -56,9 +56,11 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         UIColor(hue: 0.5, saturation: 0.0, brightness: 1.0, alpha: 0.8)
     ]
     
-    /*****************buttons*****************/
+    /*****************buttons and gestures*****************/
     
     @IBOutlet var backToSketchButton: UIButton!
+    var pinch: UIPinchGestureRecognizer!
+    var pan: UIPanGestureRecognizer!
     
     /// back to sketch button clicked
     @IBAction func SketchViewButton(sender: UIButton) {
@@ -77,11 +79,12 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     }
     
     
+    
     /// pop up sharing dialog with an image to share
     /// the send to printer/laser cutter buttons
     func popupShare(image:UIImage, xposition:CGFloat){
         Flurry.logEvent("printed foldling svg")
-
+        
         //activity view controller to share that image
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
@@ -152,39 +155,78 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         UIGraphicsEndImageContext();
         return img
     }
-    /**************************Create the 3d scene***********************/
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        var gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-        self.view.addGestureRecognizer(gestureRecognizer)
-        makeScene()
-    }
-    
-
-    // print nodes on tap
-    func handleTap(sender:UITapGestureRecognizer){
-        let location: CGPoint =  sender.locationInView(self.view)// for example from a tap gesture recognizer
-        let scnView = self.view as! SCNView
-        let hits = scnView.hitTest(location, options: nil)
-
-        if let tappedNode = hits?.first?.node {
-            println(tappedNode)
-        }
-    
-    }
-    
     
     // log svgs to s3
     //TODO: probably want to remove or limit this when releasing to many people.  This could be a lot of data
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         let uploader = SecretlyUploadtoS3()
-        uploader.uploadToS3(svgString,named:"file")
+        uploader.uploadToS3(svgString,named:"\(name)")
     }
+    
+    
+    @IBAction func handlePinch(recognizer : UIPinchGestureRecognizer)
+    {
+        //println("pinch")
+        var currentAngle = zeroDegrees
+        
+        // set animation here
+        var nextAngle = 1/(Float(recognizer.scale)/2.0) //+ currentAngle //*Float(180/M_PI)
+        
+        if (currentAngle + nextAngle) > oneSixtyDegrees {
+            currentAngle = oneSixtyDegrees
+        }
+            
+        else if (currentAngle + nextAngle < zeroDegrees){
+            currentAngle = zeroDegrees
+        }
+            
+        else
+        { // should be between 0 and 160
+            currentAngle = currentAngle + nextAngle
+            // go through list of planes and add animation
+            for plane in planes.planes
+            {
+                
+                if plane.masterSphere != nil
+                {
+                    // determine how the plane bends (backwards/forwards)
+                    if plane.NegNinety
+                    {
+                        plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: -currentAngle)
+                    }
+                    else
+                    {
+                        plane.masterSphere!.rotation = SCNVector4(x: 1, y: 0, z: 0, w: currentAngle)
+                    }
+                    
+                }
+            }
+            
+            
+        }
+    }
+    
+    @IBAction func handlePan(recognizer : UIPanGestureRecognizer)
+    {
+        //println("pan")
+    }
+    /**************************Create the 3d scene***********************/
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        makeScene()
+    }
+    
     
     func makeScene(){
         // create a new scene
+        // retrieve the SCNView
+        let scnView = self.view as! SCNView
+        scnView.delegate = self
+        
+        // configure the view
+        scnView.backgroundColor = UIColor.whiteColor()
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -192,23 +234,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        
-        // create and add a light to the scene
-        //        let lightNode = SCNNode()
-        //        lightNode.light = SCNLight()
-        //        println(lightNode)
-        //        lightNode.light!.type = SCNLightTypeOmni
-        //        lightNode.light!.color = UIColor.whiteColor()
-        //        lightNode.light!.attenuationStartDistance = 100
-        //        lightNode.light!.attenuationEndDistance = 1000
-        //        lightNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        //        scene.rootNode.addChildNode(lightNode)
-        //        // create and add an ambient light to the scene
-        //        let ambientLightNode = SCNNode()
-        //        ambientLightNode.light = SCNLight()
-        //        ambientLightNode.light!.type = SCNLightTypeAmbient
-        //        ambientLightNode.light!.color = UIColor.whiteColor()
-        //        scene.rootNode.addChildNode(ambientLightNode)
         
         scene.physicsWorld.gravity.y = 0.0
         
@@ -221,40 +246,36 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         sceneSphere.rotation = SCNVector4(x: 1, y: -0.25, z: -0.25, w: fourtyFiveDegreesNeg + tenDegreesNeg + tenDegreesNeg + tenDegreesNeg)
         
         visited = []
-        //notMyChild = [Int: [Plane]]()
-        //printTree(planes.masterTop)
+
+        var topPlane = SCNNode()
+        
+        // create the entire plane acyclic graph using top plane
         if var topPlaneSphere = createPlaneTree(planes.masterTop!, hill: false, recurseCount: 0) {
             sceneSphere.addChildNode(topPlaneSphere)
+            topPlane = topPlaneSphere
+
         }
-        
-        
-        // make bottomPlane manually
-        // get bottomPlane from planes list
-        if var bottomPlane = planes.masterBottom {
-            let bottomPlaneNode = bottomPlane.lazyNode()
-            let masterSphere = parentSphere(bottomPlane, node:bottomPlaneNode, bottom: false)
-            sceneSphere.addChildNode(masterSphere)
-            masterSphere.addChildNode(bottomPlaneNode)
-            undoParentTranslate(masterSphere, child: bottomPlaneNode)
-            bottomPlaneNode.addAnimation(fadeIn(), forKey: "fade in")
-        }
-        
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        scnView.delegate = self
-        
+
         // set the scene to the view
         scnView.scene = scene
         
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
+        scnView.allowsCameraControl = false
         scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = false
         
-        // configure the view
-        scnView.backgroundColor = UIColor.whiteColor()
+        
+        // add pinch motion to control animation
+        //view.userInteractionEnabled = true
+        pinch = UIPinchGestureRecognizer(target: self,action: "handlePinch:")
+        pan = UIPanGestureRecognizer(target: self,action: "handlePan:")
+        //pinch.delegate = self
+        view.addGestureRecognizer(pinch)
+        view.addGestureRecognizer(pan)
+        
+        
         
         // back button
         backToSketchButton.setBackgroundImage(bgImage, forState:UIControlState.Normal)
@@ -266,8 +287,7 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     /// this undoes any translation between the child and parent
     func undoParentTranslate(parent:SCNNode, child:SCNNode)
     {
-        child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)
-        
+        child.position = SCNVector3Make(child.position.x - parent.position.x, child.position.y - parent.position.y, child.position.z - parent.position.z)        
     }
     
     func printTree(plane: Plane){
@@ -285,30 +305,43 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
     // walk tree, save path, record fold and hill or valley, place hinge into visited
     func createPlaneTree(plane: Plane, hill: Bool, recurseCount:Int)-> SCNNode?
     {
+        var translate = false
         
-        // base case if bottom
         if plane.masterBottom {
-            return nil
+            var bottomPlaneNode = plane.node
+            
+            if bottomPlaneNode != nil{
+                return plane.node
+            }
+            
         }
         // base case already visited or going back up
         if contains(visited, plane) {
             return nil
         }
         
-        //println("\(recurseCount) : \(plane.topEdge)")
-        
-        var node = plane.lazyNode()
-        
-        // add fade-in key for holes
-        if(plane.kind != .Hole){
-            node.addAnimation(fadeIn(), forKey: "fade in")
+        // if plane is a hole, add the path to parent later, but skip it here
+        if plane.kind == .Hole {
+            return nil
         }
         
+        // put a check here for !nil node
+        var node = plane.node
+        
+        if plane.node == nil{
+            node = plane.makeNode()
+            translate = true
+        }
+        
+        
         var useBottom = (recurseCount == 0)//check if we hit top plane
-        let masterSphere = parentSphere(plane, node:node, bottom: useBottom)
+        let masterSphere = parentSphere(plane, node:node!, bottom: useBottom)
         plane.masterSphere = masterSphere
-        masterSphere.addChildNode(node)
-        undoParentTranslate(masterSphere, child: node)
+        masterSphere.addChildNode(node!)
+        
+        if (translate){
+            undoParentTranslate(masterSphere, child: node!)
+        }
         
         let m = SCNMaterial()
         if debugColor {
@@ -316,25 +349,15 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         } else {
             m.diffuse.contents = plane.color
         }
-        node.geometry?.firstMaterial = m
-        masterSphere.geometry?.firstMaterial = m
+        node!.geometry?.firstMaterial = m
         
-        //        //make sphere invisible
-        //        let transparentMaterial = SCNMaterial()
-        //        transparentMaterial.diffuse.contents = UIColor.clearColor()
-        //        masterSphere.geometry?.firstMaterial = transparentMaterial
-        
-        // different based on orientation
-        if hill {
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegreesNeg), forKey: "anim")
-        } else {
-            masterSphere.addAnimation(rotationAnimation(zeroDegrees, endAngle: ninetyDegrees), forKey: "anim")
-        }
+        // determines how the plane will fold based on hierarchy
+        plane.NegNinety = hill //set to neg90
         
         
         var children = plane.children
         visited.append(plane)
-        //notMyChild[recurseCount] = notMyChild[recurseCount]!.union(adj)
+        
         // loop through the adj starting with top plane
         for p in children
         {
@@ -342,7 +365,9 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
             if let childSphere = createPlaneTree(p, hill:!hill, recurseCount:rc) {
                 // child hasn't reached bottom so do something to it
                 masterSphere.addChildNode(childSphere)
-                undoParentTranslate(masterSphere, child: childSphere)
+                if (translate){
+                    undoParentTranslate(masterSphere, child: childSphere)
+                }
             }
         }
         return masterSphere
@@ -388,7 +413,6 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         var edge:Edge
         
         if(bottom){// TODO:confused
-            //println("bottom/top: \(plane.topEdge)")
             edge = plane.bottomEdge
         }
         else{
@@ -400,7 +424,8 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         let masterSphere = makeSphere(atPoint: anchorStart)
         
         let m = SCNMaterial()
-        m.diffuse.contents = UIColor.clearColor()
+        //        m.diffuse.contents = UIColor.clearColor()
+        m.diffuse.contents = plane.color
         masterSphere.geometry?.firstMaterial = m
         
         return masterSphere
@@ -432,18 +457,21 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         let anim = CAKeyframeAnimation(keyPath: "rotation")
         anim.duration = 14;
         anim.cumulative = false;
-        anim.repeatCount = .infinity;
-        anim.values = [NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
+        //anim.repeatCount = .infinity;
+        anim.values = [
+            NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle))),
             NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
             NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(endAngle))),
             NSValue(SCNVector4: SCNVector4(x: 1, y: 0, z: 0, w: Float(startAngle)))]
-        anim.keyTimes = [NSNumber(float: Float(0.0)),
+        anim.keyTimes = [
+            NSNumber(float: Float(0.0)),
             NSNumber(float: Float(1)),
             NSNumber(float: Float(1.4)),
             NSNumber(float: Float(2.4))]
         anim.removedOnCompletion = false;
         anim.fillMode = kCAFillModeForwards;
-        anim.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
+        anim.timingFunctions = [
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
             CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
             CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)]
         

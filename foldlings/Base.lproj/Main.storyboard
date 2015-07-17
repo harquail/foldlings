@@ -407,6 +407,9 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="fru-mV-avN" appends="YES" id="sCM-Mg-vmz"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="fBJ-DE-29n"/>
                     <connections>
@@ -415,6 +418,21 @@ Foldlings was created by Marissa Allen, and Nook Harquail — with much developm
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
                 <exit id="YpY-9h-vAX" userLabel="Exit" sceneMemberID="exit"/>
+                <pinchGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="fru-mV-avN">
+                    <connections>
+                        <action selector="handlePinch:" destination="BV1-FR-VrT" id="udO-4U-99w"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="RNF-Dy-iyu">
+                    <connections>
+                        <action selector="handlePan:" destination="BV1-FR-VrT" id="szK-fJ-Bv2"/>
+                        <outlet property="delegate" destination="3se-qz-xqx" id="J8g-x5-I1n"/>
+                    </connections>
+                </panGestureRecognizer>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="2uO-SW-MBh">
+                    <rect key="frame" x="0.0" y="0.0" width="118" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </slider>
             </objects>
             <point key="canvasLocation" x="-528" y="356"/>
         </scene>

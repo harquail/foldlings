@@ -197,8 +197,7 @@ class SketchView: UIView {
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
-                        
-                        self.sketch.getPlanes()
+
                         forceRedraw()
                     }
                     else if let box = tappedF as? BoxFold{
@@ -212,11 +211,6 @@ class SketchView: UIView {
                         
                         sketch.tappedFeature?.activeOption = nil
                         sketch.tappedFeature = nil
-                        
-                        
-                        
-                        //                        sketch.refreshFeatureEdges()
-                        self.sketch.getPlanes()
                         
                         forceRedraw()
                         
@@ -317,7 +311,9 @@ class SketchView: UIView {
                 // find parent for hole
                 if shape.parent == nil
                 {
-                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
+                    //shape.parent = sketch.featureAt(point: shape.path!.firstPoint()) ?? sketch.masterFeature!
+                    shape.parent = sketch.featureAt(point: shape.path!.firstPoint())
+
                 }
                 
 //                shape.shiftEdgeEndpoints()
@@ -330,7 +326,7 @@ class SketchView: UIView {
 
                 sketch.currentFeature = nil
                 forceRedraw()
-                println("\\ ALMOST COINCIDENT: \\")
+                //println("\\ ALMOST COINCIDENT: \\")
                 println(sketch.almostCoincidentEdgePoints())
                                 
             default:
@@ -432,7 +428,6 @@ class SketchView: UIView {
                 
                 //clear the current feature
                 sketch.currentFeature = nil
-                //sketch.getPlanes()
                 forceRedraw()
             }
             
@@ -716,7 +711,6 @@ class SketchView: UIView {
                 for plane in sketch.planes.planes
                 {
                     let c = plane.color
-                    //set pleasing colors here based on orientation
                     c.setFill()
                     plane.path.usesEvenOddFillRule = true
                     plane.path.fill()
@@ -930,7 +924,8 @@ class SketchView: UIView {
                 // 4, 5 for mountain.  2, 10 for valley
                 if $0.kind == .Fold
                 {
-                    if (self.sketch.isHill($0)){
+                    if $0.isHill()
+                    {
                         return "\n<path stroke-dasharray=\"20,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
                     }
                     return "\n<path stroke-dasharray=\"20,10,7,5,7,10\" d= \"" + SVGPathGenerator.svgPathFromCGPath($0.path.CGPath) + "\"/> "
