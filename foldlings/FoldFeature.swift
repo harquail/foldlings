@@ -9,8 +9,6 @@
 
 import Foundation
 
-
-
 /// a set of folds/cuts that know something about whether it is a valid 3d feature
 class FoldFeature: NSObject, Printable
 {

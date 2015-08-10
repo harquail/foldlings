@@ -154,5 +154,4 @@ class BoxFold:FoldFeature {
         }
         return (true,"")
     }
-    
 }

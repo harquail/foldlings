@@ -18,7 +18,6 @@ class CollectionOfFoldlings: UICollectionView, UICollectionViewDataSource, UICol
         super.init(coder:aDecoder)
         self.dataSource = self
         self.delegate = self
-        
     }
     
     override func reloadData() {

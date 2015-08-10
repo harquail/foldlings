@@ -37,8 +37,8 @@ class SketchView: UIView {
     var incrementalImage: UIImage!  //this is a bitmap version of everything
     var sketchMode:  Mode = Mode.BoxFold
     var sketch: Sketch!
-    var startEdgeCollision:Edge?
-    var endEdgeCollision:Edge?
+//    var startEdgeCollision:Edge?
+//    var endEdgeCollision:Edge?
     var gameView = FoldPreviewViewController()
     
     // Threading
@@ -715,7 +715,8 @@ class SketchView: UIView {
                 // print planes first if exist
                 for plane in sketch.planes.planes
                 {
-                    let c = plane.color
+//                    let c = plane.color
+                    let c = UIColor.whiteColor()
                     //set pleasing colors here based on orientation
                     c.setFill()
                     plane.path.usesEvenOddFillRule = true
@@ -790,6 +791,8 @@ class SketchView: UIView {
                         
                         if let shape = feature as? FreeForm{
                             
+                            // 
+                            if(false){
                             //draw control points
                             for point in  convertToCGPoints(shape.interpolationPoints as! [NSValue])  {
                                 drawCircle(point, color:UIColor.redColor(),radius:3.0)
@@ -804,6 +807,7 @@ class SketchView: UIView {
                                 drawCircle(edge.start, color:UIColor.greenColor(),radius:6.0)
                                 drawCircle(edge.end, color:UIColor.greenColor(),radius:6.0)
 
+                                }
                             }
                             
                         }
