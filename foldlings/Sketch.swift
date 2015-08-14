@@ -327,15 +327,18 @@ class Sketch : NSObject, Printable  {
     {   //println(current)
         //            printAdjList(current.adjacency, edge: current)
         
-        var closest = current.twin
+        //--var closest = current.twin
+        //var closest = current.adjacency[0]
         //      println("adjacency count \(current.adjacency.count)")
         //println("\n current \(current.start) , \(current.end) \n")
         // printAdjList(current.adjacency, edge: current)
         
         // if adjacency has only twin and edge, return twin
         if current.adjacency.count < 2 {
-            closest.crossed = true
-            return closest
+            //--closest.crossed = true
+            //--return closest
+            current.twin.crossed = true
+            return current.twin
         }
         // return the edge that hasn't been visited and isn't twin
         for edge in current.adjacency{
@@ -345,8 +348,8 @@ class Sketch : NSObject, Printable  {
         }
         
         // if no other edges in adjacency, return twin
-        closest.crossed = true
-        return closest
+        current.twin.crossed = true
+        return current.twin
     }
     
     
