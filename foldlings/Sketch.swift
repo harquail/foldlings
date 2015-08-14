@@ -322,25 +322,15 @@ class Sketch : NSObject, Printable  {
     
     
     //get closest adjancent edge
-    // *not* concurrency safe, only use if you have a lock
+    // *not* concurrency safe
     func getClosest(current: Edge) -> Edge
-    {   //println(current)
-        //            printAdjList(current.adjacency, edge: current)
-        
-        //--var closest = current.twin
-        //var closest = current.adjacency[0]
-        //      println("adjacency count \(current.adjacency.count)")
-        //println("\n current \(current.start) , \(current.end) \n")
-        // printAdjList(current.adjacency, edge: current)
-        
+    {
         // if adjacency has only twin and edge, return twin
         if current.adjacency.count < 2 {
-            //--closest.crossed = true
-            //--return closest
             current.twin.crossed = true
             return current.twin
         }
-        // return the edge that hasn't been visited and isn't twin
+        // return the edge that hasn't been visited, isn't twin, and is in the sketch
         for edge in current.adjacency{
             if !contains(self.visited, edge) && edge != current.twin && contains(edges, edge) {
                 return edge
