@@ -73,8 +73,8 @@ class Sketch : NSObject, Printable  {
     }
     
     /// add an already-constructed edge
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false, feature: FoldFeature?) -> Edge {
-        return addEdge(Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster, feature: feature))
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, feature: FoldFeature?) -> Edge {
+        return addEdge(Edge(start: start, end: end, path: path, kind: kind, feature: feature))
     }
     
     /// adds an edge to the adjacency graph
@@ -84,14 +84,13 @@ class Sketch : NSObject, Printable  {
         var start = edge.start
         var end = edge.end
         var kind = edge.kind
-        var isMaster = edge.isMaster
         var feature = edge.feature
         
         var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
         var twin : Edge
         
         // all feature edges belong to itself
-        twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
+        twin = Edge(start: end, end: start, path: revpath, kind: kind, feature: feature)
         
         edge.twin = twin
         twin.twin = edge

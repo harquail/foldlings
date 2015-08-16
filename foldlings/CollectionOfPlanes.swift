@@ -55,8 +55,9 @@ class CollectionOfPlanes: Printable, Hashable {
             // Save the Clockwise holes and add to parent plane
             // For 3d rendering
             if plane.path.isClockwise(){
+
                 
-                if !top.isMaster && plane.foldcount == 0{
+                if !(feature is MasterCard) && plane.foldcount == 0{
                     
                     // get parent plane and add to parent's children
                     var featureParentPlanes = plane.feature.parent!.featurePlanes
@@ -108,7 +109,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     plane.kind = .Flap
                     
                     // check if master
-                    if top.isMaster
+                    if feature is MasterCard
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{
@@ -159,7 +160,7 @@ class CollectionOfPlanes: Printable, Hashable {
                     // more than one fold is a plane
                     plane.kind = .Plane
                     // check if master
-                    if top.isMaster
+                    if feature is MasterCard
                     {
                         //if topEdge isn't a fold then it is masterTop
                         if top.kind != .Fold{
@@ -224,8 +225,10 @@ class CollectionOfPlanes: Printable, Hashable {
         if plane.masterBottom { self.masterBottom = nil }
         
         // remove the plane from children's parent
-        for p in plane.children {
-            removePlane(p)
+        if plane.children.count > 0{
+            for p in plane.children {
+                removePlane(p)
+            }
         }
         
         if plane.parent != nil {

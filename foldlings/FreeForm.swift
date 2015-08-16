@@ -70,7 +70,7 @@ class FreeForm:FoldFeature
         }
         
         if let p = path{
-            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
+            let edge = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, feature: self)
             return [edge]
         }
             // else create a straight edge
@@ -116,7 +116,7 @@ class FreeForm:FoldFeature
             
             // check greater less than greater than top truncations heights
 
-            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, isMaster: false, feature: self)
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: .Cut, feature: self)
                 edges.append(e)
         }
         

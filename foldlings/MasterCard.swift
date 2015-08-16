@@ -54,7 +54,6 @@ class MasterCard:FoldFeature{
         horizontalFolds = [master]
 //        
         
-        returnee.map({$0.isMaster = true})
         //set feature edges
         featureEdges = returnee
         //assign edges to feature 
