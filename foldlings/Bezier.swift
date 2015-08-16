@@ -801,7 +801,7 @@ class Bezier{
 
             }
             else{
-                //println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
+                println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
             }
         }
         
