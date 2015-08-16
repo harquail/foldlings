@@ -73,8 +73,8 @@ class Sketch : NSObject, Printable  {
     }
     
     /// add an already-constructed edge
-    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, isMaster:Bool = false, feature: FoldFeature?) -> Edge {
-        return addEdge(Edge(start: start, end: end, path: path, kind: kind, isMaster:isMaster, feature: feature))
+    func addEdge(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Edge.Kind, feature: FoldFeature?) -> Edge {
+        return addEdge(Edge(start: start, end: end, path: path, kind: kind, feature: feature))
     }
     
     /// adds an edge to the adjacency graph
@@ -84,14 +84,13 @@ class Sketch : NSObject, Printable  {
         var start = edge.start
         var end = edge.end
         var kind = edge.kind
-        var isMaster = edge.isMaster
         var feature = edge.feature
         
         var revpath = path.bezierPathByReversingPath() // need to reverse the path for better drawing
         var twin : Edge
         
         // all feature edges belong to itself
-        twin = Edge(start: end, end: start, path: revpath, kind: kind, isMaster:isMaster, feature: feature)
+        twin = Edge(start: end, end: start, path: revpath, kind: kind, feature: feature)
         
         edge.twin = twin
         twin.twin = edge
@@ -322,22 +321,15 @@ class Sketch : NSObject, Printable  {
     
     
     //get closest adjancent edge
-    // *not* concurrency safe, only use if you have a lock
+    // *not* concurrency safe
     func getClosest(current: Edge) -> Edge
-    {   //println(current)
-        //            printAdjList(current.adjacency, edge: current)
-        
-        var closest = current.twin
-        //      println("adjacency count \(current.adjacency.count)")
-        //println("\n current \(current.start) , \(current.end) \n")
-        // printAdjList(current.adjacency, edge: current)
-        
+    {
         // if adjacency has only twin and edge, return twin
         if current.adjacency.count < 2 {
-            closest.crossed = true
-            return closest
+            current.twin.crossed = true
+            return current.twin
         }
-        // return the edge that hasn't been visited and isn't twin
+        // return the edge that hasn't been visited, isn't twin, and is in the sketch
         for edge in current.adjacency{
             if !contains(self.visited, edge) && edge != current.twin && contains(edges, edge) {
                 return edge
@@ -345,8 +337,8 @@ class Sketch : NSObject, Printable  {
         }
         
         // if no other edges in adjacency, return twin
-        closest.crossed = true
-        return closest
+        current.twin.crossed = true
+        return current.twin
     }
     
     

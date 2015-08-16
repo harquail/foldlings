@@ -52,7 +52,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
     var path = UIBezierPath()
     var kind = Kind.Cut
     var adjacency: [Edge] = []
-    var isMaster = false
     var colorOverride:UIColor?
     var feature:FoldFeature?
     
@@ -85,10 +84,9 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
 //        self.colorOverride = plane.color
     }
     
-    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, isMaster:Bool = false, feature:FoldFeature? = nil) {
+    convenience init(start:CGPoint,end:CGPoint, path:UIBezierPath, kind: Kind, feature:FoldFeature? = nil) {
         self.init(start: start, end: end, path:path)
         self.kind = kind
-        self.isMaster = isMaster
         self.feature = feature
         
     }
@@ -99,7 +97,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         self.end = aDecoder.decodeCGPointForKey("end")
         self.path = aDecoder.decodeObjectForKey("path") as! UIBezierPath
         self.kind = Kind(rawValue: (aDecoder.decodeObjectForKey("kind") as! String))!
-        self.isMaster = aDecoder.decodeBoolForKey("isMaster")
         self.twin = aDecoder.decodeObjectForKey("twin") as! Edge
         self.adjacency = aDecoder.decodeObjectForKey("adj") as? [Edge] ?? []
         self.feature = aDecoder.decodeObjectForKey("feature") as? FoldFeature
@@ -110,7 +107,6 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         aCoder.encodeCGPoint(end, forKey: "end")
         aCoder.encodeObject(path, forKey: "path")
         aCoder.encodeObject( self.kind.rawValue, forKey:"kind")
-        aCoder.encodeBool(self.isMaster, forKey: "isMaster")
         aCoder.encodeObject(self.twin, forKey: "twin")
         aCoder.encodeObject(self.adjacency, forKey: "adj")
         aCoder.encodeObject(self.feature, forKey: "feature")
@@ -253,7 +249,7 @@ class Edge: NSObject, Printable, Hashable, NSCoding {
         // make edges from paths
         for p in paths{
             //            println("\(p.firstPoint()) | \(p.lastPoint())")
-            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, isMaster: false, feature: self.feature!)
+            let e = Edge(start: p.firstPoint(), end: p.lastPoint(), path: p, kind: self.kind, feature: self.feature!)
             edges.append(e)
         }
         

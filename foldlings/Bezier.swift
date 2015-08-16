@@ -785,10 +785,10 @@ class Bezier{
                     iHasProblem = true
                     intersectedJ.append(j)
                     intersectionsCount++
-                    println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
-                    println(intersection)
-                    println("!! pI: \(pI) | pJ \(pJ) !!")
-                    println("----------------------")
+//                    println("!! pIPrev: \(pIPrev) | pJPrev \(pJPrev) !!")
+//                    println(intersection)
+//                    println("!! pI: \(pI) | pJ \(pJ) !!")
+//                    println("----------------------")
                     
                     /// formatted for wolfram alpha
                     //                println("segment(\(pIPrev),\(pI)) | segment(\(pJPrev),\(pJ))")
@@ -801,7 +801,7 @@ class Bezier{
 
             }
             else{
-                println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
+                //println("I HAD PROBLEM: i: \(i) | js: \(intersectedJ)")
             }
         }
         
