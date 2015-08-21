@@ -424,8 +424,8 @@ class FoldPreviewViewController: UIViewController, SCNSceneRendererDelegate, MFM
         let masterSphere = makeSphere(atPoint: anchorStart)
         
         let m = SCNMaterial()
-        //        m.diffuse.contents = UIColor.clearColor()
-        m.diffuse.contents = plane.color
+               m.diffuse.contents = UIColor.clearColor()
+        //m.diffuse.contents = plane.color
         masterSphere.geometry?.firstMaterial = m
         
         return masterSphere
